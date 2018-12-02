@@ -1,0 +1,139 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<div class="right_col" role="main">
+  <div class="page-title">
+    <div class="title_left">
+      <h2>Captura Egresos</h2>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <!-- form input mask -->
+    <div class="col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h3>Porfavor registre el gasto llenando el siguiente formulario</h3>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Settings 1</a>
+                </li>
+                <li><a href="#">Settings 2</a>
+                </li>
+              </ul>
+            </li>
+            <li><a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+
+        <form class="form-horizontal form-label-left"id="user_inputs" method="POST" action="{{ url_for('egresos_blueprint.captura_egresos') }}">
+            <div class="col-sm-10 text-left">
+
+                <div class="form-group" >
+                  <label for="beneficiario"> Beneficiario </label><br>
+                   <select class="selectpicker" id="beneficiario" name="beneficiario" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..." data-width="80%" >
+                      {% for w in vendor %}
+                        <option> {{ w | safe }}  </option>
+                      {% endfor %}
+                    </select>
+                    <button class="btn btn-default" type="button">Agregar Nuevo</button>
+                </div>
+
+                <div class="form-group" >
+                    <label for="categoria"> Categoria </label><br>
+                    <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="categoria" title="Seleccione una Categoria de Gasto..." data-width="80%" >
+                      {% for w in categoria %}
+                        <option> {{ w | safe }}  </option>
+                      {% endfor %}
+                    </select>
+                    <button class="btn btn-default" type="button">Agregar Nuevo</button>
+                </div>
+
+                <div class="form-group" >
+                    <label for="sub_categoria">Sub Categoria </label><br>
+                    <select class="selectpicker" id="sub_categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="sub_categoria" title="Seleccione una Sub Categoria de Gasto..." data-width="80%" >
+                      {% for w in sub_categoria %}
+                        <option> {{ w | safe }}  </option>
+                      {% endfor %}
+                    </select>
+                   <button class="btn btn-default" type="button">Agregar Nuevo</button>
+                </div>
+
+                <div class="form-group" >
+                    <label for="forma_pago"> Forma de Pago </label><br>
+                    <select class="selectpicker" id="forma_pago" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="forma_pago" title="Seleccione una Forma de Pago..." data-width="80%" >
+                      {% for w in forma_pago %}
+                        <option> {{ w | safe }}  </option>
+                      {% endfor %}
+                    </select>
+                     <button class="btn btn-default" type="button">Agregar Nuevo</button>
+                </div>
+
+                <div class="form-group" >
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <label > Fecha de Pago </label>
+                       <div class='input-group date mydatepicker' data-provide="datepicker">
+                           <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                      <div class="col-sm-12 col-md-6">
+                         <label > Fecha de Vencimiento </label>
+                         <div class='input-group date mydatepicker'  data-provide="datepicker">
+                             <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="width:50%; margin-top: -15px; ">
+                  <label for="fname">Monto</label>
+                  <input class="form-control" type="number" id="fname" name="firstname" >
+                </div>
+
+                <div class="form-group " style="width:90%; ">
+                  <label for="lname">Notas</label>
+                  <textarea class="form-control"  type="text" id="lname" name="lastname" placeholder="" ></textarea>
+                </div>
+                  <div class="form-group col-sm-6" >
+                    <button class="btn btn-primary" type="submit">Registrar Egreso</button>
+                  </div>
+            </div>
+         </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super()}}
+  <script>
+     $('.select').selectpicker();
+     $('.mydatepicker').datepicker({
+       format: "dd/mm/yyyy",
+       autoclose: true
+     });
+
+     function ajaxFirstOnChange() {
+      var x = document.getElementById("provedor").value;
+      document.getElementById("demo").innerHTML = "You selected: " + x;
+    };
+  </script>
+{% endblock javascripts %}

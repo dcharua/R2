@@ -1,0 +1,21 @@
+{
+  "name": "R2-finanzas",
+  "version": "1.0.0",
+  "description": "R2 admin",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": "8.11.3"
+  },
+  "devDependencies": {
+    "eslint": "5.0.0",
+    "eslint-config-google": "0.9.1"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "node"
+  ]
+}
