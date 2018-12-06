@@ -3,7 +3,7 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
-from os import path
+from os import path, environ
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -38,9 +38,14 @@ def configure_logs(app):
 
 
 def create_app(config):
+    print(config)
     app = Flask(__name__, static_folder='base/static')
-    app.config.from_object(config)
-    app.config['LOGIN_DISABLED'] = True
+    #app.config.from_object(config)
+    app.config.from_mapping(
+        SECRET_KEY='dev',
+        DEBUG=True,
+        LOGIN_DISABLED = True
+    )
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)

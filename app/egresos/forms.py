@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField
+from wtforms import StringField, IntegerField, SelectField, BooleanField, SubmitField
+from wtforms.validators import DataRequired
 
-class CapturaEgresos(FlaskForm):
-    username = TextField('Username', id='username_create')
-    email = TextField('Email')
-    password = PasswordField('Password', id='pwd_create')
+## login and registration
+
+
+class CapturarEgreso(FlaskForm):
+    vendor = SelectField(u'categoria', choices=[('Gosh', 'gosh'),('cat','Caterpillar')])
+    

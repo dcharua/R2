@@ -1,0 +1,6 @@
+.mydate{
+  position: absolute;
+  top: 7px;
+  right: 24px;
+  z-index: 2;
+}

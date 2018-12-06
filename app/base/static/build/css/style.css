@@ -5056,11 +5056,11 @@ section.content {
     .input-group .input-group-addon .material-icons {
       font-size: 18px;
       color: #555; }
-  .input-group input[type="text"],
+  /* .input-group input[type="text"],
   .input-group .form-control {
     border: none;
     box-shadow: none;
-    padding-left: 0; }
+    padding-left: 0; } */
   .input-group .form-control:focus {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;

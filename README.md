@@ -48,7 +48,7 @@ This project shows:
 ### 3. Set the FLASK_APP environment variable
     (Windows) set FLASK_APP=R2.py
     (Unix) export FLASK_APP=R2.py
-
+	   export FLASK_ENV=development
 ### 4. Run the application
     flask run
 

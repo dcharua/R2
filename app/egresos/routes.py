@@ -1,5 +1,5 @@
 from app.egresos import blueprint
-from flask import render_template
+from flask import render_template, request
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
@@ -14,16 +14,20 @@ def route_template(template):
 
 @blueprint.route('/capturar', methods=['GET', 'POST'])
 def captura_egresos():
-    vendor = list(['Gosh','Caterpillar','Flexi'])
+    formaPago = list(['Banamex','Santander','BBVA'])
+    vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
+    proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
     categoria = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-    sub_categoria = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
-    forma_pago = list(['forma_pago_1','forma_pago_2','forma_pago_3','forma_pago_4','forma_pago_5'])
+    concepto= list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
+    user_inputs = dict(request.form)
+    print(user_inputs)
 
     return render_template("capturar.html",
                            navbar_data_capture = 'active',
                            title = "Registro de Egresos",
-                           categoria = categoria,
-                           sub_categoria = sub_categoria,
-                           forma_pago = forma_pago,
+                           formaPago = formaPago,
                            vendor = vendor,
+                           proveedor = proveedor,
+                           categoria = categoria,
+                           concepto = concepto,
                            velocity_max = 1)
