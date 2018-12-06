@@ -127,10 +127,10 @@
        format: "dd/mm/yyyy",
        autoclose: true
      });
-
-     function ajaxFirstOnChange() {
-      var x = document.getElementById("provedor").value;
-      document.getElementById("demo").innerHTML = "You selected: " + x;
-    };
+    autosize($('textarea'));
+    //  function ajaxFirstOnChange() {
+    //   var x = document.getElementById("provedor").value;
+    //   document.getElementById("demo").innerHTML = "You selected: " + x;
+    // };
   </script>
 {% endblock javascripts %}
