@@ -7,7 +7,8 @@ from app import db, login_manager
 
 class User(db.Model, UserMixin):
 
-    __tablename__ = 'User'
+    __tablename__ = 'User2'
+    __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True)
@@ -29,7 +30,6 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return str(self.username)
 
-
 @login_manager.user_loader
 def user_loader(id):
     return User.query.filter_by(id=id).first()
@@ -39,4 +39,5 @@ def user_loader(id):
 def request_loader(request):
     username = request.form.get('username')
     user = User.query.filter_by(username=username).first()
+    print(user)
     return user if user else None

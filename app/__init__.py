@@ -15,13 +15,12 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    for module_name in ('base', 'home', 'egresos'):
+    for module_name in ('base', 'home', 'ingresos', 'egresos'):
         module = import_module('app.{}.routes'.format(module_name))
         app.register_blueprint(module.blueprint)
 
 
 def configure_database(app):
-
     @app.before_first_request
     def initialize_database():
         db.create_all()
@@ -38,14 +37,17 @@ def configure_logs(app):
 
 
 def create_app(config):
-    print(config)
     app = Flask(__name__, static_folder='base/static')
     #app.config.from_object(config)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DEBUG=True,
-        LOGIN_DISABLED = True
+        LOGIN_DISABLED = True,
+        #SQLALCHEMY_DATABASE_URI ='mysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
+        #SQLALCHEMY_DATABASE_URI ='mysql+pymysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
     )
+    db = SQLAlchemy()
+    login_manager = LoginManager()
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)

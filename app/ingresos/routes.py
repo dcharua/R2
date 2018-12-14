@@ -1,4 +1,4 @@
-from app.egresos import blueprint
+from app.ingresos import blueprint
 from flask import render_template, request
 from flask_login import login_required
 from bcrypt import checkpw
@@ -13,7 +13,7 @@ def route_template(template):
 
 
 @blueprint.route('capturar', methods=['GET', 'POST'])
-def captura_egresos():
+def captura_ingresos():
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
     proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
@@ -22,9 +22,9 @@ def captura_egresos():
     user_inputs = dict(request.form)
     print(user_inputs)
 
-    return render_template("capturar_egreso.html",
+    return render_template("capturar.html",
                            navbar_data_capture = 'active',
-                           title = "Registro de Egresos",
+                           title = "Registro de ingresos",
                            formaPago = formaPago,
                            vendor = vendor,
                            proveedor = proveedor,

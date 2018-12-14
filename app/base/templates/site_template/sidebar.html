@@ -49,7 +49,92 @@
                     </li>
                 </ul>
             </li>
-            <!--  -->
+            <!-- Fin de Egresos -->
+
+            <!-- Ingresos -->
+            <li {% if '/ingresos' in request.path %}class="active"{% endif %}>
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">attach_money</i>
+                    <span>Ingresos</span>
+                </a>
+                <ul class="ml-menu">
+                    <li {% if request.path == '/ingresos/ver' %} class="active"{% endif %}>
+                        <a href="/ingresos/ver">Ver</a>
+                    </li>
+                    <li {% if request.path == '/ingresos/capturar' %} class="active"{% endif %}>
+                        <a href="/ingresos/capturar">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Ingresos -->
+
+            <!-- Conciliaciónes -->
+            <li {% if '/conciliaciones' in request.path %}class="active"{% endif %}>
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">attach_money</i>
+                    <span>Conciliaciónes</span>
+                </a>
+                <ul class="ml-menu">
+                    <li {% if request.path == '/conciliaciones/ver' %} class="active"{% endif %}>
+                        <a href="/conciliaciones/ver">Ver</a>
+                    </li>
+                    <li {% if request.path == '/conciliaciones/capturar' %} class="active"{% endif %}>
+                        <a href="/conciliaciones/capturar">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Conciliaciónes -->
+
+            <!-- Reportes -->
+            <li {% if '/reportes' in request.path %}class="active"{% endif %}>
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">attach_money</i>
+                    <span>Reportes</span>
+                </a>
+                <ul class="ml-menu">
+                    <li {% if request.path == '/reportes/ver' %} class="active"{% endif %}>
+                        <a href="/reportes/ver">Ver</a>
+                    </li>
+                    <li {% if request.path == '/reportes/capturar' %} class="active"{% endif %}>
+                        <a href="/reportes/capturar">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Reportes -->
+
+            <!-- nomina -->
+            <li {% if '/nomina' in request.path %}class="active"{% endif %}>
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">attach_money</i>
+                    <span>Nómina</span>
+                </a>
+                <ul class="ml-menu">
+                    <li {% if request.path == '/nomina/ver' %} class="active"{% endif %}>
+                        <a href="/nomina/ver">Ver</a>
+                    </li>
+                    <li {% if request.path == '/nomina/capturar' %} class="active"{% endif %}>
+                        <a href="/nomina/capturar">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de nomina -->
+
+            <!-- administracion -->
+            <li {% if '/administracion' in request.path %}class="active"{% endif %}>
+                <a href="javascript:void(0);" class="menu-toggle">
+                    <i class="material-icons">attach_money</i>
+                    <span>Administración</span>
+                </a>
+                <ul class="ml-menu">
+                    <li {% if request.path == '/administracion/ver' %} class="active"{% endif %}>
+                        <a href="/administracion/ver">Ver</a>
+                    </li>
+                    <li {% if request.path == '/administracion/capturar' %} class="active"{% endif %}>
+                        <a href="/administracion/capturar">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de nomina -->
         </ul>
 
     </div>
