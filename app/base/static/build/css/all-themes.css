@@ -41,7 +41,7 @@
 .theme-red .sidebar .legal {
   background-color: #fff; }
   .theme-red .sidebar .legal .copyright a {
-    color: #F44336 !important; }
+    color: #424242 !important; }
 
 .theme-pink .navbar {
   background-color: #E91E63; }
@@ -897,4 +897,3 @@
   background-color: #fff; }
   .theme-black .sidebar .legal .copyright a {
     color: #000 !important; }
-

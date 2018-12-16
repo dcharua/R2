@@ -44,8 +44,11 @@
                     <li {% if request.path == '/egresos/ver' %} class="active"{% endif %}>
                         <a href="/egresos/ver">Ver</a>
                     </li>
-                    <li {% if request.path == '/egresos/capturar' %} class="active"{% endif %}>
-                        <a href="/egresos/capturar">Capturar</a>
+                    <li {% if request.path == '/egresos/capturar_cuenta' %} class="active"{% endif %}>
+                        <a href="/egresos/capturar_cuenta">Captura de cuenta por pagar</a>
+                    </li>
+                    <li {% if request.path == '/egresos/capturar_gasto' %} class="active"{% endif %}>
+                        <a href="/egresos/capturar_gasto">Captura de gasto</a>
                     </li>
                 </ul>
             </li>

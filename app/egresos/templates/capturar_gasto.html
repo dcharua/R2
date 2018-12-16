@@ -1,0 +1,225 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+
+<div class="block-header">
+  <h2>{{title}}</h2>
+</div>
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header">
+        <h2>Porfavor registre el gasto llenando el siguiente formulario</h2>
+      </div>
+        <div class="body">
+          <div class="row clearfix">
+            <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('egresos_blueprint.captura_gasto') }}">
+                <div class="col-sm-12 text-left">
+
+                  <div class="input-group" >
+                    <label for="beneficiario"> Beneficiario </label><br>
+                     <select class="selectpicker" id="beneficiario" name="beneficiario" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..." data-width="50%" >
+                        {% for w in vendor %}
+                          <option> {{ w | safe }}  </option>
+                        {% endfor %}
+                      </select>
+                      <input  type="checkbox" id="basic_checkbox_2" class="filled-in" checked />
+                       <label style="margin-left: 40px;" for="basic_checkbox_2">Usar como provedor</label>
+                      <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                  </div>
+
+
+                  <div class="input-group" style="width:47%">
+                    <label for="ref">Referencía de egreso</label>
+                    <input class="form-control" type="text" id="ref" name="Referencía" >
+                  </div>
+
+
+
+                  <div class="input-group nomargin" >
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 nomargin">
+                        <label > Fecha de Vencimiento </label>
+                         <div class='input-group date mydatepicker' data-provide="datepicker">
+                             <input type='text' class="form-control" />
+                              <span class="input-group-addon">
+                                <i class="material-icons mydate">date_range</i>
+                              </span>
+                          </div>
+                      </div>
+
+                      <div class="col-sm-12 col-md-6">
+                         <label > Fecha programada de pago </label>
+                         <div class='input-group date mydatepicker'  data-provide="datepicker">
+                             <input type='text' class="form-control" name="fecha de vencimiento" />
+                              <span class="input-group-addon">
+                                <i class="material-icons mydate">date_range</i>
+                              </span>
+                          </div>
+                      </div
+                    </div>
+                  </div>
+                  <div class="caracteristicas">
+                    <!-- <div class="input-group" >
+                        <label for="forma_pago"> Centro de negocio </label><br>
+                        <select class="selectpicker" id="centro" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="centro" title="Seleccione una Forma de Pago..." data-width="80%" >
+                          {% for w in formaPago %}
+                            <option> {{ w | safe }}  </option>
+                          {% endfor %}
+                        </select>
+                         <button class="btn btn-default" style="margin-left: 50px;"  type="button">Agregar Nuevo</button>
+                    </div>
+
+                      <div class="input-group" >
+                          <label for="proveedor">Proveedor </label><br>
+                          <select class="selectpicker" id="proveedor" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="sub_categoria" title="Seleccione una Sub Categoria de Gasto..." data-width="80%" >
+                            {% for w in proveedor %}
+                              <option> {{ w | safe }}  </option>
+                            {% endfor %}
+                          </select>
+                         <button class="btn btn-default" style="margin-left: 50px;"  type="button">Agregar Nuevo</button>
+                      </div>
+
+
+                      <div class="input-group" >
+                          <label for="categoria"> Categoria </label><br>
+                          <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="categoria" title="Seleccione una Categoria de Gasto..." data-width="80%" >
+                            {% for w in categoria %}
+                              <option> {{ w | safe }}  </option>
+                            {% endfor %}
+                          </select>
+                          <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                      </div>
+
+                      <div class="input-group" >
+                          <label for="concepto"> Concepto </label><br>
+                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" >
+                            {% for w in concepto %}
+                              <option> {{ w | safe }}  </option>
+                            {% endfor %}
+                          </select>
+                          <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                      </div>
+
+                      <div class="input-group" style="width:50%">
+                        <label for="fname">Monto</label>
+                        <input class="form-control" type="number" id="monto" name="monto" >
+                      </div>
+                  </div> -->
+
+                  <div style="padding:10px;" class="header">
+                    <h2>Detalles de egreso</h2>
+                    <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float">
+                      <i class="material-icons">add</i>
+                    </button>
+                  </div>
+                    <div style="padding:10px;" class="body">
+                        <table id="table" style="table-layout: fixed;" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Centro de Negocio</th>
+                                    <th>Proveedor</th>
+                                    <th>Categoría</th>
+                                    <th>Concepto</th>
+                                    <th>Monto</th>
+                                    <th style="width: 25%;">Descripcíon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                      <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" >
+                                      {% for w in concepto %}
+                                        <option> {{ w | safe }}  </option>
+                                      {% endfor %}
+                                    </select>
+                                  </td>
+                                    <td>
+                                      <select class="selectpicker" id="proveedor" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="sub_categoria" title="Seleccione una Sub Categoria de Gasto..." data-width="80%" >
+                                        {% for w in proveedor %}
+                                          <option> {{ w | safe }}  </option>
+                                        {% endfor %}
+                                      </select>
+                                    </td>
+                                    <td>
+                                      <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="categoria" title="Seleccione una Categoria de Gasto..." data-width="80%" >
+                                        {% for w in categoria %}
+                                          <option> {{ w | safe }}  </option>
+                                        {% endfor %}
+                                      </select>
+                                    </td>
+                                    <td>
+                                      <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" >
+                                        {% for w in concepto %}
+                                          <option> {{ w | safe }}  </option>
+                                        {% endfor %}
+                                      </select>
+                                    </td>
+                                    <td>
+                                      <input class="form-control" type="number" id="monto" name="monto" >
+                                    </td>
+
+                                    <td><input type="text" id="descripcion" name="descripcion" ></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="input-group ">
+                      <label for="lname">Comentario</label>
+                      <textarea class="form-control"  type="text" id="descripcion" name="descripcion" placeholder="" ></textarea>
+                    </div>
+
+                    <div class="input-group" >
+                      <button class="btn btn-primary" style="float: right;">Registrar Egreso</button
+                    </div>
+              </div>
+
+           </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super()}}
+  <script>
+   $(document).ready(function () {
+     console.log("in");
+    $("#add-row").click(function () {
+      console.log("in2");
+
+              var $tableBody = $('#table').find("tbody"),
+               $trLast = $tableBody.find("tr:last"),
+               $trNew = $trLast.clone();
+               // Find by attribute 'id'
+               // $trNew.find('[id]').each(function () {
+               //     var num = this.id.replace(/\D/g, '');
+               //     if (!num) {
+               //         num = 0;
+               //     }
+               //     // Remove numbers by first regexp
+               //     this.id = this.id.replace(/\d/g, '')
+               //         // increment number
+               //         + (1 + parseInt(num, 10));
+               // });
+
+               $trLast.after($trNew);
+
+           });
+       });
+     $('.select').selectpicker();
+     $('.mydatepicker').datepicker({
+       format: "dd/mm/yyyy",
+       autoclose: true
+     });
+    autosize($('textarea'));
+    //  function ajaxFirstOnChange() {
+    //   var x = document.getElementById("provedor").value;
+    //   document.getElementById("demo").innerHTML = "You selected: " + x;
+    // };
+  </script>
+{% endblock javascripts %}

@@ -36,13 +36,15 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
         <!-- datepicker -->
         <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+        <!-- tables -->
+        <link href="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
       {% endblock stylesheets %}
       <!-- Custom Theme Style -->
       <link href="{{ url_for('static', filename='build/css/my.css') }}" rel="stylesheet">
     {% endblock head %}
   </head>
 
-  <body class="theme-red">
+  <body class="theme-black">
 
     <!-- #END# Page Loader -->
     {% block body %}

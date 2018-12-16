@@ -7,7 +7,7 @@ alertify: false
  * Create a new account.
  */
 $('document').ready(function(){
-  $('body').css('background-color', '#00BCD4');
+  $('body').css('background-color', '#434343');
 });
 function signup() { // eslint-disable-line no-unused-vars
   if ($('#create-user-form').parsley().validate()) {
