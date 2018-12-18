@@ -1,0 +1,150 @@
+{% extends "base_site.html" %}
+
+{% block stylesheets %}
+  {{ super() }}
+{% endblock stylesheets %}
+
+{% block content %}
+<!-- Basic Examples -->
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-light-green">
+                  <h2>
+                      Egresos
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                          <thead>
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Beneficiario</th>
+                                  <th>Fecha programada</th>
+                                  <th>Feecha de vencimiento</th>
+                                  <th>Monto</th>
+                                  <th>Referencia</th>
+                                  <th>Status</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th>Fecha programada</th>
+                                <th>Fecha de vencimiento</th>
+                                <th>Monto</th>
+                                <th>Referencia</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              <tr>
+                                  <td>1</td>
+                                  <td>Felxi</td>
+                                  <td>14/06/2018</td>
+                                  <td>21/12/2018</td>
+                                  <td>$320,800</td>
+                                  <td>Abc138Gs</td>
+                                  <td> <span class="badge bg-red">Incompleto</span></td>
+                                  <td>
+                                    <button type="button" class="btn btn-small btn-info waves-effect">Ver</button>
+                                    <button type="button" class="btn btn-small btn-success waves-effect">Editar</button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- #END# Basic Examples -->
+
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header  bg-light-blue">
+                  <h2>
+                    Pagos
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                          <thead>
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Beneficiario</th>
+                                  <th>Cuenta de banco</th>
+                                  <th>Forma de pago</th>
+                                  <th>Monto</th>
+                                  <th>Referencia</th>
+                                  <th>Fecha de pago</th>
+                                  <th>Status</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th>Cuenta de banco</th>
+                                <th>Forma de pago</th>
+                                <th>Monto</th>
+                                <th>Referencia</th>
+                                <th>Fecha de pago</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              <tr>
+                                  <td>1</td>
+                                  <td>Felxi</td>
+                                  <td>Bancomer</td>
+                                  <td>Efectivo</td>
+                                  <td>$320,800</td>
+                                  <td>Abc138Gs</td>
+                                  <td>24/08/2018</td>
+                                  <td> <span class="badge bg-red">Incompleto</span></td>
+                                  <td>
+                                    <button type="button" class="btn btn-small btn-info waves-effect">Ver</button>
+                                    <button type="button" class="btn btn-small btn-success waves-effect">Editar</button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+  $('.js-basic-example').DataTable({
+    dom: 'Bfrtip',
+     responsive: true,
+     buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+     ]
+  });
+</script>
+{% endblock javascripts %}

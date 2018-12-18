@@ -41,14 +41,11 @@
                     <span>Egresos</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/egresos/ver' %} class="active"{% endif %}>
-                        <a href="/egresos/ver">Ver</a>
+                    <li {% if request.path == '/egresos/ver_egresos' %} class="active"{% endif %}>
+                        <a href="/egresos/ver_egresos">Ver</a>
                     </li>
-                    <li {% if request.path == '/egresos/capturar_cuenta' %} class="active"{% endif %}>
-                        <a href="/egresos/capturar_cuenta">Captura de cuenta por pagar</a>
-                    </li>
-                    <li {% if request.path == '/egresos/capturar_gasto' %} class="active"{% endif %}>
-                        <a href="/egresos/capturar_gasto">Captura de gasto</a>
+                    <li {% if request.path == '/egresos/capturar_egreso' %} class="active"{% endif %}>
+                        <a href="/egresos/capturar_egreso">Captura egreso</a>
                     </li>
                 </ul>
             </li>

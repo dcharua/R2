@@ -109,6 +109,10 @@
 
                   <div style="padding:10px;" class="header">
                     <h2>Detalles de egreso</h2>
+                    <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float">
+                      <i class="material-icons">remove</i>
+                    </button>
+
                     <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float">
                       <i class="material-icons">add</i>
                     </button>
@@ -170,10 +174,66 @@
                       <textarea class="form-control"  type="text" id="descripcion" name="descripcion" placeholder="" ></textarea>
                     </div>
 
-                    <div class="input-group" >
-                      <button class="btn btn-primary" style="float: right;">Registrar Egreso</button
+                    <div class="switch">
+                      <h2 class="subtitle">Pagado</h2>
+                        <label style="margin-top: 10px"><input id="pagado" type="checkbox" ><span class="lever"></span></label>
                     </div>
-              </div>
+
+                    <div id="pagado-form">
+                      <hr>
+                      <div class="input-group">
+                        <div class="row">
+                          <div class="col-sm-12 col-md-6 nomargin">
+                            <label for="beneficiario"> Cuenta de banco </label><br>
+                            <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" >
+                              {% for w in concepto %}
+                                <option> {{ w | safe }}  </option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="col-sm-12 col-md-6 nomargin">
+                            <label > Fecha de pago </label>
+                            <div class='input-group date mydatepicker'  data-provide="datepicker">
+                                <input type='text' class="form-control" name="fecha de vencimiento" />
+                                 <span class="input-group-addon">
+                                   <i class="material-icons mydate">date_range</i>
+                                 </span>
+                             </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="input-group">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-6 nomargin">
+                          <label for="beneficiario"> Forma de pago </label><br>
+                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" >
+                            {% for w in concepto %}
+                              <option> {{ w | safe }}  </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="col-sm-12 col-md-6 nomargin">
+                          <label > Referenia de pago </label>
+                          <input class="form-control" type="text" id="monto" name="monto" >
+                        </div>
+                    </div>
+                    </div>
+
+                    <div class="input-group">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-6 nomargin">
+                          <input  type="checkbox" id="movimiento" class="filled-in"  />
+                          <label class="grey-font" for="movimiento">Movimiento conciliado</label>
+                          <input disabled placeholder="Referencia" class="form-control" type="text" id="movimiento-input" name="monto" >
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="input-group" >
+                  <button class="btn btn-primary" style="float: right;">Registrar Egreso</button
+                </div>
 
            </form>
           </div>
@@ -188,29 +248,51 @@
   {{ super()}}
   <script>
    $(document).ready(function () {
-     console.log("in");
+
     $("#add-row").click(function () {
-      console.log("in2");
+        var $tableBody = $('#table').find("tbody"),
+         $trLast = $tableBody.find("tr:last"),
+         $trNew = $trLast.clone();
+         // Find by attribute 'id'
+         // $trNew.find('[id]').each(function () {
+         //     var num = this.id.replace(/\D/g, '');
+         //     if (!num) {
+         //         num = 0;
+         //     }
+         //     // Remove numbers by first regexp
+         //     this.id = this.id.replace(/\d/g, '')
+         //         // increment number
+         //         + (1 + parseInt(num, 10));
+         // });
 
-              var $tableBody = $('#table').find("tbody"),
-               $trLast = $tableBody.find("tr:last"),
-               $trNew = $trLast.clone();
-               // Find by attribute 'id'
-               // $trNew.find('[id]').each(function () {
-               //     var num = this.id.replace(/\D/g, '');
-               //     if (!num) {
-               //         num = 0;
-               //     }
-               //     // Remove numbers by first regexp
-               //     this.id = this.id.replace(/\d/g, '')
-               //         // increment number
-               //         + (1 + parseInt(num, 10));
-               // });
+       $trLast.after($trNew);
+     });
 
-               $trLast.after($trNew);
+    $("#delete-row").click(function () {
+      if($('#table tr:last').index() != 0)
+        $('#table tr:last').remove();
+    });
+ });
 
-           });
-       });
+     $("#pagado").change(function() {
+     if(this.checked) {
+        $("#pagado-form").fadeIn();
+       } else{
+         $("#pagado-form").fadeOut();
+       }
+     });
+
+     $("#movimiento").change(function() {
+       if(this.checked) {
+         console.log("chec")
+         $("#movimiento-input").prop('disabled', false);
+         } else{
+            console.log("un")
+          $("#movimiento-input").prop('disabled', true);
+         }
+     });
+
+
      $('.select').selectpicker();
      $('.mydatepicker').datepicker({
        format: "dd/mm/yyyy",
