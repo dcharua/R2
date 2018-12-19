@@ -30,84 +30,84 @@
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18" >Lorem ipsum ldoreniducn ounc iub h </p>
+              <p class="font-18">Lorem ipsum ldoreniducn ounc iub h </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
 
 
     <!-- DETALLES TABLE -->
     <div class="card">
-        <div class="header">
-            <h2> Concepto de pago</h2>
+      <div class="header">
+        <h2> Concepto de pago</h2>
+      </div>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Categoría</th>
+                <th>Concepto</th>
+                <th>Proveedor</th>
+                <th>Monto</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>ID</th>
+                <th>Categoría</th>
+                <th>Concepto</th>
+                <th>Proveedor</th>
+                <th>Monto</th>
+                <th>Acciones</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>Shoes 4 life</td>
+                <td>Compara inventario</td>
+                <td>Cualquiera</td>
+                <td> Loerme lipsidm kosmck dwoj</td>
+                <td>$12,155</td>
+                <td>
+                  <button type="button" class="btn-margin btn btn-small btn-info waves-effect">Ver</button>
+                  <button type="button" class="btn-margin btn btn-small btn-success waves-effect">Editar</button>
+                  <button type="button" class="btn-margin btn btn-small btn-danger waves-effect">Borrar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Categoría</th>
-                            <th>Concepto</th>
-                            <th>Proveedor</th>
-                            <th>Monto</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                          <th>ID</th>
-                          <th>Categoría</th>
-                          <th>Concepto</th>
-                          <th>Proveedor</th>
-                          <th>Monto</th>
-                          <th>Acciones</th>
-                        </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td>Shoes 4 life</td>
-                            <td>Compara inventario</td>
-                            <td>Cualquiera</td>
-                            <td> Loerme lipsidm kosmck dwoj</td>
-                            <td>$12,155</td>
-                            <td>
-                              <button type="button" class="btn-margin btn btn-small btn-info waves-effect">Ver</button>
-                              <button type="button" class="btn-margin btn btn-small btn-success waves-effect">Editar</button>
-                              <button type="button" class="btn-margin btn btn-small btn-danger waves-effect">Borrar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      </div>
     </div>
 
 
-{% endblock content %}
+    {% endblock content %}
 
-{% block javascripts %}
-  {{ super() }}
-<!-- Jquery DataTable Plugin Js -->
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    {% block javascripts %}
+    {{ super() }}
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
-<script>
-  $('.js-basic-example').DataTable({
-    dom: 'Bfrtip',
-     responsive: true,
-     buttons: [
-         'copy', 'csv', 'excel', 'pdf', 'print'
-     ]
-  });
-</script>
-{% endblock javascripts %}
+    <script>
+      $('.js-basic-example').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+      });
+    </script>
+    {% endblock javascripts %}
