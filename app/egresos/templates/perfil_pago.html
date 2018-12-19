@@ -1,0 +1,113 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+
+    <!-- INFO CARD -->
+    <div class="card">
+      <div class="header bg-black">
+        <h2 class="font-24">Pago</h2>
+      </div>
+
+      <div class="body">
+        <div class="row mycontainer">
+          <div class="col-sm-12 col-md-6">
+            <p class="font-18">Id: <span class="font-bold">15615156</span></p>
+            <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
+            <p class="font-18">Referencia: <span class="font-bold">15615156</span></p>
+            <p class="font-18">Forma de pago: <span class="font-bold">Efectivo</span></p>
+            <p class="font-18">Monto total: <span class="font-bold">$32,152</span></p>
+          </div>
+          <div class="col-sm-12 col-md-6 align-right">
+            <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></p>
+            <p class="font-18">Empresa: <span class="font-bold">Shoes 4 life</span></p>
+            <p class="font-18">Fecha de pago: <span class="font-bold">22 dic 2018</span></p>
+            <p class="font-18">Cuenta de banco: <span class="font-bold">Bancomer</span></p>
+          </div>
+        </div>
+        <div class="row mycontainer">
+          <div class="col-sm-12">
+            <div class="border-box">
+              <p class="font-18 font-bold">Comentarios</p>
+              <p class="font-18" >Lorem ipsum ldoreniducn ounc iub h </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+
+    <!-- DETALLES TABLE -->
+    <div class="card">
+        <div class="header">
+            <h2> Concepto de pago</h2>
+        </div>
+        <div class="body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Categoría</th>
+                            <th>Concepto</th>
+                            <th>Proveedor</th>
+                            <th>Monto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                          <th>ID</th>
+                          <th>Categoría</th>
+                          <th>Concepto</th>
+                          <th>Proveedor</th>
+                          <th>Monto</th>
+                          <th>Acciones</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>Shoes 4 life</td>
+                            <td>Compara inventario</td>
+                            <td>Cualquiera</td>
+                            <td> Loerme lipsidm kosmck dwoj</td>
+                            <td>$12,155</td>
+                            <td>
+                              <button type="button" class="btn-margin btn btn-small btn-info waves-effect">Ver</button>
+                              <button type="button" class="btn-margin btn btn-small btn-success waves-effect">Editar</button>
+                              <button type="button" class="btn-margin btn btn-small btn-danger waves-effect">Borrar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+  $('.js-basic-example').DataTable({
+    dom: 'Bfrtip',
+     responsive: true,
+     buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+     ]
+  });
+</script>
+{% endblock javascripts %}
