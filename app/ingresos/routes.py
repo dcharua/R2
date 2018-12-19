@@ -12,7 +12,7 @@ def route_template(template):
     return render_template(template + '.html')
 
 
-@blueprint.route('capturar', methods=['GET', 'POST'])
+@blueprint.route('capturar_ingreso', methods=['GET', 'POST'])
 def captura_ingresos():
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
@@ -22,7 +22,7 @@ def captura_ingresos():
     user_inputs = dict(request.form)
     print(user_inputs)
 
-    return render_template("capturar.html",
+    return render_template("capturar_ingreso.html",
                            navbar_data_capture = 'active',
                            title = "Registro de ingresos",
                            formaPago = formaPago,
