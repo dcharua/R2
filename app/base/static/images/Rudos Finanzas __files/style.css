@@ -39,7 +39,7 @@
     overflow: visible; }
 
 .ls-closed .sidebar {
-  margin-left: -250px; }
+  margin-left: -300px; }
 
 .ls-closed section.content {
   margin-left: 15px; }
@@ -2402,7 +2402,7 @@ a {
   animation: none !important; }
 
 section.content {
-  margin: 100px 15px 0 260px;
+  margin: 100px 15px 0 315px;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
@@ -6722,7 +6722,7 @@ fieldset[disabled] .form-control {
     overflow: visible; }
 
 .ls-closed .sidebar {
-  margin-left: -250px; }
+  margin-left: -300px; }
 
 .ls-closed section.content {
   margin-left: 15px; }
@@ -7520,7 +7520,7 @@ fieldset[disabled] .form-control {
   transition: all 0.5s;
   font-family: "Roboto", sans-serif;
   background: #fdfdfd;
-  width: 250px;
+  width: 300px;
   overflow: hidden;
   display: inline-block;
   height: calc(100vh - 70px);
@@ -7713,7 +7713,7 @@ fieldset[disabled] .form-control {
   width: 280px;
   height: calc(100vh - 70px);
   position: fixed;
-  right: -250px;
+  right: -300px;
   top: 70px;
   background: #fdfdfd;
   z-index: 11 !important;

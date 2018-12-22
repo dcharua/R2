@@ -26,7 +26,7 @@
 }
 
 .font-18{
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .mycontainer{
@@ -67,10 +67,4 @@
   font-weight: 800 !important;
   font-size: 14px !important;
   color: #555 !important;
-}
-
-.btn-close{
-  position: absolute;
-  top: 10px;
-  right: 10px;
 }

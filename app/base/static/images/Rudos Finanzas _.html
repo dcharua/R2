@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://localhost:5000/egresos/ver_egresos -->
+<html lang="en" class="chrome"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+      
+        
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <link rel="icon" href="http://localhost:5000/static/images/favicon.ico" type="image/ico">
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+
+      <title>Rudos Finanzas | </title>
+
+      
+  
+        <!-- Google Fonts -->
+        <link href="./Rudos Finanzas __files/css" rel="stylesheet" type="text/css">
+        <link href="./Rudos Finanzas __files/icon" rel="stylesheet" type="text/css">
+
+        <!-- Bootstrap Core Css -->
+        <link href="./Rudos Finanzas __files/bootstrap.css" rel="stylesheet">
+        <!-- Waves Effect Css -->
+        <link href="./Rudos Finanzas __files/waves.css" rel="stylesheet">
+        <!-- Animation Css -->
+        <link href="./Rudos Finanzas __files/animate.css" rel="stylesheet">
+        <!-- Morris Chart Css-->
+        <link href="./Rudos Finanzas __files/morris.css" rel="stylesheet">
+        <!-- Main Css-->
+        <link href="./Rudos Finanzas __files/style.css" rel="stylesheet">
+        <!-- Font Awesome-->
+        <link href="./Rudos Finanzas __files/font-awesome.min.css" rel="stylesheet">
+        <!-- Theme picker-->
+        <link href="./Rudos Finanzas __files/all-themes.css" rel="stylesheet">
+        <!-- select -->
+        <link rel="stylesheet" href="./Rudos Finanzas __files/bootstrap-select.min.css">
+        <!-- datepicker -->
+        <link rel="stylesheet" type="text/css" href="./Rudos Finanzas __files/bootstrap-datepicker3.css">
+        <!-- tables -->
+        <link href="./Rudos Finanzas __files/dataTables.bootstrap.css" rel="stylesheet">
+      
+
+      <!-- Custom Theme Style -->
+      <link href="./Rudos Finanzas __files/my.css" rel="stylesheet">
+    
+  </head>
+
+  <body class="theme-black" data-gr-c-s-loaded="true">
+
+    <!-- #END# Page Loader -->
+    
+      <div class="container-fluid">
+
+          
+            <div class="col-md-3 left_col  ">
+              <section>
+<!-- Left Sidebar -->
+<aside id="leftsidebar" class="sidebar no-animate">
+    <!-- User Info -->
+    <div class="user-info">
+        <div class="image">
+            <img src="./Rudos Finanzas __files/user.png" width="48" height="48" alt="User">
+        </div>
+        <div class="info-container">
+            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+            <div class="email"></div>
+            <div class="btn-group user-helper-dropdown">
+                <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons">person</i>Profile</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons">group</i>Followers</a></li>
+                    <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons">shopping_cart</i>Sales</a></li>
+                    <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons">favorite</i>Likes</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons">input</i>Sign Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- #User Info -->
+    <!-- Menu -->
+    <div class="menu">
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 377px;"><ul class="list" style="overflow: hidden; width: auto; height: 377px;">
+            <li class="header">MAIN NAVIGATION</li>
+            <li>
+                <a href="http://localhost:5000/index" class=" waves-effect waves-block">
+                    <i class="material-icons">home</i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <!-- Egresos -->
+            <li class="active">
+                <a href="javascript:void(0);" class="menu-toggle toggled waves-effect waves-block">
+                    <i class="material-icons">swap_calls</i>
+                    <span>Egresos</span>
+                </a>
+                <ul class="ml-menu" style="display: block;">
+                    <li class="active">
+                        <a href="http://localhost:5000/egresos/ver_egresos" class="toggled waves-effect waves-block">Ver</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:5000/egresos/capturar_egreso" class=" waves-effect waves-block">Captura egreso</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Egresos -->
+
+            <!-- Ingresos -->
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                    <i class="material-icons">attach_money</i>
+                    <span>Ingresos</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a href="http://localhost:5000/ingresos/ver_ingresos" class=" waves-effect waves-block">Ver</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:5000/ingresos/capturar_ingreso" class=" waves-effect waves-block">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Ingresos -->
+
+            <!-- Conciliaciónes -->
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                    <i class="material-icons">attach_money</i>
+                    <span>Conciliaciónes</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a href="http://localhost:5000/conciliaciones/ver" class=" waves-effect waves-block">Ver</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:5000/conciliaciones/capturar" class=" waves-effect waves-block">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Conciliaciónes -->
+
+            <!-- Reportes -->
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                    <i class="material-icons">attach_money</i>
+                    <span>Reportes</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a href="http://localhost:5000/reportes/ver" class=" waves-effect waves-block">Ver</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:5000/reportes/capturar" class=" waves-effect waves-block">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de Reportes -->
+
+            <!-- nomina -->
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                    <i class="material-icons">attach_money</i>
+                    <span>Nómina</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a href="http://localhost:5000/nomina/ver" class=" waves-effect waves-block">Ver</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:5000/nomina/capturar" class=" waves-effect waves-block">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de nomina -->
+
+            <!-- administracion -->
+            <li>
+                <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
+                    <i class="material-icons">attach_money</i>
+                    <span>Administración</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a href="http://localhost:5000/administracion/ver" class=" waves-effect waves-block">Ver</a>
+                    </li>
+                    <li>
+                        <a href="http://localhost:5000/administracion/capturar" class=" waves-effect waves-block">Capturar</a>
+                    </li>
+                </ul>
+            </li>
+            <!-- Fin de nomina -->
+        </ul><div class="slimScrollBar" style="background: rgba(0, 0, 0, 0.5); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 0px; z-index: 99; right: 1px; height: 302.402px;"></div><div class="slimScrollRail" style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+
+    </div>
+    <!-- #Menu -->
+    <!-- Footer -->
+    <div class="legal">
+        <div class="copyright">
+            © 2018 - 2019 <a href="javascript:void(0);">Rudos Admin</a>.
+        </div>
+        <div class="version">
+            <b>Version: </b> 1.0.0
+        </div>
+    </div>
+    <!-- #Footer -->
+</aside>
+<!-- #END# Left Sidebar -->
+
+
+
+
+
+<!-- <div class="left_col scroll-view">
+  <div class="navbar nav_title" style="border: 0;">
+    <a href="" class="site_title"><i class="fa fa-spinner"></i> <span>Rudos Admin</span></a>
+  </div>
+
+  <div class="clearfix"></div>
+
+
+  <div class="profile clearfix">
+    <div class="profile_pic">
+      <img src="/static/images/img.jpg" alt="..." class="img-circle profile_img">
+    </div>
+    <div class="profile_info">
+      <span>Bienvenido,</span>
+      <h2>  </h2>
+    </div>
+  </div>
+
+
+  <br />
+
+  <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+    <div class="menu_section">
+      <h3>General</h3>
+      <ul class="nav side-menu">
+        <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/home/index">Dashboard</a></li>
+            <li><a href="/home/index2">Dashboard2</a></li>
+            <li><a href="/home/index3">Dashboard3</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-edit"></i> Egresos <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/forms/ver">Ver</a></li>
+            <li><a href="/egresos/capturar">Capturar</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/forms/form">General Form</a></li>
+            <li><a href="/forms/form_advanced">Advanced Components</a></li>
+            <li><a href="/forms/form_validation">Form Validation</a></li>
+            <li><a href="/forms/form_wizards">Form Wizard</a></li>
+            <li><a href="/forms/form_upload">Form Upload</a></li>
+            <li><a href="/forms/form_buttons">Form Buttons</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/ui/general_elements">General Elements</a></li>
+            <li><a href="/ui/media_gallery">Media Gallery</a></li>
+            <li><a href="/ui/typography">Typography</a></li>
+            <li><a href="/ui/icons">Icons</a></li>
+            <li><a href="/ui/glyphicons">Glyphicons</a></li>
+            <li><a href="/ui/widgets">Widgets</a></li>
+            <li><a href="/ui/invoice">Invoice</a></li>
+            <li><a href="/ui/inbox">Inbox</a></li>
+            <li><a href="/ui/calendar">Calendar</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/tables/tables">Tables</a></li>
+            <li><a href="/tables/tables_dynamic">Table Dynamic</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/data/chartjs">Chart JS</a></li>
+            <li><a href="/data/chartjs2">Chart JS2</a></li>
+            <li><a href="/data/morisjs">Moris JS</a></li>
+            <li><a href="/data/echarts">ECharts</a></li>
+            <li><a href="/data/other_charts">Other Charts</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/fixed_sidebar">Fixed Sidebar</a></li>
+            <li><a href="/fixed_footer">Fixed Footer</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="menu_section">
+      <h3>Live On</h3>
+      <ul class="nav side-menu">
+        <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/additional/ecommerce">E-commerce</a></li>
+            <li><a href="/additional/projects">Projects</a></li>
+            <li><a href="/additional/project_detail">Project Detail</a></li>
+            <li><a href="/additional/contacts">Contacts</a></li>
+            <li><a href="/additional/profile">Profile</a></li>
+            <li><a href="/additional/pricing">Pricing Tables</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="/page_403">403 Error</a></li>
+            <li><a href="/page_404">404 Error</a></li>
+            <li><a href="/page_500">500 Error</a></li>
+            <li><a href="/plain_page">Plain Page</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+              <li><a href="#level1_1">Level One</a>
+              <li><a>Level One<span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                  <li class="sub_menu"><a href="/level2">Level Two</a>
+                  </li>
+                  <li><a href="#level2_1">Level Two</a>
+                  </li>
+                  <li><a href="#level2_2">Level Two</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a href="#level1_2">Level One</a>
+              </li>
+          </ul>
+        </li>
+        <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
+      </ul>
+    </div>
+  </div>
+
+
+
+  <div class="sidebar-footer hidden-small">
+    <a data-toggle="tooltip" data-placement="top" title="Settings">
+      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+      <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="Lock">
+      <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="Logout" href="login">
+      <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    </a>
+  </div>
+
+</div> -->
+            </section></div>
+          
+
+          
+            <div class="top_nav">
+              <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="START TYPING...">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars" style="opacity: 1;"></a>
+                <a class="navbar-brand" href="http://localhost:5000/index">Rudos Admin</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Call Search -->
+                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
+                    <!-- #END# Call Search -->
+                    <!-- Notifications -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+                            <span class="label-count">7</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">NOTIFICATIONS</li>
+                            <li class="body">
+                                <ul class="menu">
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-light-green">
+                                                <i class="material-icons">person_add</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>12 new members joined</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 14 mins ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-cyan">
+                                                <i class="material-icons">add_shopping_cart</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>4 sales made</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 22 mins ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-red">
+                                                <i class="material-icons">delete_forever</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>Nancy Doe</b> deleted account</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 3 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-orange">
+                                                <i class="material-icons">mode_edit</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>Nancy</b> changed name</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 2 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-blue-grey">
+                                                <i class="material-icons">comment</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>John</b> commented your post</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 4 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-light-green">
+                                                <i class="material-icons">cached</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4><b>John</b> updated status</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> 3 hours ago
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <div class="icon-circle bg-purple">
+                                                <i class="material-icons">settings</i>
+                                            </div>
+                                            <div class="menu-info">
+                                                <h4>Settings updated</h4>
+                                                <p>
+                                                    <i class="material-icons">access_time</i> Yesterday
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="javascript:void(0);" class=" waves-effect waves-block">View All Notifications</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Notifications -->
+                    <!-- Tasks -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">flag</i>
+                            <span class="label-count">9</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">TASKS</li>
+                            <li class="body">
+                                <ul class="menu tasks">
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <h4>
+                                                Footer display issue
+                                                <small>32%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-pink" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 32%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <h4>
+                                                Make new buttons
+                                                <small>45%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-cyan" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <h4>
+                                                Create new dashboard
+                                                <small>54%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-teal" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 54%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <h4>
+                                                Solve transition issue
+                                                <small>65%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-orange" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 65%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);" class=" waves-effect waves-block">
+                                            <h4>
+                                                Answer GitHub questions
+                                                <small>92%</small>
+                                            </h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-purple" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 92%">
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="footer">
+                                <a href="javascript:void(0);" class=" waves-effect waves-block">View All Tasks</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- #END# Tasks -->
+                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+
+
+
+<!-- <div class="nav_menu">
+  <nav>
+    <div class="nav toggle">
+      <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right">
+      <li class="">
+        <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <img src="/static/images/img.jpg" alt="">
+          <span class=" fa fa-angle-down"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-usermenu pull-right">
+          <li><a href="javascript:;"> Profile</a></li>
+          <li>
+            <a href="javascript:;">
+              <span class="badge bg-red pull-right">50%</span>
+              <span>Settings</span>
+            </a>
+          </li>
+          <li><a href="javascript:;">Help</a></li>
+          <li><a href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+        </ul>
+      </li>
+
+      <li role="presentation" class="dropdown">
+        <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+          <i class="fa fa-envelope-o"></i>
+          <span class="badge bg-green">6</span>
+        </a>
+        <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+          <li>
+            <a>
+              <span class="image"><img src="/static/images/img.jpg" alt="Profile Image" /></span>
+              <span>
+                <span>John Doe</span>
+                <span class="time">3 mins ago</span>
+              </span>
+              <span class="message">
+                Film festivals used to be do-or-die moments for movie makers. They were where...
+              </span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="image"><img src="/static/images/img.jpg" alt="Profile Image" /></span>
+              <span>
+                <span>John Doe</span>
+                <span class="time">3 mins ago</span>
+              </span>
+              <span class="message">
+                Film festivals used to be do-or-die moments for movie makers. They were where...
+              </span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="image"><img src="/static/images/img.jpg" alt="Profile Image" /></span>
+              <span>
+                <span>John Doe</span>
+                <span class="time">3 mins ago</span>
+              </span>
+              <span class="message">
+                Film festivals used to be do-or-die moments for movie makers. They were where...
+              </span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <span class="image"><img src="/static/images/img.jpg" alt="Profile Image" /></span>
+              <span>
+                <span>John Doe</span>
+                <span class="time">3 mins ago</span>
+              </span>
+              <span class="message">
+                Film festivals used to be do-or-die moments for movie makers. They were where...
+              </span>
+            </a>
+          </li>
+          <li>
+            <div class="text-center">
+              <a>
+                <strong>See All Alerts</strong>
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div> -->
+            </div>
+          
+          <!-- Page Loader -->
+          <div class="page-loader-wrapper">
+              <div class="loader">
+                  <div class="preloader">
+                      <div class="spinner-layer pl-red">
+                          <div class="circle-clipper left">
+                              <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                              <div class="circle"></div>
+                          </div>
+                      </div>
+                  </div>
+                  <p>Please wait...</p>
+              </div>
+          </div>
+          <section class="content no-animate">
+             <div class="container-fluid">
+              
+<!-- Basic Examples -->
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-light-green">
+                  <h2>
+                      Egresos
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="dt-buttons"><a class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="http://localhost:5000/egresos/ver_egresos#"><span>Copy</span></a><a class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="http://localhost:5000/egresos/ver_egresos#"><span>CSV</span></a><a class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="http://localhost:5000/egresos/ver_egresos#"><span>Excel</span></a><a class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="DataTables_Table_0" href="http://localhost:5000/egresos/ver_egresos#"><span>PDF</span></a><a class="dt-button buttons-print" tabindex="0" aria-controls="DataTables_Table_0" href="http://localhost:5000/egresos/ver_egresos#"><span>Print</span></a></div><div id="DataTables_Table_0_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="DataTables_Table_0"></label></div><table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+                          <thead>
+                              <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 15.0104px;">ID</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Beneficiario: activate to sort column ascending" style="width: 80.0104px;">Beneficiario</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Fecha programada: activate to sort column ascending" style="width: 97.0104px;">Fecha programada</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Feecha de vencimiento: activate to sort column ascending" style="width: 121.01px;">Feecha de vencimiento</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Monto: activate to sort column ascending" style="width: 42.0104px;">Monto</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="# de documento: activate to sort column ascending" style="width: 79.0104px;"># de documento</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 58.0104px;">Status</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Acciones: activate to sort column ascending" style="width: 178px;">Acciones</th></tr>
+                          </thead>
+                          <tfoot>
+                              <tr><th rowspan="1" colspan="1">ID</th><th rowspan="1" colspan="1">Beneficiario</th><th rowspan="1" colspan="1">Fecha programada</th><th rowspan="1" colspan="1">Fecha de vencimiento</th><th rowspan="1" colspan="1">Monto</th><th rowspan="1" colspan="1"># de documento</th><th rowspan="1" colspan="1">Status</th><th rowspan="1" colspan="1">Acciones</th></tr>
+                          </tfoot>
+                          <tbody>
+                              
+                          <tr role="row" class="odd">
+                                  <td class="sorting_1">1</td>
+                                  <td>Felxi</td>
+                                  <td>14/06/2018</td>
+                                  <td>21/12/2018</td>
+                                  <td>$320,800</td>
+                                  <td>Abc138Gs</td>
+                                  <td> <span class="badge bg-red">Incompleto</span></td>
+                                  <td>
+                                    <a class="btn btn-small btn-info waves-effect" href="http://localhost:5000/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn btn-small btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pagar">
+                                      <i class="material-icons">payment</i>
+                                    </a>
+                                    <a class="btn btn-small btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reprogramar fecha de pago">
+                                      <i class="material-icons">update</i>
+                                    </a>
+                                  </td>
+                              </tr></tbody>
+                      </table><div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="DataTables_Table_0_previous"><a href="http://localhost:5000/egresos/ver_egresos#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="http://localhost:5000/egresos/ver_egresos#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="DataTables_Table_0_next"><a href="http://localhost:5000/egresos/ver_egresos#" aria-controls="DataTables_Table_0" data-dt-idx="2" tabindex="0">Next</a></li></ul></div></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- #END# Basic Examples -->
+
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header  bg-light-blue">
+                  <h2>
+                    Pagos
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <div id="DataTables_Table_1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap"><div class="dt-buttons"><a class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="DataTables_Table_1" href="http://localhost:5000/egresos/ver_egresos#"><span>Copy</span></a><a class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="DataTables_Table_1" href="http://localhost:5000/egresos/ver_egresos#"><span>CSV</span></a><a class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="DataTables_Table_1" href="http://localhost:5000/egresos/ver_egresos#"><span>Excel</span></a><a class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="DataTables_Table_1" href="http://localhost:5000/egresos/ver_egresos#"><span>PDF</span></a><a class="dt-button buttons-print" tabindex="0" aria-controls="DataTables_Table_1" href="http://localhost:5000/egresos/ver_egresos#"><span>Print</span></a></div><div id="DataTables_Table_1_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="DataTables_Table_1"></label></div><table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="DataTables_Table_1" role="grid" aria-describedby="DataTables_Table_1_info">
+                          <thead>
+                              <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-sort="ascending" aria-label="ID: activate to sort column descending" style="width: 15.0104px;">ID</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Beneficiario: activate to sort column ascending" style="width: 80.0104px;">Beneficiario</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Cuenta de banco: activate to sort column ascending" style="width: 78.0104px;">Cuenta de banco</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Forma de pago: activate to sort column ascending" style="width: 68.0104px;">Forma de pago</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Monto: activate to sort column ascending" style="width: 42.0104px;">Monto</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="# de documento: activate to sort column ascending" style="width: 76.0104px;"># de documento</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Fecha de pago: activate to sort column ascending" style="width: 61.0104px;">Fecha de pago</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: 58.0104px;">Status</th><th class="sorting" tabindex="0" aria-controls="DataTables_Table_1" rowspan="1" colspan="1" aria-label="Acciones: activate to sort column ascending" style="width: 151px;">Acciones</th></tr>
+                          </thead>
+                          <tfoot>
+                              <tr><th rowspan="1" colspan="1">ID</th><th rowspan="1" colspan="1">Beneficiario</th><th rowspan="1" colspan="1">Cuenta de banco</th><th rowspan="1" colspan="1">Forma de pago</th><th rowspan="1" colspan="1">Monto</th><th rowspan="1" colspan="1"># de documento</th><th rowspan="1" colspan="1">Fecha de pago</th><th rowspan="1" colspan="1">Status</th><th rowspan="1" colspan="1">Acciones</th></tr>
+                          </tfoot>
+                          <tbody>
+                              
+                          <tr role="row" class="odd">
+                                  <td class="sorting_1">1</td>
+                                  <td>Felxi</td>
+                                  <td>Bancomer</td>
+                                  <td>Efectivo</td>
+                                  <td>$320,800</td>
+                                  <td>Abc138Gs</td>
+                                  <td>24/08/2018</td>
+                                  <td> <span class="badge bg-red">Incompleto</span></td>
+                                  <td>
+                                    <a class="btn btn-small btn-info waves-effect" href="http://localhost:5000/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn btn-small btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="" data-original-title="Generar pago">
+                                      <i class="material-icons">payment</i>
+                                    </a>
+                                    <a class="btn btn-small btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reprogramar fecha de pago">
+                                      <i class="material-icons">update</i>
+                                    </a>
+                                  </td>
+                              </tr></tbody>
+                      </table><div class="dataTables_info" id="DataTables_Table_1_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div><div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_1_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="DataTables_Table_1_previous"><a href="http://localhost:5000/egresos/ver_egresos#" aria-controls="DataTables_Table_1" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button active"><a href="http://localhost:5000/egresos/ver_egresos#" aria-controls="DataTables_Table_1" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="DataTables_Table_1_next"><a href="http://localhost:5000/egresos/ver_egresos#" aria-controls="DataTables_Table_1" data-dt-idx="2" tabindex="0">Next</a></li></ul></div></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+            </div>
+          </section>
+
+          
+            <footer>
+              
+            </footer>
+          
+        </div>
+      
+
+      
+  
+        <!-- jQuery -->
+        <script src="./Rudos Finanzas __files/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="./Rudos Finanzas __files/bootstrap.min.js"></script>
+        <!-- Autosize -->
+        <script src="./Rudos Finanzas __files/autosize.min.js"></script>
+        <!-- datepicker -->
+        <script type="text/javascript" src="./Rudos Finanzas __files/bootstrap-datepicker.min.js"></script>
+        <!-- Select -->
+        <script src="./Rudos Finanzas __files/bootstrap-select.min.js"></script>
+        <!-- Slimscroll Plugin Js -->
+        <script src="./Rudos Finanzas __files/jquery.slimscroll.js"></script>
+        <!-- Waves Effect Plugin Js -->
+        <script src="./Rudos Finanzas __files/waves.js"></script>
+        <!-- Custom Js -->
+        <script src="./Rudos Finanzas __files/admin.js"></script>
+
+      
+<!-- Jquery DataTable Plugin Js -->
+<script src="./Rudos Finanzas __files/jquery.dataTables.js"></script>
+<script src="./Rudos Finanzas __files/dataTables.bootstrap.js"></script>
+<script src="./Rudos Finanzas __files/dataTables.buttons.min.js"></script>
+<script src="./Rudos Finanzas __files/buttons.flash.min.js"></script>
+<script src="./Rudos Finanzas __files/jszip.min.js"></script>
+<script src="./Rudos Finanzas __files/pdfmake.min.js"></script>
+<script src="./Rudos Finanzas __files/vfs_fonts.js"></script>
+<script src="./Rudos Finanzas __files/buttons.html5.min.js"></script>
+<script src="./Rudos Finanzas __files/buttons.print.min.js"></script>
+
+<script>
+  $(function () {
+    //Tooltip
+    $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+    });
+
+    //Popover
+    $('[data-toggle="popover"]').popover();
+  })
+
+  $('.js-basic-example').DataTable({
+    dom: 'Bfrtip',
+     responsive: true,
+     buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+     ]
+  });
+</script>
+
+      <!-- Custom Theme Scripts -->
+      <script src="./Rudos Finanzas __files/custom.js"></script>
+    
+  
+</body></html>

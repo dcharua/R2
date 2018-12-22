@@ -11,7 +11,7 @@
           <div class="card">
               <div class="header bg-light-green">
                   <h2>
-                      Egresos
+                      Cuentas  por pagar
                   </h2>
               </div>
               <div class="body">
@@ -22,11 +22,11 @@
                                   <th>ID</th>
                                   <th>Beneficiario</th>
                                   <th>Fecha programada</th>
-                                  <th>Feecha de vencimiento</th>
+                                  <th>Fecha de vencimiento</th>
                                   <th>Monto</th>
-                                  <th>Referencia</th>
+                                  <th># de documento</th>
                                   <th>Status</th>
-                                  <th>Acciones</th>
+                                  <th style="width: 132px;">Acciones</th>
                               </tr>
                           </thead>
                           <tfoot>
@@ -36,7 +36,7 @@
                                 <th>Fecha programada</th>
                                 <th>Fecha de vencimiento</th>
                                 <th>Monto</th>
-                                <th>Referencia</th>
+                                <th># de documento</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -47,12 +47,19 @@
                                   <td>Felxi</td>
                                   <td>14/06/2018</td>
                                   <td>21/12/2018</td>
-                                  <td>$320,800</td>
+                                  <td>$320,800.00</td>
                                   <td>Abc138Gs</td>
                                   <td> <span class="badge bg-red">Incompleto</span></td>
                                   <td>
-                                    <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso">Ver</a>
-                                    <a class="btn btn-small btn-success waves-effect">Editar</a>
+                                    <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn js-modal-buttons btn-small btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                      <i data-toggle="tooltip" data-placement="top" title="Pagar" class="material-icons">payment</i>
+                                    </a>
+                                    <a class="btn btn-small btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
+                                      <i class="material-icons">update</i>
+                                    </a>
                                   </td>
                               </tr>
                           </tbody>
@@ -79,8 +86,7 @@
                               <tr>
                                   <th>ID</th>
                                   <th>Beneficiario</th>
-                                  <th>Cuenta de banco</th>
-                                  <th>Forma de pago</th>
+                                  <th>Cuenta</th>
                                   <th>Monto</th>
                                   <th>Referencia</th>
                                   <th>Fecha de pago</th>
@@ -92,8 +98,7 @@
                               <tr>
                                 <th>ID</th>
                                 <th>Beneficiario</th>
-                                <th>Cuenta de banco</th>
-                                <th>Forma de pago</th>
+                                <th>Cuenta</th>
                                 <th>Monto</th>
                                 <th>Referencia</th>
                                 <th>Fecha de pago</th>
@@ -106,14 +111,20 @@
                                   <td>1</td>
                                   <td>Felxi</td>
                                   <td>Bancomer</td>
-                                  <td>Efectivo</td>
-                                  <td>$320,800</td>
+                                  <td>$320,800.00</td>
                                   <td>Abc138Gs</td>
                                   <td>24/08/2018</td>
                                   <td> <span class="badge bg-red">Incompleto</span></td>
                                   <td>
-                                    <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_pago">Ver</a>
-                                    <a class="btn btn-small btn-success waves-effect">Editar</a>
+                                    <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn btn-small btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
+                                      <i class="material-icons">payment</i>
+                                    </a>
+                                    <a class="btn btn-small bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
+                                      <i class="material-icons">assignment_turned_in</i>
+                                    </a>
                                   </td>
                               </tr>
                           </tbody>
@@ -123,6 +134,146 @@
           </div>
       </div>
   </div>
+
+  <!-- Large Size -->
+            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="largeModalLabel">Pagos a generar | fecha .. 24/12/18</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-6 nomargin">
+                              <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 nomargin">
+                              <p class="font-18">Monto del beneficiario: <span class="font-bold">$10343.00</span></p>
+                            </div>
+                          </div>
+
+                          <div class="input-group">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6 nomargin">
+                                <label for="beneficiario"> Forma de pago </label><br>
+                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
+                                  <!-- {% for w in concepto %} -->
+                                  <option> {{ w | safe }} </option>
+                                  <!-- {% endfor %} -->
+                                </select>
+                              </div>
+                              <div class="col-sm-12 col-md-6 nomargin">
+                                <label> Cuenta </label>
+                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
+                                  <!-- {% for w in concepto %} -->
+                                  <option> {{ w | safe }} </option>
+                                  <!-- {% endfor %} -->
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <table id="table" style="table-layout: fixed;" class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>ID egreso</th>
+                                <th>Monto</th>
+                                <th># de documento</th>
+                                <th>Eliminar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> 32938dh </td>
+                                <td> $15434</td>
+                                <td> 3494</td>
+                                <td>
+                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                    <i class="material-icons">delete</i>
+                                  </a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <hr>
+                          <div class="row">
+                            <div class="col-sm-12 col-md-6 nomargin">
+                              <p class="font-18">Beneficiario: <span class="font-bold">Rob Gronkowski</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 nomargin">
+                              <p class="font-18">Monto del beneficiario:: <span class="font-bold">$10343.00</span></p>
+                            </div>
+                          </div>
+
+                          <div class="input-group">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6 nomargin">
+                                <label for="beneficiario"> Forma de pago </label><br>
+                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
+                                  <!-- {% for w in concepto %} -->
+                                  <option> {{ w | safe }} </option>
+                                  <!-- {% endfor %} -->
+                                </select>
+                              </div>
+                              <div class="col-sm-12 col-md-6 nomargin">
+                                <label> Cuenta </label>
+                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
+                                  <!-- {% for w in concepto %} -->
+                                  <option> {{ w | safe }} </option>
+                                  <!-- {% endfor %} -->
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <table id="table" style="table-layout: fixed;" class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th>ID egreso</th>
+                                <th>Monto</th>
+                                <th># de documento</th>
+                                <th>Eliminar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td> 32938dh </td>
+                                <td> $15434</td>
+                                <td> 3494</td>
+                                <td>
+                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                    <i class="material-icons">delete</i>
+                                  </a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td> 32938dh </td>
+                                <td> $15434</td>
+                                <td> 3494</td>
+                                <td>
+                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                    <i class="material-icons">delete</i>
+                                  </a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                          <hr>
+                          <p class="font-18">Monto Total: <span class="font-bold">$10343.00</span></p>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-link waves-effect ">Enviar</button>
+                            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                              <i class="material-icons">close</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 {% endblock content %}
 
 {% block javascripts %}
@@ -139,9 +290,28 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
+  $(function () {
+      $('.js-modal-buttons .btn').on('click', function () {
+          var color = $(this).data('color');
+          $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+          $('#mdModal').modal('show');
+      });
+  });
+
+  $(function () {
+    //Tooltip
+    $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+    });
+
+    //Popover
+    $('[data-toggle="popover"]').popover();
+  })
+
   $('.js-basic-example').DataTable({
-    dom: 'Bfrtip',
+     dom: 'Bfrtip',
      responsive: true,
+     select: true,
      buttons: [
          'copy', 'csv', 'excel', 'pdf', 'print'
      ]

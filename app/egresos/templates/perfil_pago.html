@@ -41,7 +41,7 @@
     <!-- DETALLES TABLE -->
     <div class="card">
       <div class="header">
-        <h2> Concepto de pago</h2>
+        <h2>Cuentas o documentos pagados</h2>
       </div>
       <div class="body">
         <div class="table-responsive">
@@ -49,9 +49,7 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Categoría</th>
-                <th>Concepto</th>
-                <th>Proveedor</th>
+                <th># de documento</th>
                 <th>Monto</th>
                 <th>Acciones</th>
               </tr>
@@ -59,24 +57,23 @@
             <tfoot>
               <tr>
                 <th>ID</th>
-                <th>Categoría</th>
-                <th>Concepto</th>
-                <th>Proveedor</th>
+                <th># de documento</th>
                 <th>Monto</th>
                 <th>Acciones</th>
               </tr>
             </tfoot>
             <tbody>
               <tr>
-                <td>Shoes 4 life</td>
-                <td>Compara inventario</td>
-                <td>Cualquiera</td>
-                <td> Loerme lipsidm kosmck dwoj</td>
+                <td>9</td>
+                <td>9743ndo</td>
                 <td>$12,155</td>
                 <td>
-                  <button type="button" class="btn-margin btn btn-small btn-info waves-effect">Ver</button>
-                  <button type="button" class="btn-margin btn btn-small btn-success waves-effect">Editar</button>
-                  <button type="button" class="btn-margin btn btn-small btn-danger waves-effect">Borrar</button>
+                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
+                    <i class="material-icons">delete</i>
+                  </a>
                 </td>
               </tr>
             </tbody>
