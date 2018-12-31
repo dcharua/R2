@@ -51,8 +51,12 @@
                                   <td>Abc138Gs</td>
                                   <td> <span class="badge bg-red">Incompleto</span></td>
                                   <td>
-                                    <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_ingreso">Ver</a>
-                                    <a class="btn btn-small btn-success waves-effect">Editar</a>
+                                    <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn js-modal-buttons btn-small btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                        <i data-toggle="tooltip" data-placement="top" title="Pagar" class="material-icons">payment</i>
+                                    </a>
                                   </td>
                               </tr>
                           </tbody>
@@ -69,7 +73,7 @@
           <div class="card">
               <div class="header  bg-light-blue">
                   <h2>
-                    Pagos
+                    Ventas de tiendas
                   </h2>
               </div>
               <div class="body">
@@ -77,26 +81,26 @@
                       <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
-                                  <th>ID</th>
-                                  <th>Beneficiario</th>
-                                  <th>Cuenta de banco</th>
-                                  <th>Forma de pago</th>
-                                  <th>Monto</th>
-                                  <th>Referencia</th>
-                                  <th>Fecha de pago</th>
+                                  <th>Fecha de venta</th>
+                                  <th>Tienda</th>
+                                  <th>Monto total</th>
+                                  <th>Cuenta 1</th>
+                                  <th>Cuenta 2</th>
+                                  <th>Cuenta 3</th>
+                                  <th>Cuenta 4</th>
                                   <th>Status</th>
                                   <th>Acciones</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
-                                <th>ID</th>
-                                <th>Beneficiario</th>
-                                <th>Cuenta de banco</th>
-                                <th>Forma de pago</th>
-                                <th>Monto</th>
-                                <th>Referencia</th>
-                                <th>Fecha de pago</th>
+                                <th>Fecha de venta</th>
+                                <th>Tienda</th>
+                                <th>Monto total</th>
+                                <th>Cuenta 1</th>
+                                <th>Cuenta 2</th>
+                                <th>Cuenta 3</th>
+                                <th>Cuenta 4</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -112,8 +116,9 @@
                                   <td>24/08/2018</td>
                                   <td> <span class="badge bg-red">Incompleto</span></td>
                                   <td>
-                                    <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_pago">Ver</a>
-                                    <a class="btn btn-small btn-success waves-effect">Editar</a>
+                                    <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
                                   </td>
                               </tr>
                           </tbody>

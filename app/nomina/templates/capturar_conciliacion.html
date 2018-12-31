@@ -1,0 +1,148 @@
+{% extends "base_site.html" %}
+
+
+{% block content %}
+<!-- Basic Examples -->
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-light-green">
+                  <h2>
+                      Cuentas 
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                          <thead>
+                              <tr>
+                                  <th>Cuenta</th>
+                                  <th>Saldo Actual</th>
+                                  <th>Fecha de ultima conciliacíon</th>
+                                  <th>Status</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                  <th>Cuenta</th>
+                                  <th>Saldo Actual</th>
+                                  <th>Fecha de ultima conciliacíon</th>
+                                  <th>Status</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              <tr>
+                                  <td>Santander</td>
+                                  <td>1,854,654.54</td>
+                                  <td>14/06/2018</td>
+                                  <td> <span class="badge bg-light-green">Completo</span></td>
+                                  <td>
+                                    <a class="btn btn-small btn-info waves-effect" href="/conciliaciones/perfil_cuenta" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn js-modal-buttons btn-small btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                      <i data-toggle="tooltip" data-placement="top" title="Conciliar" class="material-icons">payment</i>
+                                    </a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Modal pagos -->
+            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="largeModalLabel">Conciliara | fecha .. 24/12/18</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div class="box">
+                          <div class="input-group">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6 nomargin">
+                                <label> Fecha a conciliar </label>
+                                <div class='input-group date mydatepicker' data-provide="datepicker">
+                                  <input type='text' class="form-control" name="fecha de conciliacion" />
+                                  <span class="input-group-addon">
+                                    <i class="material-icons mydate">date_range</i>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="col-sm-12 col-md-6 nomargin">
+                                <label> Cuenta </label>
+                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
+                                  <!-- {% for w in concepto %} -->
+                                  <option> {{ w | safe }} </option>
+                                  <!-- {% endfor %} -->
+                                </select>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6">
+                                  <label style="margin-top: 7px;" for="fname">Saldo a conciliar</label>
+                                  <input class="form-control" type="number" id="saldo" name="saldo">
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect ">Enviar</button>
+                        <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                          <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+  $(function () {
+      $('.js-modal-buttons .btn').on('click', function () {
+          var color = $(this).data('color');
+          $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+          $('#mdModal').modal('show');
+      });
+  });
+
+  $(function () {
+    //Tooltip
+    $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+    });
+
+    //Popover
+    $('[data-toggle="popover"]').popover();
+  })
+
+  $('.js-basic-example').DataTable({
+     dom: 'Bfrtip',
+     responsive: true,
+     select: true,
+     buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+     ]
+  });
+</script>
+{% endblock javascripts %}

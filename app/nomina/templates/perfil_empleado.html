@@ -1,0 +1,178 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12 col-sm-3">
+        <div class="card profile-card">
+            <div class="profile-header">&nbsp;</div>
+            <div class="profile-body">
+                <div class="image-area">
+                    <img src="/static/images/user-lg.jpg" alt="AdminBSB - Profile Image">
+                </div>
+                <div class="content-area">
+                    <h3>Marc K. Hammond</h3>
+                    <p>Tienda: Santafe</p>
+                    <p>Administrator</p>
+                    <p>Sueldo base: 18,000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-9">
+        <div class="card card-about-me">
+            <div class="header">
+                <h2>Datos Generales</h2>
+            </div>
+            <div class="body">
+                <ul>
+                    <li>
+                        <div class="title">
+                            <i class="material-icons">library_books</i>
+                            Education
+                        </div>
+                        <div class="content">
+                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                        </div>
+                    </li>
+                    <li>
+                        <div class="title">
+                            <i class="material-icons">location_on</i>
+                            Location
+                        </div>
+                        <div class="content">
+                            Malibu, California
+                        </div>
+                    </li>
+                    <li>
+                        <div class="title">
+                            <i class="material-icons">edit</i>
+                            Skills
+                        </div>
+                        <div class="content">
+                            <span class="label bg-red">UI Design</span>
+                            <span class="label bg-teal">JavaScript</span>
+                            <span class="label bg-blue">PHP</span>
+                            <span class="label bg-amber">Node.js</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="title">
+                            <i class="material-icons">notes</i>
+                            Description
+                        </div>
+                        <div class="content">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="header">
+      <h2>Pagos de nomina</h2>
+    </div>
+    <div class="body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+          <thead>
+            <tr>
+              <th>Periodo</th>
+              <th>Fecha de pago</th>
+              <th>Monto sueldo</th>
+              <th>Monto comisión</th>
+              <th>Monto total</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                <th>Periodo</th>
+                <th>Fecha de pago</th>
+                <th>Monto sueldo</th>
+                <th>Monto comisión</th>
+                <th>Monto total</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr>
+              <td>Agosto 2018</td>
+              <td>31/08/2018</td>
+              <td>18,000</td>
+              <td>2,532</td>
+              <td>20,532</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+<div class="card">
+    <div class="header">
+      <h2>Historial de emplead</h2>
+    </div>
+    <div class="body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+          <thead>
+            <tr>
+              <th>Puesto</th>
+              <th>Sueldo</th>
+              <th>Tienda</th>
+              <th>Fecha de inicio</th>
+              <th>Fecha de finalización</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+                <th>Puesto</th>
+                <th>Sueldo</th>
+                <th>Tienda</th>
+                <th>Fecha de inicio</th>
+                <th>Fecha de finalización</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr>
+              <td>Administrator</td>
+              <td>18,000</td>
+              <td>Santafe</td>
+              <td>12/04/2016</td>
+              <td>Actual</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+{{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+  $('.js-basic-example').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    buttons: [
+    'copy', 'csv', 'excel', 'pdf', 'print'
+    ]
+  });
+</script>
+{% endblock javascripts %}

@@ -15,6 +15,7 @@
           <div class="col-sm-12 col-md-6">
             <p class="font-18">Id: <span class="font-bold">15615156</span></p>
             <p class="font-18">Cliente: <span class="font-bold">Tom Brady</span></p>
+            <p class="font-18">Tipo de ingreso: <span class="font-bold">Venta mayoreo</span></p>            
             <p class="font-18">Centro de Negocios: <span class="font-bold">Shoes 4 life</span></p>
             <p class="font-18"># de documento: <span class="font-bold">15615156</span></p>
           </div>
@@ -48,20 +49,22 @@
           <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
             <thead>
               <tr>
-                <th>Tipo</th>
+                <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
+                <th># de documento</th>
                 <th>Descipcíon</th>
-                <th>Acciones</th>
+                <th>Editar</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <th>Tipo</th>
+                <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
+                <th># de documento</th>
                 <th>Descipcíon</th>
-                <th>Acciones</th>
+                <th>Editar</th>
               </tr>
             </tfoot>
             <tbody>
@@ -69,11 +72,12 @@
                 <td>Gasto</td>
                 <td>Compara inventario</td>
                 <td>$12,155</td>
+                <td>873846</td>
                 <td> Loerme lipsidm kosmck dwoj</td>
                 <td>
-                  <button type="button" class="btn-margin btn btn-small btn-info waves-effect">Ver</button>
-                  <button type="button" class="btn-margin btn btn-small btn-success waves-effect">Editar</button>
-                  <button type="button" class="btn-margin btn btn-small btn-danger waves-effect">Borrar</button>
+                    <a class="btn btn-small btn-info waves-effect" href="" data-toggle="tooltip" data-placement="top" title="Editar">
+                      <i class="material-icons">edit</i>
+                    </a>
                 </td>
               </tr>
             </tbody>
@@ -98,6 +102,7 @@
                 <th>Fecha de pago</th>
                 <th>Forma de pago</th>
                 <th>Monto</th>
+                <th>Status</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -109,6 +114,7 @@
                 <th>Fecha de pago</th>
                 <th>Forma de pago</th>
                 <th>Monto</th>
+                <th>Status</th>
                 <th>Acciones</th>
               </tr>
             </tfoot>
@@ -120,11 +126,14 @@
                 <td>12/12/2018</td>
                 <td>Efectivo</td>
                 <td>$12,155</td>
+                <td><span class="badge bg-red">Incompleto</span></td>
                 <td>
-                  <button type="button" class="btn-margin btn btn-small btn-info waves-effect">Ver</button>
-                  <button type="button" class="btn-margin btn btn-small btn-success waves-effect">Editar</button>
-                  <button type="button" class="btn-margin btn btn-small btn-danger waves-effect">Borrar</button>
-
+                    <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_pago_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    <a class="btn btn-small bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
+                      <i class="material-icons">assignment_turned_in</i>
+                    </a>
                 </td>
               </tr>
             </tbody>

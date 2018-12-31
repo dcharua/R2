@@ -1,0 +1,185 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+
+    <!-- INFO CARD -->
+    <div class="card">
+      <div class="body">
+        <div class="row mycontainer">
+          <div class="col-sm-12 col-md-6">
+            <p class="font-18">Id: <span class="font-bold">15615156</span></p>
+          </div>
+          <div class="col-sm-12 col-md-6 align-right">
+            <p class="font-18">Saldo Actual: <span class="font-bold">178,824.00</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+      
+          <!-- INFO CARD -->
+          <div class="card">
+            <div class="header bg-black">
+              <h2 class="font-24">Datos del Cliente</h2>
+            </div>
+      
+            <div class="body">
+              <div class="row mycontainer">
+                <div class="col-sm-12 col-md-6">
+                  <p class="font-18">Nombre: <span class="font-bold">Julian Edelman</span></p>
+                  <p class="font-18">RFC: <span class="badge bg-red">Incompleto</span>EDJA151541C</p>
+                </div>
+                <div class="col-sm-12 col-md-6 align-right">
+                  <p class="font-18">Razón social: <span class="font-bold">178,824.00</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+    <!-- Ingresos TABLE -->
+    <div class="card">
+      <div class="header">
+        <h2>Ingresos del Cliente</h2>
+      </div>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Refrencia</th>
+                <th>Status</th>
+                <th>Monto</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Refrencia</th>
+                <th>Status</th>
+                <th>Monto</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>9</td>
+                <td>9743ndo</td>
+                <td>hudbick</td>
+                <td><span class="badge bg-red">Incompleto</span></td>
+                <td>$12,155</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGOS TABLE -->
+    <div class="card">
+        <div class="header">
+          <h2>Pagos del Cliente</h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Refrencia</th>
+                  <th>Status</th>
+                  <th>Monto</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Refrencia</th>
+                  <th>Status</th>
+                  <th>Monto</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr>
+                  <td>9</td>
+                  <td>9743ndo</td>
+                  <td>hudbick</td>
+                  <td><span class="badge bg-red">Incompleto</span></td>
+                  <td>$12,155</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- DETALLES TABLE -->
+      <div class="row">
+          <div class="col-sm-12 col-md-4">
+            <div class="card">
+                <div class="header">
+                  <h2>Tipo de ingreso</h2>
+                </div>
+                <div class="body">
+                  
+                </div>
+              </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+                <div class="card">
+                    <div class="header">
+                        <h2>Cuentas asociadas</h2>
+                    </div>
+                    <div class="body">
+                        
+                    </div>
+                </div>
+
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h2>Categorías y conceptos asociados</h2>
+                </div>
+                <div class="body">
+                    
+                </div>
+            </div>
+
+          </div>
+      </div>
+
+      {% endblock content %}
+
+      {% block javascripts %}
+      {{ super() }}
+      <!-- Jquery DataTable Plugin Js -->
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+  
+      <script>
+        $('.js-basic-example').DataTable({
+          dom: 'Bfrtip',
+          responsive: true,
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+        });
+      </script>
+      {% endblock javascripts %}
+  

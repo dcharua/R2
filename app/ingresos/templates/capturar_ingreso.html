@@ -13,8 +13,16 @@
       </div>
       <div class="body">
         <div class="row clearfix">
-          <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('egresos_blueprint.captura_gasto') }}">
+          <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('ingresos_blueprint.captura_ingresos') }}">
             <div class="col-sm-12 text-left">
+                <div class="input-group">
+                    <label for="tipo "> Tipo de Ingreso </label><br>
+                  <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo" title="Seleccione un tipo de ingreso..." data-width="80%">
+                      {% for w in categoria %}
+                      <option> {{ w | safe }} </option>
+                      {% endfor %}
+                    </select>
+                  </div>
 
               <div class="input-group">
                 <label for="beneficiario"> Cliente </label><br>
@@ -79,9 +87,10 @@
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Tipo de ingreso</th>
+                          <th>Categoría</th>
                           <th>Concepto</th>
                           <th>Monto</th>
+                          <th># de documento</th>
                           <th>Descripcíon</th>
                         </tr>
                       </thead>
@@ -106,6 +115,11 @@
                           <td>
                             <input class="form-control" type="number" id="monto" name="monto">
                           </td>
+
+                          <td>
+                              <input class="form-control" type="text" id="numero" name="numero">
+                            </td>
+  
 
                           <td style="width: 30%;"><input type="text" id="descripcion" name="descripcion"></td>
                         </tr>
@@ -186,7 +200,19 @@
                   </div>
 
                   <div class="input-group">
-                    <button class="btn btn-primary" style="float: right;">Registrar Egreso</button </div> </form> </div> </div> </div> </div> </div> {% endblock content %} {% block javascripts %} {{ super()}} <script>
+                    <button class="btn btn-primary" style="float: right;">Registrar Egreso
+                      </button 
+                    </div> 
+                    </form> 
+                    </div> 
+                    </div> 
+                    </div> 
+                    </div> 
+                    </div> 
+                    {% endblock content %} 
+                    {% block javascripts %} 
+                    {{ super()}} 
+                    <script>
                     $(document).ready(function () {
 
                     $("#add-row").click(function () {
