@@ -1,7 +1,10 @@
 <section>
 <!-- Left Sidebar -->
 <aside id="leftsidebar" class="sidebar">
+
     <!-- User Info -->
+    
+    <!-- 
     <div class="user-info">
         <div class="image">
             <img src="/static/images/user.png" width="48" height="48" alt="User" />
@@ -22,12 +25,15 @@
                 </ul>
             </div>
         </div>
-    </div>
+    </div> 
+    -->
     <!-- #User Info -->
+    
+    
     <!-- Menu -->
     <div class="menu">
         <ul class="list">
-            <li class="header">MAIN NAVIGATION</li>
+            <!--  <li class="header">MAIN NAVIGATION</li> -->
             <li {% if request.path == '/index' %}class="active"{% endif %} >
                 <a href="/index">
                     <i class="material-icons">home</i>
@@ -51,6 +57,7 @@
             </li>
             <!-- Fin de Egresos -->
 
+
             <!-- Ingresos -->
             <li {% if '/ingresos' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
@@ -67,6 +74,7 @@
                 </ul>
             </li>
             <!-- Fin de Ingresos -->
+
 
             <!-- Conciliaciónes -->
             <li {% if '/conciliaciones' in request.path %}class="active"{% endif %}>
@@ -85,6 +93,7 @@
             </li>
             <!-- Fin de Conciliaciónes -->
 
+
             <!-- Reportes -->
             <li {% if '/reportes' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
@@ -92,15 +101,17 @@
                     <span>Reportes</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/reportes/ver' %} class="active"{% endif %}>
-                        <a href="/reportes/ver">Ver</a>
+                    <li {% if request.path == '/reportes/analisis_egresos' %} class="active"{% endif %}>
+                        <a href="/reportes/ver">Analisis Egresos</a>
                     </li>
-                    <li {% if request.path == '/reportes/capturar' %} class="active"{% endif %}>
-                        <a href="/reportes/capturar">Capturar</a>
+                    <li {% if request.path == '/reportes/analisis_egresos' %} class="active"{% endif %}>
+                        <a href="/reportes/capturar">Analisis Ingresos</a>
                     </li>
                 </ul>
             </li>
             <!-- Fin de Reportes -->
+
+
 
             <!-- nomina -->
             <li {% if '/nomina' in request.path %}class="active"{% endif %}>
