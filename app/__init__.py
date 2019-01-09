@@ -44,9 +44,9 @@ def create_app(config):
     app.config.from_mapping(
         SECRET_KEY='dev',
         DEBUG=True,
-        LOGIN_DISABLED = True,
-        
-        #SQLALCHEMY_DATABASE_URI ='mysql+pymysql://gezsa001:gez9105ru2@dodder.arvixe.com/Gez_pruebas'
+
+        #SQLALCHEMY_DATABASE_URI ='mysql+pymysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
+
     )
     db = SQLAlchemy()
     login_manager = LoginManager()
@@ -54,22 +54,3 @@ def create_app(config):
     register_blueprints(app)
     configure_database(app)
     return app
-
-
-#from flask_sqlalchemy import SQLAlchemy
-#
-#app = Flask(__name__, static_folder='base/static')
-##app.config.from_object(config)
-#app.config.from_mapping(
-#    SECRET_KEY='dev',
-#    DEBUG=True,
-#    LOGIN_DISABLED = True,
-#    
-#    SQLALCHEMY_DATABASE_URI ='mysql+pymysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
-#)
-#db = SQLAlchemy()
-#
-#
-#Error:
-#    
-#OperationalError: (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'shoesclothing.net' (timed out)")
