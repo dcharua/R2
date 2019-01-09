@@ -7,24 +7,24 @@
     <!-- INFO CARD -->
     <div class="card">
       <div class="header bg-black">
-        <h2 class="font-24">Cuenta por pagar</h2>
+        <h2 class="font-24">Detalle de Egreso</h2>
       </div>
 
       <div class="body">
         <div class="row mycontainer">
-          <div class="col-sm-12 col-md-6">
-            <p class="font-18">Id: <span class="font-bold">15615156</span></p>
-            <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
-            <p class="font-18"># de documento: <span class="font-bold">15615156</span></p>
-            <p class="font-18">Fecha de Vencimento: <span class="font-bold">22 dic 2018</span></p>
-            <p class="font-18">Fecha programada de pago: <span class="font-bold">27 dic 2018</span></p>
+          <div class="col-sm-12 col-md-8">
+            <b><p class="font-18">Beneficiario: <span class="font-bold">Flexi</span></p></b>
+            <p class="font-18">Id: <span class="font-bold">26</span></p>
+            <p class="font-18"># de documento: <span class="font-bold">FA-003</span></p>
+            <p class="font-18">Fecha de Vencimento: <span class="font-bold">20/01/2019</span></p>
+            <p class="font-18">Fecha programada de pago: <span class="font-bold">15/01/2019</span></p>
           </div>
-          <div class="col-sm-12 col-md-6 align-right">
-            <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></p>
-            <p class="font-18">Empresa: <span class="font-bold">Shoes 4 life</span></p>
-            <p class="font-18">Monto total: <span class="font-bold">$32,152</span></p>
-            <p class="font-18">Monto Pagado: <span class="font-bold">$10,152</span></p>
-            <p class="font-18">Monto Pendiente: <span class="font-bold">$22,895</span></p>
+          <div class="col-sm-12 col-md-4 align-left">
+            <b><p class="font-18">Status: <span class="badge bg-green">Liquidado</span></p></b>
+            <b><p class="font-18">Monto total: <span class="font-bold">$100,000.00</span></p></b>
+            <p class="font-18">Empresa: <span class="font-bold">1 Rudos</span></p>
+            <p class="font-18">Monto Pagado: <span class="font-bold">$100,000.00</span></p>
+            <p class="font-18">Monto Pendiente: <span class="font-bold">$0.00</span></p>
 
           </div>
         </div>
@@ -32,7 +32,7 @@
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">Lorem ipsum ldoreniducn ounc iub h </p>
+              <p class="font-18"> </p>
             </div>
           </div>
         </div>
@@ -42,16 +42,16 @@
 
     <!-- DETALLES TABLE -->
     <div class="card">
-      <div class="header">
-        <h2> Detalles</h2>
+      <div class="header bg-black">
+        <h2>Detalles</h2>
       </div>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
             <thead>
               <tr>
-                <th>Centro de negocios</th>
                 <th>Proveedor</th>
+                <th>Centro de Negocios</th>
                 <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
@@ -62,8 +62,8 @@
             </thead>
             <tfoot>
               <tr>
-                <th>Centro de negocios</th>
                 <th>Proveedor</th>
+                <th>Centro de Negocios</th>
                 <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
@@ -74,13 +74,13 @@
             </tfoot>
             <tbody>
               <tr>
-                <td>Shoes 4 life</td>
-                <td>Compara inventario</td>
-                <td>Cualquiera</td>
-                <td> Loerme lipsidm kosmck dwoj</td>
-                <td>$12,155</td>
-                <td>Lorem</td>
-                <td>29747b9</td>
+                <td>Flexi</td>
+                <td>Tienda 1</td>
+                <td>Inventario</td>
+                <td>Zapatos</td>
+                <td>$100,000.00</td>
+                <td></td>
+                <td>OC00123</td>
                 <th>
                   <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
                     <i class="material-icons">edit</i>
@@ -97,7 +97,7 @@
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
-                <div class="header  bg-light-blue">
+                <div class="header bg-black">
                     <h2>
                       Pagos
                     </h2>
@@ -109,35 +109,36 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Beneficiario</th>
+                                    <th>Fecha de pago</th>
                                     <th>Cuenta</th>
                                     <th>Monto</th>
                                     <th>Referencia</th>
-                                    <th>Fecha de pago</th>
                                     <th>Status</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                  <th>ID</th>
-                                  <th>Beneficiario</th>
-                                  <th>Cuenta</th>
-                                  <th>Monto</th>
-                                  <th>Referencia</th>
-                                  <th>Fecha de pago</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
+                                    <th>ID</th>
+                                    <th>Beneficiario</th>
+                                    <th>Fecha de pago</th>
+                                    <th>Cuenta</th>
+                                    <th>Monto</th>
+                                    <th>Referencia</th>
+                                    <th>Status</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
+                                    <td>15</td>
                                     <td>Felxi</td>
-                                    <td>Bancomer</td>
-                                    <td>$320,800.00</td>
-                                    <td>Abc138Gs</td>
-                                    <td>24/08/2018</td>
-                                    <td> <span class="badge bg-red">Incompleto</span></td>
+                                    <td>15/01/2019</td>
+                                    <td>Bancomer 1</td>
+                                    <td>$300,000.00</td>
+                                    <td>CH000123</td>
+                                    
+                                    <td> <span class="badge bg-green">Liquidado</span></td>
                                     <td>
                                       <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
