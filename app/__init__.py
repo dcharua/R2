@@ -43,7 +43,6 @@ def create_app(config):
         SECRET_KEY='dev',
         DEBUG=True,
         LOGIN_DISABLED = True,
-        #SQLALCHEMY_DATABASE_URI ='mysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
         #SQLALCHEMY_DATABASE_URI ='mysql+pymysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
     )
     db = SQLAlchemy()
