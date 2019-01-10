@@ -36,19 +36,22 @@
             <!--  <li class="header">MAIN NAVIGATION</li> -->
             <li {% if request.path == '/index' %}class="active"{% endif %} >
                 <a href="/index">
-                    <i class="material-icons">home</i>
+                    <!--  <i class="material-icons">home</i> -->
                     <span>Home</span>
                 </a>
             </li>
             <!-- Egresos -->
             <li {% if '/egresos' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
-                    <i class="material-icons">swap_calls</i>
+                    <!--  <i class="material-icons">swap_calls</i> -->
                     <span>Egresos</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/egresos/ver_egresos' %} class="active"{% endif %}>
-                        <a href="/egresos/ver_egresos">Ver</a>
+                    <li {% if request.path == '/egresos/cuentas_por_pagar' %} class="active"{% endif %}>
+                        <a href="/egresos/cuentas_por_pagar">Cuentas por Pagar</a>
+                    </li>
+                    <li {% if request.path == '/egresos/pagos_realizados' %} class="active"{% endif %}>
+                        <a href="/egresos/pagos_realizados">Pagos Realizados</a>
                     </li>
                     <li {% if request.path == '/egresos/capturar_egreso' %} class="active"{% endif %}>
                         <a href="/egresos/capturar_egreso">Captura egreso</a>
@@ -61,12 +64,15 @@
             <!-- Ingresos -->
             <li {% if '/ingresos' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
-                    <i class="material-icons">attach_money</i>
+                    <!--  <i class="material-icons">attach_money</i> -->
                     <span>Ingresos</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/ingresos/ver_ingresos' %} class="active"{% endif %}>
-                        <a href="/ingresos/ver_ingresos">Ver</a>
+                    <li {% if request.path == '/ingresos/cuentas_por_cobrar' %} class="active"{% endif %}>
+                        <a href="/ingresos/cuentas_por_cobrar">Cuentas por Cobrar</a>
+                    </li>
+                    <li {% if request.path == '/ingresos/ingresos_recibidos' %} class="active"{% endif %}>
+                        <a href="/ingresos/ingresos_recibidos">Ingresos Recibidos</a>
                     </li>
                     <li {% if request.path == '/ingresos/capturar_ingreso' %} class="active"{% endif %}>
                         <a href="/ingresos/capturar_ingreso">Capturar</a>
@@ -79,7 +85,7 @@
             <!-- Conciliaciónes -->
             <li {% if '/conciliaciones' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
-                    <i class="material-icons">attach_money</i>
+                    <!--  <i class="material-icons">attach_money</i> -->
                     <span>Conciliaciónes</span>
                 </a>
                 <ul class="ml-menu">
@@ -97,7 +103,7 @@
             <!-- Reportes -->
             <li {% if '/reportes' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
-                    <i class="material-icons">attach_money</i>
+                    <!--   <i class="material-icons">attach_money</i> -->
                     <span>Reportes</span>
                 </a>
                 <ul class="ml-menu">
@@ -116,7 +122,7 @@
             <!-- nomina -->
             <li {% if '/nomina' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
-                    <i class="material-icons">attach_money</i>
+                    <!--  <i class="material-icons">attach_money</i> -->
                     <span>Nómina</span>
                 </a>
                 <ul class="ml-menu">
@@ -133,7 +139,7 @@
             <!-- administracion -->
             <li {% if '/administracion' in request.path %}class="active"{% endif %}>
                 <a href="javascript:void(0);" class="menu-toggle">
-                    <i class="material-icons">attach_money</i>
+                    <!--  <i class="material-icons">attach_money</i> -->
                     <span>Administración</span>
                 </a>
                 <ul class="ml-menu">
@@ -153,11 +159,9 @@
     <!-- Footer -->
     <div class="legal">
         <div class="copyright">
-            &copy; 2018 - 2019 <a href="javascript:void(0);">Rudos Admin</a>.
+            &copy; 2019 <a href="javascript:void(0);">Rudos Admin</a>.  Version: <b> 2.0.0 </b>
         </div>
-        <div class="version">
-            <b>Version: </b> 1.0.0
-        </div>
+
     </div>
     <!-- #Footer -->
 </aside>

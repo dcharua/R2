@@ -7,31 +7,43 @@
     <!-- INFO CARD -->
     <div class="card">
       <div class="header bg-black">
-        <h2 class="font-24">Ingreso</h2>
+        <h2 class="font-24">Detalle de Ingreso</h2>
       </div>
 
       <div class="body">
         <div class="row mycontainer">
-          <div class="col-sm-12 col-md-6">
-            <p class="font-18">Id: <span class="font-bold">15615156</span></p>
-            <p class="font-18">Cliente: <span class="font-bold">Tom Brady</span></p>
-            <p class="font-18">Tipo de ingreso: <span class="font-bold">Venta mayoreo</span></p>            
-            <p class="font-18">Centro de Negocios: <span class="font-bold">Shoes 4 life</span></p>
-            <p class="font-18"># de documento: <span class="font-bold">15615156</span></p>
+          <div class="col-sm-12 col-md-8">
+            <p class="font-18">Fuente de Ingreso: <span class="font-bold">Centro de Negocios Tienda 1</span></p>
+            <br></br>
+            <!-- <p class="font-18">Id: <span class="font-bold">10</span></p> -->
+            <p class="font-18">Centro de Negocios: <span class="font-bold">Tienda 1</span></p>
+            <p class="font-18">Tipo de Ingreso: <span class="font-bold">Venta Tienda</span></p>
+            <p class="font-18">Fecha de Registro: <span class="font-bold">10/02/2019</span></p>
+            <p class="font-18">Fecha de Vencimiento: <span class="font-bold">15/02/2019</span></p>
+            <p class="font-18">Referencia/Orden de Venta: <span class="font-bold">V20190108</span></p>
+            <p class="font-18">Cuenta de Banco: <span class="font-bold">Varias</span></p>
+            
           </div>
-          <div class="col-sm-12 col-md-6 align-right">
-            <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></p>
-            <p class="font-18">Fecha Limite: <span class="font-bold">24/12/18</span></p>
-            <p class="font-18">Monto Total: <span class="font-bold">$40,152</span></p>
-            <p class="font-18">Monto Pagado: <span class="font-bold">$22,895</span></p>
-            <p class="font-18">Monto Pendiente: <span class="font-bold">$22,895</span></p>
+          <div class="col-sm-12 col-md-4 align-left">
+            <p class="font-18">Status: <span class="badge bg-yellow">En Transito</span></p>
+            <br></br>
+            
+            <p class="font-18">Monto de Venta: <span class="font-bold">$60,000.00</span></p>
+            <p class="font-18">Monto de Comision: <span class="font-bold">($10,000.00)</span></p>
+            <p class="font-18">Monto de Ingreso: <span class="font-bold">$50,000.00</span></p>
+            <br></br>
+            <p class="font-18">Monto Pagado: <span class="font-bold">$37,500.00</span></p>
+            <p class="font-18">Monto Pendiente: <span class="font-bold">$12,500.00</span></p>
+            
+            
+
           </div>
         </div>
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">Lorem ipsum ldoreniducn ounc iub h </p>
+              <p class="font-18"> </p>
             </div>
           </div>
         </div>
@@ -40,108 +52,255 @@
 
 
     <!-- DETALLES TABLE -->
+    <!-- 
     <div class="card">
-      <div class="header">
-        <h2> Detalles</h2>
+      <div class="header bg-black">
+        <h2>Detalles</h2>
       </div>
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
             <thead>
               <tr>
-                <th>Categoría</th>
+                <th>Categoria</th>
                 <th>Concepto</th>
                 <th>Monto</th>
-                <th># de documento</th>
                 <th>Descipcíon</th>
+                <th># de documento</th>
                 <th>Editar</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
-                <th>Categoría</th>
+                <th>Categoria</th>
                 <th>Concepto</th>
                 <th>Monto</th>
-                <th># de documento</th>
                 <th>Descipcíon</th>
+                <th># de documento</th>
                 <th>Editar</th>
               </tr>
             </tfoot>
             <tbody>
               <tr>
-                <td>Gasto</td>
-                <td>Compara inventario</td>
-                <td>$12,155</td>
-                <td>873846</td>
-                <td> Loerme lipsidm kosmck dwoj</td>
-                <td>
-                    <a class="btn btn-small btn-info waves-effect" href="" data-toggle="tooltip" data-placement="top" title="Editar">
-                      <i class="material-icons">edit</i>
-                    </a>
-                </td>
+                <td>Venta</td>
+                <td>Producto</td>
+                <td>$60,000.00</td>
+                <td>Venta Total</td>
+                <td>V20190108</td>
+                <th>
+                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
+                    <i class="material-icons">edit</i>
+                  </a>
+                </th>
               </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGOS TABLE -->
-    <div class="card">
-      <div class="header">
-        <h2> Pagos</h2>
-      </div>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-            <thead>
+              
               <tr>
-                <th>ID</th>
-                <th>Referencía</th>
-                <th>Cuenta de Banco</th>
-                <th>Fecha de pago</th>
-                <th>Forma de pago</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Acciones</th>
+                <td>Comisiones Método de Pago</td>
+                <td>AMex</td>
+                <td>($5,000.00)</td>
+                <td></td>
+                <td></td>
+                <th>
+                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
+                    <i class="material-icons">edit</i>
+                  </a>
+                </th>
               </tr>
-            </thead>
-            <tfoot>
+              
               <tr>
-                <th>ID</th>
-                <th>Referencía</th>
-                <th>Cuenta de Banco</th>
-                <th>Fecha de pago</th>
-                <th>Forma de pago</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Acciones</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>15122</td>
-                <td>ASJ544SC</td>
+                <td>Comisiones Método de Pago</td>
                 <td>Bancomer</td>
-                <td>12/12/2018</td>
-                <td>Efectivo</td>
-                <td>$12,155</td>
-                <td><span class="badge bg-red">Incompleto</span></td>
-                <td>
-                    <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_pago_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                    <a class="btn btn-small bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
-                      <i class="material-icons">assignment_turned_in</i>
-                    </a>
-                </td>
+                <td>($2,500.00)</td>
+                <td></td>
+                <td></td>
+                <th>
+                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
+                    <i class="material-icons">edit</i>
+                  </a>
+                </th>
+              </tr>
+              
+              <tr>
+                <td>Comisiones Método de Pago</td>
+                <td>Banamex</td>
+                <td>($2,500.00)</td>
+                <td></td>
+                <td></td>
+                <th>
+                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
+                    <i class="material-icons">edit</i>
+                  </a>
+                </th>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
+    -->
 
+    <!-- Ingresos Completados TABLE -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="header bg-black">
+                    <h2>
+                      Ingresos Completados
+                    </h2>
+                </div>
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha de pago</th>
+                                    <th>Forma</th>
+                                    <th>Cuenta</th>
+                                    <th>Descripcion</th>
+                                    <th>Monto Venta</th>
+                                    <th>Monto Comision</th>
+                                    <th>Monto Ingreso</th>
+                                    <th>Status</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th><b>Total: </b></th>
+                                    <th>$45,000.00</th>
+                                    <th>$7,500.00</th>
+                                    <th>$37,500.00</th>
+                                    <th> </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <tr>
+                                    <td>23</td>
+                                    <td>10/01/2019</td>
+                                    <td>Deposito</td>
+                                    <td>Bancomer 1</td>
+                                    <td>Efectivo</td>
+                                    <td>$30,000.00</td>
+                                    <td>$5,000.00</td>
+                                    <td>$25,000.00</td>
+                                    <td> <span class="badge bg-green">Liquidado</span></td>
+                                    <td>
+                                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                      </a>
+
+                                    </td>
+                                </tr>
+                                
+                                <tr class='clickable-row' data-href="/egresos/perfil_pago">
+                                    <td>24</td>
+                                    <td>12/01/2019</td>
+                                    <td>Transf.</td>
+                                    <td>Banamex 1</td>
+                                    <td>Banamex / Bancomer</td>
+                                    <td>$15,000.00</td>
+                                    <td>$2,500.00</td>
+                                    <td>$12,500.00</td>
+                                    <td> <span class="badge bg-green">Liquidado</span></td>
+                                    <td>
+                                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                      </a>
+
+                                    </td>
+                                </tr>
+                                
+
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Ingresos por Cobrar TABLE -->
+    <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">               
+                <div class="header bg-black">
+                    <h2>
+                      Ingresos Pendientes
+                    </h2>
+                </div> 
+                <div class="body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover table-condensed js-basic-example dataTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha de pago</th>
+                                    <th>Forma</th>
+                                    <th>Cuenta</th>
+                                    <th>Descripcion</th>
+                                    <th>Monto Venta</th>
+                                    <th>Monto Comision</th>
+                                    <th>Monto Ingreso</th>
+                                    <th>Status</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th><b>Total: </b></th>
+                                    <th>$15,000.00</th>
+                                    <th>$2,500.00</th>
+                                    <th>$12,500.00</hd>
+                                    <th> </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                            </tfoot>
+
+                            <tbody>
+                                <tr>
+                                    <td>25</td>
+                                    <td>13/01/2019</td>
+                                    <td>Transf.</td>
+                                    <td>Banamex 1</td>
+                                    <td>Amex</td>
+                                    <td>$15,000.00</td>
+                                    <td>$2,500.00</td>
+                                    <td>$12,500.00</td>
+                                    <td> <span class="badge bg-yellow">Transito</span></td>
+                                    <td>
+                                      <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_pago_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                      </a>
+                                      <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
+                                        <i class="material-icons">assignment_turned_in</i>
+                                      </a>
+                                    </td>
+                                </tr>
+                                
+
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% endblock content %}
 
@@ -166,5 +325,13 @@
           'copy', 'csv', 'excel', 'pdf', 'print'
         ]
       });
+    </script>
+    
+    <script>
+    jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+        });
+    });
     </script>
     {% endblock javascripts %}
