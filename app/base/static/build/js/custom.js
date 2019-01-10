@@ -1,3 +1,4 @@
+
 /**
  * Resize function without multiple trigger
  *
