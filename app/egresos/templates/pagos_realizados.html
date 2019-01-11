@@ -6,7 +6,7 @@
 
 {% block content %}
 <!-- Basic Examples -->
-  
+
 <!-- #END# Basic Examples -->
 
   <div class="row clearfix">
@@ -14,7 +14,7 @@
           <div class="card">
               <div class="header bg-black">
                   <h2>
-                    Pagos Realizados
+                    Pagos Pendientes
                   </h2>
               </div>
               <div class="body">
@@ -55,13 +55,79 @@
                                   <td>Transferencia</td>
                                   <td>$320,800</td>
                                   <td>Abc138Gs</td>
-                                  <td> <span class="badge bg-green">Liquidado</span></td>
+                                  <td> <span class="badge bg-red">Por Pagar</span></td>
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
-                                      <i class="material-icons">payment</i>
+                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                      <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">attach_money</i>
+                                    </a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+
+  
+<!-- #END# Basic Examples -->
+
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-black">
+                  <h2>
+                    Pagos por Conciliar
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                          <thead>
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Beneficiario</th>
+                                  <th>Fecha de pago</th>
+                                  <th>Cuenta</th>
+                                  <th>Forma de pago</th>
+                                  <th>Monto</th>
+                                  <th>Referencia</th>
+                                  <th>Status</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Beneficiario</th>
+                                  <th>Fecha de pago</th>
+                                  <th>Cuenta</th>
+                                  <th>Forma de pago</th>
+                                  <th>Monto</th>
+                                  <th>Referencia</th>
+                                  <th>Status</th>
+                                  <th>Acciones</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              <tr>
+                                  <td>1</td>
+                                  <td>Felxi</td>
+                                  <td>24/08/2018</td>
+                                  <td>Bancomer</td>
+                                  <td>Transferencia</td>
+                                  <td>$320,800</td>
+                                  <td>Abc138Gs</td>
+                                  <td> <span class="badge bg-yellow">En Transito</span></td>
+                                  <td>
+                                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
                                     </a>
                                     <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
                                       <i class="material-icons">assignment_turned_in</i>
@@ -77,146 +143,43 @@
   </div>
 
   <!-- Modal pagos -->
-            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="largeModalLabel">Pagos a generar | fecha .. 24/12/18</h4>
+        <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <center><h2 class="modal-title" id="largeModalLabel">Pagos a Generar | Fecha: 10/01/18</h2></center>
+                    </div>
+                    
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-6 nomargin">
+                          <p class="font-18">Beneficiario: <span class="font-bold">Flexi</span></p>
+                          <p class="font-18">Monto Total <span class="font-bold">$320,000.00</span></p>
+                          <p class="font-18">Forma de pago: <span class="font-bold">Cheque</span></p>
+                          <p class="font-18">Cuenta <span class="font-bold">Bancomer</span></p>
                         </div>
-                        <div class="modal-body">
-                          <div class="box">
-                          <div class="row">
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Monto a pagar: <span class="font-bold">$10343.00</span></p>
-                            </div>
-                          </div>
-
+                        
+                        <div class="col-sm-12 col-md-6 nomargin">
+                          
                           <div class="input-group">
                             <div class="row">
                               <div class="col-sm-12 col-md-6 nomargin">
-                                <label for="beneficiario"> Forma de pago </label><br>
-                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label> Cuenta </label>
-                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
+                                <label for="beneficiario"> Referencia de Pago</label><br>
+                                <input type="text" name="beneficiario"><br>
                               </div>
                             </div>
-                          </div>
-
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>ID egreso</th>
-                                <th>Monto</th>
-                                <th># de documento</th>
-                                <th>Eliminar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="box">
-                          <hr>
-                          <div class="row">
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Beneficiario: <span class="font-bold">Rob Gronkowski</span></p>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-link waves-effect ">Enviar</button>
+                                <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                                  <i class="material-icons">close</i>
+                                </button>
                             </div>
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Monto a pagar: <span class="font-bold">$10343.00</span></p>
-                            </div>
-                          </div>
-
-                          <div class="input-group">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label for="beneficiario"> Forma de pago </label><br>
-                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label> Cuenta </label>
-                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>ID egreso</th>
-                                <th>Monto</th>
-                                <th># de documento</th>
-                                <th>Eliminar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-                          <p class="font-18">Monto total a pagar: <span class="font-bold">$10343.00</span></p>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link waves-effect ">Enviar</button>
-                            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-                              <i class="material-icons">close</i>
-                            </button>
+                          
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 {% endblock content %}
 
 {% block javascripts %}
