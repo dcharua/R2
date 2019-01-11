@@ -34,8 +34,8 @@
     <div class="menu">
         <ul class="list">
             <!--  <li class="header">MAIN NAVIGATION</li> -->
-            <li {% if request.path == '/index' %}class="active"{% endif %} >
-                <a href="/index">
+            <li {% if request.path == '/index_late' %}class="active"{% endif %} >
+                <a href="/index_late">
                     <!--  <i class="material-icons">home</i> -->
                     <span>Home</span>
                 </a>
@@ -89,11 +89,9 @@
                     <span>Conciliaciónes</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/conciliaciones/ver_conciliaciones' %} class="active"{% endif %}>
-                        <a href="/conciliaciones/ver_conciliaciones">Ver</a>
-                    </li>
+
                     <li {% if request.path == '/conciliaciones/capturar_conciliacion' %} class="active"{% endif %}>
-                        <a href="/conciliaciones/capturar_conciliacion">Capturar</a>
+                        <a href="/conciliaciones/capturar_conciliacion">Conciliar Cuenta</a>
                     </li>
                 </ul>
             </li>
