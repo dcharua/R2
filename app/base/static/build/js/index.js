@@ -76,20 +76,20 @@ function initDonutChart() {
     Morris.Donut({
         element: 'donut_chart',
         data: [{
-            label: 'Chrome',
+            label: 'Compra de inventario',
             value: 37
         }, {
-            label: 'Firefox',
+            label: 'Pago de servicios',
             value: 30
         }, {
-            label: 'Safari',
+            label: 'Rentas',
             value: 18
         }, {
-            label: 'Opera',
+            label: 'Luz',
             value: 12
         },
         {
-            label: 'Other',
+            label: 'Otro',
             value: 3
         }],
         colors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'],
