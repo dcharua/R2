@@ -124,11 +124,12 @@
                     <span>Nómina</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/nomina/ver' %} class="active"{% endif %}>
-                        <a href="/nomina/ver">Ver</a>
+                    <li {% if request.path == '/nomina/ver_empleados' %} class="active"{% endif %}>
+                        <a href="/nomina/ver_empleados">Ver</a>
                     </li>
-                    <li {% if request.path == '/nomina/capturar' %} class="active"{% endif %}>
-                        <a href="/nomina/capturar">Editar Nomina</a>
+
+                    <li {% if request.path == '/nomina/capturar_nomina' %} class="active"{% endif %}>
+                        <a href="/nomina/capturar_nomina">Capturar</a>
                     </li>
                 </ul>
             </li>
