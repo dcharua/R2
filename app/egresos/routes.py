@@ -12,7 +12,7 @@ def route_template(template):
     return render_template(template + '.html')
 
 @blueprint.route('capturar_egreso', methods=['GET', 'POST'])
-def captura_gasto():
+def capturar_egreso():
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
     proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
