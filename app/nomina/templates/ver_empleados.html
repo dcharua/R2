@@ -1,0 +1,102 @@
+{% extends "base_site.html" %}
+
+{% block stylesheets %}
+  {{ super() }}
+{% endblock stylesheets %}
+
+{% block content %}
+<!-- Basic Examples -->
+  <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-black">
+                  <h2>
+                     Empleados
+                  </h2>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                          <thead>
+                              <tr>
+                                  <th>Nombre</th>
+                                  <th>Tienda</th>
+                                  <th>Puesto</th>
+                                  <th>Sueldo</th>
+                                  <th>Ver mas</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                <th>Nombre</th>
+                                <th>Tienda</th>
+                                <th>Puesto</th>
+                                <th>Sueldo</th>
+                                <th>Ver mas</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              <tr>
+                                  <td>Luis Jesus Martinez</td>
+                                  <td>Santafe</td>
+                                  <td>Administrador</td>
+                                  <td>18,000.00</td>
+                                  <td>
+                                    <a class="btn btn-small btn-info waves-effect" href="/nomina/perfil_empleado" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- #END# Basic Examples -->
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+  $(function () {
+      $('.js-modal-buttons .btn').on('click', function () {
+          var color = $(this).data('color');
+          $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+          $('#mdModal').modal('show');
+      });
+  });
+
+  $(function () {
+    //Tooltip
+    $('[data-toggle="tooltip"]').tooltip({
+        container: 'body'
+    });
+
+    //Popover
+    $('[data-toggle="popover"]').popover();
+  })
+
+  $('.js-basic-example').DataTable({
+     dom: 'Bfrtip',
+     responsive: true,
+     select: true,
+     buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+     ]
+  });
+</script>
+{% endblock javascripts %}
