@@ -46,6 +46,7 @@
                 <th># Documento</th>
                 <th>Monto</th>
                 <th>Status</th>
+                <th>Accion</th>
               </tr>
             </thead>
             <tfoot>
@@ -54,6 +55,7 @@
                 <th># Documento</th>
                 <th>Monto</th>
                 <th>Status</th>
+                <th>Accion</th>
               </tr>
             </tfoot>
             <tbody>
@@ -62,6 +64,11 @@
                 <td>FA-002</td>
                 <td>$200,000.00</td>
                 <td><span class="badge bg-green">Liquidado</span></td>
+                <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                </td>
               </tr>
               
               <tr>
@@ -69,6 +76,11 @@
                 <td>FA-003</td>
                 <td>$100,000.00</td>
                 <td><span class="badge bg-green">Liquidado</span></td>
+                <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                </td>
               </tr>
               
               <tr>
@@ -76,6 +88,11 @@
                 <td>FA-004</td>
                 <td>$100,000.00</td>
                 <td><span class="badge bg-red">Incompleto</span></td>
+                <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -100,6 +117,7 @@
                   <th>Referencia</th>
                   <th>Monto</th>
                   <th>Status</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
               <tfoot>
@@ -111,6 +129,7 @@
                   <th>Referencia</th>
                   <th>Monto</th>
                   <th>Status</th>
+                  <th>Acciones</th>
                 </tr>
               </tfoot>
               <tbody>
@@ -122,7 +141,14 @@
                   <td>CH000123</td>
                   <td>$300,000.00</td>
                   <td><span class="badge bg-green">Liquidado</span></td>
-                  
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
+                      <i class="material-icons">assignment_turned_in</i>
+                    </a>
+                  </td>
                 </tr>
               </tbody>
             </table>
