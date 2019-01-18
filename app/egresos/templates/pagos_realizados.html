@@ -16,12 +16,17 @@
                   <h2>
                     Pagos Realizados
                   </h2>
+                  <div class="select-btn-group">
+                      <span class="btn btn-primary">Pagar</span>
+                      <span class="btn bg-deep-purple" >Reprogramar fecha</span>
+                  </div>
               </div>
               <div class="body">
                   <div class="table-responsive">
                       <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
+                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                   <th>ID</th>
                                   <th>Beneficiario</th>
                                   <th>Fecha de pago</th>
@@ -35,6 +40,7 @@
                           </thead>
                           <tfoot>
                               <tr>
+                                  <th></th>
                                   <th>ID</th>
                                   <th>Beneficiario</th>
                                   <th>Fecha de pago</th>
@@ -48,6 +54,7 @@
                           </tfoot>
                           <tbody>
                               <tr>
+                                  <td></td>
                                   <td>1</td>
                                   <td>Felxi</td>
                                   <td>24/08/2018</td>
@@ -63,8 +70,8 @@
                                     <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
                                       <i class="material-icons">payment</i>
                                     </a>
-                                    <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
-                                      <i class="material-icons">assignment_turned_in</i>
+                                    <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#largeModal" >
+                                      <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
                                     </a>
                                   </td>
                               </tr>
@@ -81,7 +88,10 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="largeModalLabel">Pagos a generar | fecha .. 24/12/18</h4>
+                            <h4 class="modal-title" id="largeModalLabel">Conciliar Pago </h4>
+                            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                                <i class="material-icons">close</i>
+                              </button>
                         </div>
                         <div class="modal-body">
                           <div class="box">
@@ -115,104 +125,25 @@
                             </div>
                           </div>
 
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>ID egreso</th>
-                                <th>Monto</th>
-                                <th># de documento</th>
-                                <th>Eliminar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="box">
-                          <hr>
+                          <div class="input-group nomargin">
                           <div class="row">
                             <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Beneficiario: <span class="font-bold">Rob Gronkowski</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Monto a pagar: <span class="font-bold">$10343.00</span></p>
-                            </div>
-                          </div>
-
-                          <div class="input-group">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label for="beneficiario"> Forma de pago </label><br>
-                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label> Cuenta </label>
-                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
+                              <label> Fecha de Vencimiento </label>
+                              <div class='input-group date mydatepicker' data-provide="datepicker">
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                  <i class="material-icons mydate">date_range</i>
+                                </span>
                               </div>
                             </div>
-                          </div>
-
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>ID egreso</th>
-                                <th>Monto</th>
-                                <th># de documento</th>
-                                <th>Eliminar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                
                         </div>
-
-                          <p class="font-18">Monto total a pagar: <span class="font-bold">$10343.00</span></p>
-
-
+                       
+                         
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-link waves-effect ">Enviar</button>
-                            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-                              <i class="material-icons">close</i>
-                            </button>
+                            
                         </div>
                     </div>
                 </div>
@@ -233,6 +164,13 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
+    $(function () {
+    $('.js-modal-buttons .btn').on('click', function () {
+            var color = $(this).data('color');
+            $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+            $('#mdModal').modal('show');
+        });
+    })  
   $(function () {
       $('.js-modal-buttons .btn').on('click', function () {
           var color = $(this).data('color');
@@ -251,13 +189,68 @@
     $('[data-toggle="popover"]').popover();
   })
 
-  $('.js-basic-example').DataTable({
-     dom: 'Bfrtip',
-     responsive: true,
-     select: true,
-     buttons: [
-         'copy', 'csv', 'excel', 'pdf', 'print'
-     ]
+  var table = $('.js-basic-example').DataTable({
+     'columnDefs': [{
+         'targets': 0,
+         'className': 'dt-body-center',
+         'render': function (data, type, full, meta){
+             return '<input type="checkbox" name="id[]" value="' 
+                + $('<div/>').text(data).html() + '">';
+         }
+      }],
+      'order': [1, 'asc'],
+
   });
+
+     // Handle click on "Select all" control
+     $('#example-select-all').on('click', function(){
+      // Check/uncheck all checkboxes in the table
+      var rows = table.rows({ 'search': 'applied' }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+   });
+
+    // Handle click on checkbox to set state of "Select all" control
+    $('#example tbody').on('change', 'input[type="checkbox"]', function(){
+      // If checkbox is not checked
+      if(!this.checked){
+         var el = $('#example-select-all').get(0);
+         // If "Select all" control is checked and has 'indeterminate' property
+         if(el && el.checked && ('indeterminate' in el)){
+            // Set visual state of "Select all" control 
+            // as 'indeterminate'
+            el.indeterminate = true;
+         }
+      }
+   });
+    
+   $('#frm-example').on('submit', function(e){
+      var form = this;
+
+      // Iterate over all checkboxes in the table
+      table.$('input[type="checkbox"]').each(function(){
+         // If checkbox doesn't exist in DOM
+         if(!$.contains(document, this)){
+            // If checkbox is checked
+            if(this.checked){
+               // Create a hidden element 
+               $(form).append(
+                  $('<input>')
+                     .attr('type', 'hidden')
+                     .attr('name', this.name)
+                     .val(this.value)
+               );
+            }
+         } 
+      });
+
+      // FOR TESTING ONLY
+      
+      // Output form data to a console
+      $('#example-console').text($(form).serialize()); 
+      console.log("Form submission", $(form).serialize()); 
+       
+      // Prevent actual form submission
+      e.preventDefault();
+   });
 </script>
 {% endblock javascripts %}

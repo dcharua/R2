@@ -82,3 +82,21 @@
   box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.18);
   margin-bottom: 2rem; 
 }
+
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+  position: relative;
+  left: 0;
+  opacity: 1;
+}
+
+.table{
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+
+.select-btn-group{
+  position: absolute;
+  right: 0;
+  transform: translate(-10%, -75%);
+}

@@ -1,8 +1,8 @@
 from os import environ
-
-
+environ.get('DB_USER')
 class Config(object):
     SECRET_KEY = 'key'
+
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
     # SQLALCHEMY_TRACK_MODIFICATIONS = False
 
