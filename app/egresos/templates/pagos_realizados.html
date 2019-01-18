@@ -6,7 +6,7 @@
 
 {% block content %}
 <!-- Basic Examples -->
-  
+
 <!-- #END# Basic Examples -->
 
   <div class="row clearfix">
@@ -14,7 +14,7 @@
           <div class="card">
               <div class="header bg-black">
                   <h2>
-                    Pagos Realizados
+                    Pagos Pendientes
                   </h2>
                   <div class="select-btn-group">
                       <span class="btn btn-primary">Pagar</span>
@@ -62,7 +62,7 @@
                                   <td>Transferencia</td>
                                   <td>$320,800</td>
                                   <td>Abc138Gs</td>
-                                  <td> <span class="badge bg-green">Liquidado</span></td>
+                                  <td> <span class="badge bg-red">Por Pagar</span></td>
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
@@ -104,26 +104,6 @@
                             </div>
                           </div>
 
-                          <div class="input-group">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label for="beneficiario"> Forma de pago </label><br>
-                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label> Cuenta </label>
-                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                            </div>
-                          </div>
 
                           <div class="input-group nomargin">
                           <div class="row">
@@ -148,6 +128,7 @@
                     </div>
                 </div>
             </div>
+        </div>
 {% endblock content %}
 
 {% block javascripts %}

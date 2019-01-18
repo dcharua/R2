@@ -34,8 +34,8 @@
     <div class="menu">
         <ul class="list">
             <!--  <li class="header">MAIN NAVIGATION</li> -->
-            <li {% if request.path == '/index_late' %}class="active"{% endif %} >
-                <a href="/index_late">
+            <li {% if request.path == '/home/index' %}class="active"{% endif %} >
+                <a href="/home/index">
                     <!--  <i class="material-icons">home</i> -->
                     <span>Home</span>
                 </a>
@@ -51,7 +51,7 @@
                         <a href="/egresos/cuentas_por_pagar">Cuentas por Pagar</a>
                     </li>
                     <li {% if request.path == '/egresos/pagos_realizados' %} class="active"{% endif %}>
-                        <a href="/egresos/pagos_realizados">Pagos Realizados</a>
+                        <a href="/egresos/pagos_realizados">Pagos Pendientes</a>
                     </li>
                     <li {% if request.path == '/egresos/capturar_egreso' %} class="active"{% endif %}>
                         <a href="/egresos/capturar_egreso">Captura egreso</a>
@@ -127,6 +127,7 @@
                     <li {% if request.path == '/nomina/ver_empleados' %} class="active"{% endif %}>
                         <a href="/nomina/ver_empleados">Ver</a>
                     </li>
+
                     <li {% if request.path == '/nomina/capturar_nomina' %} class="active"{% endif %}>
                         <a href="/nomina/capturar_nomina">Capturar</a>
                     </li>
