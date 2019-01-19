@@ -15,7 +15,7 @@
                   </h2>
                   <div class="select-btn-group">
                       <span class="btn btn-primary">Pagar</span>
-                      <span class="btn bg-deep-purple" >Reprogramar fecha</span>
+                      <span class="btn btn-warning" >Reprogramar fecha</span>
                   </div>
               </div>
               <div class="body">
@@ -65,7 +65,7 @@
                                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
                                       <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
                                     </a>
                                     <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
@@ -103,148 +103,8 @@
   </div>
   <!-- #END# Basic Examples -->
 
+{% include "modal_pagar.html" %}
 
-  <!-- Modal pagos -->
-            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="largeModalLabel">Pagos a generar | fecha .. 24/12/18</h4>
-                        </div>
-                        <div class="modal-body">
-                          <div class="box">
-                          <div class="row">
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Monto a pagar: <span class="font-bold">$10343.00</span></p>
-                            </div>
-                          </div>
-
-                          <div class="input-group">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label for="beneficiario"> Forma de pago </label><br>
-                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label> Cuenta </label>
-                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>ID egreso</th>
-                                <th>Monto</th>
-                                <th># de documento</th>
-                                <th>Eliminar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="box">
-                          <hr>
-                          <div class="row">
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Beneficiario: <span class="font-bold">Rob Gronkowski</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 nomargin">
-                              <p class="font-18">Monto a pagar: <span class="font-bold">$10343.00</span></p>
-                            </div>
-                          </div>
-
-                          <div class="input-group">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label for="beneficiario"> Forma de pago </label><br>
-                                <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                              <div class="col-sm-12 col-md-6 nomargin">
-                                <label> Cuenta </label>
-                                <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                                  <!-- {% for w in concepto %} -->
-                                  <option> {{ w | safe }} </option>
-                                  <!-- {% endfor %} -->
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>ID egreso</th>
-                                <th>Monto</th>
-                                <th># de documento</th>
-                                <th>Eliminar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td> 32938dh </td>
-                                <td> $15434</td>
-                                <td> 3494</td>
-                                <td>
-                                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Eliminar">
-                                    <i class="material-icons">delete</i>
-                                  </a>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-
-                          <p class="font-18">Monto total a pagar: <span class="font-bold">$10343.00</span></p>
-
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-link waves-effect ">Enviar</button>
-                            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-                              <i class="material-icons">close</i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 {% endblock content %}
 
 {% block javascripts %}
@@ -261,13 +121,6 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
-  $(function () {
-      $('.js-modal-buttons .btn').on('click', function () {
-          var color = $(this).data('color');
-          $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
-          $('#mdModal').modal('show');
-      });
-  });
 
   $(function () {
     //Tooltip

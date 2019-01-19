@@ -29,9 +29,9 @@
               </div>
 
 
-              <div class="input-group nomargin">
+              <div class="input-group ">
                 <div class="row">
-                  <div class="col-sm-12 col-md-6 nomargin">
+                  <div class="col-sm-12 col-md-6 ">
                     <label> Fecha de Vencimiento </label>
                     <div class='input-group date mydatepicker' data-provide="datepicker">
                       <input type='text' class="form-control" />
@@ -49,18 +49,38 @@
                         <i class="material-icons mydate">date_range</i>
                       </span>
                     </div>
-                  </div </div> </div> <div class="input-group">
+                  </div>  
+                </div>
+                
+                <div class="input-group">
                   <div class="row">
-                    <div class="col-sm-12 col-md-6 nomargin">
+                    <div class="col-sm-12 col-md-6 ">
                       <label for="ref"># de documento</label>
                       <input class="form-control" type="text" id="ref" name="Referencía">
                     </div>
-                    <div class="col-sm-12 col-md-6 nomargin">
+                    <div class="col-sm-12 col-md-6 ">
                       <label for="ref">Monto total</label>
                       <input disabled class="form-control" type="number" id="ref" name="Referencía">
                     </div>
                   </div>
                 </div>
+
+                <div class="input-group">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 ">
+                        <label for="ref">Referencia/ Orden de compra </label>
+                        <input disabled class="form-control" type="number" id="ref" name="Referencía">
+                      </div>
+                      <div class="col-sm-12 col-md-6 ">
+                          <label for="beneficiario"> Empresa </label><br>
+                          <select class="selectpicker" id="beneficiario" name="beneficiario" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..." data-width="50%">
+                            {% for w in vendor %}
+                            <option> {{ w | safe }} </option>
+                            {% endfor %}
+                          </select>
+                      </div>
+                    </div>
+                  </div>
 
                 <div class="caracteristicas">
                   <!-- <div class="input-group" >

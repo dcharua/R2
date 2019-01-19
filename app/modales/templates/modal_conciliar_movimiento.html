@@ -1,0 +1,62 @@
+<!-- Modal pagos -->
+<div class="modal fade" id="modal_conciliar_movimiento" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="largeModalLabel">Conciliar Pago </h4>
+                    <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                        <i class="material-icons">close</i>
+                      </button>
+                </div>
+                <div class="modal-body">
+                  <div class="box">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 nomargin">
+                      <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 nomargin">
+                      <p class="font-18">Monto a conciliar: <span class="font-bold">$10343.00</span></p>
+                    </div>
+                  </div>
+
+
+                  <div class="input-group nomargin">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 nomargin">
+                      <label> Fecha de conciliación </label>
+                      <div class='input-group date mydatepicker' data-provide="datepicker">
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                          <i class="material-icons mydate">date_range</i>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 nomargin">
+                        <label for="ref">Referencia</label>
+                        <input class="form-control" type="text" id="ref" name="Referencía">
+                      </div>
+        
+                </div>
+               
+                 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link waves-effect ">Enviar</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        $('.js-modal-buttons .btn').on('click', function () {
+            var color = $(this).data('color');
+            $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+            $('#mdModal').modal('show');
+        });
+    });
+</script>

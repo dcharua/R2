@@ -87,7 +87,7 @@
                     </h2>
                     <div class="select-btn-group">
                         <span class="btn btn-primary">Pagar</span>
-                        <span class="btn bg-deep-purple" >Reprogramar fecha</span>
+                        <span class="btn bg-deep-purple" >Conciliar movimiento</span>
                     </div>
                 </div>
                 <div class="body">
@@ -137,8 +137,8 @@
                                       <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
                                         <i class="material-icons">payment</i>
                                       </a>
-                                      <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#largeModal" >
-                                        <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
+                                      <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#modal_conciliar_movimiento" >
+                                          <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
                                       </a>
                                     </td>
                                 </tr>
@@ -161,7 +161,7 @@
                       </h2>
                       <div class="select-btn-group">
                           <span class="btn btn-primary">Pagar</span>
-                          <span class="btn bg-deep-purple" >Reprogramar fecha</span>
+                          <span class="btn bg-deep-purple" >Conciliar movimiento</span>
                       </div>
                   </div>
                   <div class="body">
@@ -211,7 +211,7 @@
                                         <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
                                           <i class="material-icons">payment</i>
                                         </a>
-                                        <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#largeModal" >
+                                        <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#modal_conciliar_movimiento" >
                                           <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
                                         </a>
                                       </td>
@@ -296,8 +296,7 @@
               </div>
           </div>
       </div>
-
-
+      {% include "modal_conciliar_movimiento.html" %}
 
       {% endblock content %}
 

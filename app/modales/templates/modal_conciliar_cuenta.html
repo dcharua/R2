@@ -1,0 +1,57 @@
+<!-- Modal pagos -->
+<div class="modal fade" id="modal_conciliar_cuenta" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="largeModalLabel">Conciliara | fecha .. 24/12/18</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="box">
+                  <div class="input-group">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 nomargin">
+                        <label> Fecha a conciliar </label>
+                        <div class='input-group date mydatepicker' data-provide="datepicker">
+                          <input type='text' class="form-control" name="fecha de conciliacion" />
+                          <span class="input-group-addon">
+                            <i class="material-icons mydate">date_range</i>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-6 nomargin">
+                        <label> Cuenta </label>
+                        <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
+                          <!-- {% for w in concepto %} -->
+                          <option> {{ w | safe }} </option>
+                          <!-- {% endfor %} -->
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6">
+                          <label style="margin-top: 7px;" for="fname">Saldo a conciliar</label>
+                          <input class="form-control" type="number" id="saldo" name="saldo">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link waves-effect ">Enviar</button>
+                <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                  <i class="material-icons">close</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    $(function () {
+        $('.js-modal-buttons .btn').on('click', function () {
+            var color = $(this).data('color');
+            $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+            $('#mdModal').modal('show');
+        });
+    });
+</script>
