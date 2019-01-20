@@ -6,7 +6,7 @@
   <div class="row clearfix">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
-              <div class="header bg-light-green">
+              <div class="header bg-black">
                   <h2>
                       Cuentas 
                   </h2>
@@ -16,33 +16,43 @@
                       <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
+                                  <th>ID</th>
                                   <th>Cuenta</th>
-                                  <th>Saldo Actual</th>
-                                  <th>Fecha de ultima conciliacíon</th>
+                                  <th>Ultima Conciliacíon</th>
+                                  <th>Saldo en Cuenta</th>
+                                  <th>Saldo en Sistema</th>
+                                  <th>Diferencia</th>
                                   <th>Status</th>
                                   <th>Acciones</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
+                                  <th>ID</th>
                                   <th>Cuenta</th>
-                                  <th>Saldo Actual</th>
-                                  <th>Fecha de ultima conciliacíon</th>
+                                  <th>Ultima Conciliacíon</th>
+                                  <th>Saldo en Cuenta</th>
+                                  <th>Saldo en Sistema</th>
+                                  <th>Diferencia</th>
                                   <th>Status</th>
                                   <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
                               <tr>
+                                  <td>1</td>
                                   <td>Santander</td>
-                                  <td>1,854,654.54</td>
                                   <td>14/06/2018</td>
+                                  <td>$1,854,654.54</td>
+                                  <td>$1,854,654.54</td>
+                                  <td>$0.00</td>
+                                  
                                   <td> <span class="badge bg-light-green">Completo</span></td>
                                   <td>
-                                    <a class="btn btn-small btn-info waves-effect" href="/conciliaciones/perfil_cuenta" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-xs btn-info waves-effect" href="/conciliaciones/perfil_cuenta" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-small btn-success waves-effect" data-toggle="modal" data-target="#modal_conciliar_cuenta" >
+                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_conciliar_cuenta" >
                                       <i data-toggle="tooltip" data-placement="top" title="Conciliar" class="material-icons">payment</i>
                                     </a>
                                   </td>

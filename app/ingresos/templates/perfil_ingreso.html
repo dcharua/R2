@@ -301,7 +301,61 @@
             </div>
         </div>
     </div>
-
+    
+    
+    
+    
+<!-- DETALLES TABLE -->
+    
+    <div class="card">
+      <div class="header bg-black">
+        <h2>Detalles</h2>
+      </div>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <thead>
+              <tr>
+                <th>Centro de Negocios</th>
+                <th>Categoría</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Descipcíon</th>
+                <th># de documento</th>
+                <th>Editar</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Centro de Negocios</th>
+                <th>Categoría</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Descipcíon</th>
+                <th># de documento</th>
+                <th>Editar</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>Tienda 1</td>
+                <td>Ventas</td>
+                <td>Zapatos</td>
+                <td>$60,000.00</td>
+                <td></td>
+                <td>VT-00123</td>
+                <th>
+                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_ingreso" data-toggle="tooltip" data-placement="top" title="Editar">
+                    <i class="material-icons">edit</i>
+                  </a>
+                </th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
     {% endblock content %}
 
     {% block javascripts %}
