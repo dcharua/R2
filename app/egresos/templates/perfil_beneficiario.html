@@ -38,73 +38,100 @@
           </div>
 
 
-    <!-- Ingresos TABLE -->
-    <div class="card">
-      <div class="header">
-        <h2>Documentos Recibidos </h2>
-      </div>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th># Documento</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Accion</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>ID</th>
-                <th># Documento</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Accion</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>27</td>
-                <td>FA-002</td>
-                <td>$200,000.00</td>
-                <td><span class="badge bg-green">Liquidado</span></td>
-                <td>
-                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                </td>
-              </tr>
-              
-              <tr>
-                <td>28</td>
-                <td>FA-003</td>
-                <td>$100,000.00</td>
-                <td><span class="badge bg-green">Liquidado</span></td>
-                <td>
-                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                </td>
-              </tr>
-              
-              <tr>
-                <td>29</td>
-                <td>FA-004</td>
-                <td>$100,000.00</td>
-                <td><span class="badge bg-red">Incompleto</span></td>
-                <td>
-                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+   <!-- Basic Examples -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header ">
+                <h2>
+                    Documentos recibidos
+                </h2>
+                <div class="select-btn-group">
+                    <span class="btn btn-primary">Pagar</span>
+                    <span class="btn btn-warning" >Reprogramar fecha</span>
+                </div>
+            </div>
+            <div class="body">
+               
+                <div class="table-responsive">
+                    <form id="frm-example" action="/path/to/your/script" method="POST">
+                     
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  cellspacing="0" width="100%">
+                      
+                        <thead>
+                            <tr>
+                                <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                <th>ID</th>
+                                <th>Fecha programada</th>
+                                <th>Fecha de vencimiento</th>
+                                <th>Monto</th>
+                                <th># de documento</th>
+                                <th>Status</th>
+                                <th style="width: 132px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                              <th></th>
+                              <th>ID</th>
+                              <th>Fecha programada</th>
+                              <th>Fecha de vencimiento</th>
+                              <th>Monto</th>
+                              <th># de documento</th>
+                              <th>Status</th>
+                              <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td>26</td>
+                                <td>15/01/2019</td>
+                                <td>30/01/2019</td>
+                                <td>$100,000.00</td>
+                                <td>FA-003</td>
+                                <td> <span class="badge bg-red">No Comenzado</span></td>
+                                <td>
+                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <i class="material-icons">visibility</i>
+                                  </a>
+                                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
+                                    <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
+                                  </a>
+                                  <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
+                                    <i class="material-icons">update</i>
+                                  </a>
+                                </td>
+                            </tr>
+                                <td></td>
+                                <td>27</td>
+                                <td>15/01/2019</td>
+                                <td>30/01/2019</td>
+                                <td>$200,000.00</td>
+                                <td>FA-004</td>
+                                <td> <span class="badge bg-orange">Parcial</span></td>
+                                <td>
+                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <i class="material-icons">visibility</i>
+                                  </a>
+                                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                    <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
+                                  </a>
+                                  <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
+                                    <i class="material-icons">update</i>
+                                  </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+</div>
+<!-- #END# Basic Examples -->
+
 
     <!-- PAGOS TABLE -->
     <div class="card">
@@ -187,6 +214,9 @@
 
           </div>
       </div>
+
+      {% include "modal_pagar.html" %}
+
 
       {% endblock content %}
 
