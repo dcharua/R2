@@ -1,0 +1,246 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-12">
+
+
+    <div class="row">
+        <div class="col-sm-12">
+      
+          <!-- INFO CARD -->
+          <div class="card">
+            <div class="header bg-black">
+              <h2 class="font-24">Datos Cliente 3</h2>
+            </div>
+      
+            <div class="body">
+              <div class="row mycontainer">
+                <div class="col-sm-12 col-md-6">
+                  <p class="font-18">Cliente: <span class="font-bold">Flexi</span></p>
+                  <p class="font-18">RFC: <span class="font-bold">FLES120799PY2</span></p>
+                  <p class="font-18">Direccion: <span class="font-bold">Av. Siempre Viva #58 Colonia Centro</span></p>                  
+                  <p class="font-18">Nombre del contacto: <span class="font-bold">Luis Jesus Martinez</span> </p>
+                  <p class="font-18">Correo de contacto: <span class="font-bold">Luis@Felix.com </span> </p>
+                  <p class="font-18">Teléfono <span class="font-bold">55842412 Ext: 121 </span> </p>
+
+                  
+                </div>
+                <div class="col-sm-12 col-md-6 align-left">
+                  <p class="font-18">Saldo : <span class="font-bold">1,824.00</span></p>
+                  <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></td>
+                  <p class="font-18">Razón social: <span class="font-bold">Flexi S.A de C.V.</span></p>
+                  <p class="font-18">Banco: <span class="font-bold">Bancomer</span></p>
+                  <p class="font-18">Cuenta: <span class="font-bold">28017616</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+   <!-- Basic Examples -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header ">
+                <h2>
+                    Documentos recibidos
+                </h2>
+                <div class="select-btn-group">
+                    <span class="btn btn-primary">Pagar</span>
+                    <span class="btn btn-warning" >Reprogramar fecha</span>
+                </div>
+            </div>
+            <div class="body">
+               
+                <div class="table-responsive">
+                    <form id="frm-example" action="/path/to/your/script" method="POST">
+                     
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  cellspacing="0" width="100%">
+                      
+                        <thead>
+                            <tr>
+                                <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                <th>ID</th>
+                                <th>Fecha programada</th>
+                                <th>Fecha de vencimiento</th>
+                                <th>Monto</th>
+                                <th># de documento</th>
+                                <th>Status</th>
+                                <th style="width: 132px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                              <th></th>
+                              <th>ID</th>
+                              <th>Fecha programada</th>
+                              <th>Fecha de vencimiento</th>
+                              <th>Monto</th>
+                              <th># de documento</th>
+                              <th>Status</th>
+                              <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td>26</td>
+                                <td>15/01/2019</td>
+                                <td>30/01/2019</td>
+                                <td>$100,000.00</td>
+                                <td>FA-003</td>
+                                <td> <span class="badge bg-red">No Comenzado</span></td>
+                                <td>
+                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <i class="material-icons">visibility</i>
+                                  </a>
+                                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
+                                    <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
+                                  </a>
+                                  <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
+                                    <i class="material-icons">update</i>
+                                  </a>
+                                </td>
+                            </tr>
+                                <td></td>
+                                <td>27</td>
+                                <td>15/01/2019</td>
+                                <td>30/01/2019</td>
+                                <td>$200,000.00</td>
+                                <td>FA-004</td>
+                                <td> <span class="badge bg-orange">Parcial</span></td>
+                                <td>
+                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <i class="material-icons">visibility</i>
+                                  </a>
+                                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                    <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
+                                  </a>
+                                  <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
+                                    <i class="material-icons">update</i>
+                                  </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Basic Examples -->
+
+
+    <!-- PAGOS TABLE -->
+    <div class="card">
+        <div class="header">
+          <h2>Pagos a Beneficiario</h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Forma</th>
+                  <th>Cuenta</th>
+                  <th>Referencia</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Forma</th>
+                  <th>Cuenta</th>
+                  <th>Referencia</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr>
+                  <td>15</td>
+                  <td>15/01/19</td>
+                  <td>Cheque</td>
+                  <td>Bancomer 1</td>
+                  <td>CH000123</td>
+                  <td>$300,000.00</td>
+                  <td><span class="badge bg-green">Liquidado</span></td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
+                      <i class="material-icons">assignment_turned_in</i>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="row">
+          <div class="col-sm-12 col-md-8">
+                <div class="card">
+                    <div class="header">
+                        <h2>Categorías y conceptos asociados</h2>
+                    </div>
+                    <div class="body">
+                        
+                    </div>
+                </div>
+
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="card">
+                <div class="header">
+                    <h2>Cuentas asociadas</h2>
+                </div>
+                <div class="body">
+                    
+                </div>
+            </div>
+
+          </div>
+      </div>
+
+      {% include "modal_pagar.html" %}
+
+
+      {% endblock content %}
+
+      {% block javascripts %}
+      {{ super() }}
+      <!-- Jquery DataTable Plugin Js -->
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+  
+      <script>
+        $('.js-basic-example').DataTable({
+          dom: 'Bfrtip',
+          responsive: true,
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+        });
+      </script>
+      {% endblock javascripts %}
+  

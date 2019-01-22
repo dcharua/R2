@@ -142,11 +142,15 @@
                     <span>Administración</span>
                 </a>
                 <ul class="ml-menu">
-                    <li {% if request.path == '/administracion/ver' %} class="active"{% endif %}>
-                        <a href="/administracion/ver">Ver</a>
+                    <li {% if request.path == '/administracion/beneficiarios' %} class="active"{% endif %}>
+                        <a href="/administracion/beneficiarios">Beneficiarios</a>
                     </li>
-                    <li {% if request.path == '/administracion/capturar' %} class="active"{% endif %}>
-                        <a href="/administracion/capturar">Capturar</a>
+                    <li {% if request.path == '/administracion/clientes' %} class="active"{% endif %}>
+                        <a href="/administracion/clientes">Clientes</a>
+                    </li>
+                    <li {% if
+                         request.path == '/administracion/cuentas' %} class="active"{% endif %}>
+                        <a href="/administracion/cuentas">Cuentas</a>
                     </li>
                 </ul>
             </li>

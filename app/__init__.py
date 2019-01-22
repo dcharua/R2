@@ -20,8 +20,13 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    for module_name in ('base', 'home', 'ingresos', 'egresos', 'conciliaciones', 'nomina', 'modales'):
+    for module_name in ('base', 'home', 'ingresos', 'egresos', 'conciliaciones', 'nomina','administracion', 'modales'):
         module = import_module('app.{}.routes'.format(module_name))
+        print(module_name)
+        print(module.blueprint)
+        print(module)
+        #print(dict(module))
+        print('\n')
         app.register_blueprint(module.blueprint)
 
 
@@ -50,6 +55,8 @@ def create_app(config):
         LOGIN_DISABLED = True,
         #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
     )
+    print('app/__init__.py heree')
+    print(str(app))
     db = SQLAlchemy()
     login_manager = LoginManager()
     register_extensions(app)
