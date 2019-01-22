@@ -7,12 +7,12 @@ from app import db, login_manager
 
 class User(db.Model, UserMixin):
 
-    __tablename__ = 'User2'
+    __tablename__ = 'User'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
-    email = Column(String, unique=True)
+    username = Column(String(20), unique=True)
+    email = Column(String(40), unique=True)
     password = Column(Binary)
 
     def __init__(self, **kwargs):

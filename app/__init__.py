@@ -48,8 +48,7 @@ def create_app(config):
         SECRET_KEY=environ.get('KEY'),
         DEBUG=True,
         LOGIN_DISABLED = True,
-        #SQLALCHEMY_DATABASE_URI ='mysql+pymysql://gezsa001:gez9105ru2@shoesclothing.net/Gez_pruebas'
-
+        SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
     )
     db = SQLAlchemy()
     login_manager = LoginManager()
