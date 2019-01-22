@@ -68,9 +68,10 @@
                                     <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
                                       <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
                                     </a>
-                                    <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
-                                      <i class="material-icons">update</i>
+                                    <a class="btn btn-xs btn-warning waves-effect" data-toggle="modal" data-target="#modal_reprogramar_fecha" >
+                                      <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                                     </a>
+
                                   </td>
                               </tr>
                                   <td></td>
@@ -85,11 +86,11 @@
                                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
                                       <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
                                     </a>
-                                    <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
-                                      <i class="material-icons">update</i>
+                                    <a class="btn btn-xs btn-warning waves-effect" data-toggle="modal" data-target="#modal_reprogramar_fecha" >
+                                      <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                                     </a>
                                   </td>
                               </tr>
@@ -104,6 +105,8 @@
   <!-- #END# Basic Examples -->
 
 {% include "modal_pagar.html" %}
+
+{% include "modal_reprogramar_fecha.html" %}
 
 {% endblock content %}
 

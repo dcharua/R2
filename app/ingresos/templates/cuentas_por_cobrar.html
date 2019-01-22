@@ -20,7 +20,7 @@
                           <thead>
                               <tr>
                                   <th>ID</th>
-                                  <th>Beneficiario</th>
+                                  <th>Cliente</th>
                                   <th>Fecha programada</th>
                                   <th>Fecha de vencimiento</th>
                                   <th>Monto</th>
@@ -32,7 +32,7 @@
                           <tfoot>
                               <tr>
                                 <th>ID</th>
-                                <th>Beneficiario</th>
+                                <th>Cliente</th>
                                 <th>Fecha programada</th>
                                 <th>Fecha de vencimiento</th>
                                 <th>Monto</th>
@@ -54,7 +54,7 @@
                                     <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
+                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_cobrar" >
                                         <i data-toggle="tooltip" data-placement="top" title="Marcar como Recibido" class="material-icons">payment</i>
                                     </a>
                                   </td>
@@ -67,6 +67,8 @@
       </div>
   </div>
   <!-- #END# Basic Examples -->
+
+{% include "modal_cobrar.html" %}
 
 {% endblock content %}
 
