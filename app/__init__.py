@@ -26,11 +26,11 @@ def register_blueprints(app):
         app.register_blueprint(module.blueprint)
 
 
-    con=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")    
-    cur=con.cursor()   
-    cur.execute("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO") 
-#    for row in cur:
-#        print(row.colnumero,row.coldescripcion)
+#    con=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")    
+#    cur=con.cursor()   
+#    cur.execute("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO") 
+##    for row in cur:
+##        print(row.colnumero,row.coldescripcion)
 
 
 def configure_database(app):
