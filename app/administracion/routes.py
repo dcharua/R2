@@ -4,6 +4,12 @@ from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
 import pyodbc
+import pandas as pd
+
+import sys 
+import os
+sys.path.append(os.path.abspath("./app"))
+import db_utils as db
 
 
 @blueprint.route('/<template>')
@@ -13,6 +19,8 @@ def route_template(template):
 
 @blueprint.route('/clientes', methods=['GET', 'POST'])
 def clientes():
+    
+    
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
     proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
@@ -20,7 +28,13 @@ def clientes():
     concepto= list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
     user_inputs = dict(request.form)
     print(user_inputs)
-    print('HEEEEREE')
+        
+    
+    cur = db.connect_to_db("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO")
+    print(type(cur))
+     
+
+
     return render_template("clientes.html",
                            navbar_data_capture = 'active',
                            title = "Registro de Egresos",

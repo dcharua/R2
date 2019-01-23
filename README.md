@@ -35,6 +35,9 @@ This project shows:
 
 ### 2. Install requirements
     pip install -r requirements.txt
+    
+    2.1 Makse Sure you have ODBC Driver 17 for SQL Server 
+    https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-2017
 
 ### 3. Set the FLASK_APP environment variable
     (Windows) set FLASK_APP=R2.py

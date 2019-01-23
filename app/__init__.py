@@ -6,12 +6,12 @@ from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path, environ
 import pandas as pd
 import pymysql
-
-
+import pyodbc
 
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+
 
 
 def register_extensions(app):
@@ -22,12 +22,15 @@ def register_extensions(app):
 def register_blueprints(app):
     for module_name in ('base', 'home', 'ingresos', 'egresos', 'conciliaciones', 'nomina','administracion', 'modales'):
         module = import_module('app.{}.routes'.format(module_name))
-#        print(module_name)
-#        print(module.blueprint)
-#        print(module)
-#        #print(dict(module))
-#        print('\n')
+
         app.register_blueprint(module.blueprint)
+
+
+    con=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")    
+    cur=con.cursor()   
+    cur.execute("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO") 
+#    for row in cur:
+#        print(row.colnumero,row.coldescripcion)
 
 
 def configure_database(app):
