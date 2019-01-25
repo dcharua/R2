@@ -3,8 +3,8 @@ from flask import render_template, request
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
-import pyodbc
-
+from app.egresos.models import Egresos
+from datetime import date
 
 @blueprint.route('/<template>')
 @login_required
@@ -13,6 +13,9 @@ def route_template(template):
 
 @blueprint.route('capturar_egreso', methods=['GET', 'POST'])
 def capturar_egreso():
+    egreso = Egresos("The Bourne Identity", date(2002, 10, 11), date(2002, 10, 11), 145, 516.1 )
+    #db.session.add(egreso)
+    #db.session.commit()
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
     proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
