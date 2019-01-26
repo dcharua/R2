@@ -15,7 +15,7 @@ def route_template(template):
 
 @blueprint.route('capturar_ingreso', methods=['GET', 'POST'])
 def captura_ingresos():
-    import df_to_table as df_to_table
+    #import df_to_table as df_to_table
     
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
@@ -27,8 +27,8 @@ def captura_ingresos():
     user_inputs = dict(request.form)
     print(user_inputs)
     
-    a = df_to_table.df_to_table(list(1))
-    print(a)
+    #a = df_to_table.df_to_table(list(1))
+    #print(a)
 
     return render_template("capturar_ingreso.html",
                            navbar_data_capture = 'active',
