@@ -36,6 +36,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
         <!-- datepicker -->
         <link rel="stylesheet" type='text/css' href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+        <!-- Form Validator -->
+        <link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css" rel="stylesheet" type="text/css" />
         <!-- tables -->
         <link href="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css') }}" rel="stylesheet">
       {% endblock stylesheets %}
@@ -96,6 +98,8 @@
       {% block javascripts %}
         <!-- jQuery -->
         <script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
+        <!-- Form Validator -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
         <!-- Bootstrap -->
         <script src="{{ url_for('static', filename='vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
         <!-- Autosize -->

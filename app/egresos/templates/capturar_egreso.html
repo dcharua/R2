@@ -18,7 +18,9 @@
 
               <div class="input-group">
                 <label for="beneficiario"> Beneficiario </label><br>
-                <select class="selectpicker" id="beneficiario" name="beneficiario" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..." data-width="50%">
+                <select class="selectpicker" id="beneficiario" name="beneficiario"
+                  data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..."
+                  data-width="50%">
                   {% for w in vendor %}
                   <option> {{ w | safe }} </option>
                   {% endfor %}
@@ -34,7 +36,7 @@
                   <div class="col-sm-12 col-md-6 ">
                     <label> Fecha de Vencimiento </label>
                     <div class='input-group date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" />
+                      <input type='text' class="form-control" name="fecha_vencimiento" />
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
                       </span>
@@ -44,99 +46,58 @@
                   <div class="col-sm-12 col-md-6">
                     <label> Fecha programada de pago </label>
                     <div class='input-group date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" name="fecha de vencimiento" />
+                      <input type='text' class="form-control" name="fecha_programada_pago" />
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
                       </span>
                     </div>
-                  </div>  
+                  </div>
                 </div>
-                
+
                 <div class="input-group">
                   <div class="row">
                     <div class="col-sm-12 col-md-6 ">
                       <label for="ref"># de documento</label>
-                      <input class="form-control" type="text" id="ref" name="Referencía">
+                      <input class="form-control" type="text" id="ref" name="numero_documento" data-validation="required">
                     </div>
                     <div class="col-sm-12 col-md-6 ">
                       <label for="ref">Monto total</label>
-                      <input disabled class="form-control" type="number" id="ref" name="Referencía">
+                      <input class="form-control" type="number" id="ref" name="monto_total">
                     </div>
                   </div>
                 </div>
 
                 <div class="input-group">
-                    <div class="row">
-                      <div class="col-sm-12 col-md-6 ">
-                        <label for="ref">Referencia/ Orden de compra </label>
-                        <input disabled class="form-control" type="number" id="ref" name="Referencía">
-                      </div>
-                      <div class="col-sm-12 col-md-6 ">
-                          <label for="beneficiario"> Empresa </label><br>
-                          <select class="selectpicker" id="beneficiario" name="beneficiario" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..." data-width="50%">
-                            {% for w in vendor %}
-                            <option> {{ w | safe }} </option>
-                            {% endfor %}
-                          </select>
-                      </div>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="referencia">Referencia/ Orden de compra </label>
+                      <input class="form-control" type="number" id="referencia" name="referencia">
+                    </div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="beneficiario"> Empresa </label><br>
+                      <select class="selectpicker" id="beneficiario" name="empresa"
+                        data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..."
+                        data-width="50%">
+                        {% for w in vendor %}
+                        <option> {{ w | safe }} </option>
+                        {% endfor %}
+                      </select>
                     </div>
                   </div>
+                </div>
 
                 <div class="caracteristicas">
-                  <!-- <div class="input-group" >
-                        <label for="forma_pago"> Centro de negocio </label><br>
-                        <select class="selectpicker" id="centro" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="centro" title="Seleccione una Forma de Pago..." data-width="80%" >
-                          {% for w in formaPago %}
-                            <option> {{ w | safe }}  </option>
-                          {% endfor %}
-                        </select>
-                         <button class="btn btn-default" style="margin-left: 50px;"  type="button">Agregar Nuevo</button>
-                    </div>
 
-                      <div class="input-group" >
-                          <label for="proveedor">Proveedor </label><br>
-                          <select class="selectpicker" id="proveedor" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="sub_categoria" title="Seleccione una Sub Categoria de Gasto..." data-width="80%" >
-                            {% for w in proveedor %}
-                              <option> {{ w | safe }}  </option>
-                            {% endfor %}
-                          </select>
-                         <button class="btn btn-default" style="margin-left: 50px;"  type="button">Agregar Nuevo</button>
-                      </div>
-
-
-                      <div class="input-group" >
-                          <label for="categoria"> Categoria </label><br>
-                          <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="categoria" title="Seleccione una Categoria de Gasto..." data-width="80%" >
-                            {% for w in categoria %}
-                              <option> {{ w | safe }}  </option>
-                            {% endfor %}
-                          </select>
-                          <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
-                      </div>
-
-                      <div class="input-group" >
-                          <label for="concepto"> Concepto </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" >
-                            {% for w in concepto %}
-                              <option> {{ w | safe }}  </option>
-                            {% endfor %}
-                          </select>
-                          <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
-                      </div>
-
-                      <div class="input-group" style="width:50%">
-                        <label for="fname">Monto</label>
-                        <input class="form-control" type="number" id="monto" name="monto" >
-                      </div>
-                  </div> -->
 
                   <div style="padding:10px;" class="header">
                     <h2>Detalles de egreso</h2>
-                    <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Remover concepto de pago">
+                    <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
+                      data-toggle="tooltip" data-placement="top" title="Remover concepto de pago">
                       <i class="material-icons">remove</i>
                     </button>
 
-                    <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip" data-placement="top" title="Agregar concepto de pago">
+                    <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
+                      data-toggle="tooltip" data-placement="top" title="Agregar concepto de pago">
                       <i class="material-icons">add</i>
                     </button>
                   </div>
@@ -149,21 +110,23 @@
                           <th>Categoría</th>
                           <th>Concepto</th>
                           <th>Monto</th>
-                          <th># de documento</th>
+                          <th># de control</th>
                           <th style="width: 25%;">Descripcíon</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>
-                            <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
+                            <select class="selectpicker" id="concepto"
+                              data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
                               {% for w in concepto %}
                               <option> {{ w | safe }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker" id="proveedor" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="sub_categoria" title="Seleccione una Sub Categoria de Gasto..."
+                            <select class="selectpicker" id="proveedor" data-live-search="true"
+                             name="proveedor" title="Seleccione un Proveedor..."
                               data-width="80%">
                               {% for w in proveedor %}
                               <option> {{ w | safe }} </option>
@@ -171,24 +134,27 @@
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="categoria" title="Seleccione una Categoria de Gasto..." data-width="80%">
+                            <select class="selectpicker" id="categoria"  data-live-search="true"
+                              name="categoria" title="Seleccione una Categoria..."
+                              data-width="80%">
                               {% for w in categoria %}
                               <option> {{ w | safe }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
+                            <select class="selectpicker"  id="concepto" 
+                              data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
                               {% for w in concepto %}
                               <option> {{ w | safe }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           <td>
-                            <input class="form-control" type="number" id="monto" name="monto">
+                            <input class="form-control" type="number" id="monto" name="monto" data-validation="number">
                           </td>
                           <td>
-                            <input class="form-control" type="text" id="monto" name="monto">
+                            <input class="form-control" type="text" id="numero_control" name="numero_control">
                           </td>
 
                           <td><input type="text" id="descripcion" name="descripcion"></td>
@@ -199,7 +165,7 @@
 
                   <div class="input-group ">
                     <label for="lname">Comentario</label>
-                    <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
+                    <textarea class="form-control" type="text" id="comentario" name="comentario" placeholder=""></textarea>
                   </div>
 
                   <div class="switch">
@@ -213,7 +179,8 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Cuenta de banco </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()'
+                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
                             {% for w in concepto %}
                             <option> {{ w | safe }} </option>
                             {% endfor %}
@@ -222,7 +189,7 @@
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label> Fecha de pago </label>
                           <div class='input-group date mydatepicker' data-provide="datepicker">
-                            <input type='text' class="form-control" name="fecha de vencimiento" />
+                            <input type='text' class="form-control" name="fecha de vencimiento" data-validation="date"/>
                             <span class="input-group-addon">
                               <i class="material-icons mydate">date_range</i>
                             </span>
@@ -235,7 +202,8 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()'
+                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
                             {% for w in concepto %}
                             <option> {{ w | safe }} </option>
                             {% endfor %}
@@ -243,7 +211,7 @@
                         </div>
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label> Referencia de pago </label>
-                          <input class="form-control" type="text" id="monto" name="monto">
+                          <input class="form-control" type="text" id="referencia_pago" name="referencia_pago">
                         </div>
                       </div>
                     </div>
@@ -252,88 +220,93 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label style="margin-top: 7px;" for="fname">Monto</label>
-                          <input class="form-control" type="number" id="monto" name="monto">
+                          <input class="form-control" type="number" id="monto_pagado" name="monto_pagado">
                         </div>
                         <div class="col-sm-12 col-md-6 nomargin">
                           <input type="checkbox" id="movimiento" class="filled-in" />
                           <label class="grey-font" for="movimiento">Movimiento conciliado</label>
-                          <input disabled placeholder="Referencia" class="form-control" type="text" id="movimiento-input" name="monto">
+                          <input disabled placeholder="Referencia" class="form-control" type="text" id="conciliado"
+                            name="conciliado">
                         </div>
                       </div>
                     </div>
 
                     <div class="input-group ">
-                      <label for="lname">Comentario</label>
-                      <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
+                      <label for="comentarios">Comentario</label>
+                      <textarea class="form-control" type="text" id="comentarios" name="comentarios" placeholder=""></textarea>
                     </div>
                   </div>
 
                   <div class="input-group">
-                    <button class="btn btn-primary" style="float: right;">Registrar Egreso</button </div> </form> </div> </div> </div> </div> </div> {% endblock content %} {% block javascripts %} {{ super()}} <script>
-                    // $(function () {
-                    // //Tooltip
-                    // $('[data-toggle="tooltip"]').tooltip({
-                    // container: 'body'
-                    // });
-                    //
-                    // //Popover
-                    // $('[data-toggle="popover"]').popover();
-                    // })
-                    $(document).ready(function () {
+                    <button class="btn btn-primary" style="float: right;">Registrar Egreso</button>
+                  </div>
+          </form>
+        </div>
 
-                    $("#add-row").click(function () {
-                    var $tableBody = $('#table').find("tbody"),
-                    $trLast = $tableBody.find("tr:last"),
-                    $trNew = $trLast.clone();
-                    // Find by attribute 'id'
-                    // $trNew.find('[id]').each(function () {
-                    // var num = this.id.replace(/\D/g, '');
-                    // if (!num) {
-                    // num = 0;
-                    // }
-                    // // Remove numbers by first regexp
-                    // this.id = this.id.replace(/\d/g, '')
-                    // // increment number
-                    // + (1 + parseInt(num, 10));
-                    // });
+      </div>
 
-                    $trLast.after($trNew);
-                    });
-
-                    $("#delete-row").click(function () {
-                    if($('#table tr:last').index() != 0)
-                    $('#table tr:last').remove();
-                    });
-                    });
-
-                    $("#pagado").change(function() {
-                    if(this.checked) {
-                    $("#pagado-form").fadeIn();
-                    } else{
-                    $("#pagado-form").fadeOut();
-                    }
-                    });
-
-                    $("#movimiento").change(function() {
-                    if(this.checked) {
-                    console.log("chec")
-                    $("#movimiento-input").prop('disabled', false);
-                    } else{
-                    console.log("un")
-                    $("#movimiento-input").prop('disabled', true);
-                    }
-                    });
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block javascripts %} {{ super()}}
+<script>
+  $(document).ready(function () {
 
 
-                    $('.select').selectpicker();
-                    $('.mydatepicker').datepicker({
-                    format: "dd/mm/yyyy",
-                    autoclose: true
-                    });
-                    autosize($('textarea'));
-                    // function ajaxFirstOnChange() {
-                    // var x = document.getElementById("provedor").value;
-                    // document.getElementById("demo").innerHTML = "You selected: " + x;
-                    // };
-                    </script>
-                    {% endblock javascripts %}
+    $("#add-row").click(function () {
+      var $tableBody = $('#table').find("tbody"),
+        $trLast = $tableBody.find("tr:last"),
+        $trNew = $trLast.clone();
+      // Find by attribute 'id'
+      // $trNew.find('[id]').each(function () {
+      // var num = this.id.replace(/\D/g, '');
+      // if (!num) {
+      // num = 0;
+      // }
+      // // Remove numbers by first regexp
+      // this.id = this.id.replace(/\d/g, '')
+      // // increment number
+      // + (1 + parseInt(num, 10));
+      // });
+
+      $trLast.after($trNew);
+    });
+
+    $("#delete-row").click(function () {
+      if ($('#table tr:last').index() != 0)
+        $('#table tr:last').remove();
+    });
+  });
+
+  $("#pagado").change(function () {
+    if (this.checked) {
+      $("#pagado-form").fadeIn();
+    } else {
+      $("#pagado-form").fadeOut();
+    }
+  });
+
+  $("#movimiento").change(function () {
+    if (this.checked) {
+      console.log("chec")
+      $("#movimiento-input").prop('disabled', false);
+    } else {
+      console.log("un")
+      $("#movimiento-input").prop('disabled', true);
+    }
+  });
+
+
+  $('.select').selectpicker();
+  $('.mydatepicker').datepicker({
+    format: "dd/mm/yyyy",
+    autoclose: true
+  });
+  autosize($('textarea'));
+  // function ajaxFirstOnChange() {
+  // var x = document.getElementById("provedor").value;
+  // document.getElementById("demo").innerHTML = "You selected: " + x;
+  // };
+</script>
+{% endblock javascripts %}

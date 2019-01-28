@@ -7,7 +7,8 @@ from os import path, environ
 import pandas as pd
 import pymysql
 import pyodbc
-
+import urllib
+import sqlalchemy
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -25,12 +26,6 @@ def register_blueprints(app):
 
         app.register_blueprint(module.blueprint)
 
-
-#    con=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")    
-#    cur=con.cursor()   
-#    cur.execute("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO") 
-##    for row in cur:
-##        print(row.colnumero,row.coldescripcion)
 
 
 def configure_database(app):
@@ -56,11 +51,11 @@ def create_app(config):
         SECRET_KEY=environ.get('KEY'),
         DEBUG=True,
         LOGIN_DISABLED = True,
-        #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
+        SQLALCHEMY_DATABASE_URI ="mssql+pyodbc://%s:%s@%s/%s?driver=ODBC+Driver+17+for+SQL+Server" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
     )
+    db = SQLAlchemy(app)
     #print('app/__init__.py heree')
     #print(str(app))
-    db = SQLAlchemy()
     login_manager = LoginManager()
     register_extensions(app)
     register_blueprints(app)

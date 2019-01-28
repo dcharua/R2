@@ -9,7 +9,7 @@ import pandas as pd
 import sys 
 import os
 sys.path.append(os.path.abspath("./app"))
-import db_utils as db
+from app import db
 
 
 @blueprint.route('/<template>')
@@ -30,11 +30,13 @@ def clientes():
     print(user_inputs)
         
     
-    cur = db.connect_to_db("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO")
-    print(type(cur))
-    print(cur.head())
-     
 
+#    cur = db.connect_to_db("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO")
+#    print(type(cur))
+#    print(cur.head())
+
+    cur = db.engine.execute("select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO").fetchall()
+    print (cur)
 
     return render_template("clientes.html",
                            navbar_data_capture = 'active',
@@ -57,10 +59,6 @@ def beneficiarios():
                            navbar_data_capture = 'active',
                            title = "Registro de Egresos",
                            formaPago = formaPago,
-                           vendor = vendor,
-                           proveedor = proveedor,
-                           categoria = categoria,
-                           concepto = concepto,
                            velocity_max = 1)
     
     

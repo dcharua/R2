@@ -1,5 +1,4 @@
 from os import environ
-environ.get('DB_USER')
 class Config(object):
     SECRET_KEY = 'key'
 
