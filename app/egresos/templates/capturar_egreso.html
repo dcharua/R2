@@ -18,7 +18,7 @@
 
               <div class="input-group">
                 <label for="beneficiario"> Beneficiario </label><br>
-                <select class="selectpicker" id="beneficiario" name="beneficiario"
+                <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required"
                   data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..."
                   data-width="50%">
                   {% for w in vendor %}
@@ -36,7 +36,7 @@
                   <div class="col-sm-12 col-md-6 ">
                     <label> Fecha de Vencimiento </label>
                     <div class='input-group date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" name="fecha_vencimiento" />
+                      <input type='text' class="form-control" name="fecha_vencimiento"/>
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
                       </span>
@@ -58,11 +58,7 @@
                   <div class="row">
                     <div class="col-sm-12 col-md-6 ">
                       <label for="ref"># de documento</label>
-                      <input class="form-control" type="text" id="ref" name="numero_documento" data-validation="required">
-                    </div>
-                    <div class="col-sm-12 col-md-6 ">
-                      <label for="ref">Monto total</label>
-                      <input class="form-control" type="number" id="ref" name="monto_total">
+                      <input class="form-control" type="text" id="ref" name="numero_documento">
                     </div>
                   </div>
                 </div>
@@ -75,7 +71,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 ">
                       <label for="beneficiario"> Empresa </label><br>
-                      <select class="selectpicker" id="beneficiario" name="empresa"
+                      <select class="selectpicker" id="beneficiario" name="empresa" data-validation="required"
                         data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Beneficiario..."
                         data-width="50%">
                         {% for w in vendor %}
@@ -117,7 +113,7 @@
                       <tbody>
                         <tr>
                           <td>
-                            <select class="selectpicker" id="concepto"
+                            <select class="selectpicker" 
                               data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
                               {% for w in concepto %}
                               <option> {{ w | safe }} </option>
@@ -125,7 +121,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker" id="proveedor" data-live-search="true"
+                            <select class="selectpicker"  data-live-search="true" 
                              name="proveedor" title="Seleccione un Proveedor..."
                               data-width="80%">
                               {% for w in proveedor %}
@@ -134,7 +130,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker" id="categoria"  data-live-search="true"
+                            <select class="selectpicker" data-live-search="true" 
                               name="categoria" title="Seleccione una Categoria..."
                               data-width="80%">
                               {% for w in categoria %}
@@ -143,7 +139,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker"  id="concepto" 
+                            <select class="selectpicker"  
                               data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
                               {% for w in concepto %}
                               <option> {{ w | safe }} </option>
@@ -151,10 +147,10 @@
                             </select>
                           </td>
                           <td>
-                            <input class="form-control" type="number" id="monto" name="monto" data-validation="number">
+                            <input class="form-control" type="number"  name="monto" data-validation="number">
                           </td>
                           <td>
-                            <input class="form-control" type="text" id="numero_control" name="numero_control">
+                            <input class="form-control" type="text"  name="numero_control">
                           </td>
 
                           <td><input type="text" id="descripcion" name="descripcion"></td>
@@ -170,7 +166,7 @@
 
                   <div class="switch">
                     <h2 class="subtitle">Pagado</h2>
-                    <label style="margin-top: 10px"><input id="pagado" type="checkbox"><span class="lever"></span></label>
+                    <label style="margin-top: 10px"><input id="pagado" name ="pagado" type="checkbox"><span class="lever"></span></label>
                   </div>
 
                   <div id="pagado-form">
@@ -179,8 +175,8 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Cuenta de banco </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()'
-                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                          <select class="selectpicker" id="cuenta_banco" 
+                            data-live-search="true" name="cuenta_banco" title="Seleccione una cuenta de banco..." data-width="100%">
                             {% for w in concepto %}
                             <option> {{ w | safe }} </option>
                             {% endfor %}
@@ -189,7 +185,7 @@
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label> Fecha de pago </label>
                           <div class='input-group date mydatepicker' data-provide="datepicker">
-                            <input type='text' class="form-control" name="fecha de vencimiento" data-validation="date"/>
+                            <input type='text' class="form-control" name="fecha_pago" />
                             <span class="input-group-addon">
                               <i class="material-icons mydate">date_range</i>
                             </span>
@@ -202,8 +198,8 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()'
-                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                          <select class="selectpicker" id="concepto" 
+                            data-live-search="true" name="forma_pago" title="Seleccione una forma de pago..." data-width="100%">
                             {% for w in concepto %}
                             <option> {{ w | safe }} </option>
                             {% endfor %}
@@ -220,20 +216,20 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label style="margin-top: 7px;" for="fname">Monto</label>
-                          <input class="form-control" type="number" id="monto_pagado" name="monto_pagado">
+                          <input class="form-control" type="number" id="monto_pagado" name="monto_pagado" data-validation="number">
                         </div>
                         <div class="col-sm-12 col-md-6 nomargin">
-                          <input type="checkbox" id="movimiento" class="filled-in" />
-                          <label class="grey-font" for="movimiento">Movimiento conciliado</label>
-                          <input disabled placeholder="Referencia" class="form-control" type="text" id="conciliado"
-                            name="conciliado">
+                          <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
+                          <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
+                          <input disabled placeholder="Referencia" class="form-control" type="text" id="referencia_conciliacion"
+                            name="referencia_conciliacion">
                         </div>
                       </div>
                     </div>
 
                     <div class="input-group ">
                       <label for="comentarios">Comentario</label>
-                      <textarea class="form-control" type="text" id="comentarios" name="comentarios" placeholder=""></textarea>
+                      <textarea class="form-control" type="text" id="comentario_pago" name="comentario_pago"></textarea>
                     </div>
                   </div>
 
@@ -255,22 +251,10 @@
 
 
     $("#add-row").click(function () {
-      var $tableBody = $('#table').find("tbody"),
+        var $tableBody = $('#table').find("tbody"),
         $trLast = $tableBody.find("tr:last"),
         $trNew = $trLast.clone();
-      // Find by attribute 'id'
-      // $trNew.find('[id]').each(function () {
-      // var num = this.id.replace(/\D/g, '');
-      // if (!num) {
-      // num = 0;
-      // }
-      // // Remove numbers by first regexp
-      // this.id = this.id.replace(/\d/g, '')
-      // // increment number
-      // + (1 + parseInt(num, 10));
-      // });
-
-      $trLast.after($trNew);
+        $trLast.after($trNew);
     });
 
     $("#delete-row").click(function () {
@@ -287,26 +271,13 @@
     }
   });
 
-  $("#movimiento").change(function () {
+  $("#conciliado_check").change(function () {
     if (this.checked) {
-      console.log("chec")
-      $("#movimiento-input").prop('disabled', false);
+      $("#referencia_conciliacion").prop('disabled', false);
     } else {
-      console.log("un")
-      $("#movimiento-input").prop('disabled', true);
+      $("#referencia_conciliacion").prop('disabled', true);
     }
   });
 
-
-  $('.select').selectpicker();
-  $('.mydatepicker').datepicker({
-    format: "dd/mm/yyyy",
-    autoclose: true
-  });
-  autosize($('textarea'));
-  // function ajaxFirstOnChange() {
-  // var x = document.getElementById("provedor").value;
-  // document.getElementById("demo").innerHTML = "You selected: " + x;
-  // };
 </script>
 {% endblock javascripts %}

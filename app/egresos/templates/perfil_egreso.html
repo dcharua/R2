@@ -13,18 +13,18 @@
       <div class="body">
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-8">
-            <b><p class="font-18">Beneficiario: <span class="font-bold">Flexi</span></p></b>
-            <p class="font-18">Id: <span class="font-bold">26</span></p>
-            <p class="font-18"># de documento: <span class="font-bold">FA-003</span></p>
-            <p class="font-18">Fecha de Vencimento: <span class="font-bold">30/01/2019</span></p>
-            <p class="font-18">Fecha programada de pago: <span class="font-bold">15/01/2019</span></p>
+            <b><p class="font-18">Beneficiario: <span class="font-bold">{{egreso.beneficiario}}</span></p></b>
+            <p class="font-18">Id: <span class="font-bold">{{egreso.id}}</span></p>
+            <p class="font-18"># de documento: <span class="font-bold">{{egreso.numero_documento}}</span></p>
+            <p class="font-18">Fecha de Vencimento: <span class="font-bold">{{egreso.fecha_vencimiento}}</span></p>
+            <p class="font-18">Fecha programada de pago: <span class="font-bold">{{egreso.fecha_programada_pago}}</span></p>
           </div>
           <div class="col-sm-12 col-md-4 align-left">
             <b><p class="font-18">Status: <span class="badge bg-red">Incompleto</span></p></b>
-            <b><p class="font-18">Monto total: <span class="font-bold">$100,000.00</span></p></b>            
+            <b><p class="font-18">Monto total: <span class="font-bold">{{egreso.monto_total}}</span></p></b>            
             <p class="font-18">Monto Pagado: <span class="font-bold">$0.00</span></p>
             <p class="font-18">Monto Pendiente: <span class="font-bold">$100,000.00</span></p>
-            <p class="font-18">Empresa: <span class="font-bold">1 Rudos</span></p>
+            <p class="font-18">Empresa: <span class="font-bold">{{egreso.empresa}}</span></p>
 
           </div>
         </div>
@@ -32,7 +32,7 @@
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18"> </p>
+              <p class="font-18">{{egreso.comentario}} </p>
             </div>
           </div>
         </div>
@@ -121,17 +121,18 @@
                             </thead>
 
                             <tbody>
+                              {% for pago in pagos %}
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    
+                                    <td>{{pago.id}}</td>
+                                    <td>{{pago.beneficiario.nombre}}</td>
+                                    <td>{{pago.fecha_pago}}</td>
+                                    <td>{{pago.cuenta_banco}}</td>
+                                    <td>{{pago.monto_total}}</td>
+                                    <td>{{pago.referencia_pago}}</td>
                                     <td> </td>
                                     <td> </td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -174,20 +175,22 @@
               </tr>
             </tfoot>
             <tbody>
+                {% for detalle in detalles %}
               <tr>
-                <td>Flexi</td>
-                <td>Tienda 1</td>
-                <td>Inventario</td>
-                <td>Zapatos</td>
-                <td>$100,000.00</td>
-                <td></td>
-                <td>OC-00122</td>
+                <td>{{detalle.proveedor}}</td>
+                <td>{{detalle.centro_negocios}}</td>
+                <td>{{detalle.categoria}}</td>
+                <td>{{detalle.concepto}}</td>
+                <td>{{detalle.monto}}</td>
+                <td>{{detalle.description}}</td>
+                <td>{{detalle.numero_control}}</td>
                 <th>
                   <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
                     <i class="material-icons">edit</i>
                   </a>
                 </th>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
