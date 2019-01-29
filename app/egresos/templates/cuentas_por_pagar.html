@@ -52,38 +52,18 @@
                               </tr>
                           </tfoot>
                           <tbody>
+                            {% for egreso in egresos %}
                               <tr>
                                   <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
-                                  <td>26</td>
-                                  <td>Felxi</td>
-                                  <td>15/01/2019</td>
-                                  <td>30/01/2019</td>
-                                  <td>$100,000.00</td>
-                                  <td>FA-003</td>
+                                  <td>{{egreso.id}}</td>
+                                  <td>{{egreso.beneficiario}}</td>
+                                  <td>{{egreso.fecha_programada_pago}}</td>
+                                  <td>{{egreso.fecha_vencimiento}}</td>
+                                  <td>{{egreso.monto_total}}</td>
+                                  <td>{{egreso.numero_documento}}</td>
                                   <td> <span class="badge bg-red">No Comenzado</span></td>
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                      <i class="material-icons">visibility</i>
-                                    </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
-                                      <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
-                                    </a>
-                                    <a class="btn btn-xs btn-warning waves-effect" data-toggle="modal" data-target="#modal_reprogramar_fecha" >
-                                      <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
-                                    </a>
-
-                                  </td>
-                              </tr>
-                                  <td></td>
-                                  <td>27</td>
-                                  <td>Felxi</td>
-                                  <td>15/01/2019</td>
-                                  <td>30/01/2019</td>
-                                  <td>$200,000.00</td>
-                                  <td>FA-004</td>
-                                  <td> <span class="badge bg-orange">Parcial</span></td>
-                                  <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
                                     <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
@@ -94,6 +74,7 @@
                                     </a>
                                   </td>
                               </tr>
+                              {% endfor %}
                           </tbody>
                       </table>
                     </form>

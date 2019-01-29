@@ -73,5 +73,7 @@ This project shows:
 
 ### SQLACHEMY TUTORIALS https://auth0.com/blog/sqlalchemy-orm-tutorial-for-python-developers/
 https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
-###CRUD 
+
+
+### CRUD 
 https://www.codementor.io/garethdwyer/building-a-crud-application-with-flask-and-sqlalchemy-dm3wv7yu2
