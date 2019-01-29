@@ -82,6 +82,80 @@
               </div>
           </div>
       </div>
+      
+      
+      
+      
+       <!-- #Cuentas Pagadas -->
+      
+      
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-black">
+                  <h2>
+                      Cuentas Pagadas
+                  </h2>
+
+              </div>
+              <div class="body">
+                 
+                  <div class="table-responsive">
+                      <form id="frm-example" action="/path/to/your/script" method="POST">
+                       
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  cellspacing="0" width="100%">
+                        
+                          <thead>
+                              <tr>
+                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                  <th>ID</th>
+                                  <th>Beneficiario</th>
+                                  <th>Fecha programada</th>
+                                  <th>Fecha de vencimiento</th>
+                                  <th>Monto</th>
+                                  <th># de documento</th>
+                                  <th>Status</th>
+                                  <th style="width: 132px;">Acciones</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th>Fecha programada</th>
+                                <th>Fecha de vencimiento</th>
+                                <th>Monto</th>
+                                <th># de documento</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                            {% for egreso in egresos_realizados %}
+                              <tr>
+                                  <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
+                                  <td>{{egreso.id}}</td>
+                                  <td>{{egreso.beneficiario}}</td>
+                                  <td>{{egreso.fecha_programada_pago}}</td>
+                                  <td>{{egreso.fecha_vencimiento}}</td>
+                                  <td>{{egreso.monto_total}}</td>
+                                  <td>{{egreso.numero_documento}}</td>
+                                  <td> <span class="badge bg-red">No Comenzado</span></td>
+                                  <td>
+                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                      <i class="material-icons">visibility</i>
+                                    </a>
+
+                                  </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                    </form>
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
   <!-- #END# Basic Examples -->
 
