@@ -13,24 +13,24 @@
       <div class="body">
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-6">
-            <p class="font-18">Id: <span class="font-bold">15</span></p>
-            <p class="font-18">Beneficiario: <span class="font-bold">Flexi</span></p>
-            <p class="font-18">Referencia: <span class="font-bold">CH00123</span></p>
-            <p class="font-18">Forma de pago: <span class="font-bold">Cheque</span></p>
-            <p class="font-18">Monto total: <span class="font-bold">$300,000.00</span></p>
+            <p class="font-18">Id: <span class="font-bold">{{pago.id}}</span></p>
+            <p class="font-18">Beneficiario: <span class="font-bold">{{pago.beneficiario}}</span></p>
+            <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
+            <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
+            <p class="font-18">Monto total: <span class="font-bold">{{pago.monto_total}}</span></p>
           </div>
           <div class="col-sm-12 col-md-6 align-left">
             <p class="font-18">Status: <span class="badge bg-green">Liquidado</span></p>
             <p class="font-18">Empresa: <span class="font-bold">1 Rudos</span></p>
-            <p class="font-18">Fecha de pago: <span class="font-bold">15/01/2019</span></p>
-            <p class="font-18">Cuenta de banco: <span class="font-bold">Bancomer 1</span></p>
+            <p class="font-18">Fecha de pago: <span class="font-bold">{{pago.fecha_pago}}</span></p>
+            <p class="font-18">Cuenta de banco: <span class="font-bold">{{pago.cuenta}}</span></p>
           </div>
         </div>
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18"> </p>
+              <p class="font-18">{{pago.comentario}} </p>
             </div>
           </div>
         </div>

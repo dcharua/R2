@@ -130,7 +130,11 @@
                                     <td>{{pago.monto_total}}</td>
                                     <td>{{pago.referencia_pago}}</td>
                                     <td> </td>
-                                    <td> </td>
+                                    <td> 
+                                      <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                      </a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -157,7 +161,7 @@
                 <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
-                <th>Descipcíon</th>
+                <th>Descripcíon</th>
                 <th># control</th>
                 <th>Editar</th>
               </tr>
@@ -169,7 +173,7 @@
                 <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
-                <th>Descipcíon</th>
+                <th>Descripcíon</th>
                 <th># control</th>
                 <th>Editar</th>
               </tr>
@@ -182,7 +186,7 @@
                 <td>{{detalle.categoria}}</td>
                 <td>{{detalle.concepto}}</td>
                 <td>{{detalle.monto}}</td>
-                <td>{{detalle.description}}</td>
+                <td>{{detalle.descripcion}}</td>
                 <td>{{detalle.numero_control}}</td>
                 <th>
                   <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
