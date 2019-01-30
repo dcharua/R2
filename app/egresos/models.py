@@ -71,6 +71,7 @@ class Pagos(db.Model):
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
     forma_pago_id = Column(Integer, ForeignKey('formas_pago.id'))
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
+    egresos = relationship("Egresos", secondary=egresos_has_pagos)
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id)           
