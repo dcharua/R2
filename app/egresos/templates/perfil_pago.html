@@ -63,18 +63,20 @@
                 <th># Documento</th>
                 <th>Monto</th>
                 <th>Status</th>
+                <th>Accion</th>
               </tr>
             </tfoot>
             
             <tbody>
+              {% for egreso in pago.egresos %}
               <tr>
-                <td>25</td>
-                <td>Flexi</td>
-                <td>FA-002</td>
-                <td>$200,000.00</td>
+                <td>{{egreso.id}}</td>
+                <td>{{egreso.beneficiario}}</td>
+                <td>{{egreso.numero_documento}}</td>
+                <td>{{egreso.monto_total}}</td>
                 <td><span class="badge bg-green">Liquidado</span></td>
                 <td>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
                   <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
@@ -82,22 +84,7 @@
                   </a>
                 </td>
               </tr>
-              
-              <tr>
-                <td>26</td>
-                <td>Flexi</td>
-                <td>FA-003</td>
-                <td>$100,000.00</td>
-                <td><span class="badge bg-green">Liquidado</span></td>
-                <td>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                    <i class="material-icons">visibility</i>
-                  </a>
-                  <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
-                    <i class="material-icons">delete</i>
-                  </a>
-                </td>
-              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>

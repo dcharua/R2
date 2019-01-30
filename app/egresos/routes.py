@@ -91,12 +91,23 @@ def perfil_egreso(egreso_id):
     
 
  
+@blueprint.route('pagos_realizados', methods=['GET', 'POST'])
+def pagos_realizados():
+    pagos = Pagos.query.all()
+    for pago in pagos:
+        pago.cuenta = Cuentas.query.get(pago.cuenta_id)
+        pago.forma_pago = FormasPago.query.get(pago.forma_pago_id)
+        pago.beneficiario = Beneficiarios.query.get(pago.beneficiario_id)
+    return render_template("pagos_realizados.html", pagos=pagos)
+
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])
 def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)
     pago.beneficiario= Beneficiarios.query.get(pago.beneficiario_id)
     pago.forma_pago = FormasPago.query.get(pago.forma_pago_id)
     pago.cuenta = Cuentas.query.get(pago.cuenta_id)
+    for egreso in pago.egresos:
+        egreso.beneficiario = Beneficiarios.query.get(egreso.beneficiario_id)
     
     return render_template("perfil_pago.html", pago=pago)
    
