@@ -29,7 +29,9 @@ class Egresos(db.Model):
     comentario = Column(String(200))
     detalles = relationship("DetallesEgreso")
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
+    beneficiario = relationship("Beneficiarios", back_populates="egresos")
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
+    empresa = relationship("Empresas", back_populates="egresos")
     pagos = relationship("Pagos", secondary=egresos_has_pagos)
 
 
@@ -45,9 +47,13 @@ class DetallesEgreso(db.Model):
 
     id = Column(Integer, primary_key=True)
     centro_negocios_id = Column(Integer, ForeignKey('centros_negocio.id'))
+    centro_negocios = relationship("CentrosNegocio", back_populates="detalles_egresos")
     proveedor_id = Column(Integer, ForeignKey('beneficiarios.id'))
+    proveedor = relationship("Beneficiarios", back_populates="detalles_egresos")
     categoria_id = Column(Integer, ForeignKey('categorias.id'))
+    categoria = relationship("Categorias", back_populates="detalles_egresos")
     concepto_id = Column(Integer, ForeignKey('conceptos.id'))
+    concepto = relationship("Conceptos", back_populates="detalles_egresos")
     monto = Column(Numeric)
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
@@ -69,8 +75,11 @@ class Pagos(db.Model):
     monto_total = Column(Numeric)
     comentario = Column(String(200))
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
+    cuenta = relationship("Cuentas", back_populates="pagos")
     forma_pago_id = Column(Integer, ForeignKey('formas_pago.id'))
+    forma_pago = relationship("FormasPago", back_populates="pagos")
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
+    beneficiario = relationship("Beneficiarios", back_populates="pagos")
     egresos = relationship("Egresos", secondary=egresos_has_pagos)
 
     def __repr__(self):
@@ -90,7 +99,10 @@ class Beneficiarios(db.Model):
     banco = Column(String(30))
     saldo = Column(Numeric) 
     egresos = relationship("Egresos")
+    detalles_egresos = relationship("DetallesEgreso")
     pagos = relationship("Pagos")
+    
+    contacto=relationship("ContactoBeneficiario", uselist=False)
    
 
     def __repr__(self):

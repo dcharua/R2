@@ -17,21 +17,21 @@
             <div class="body">
               <div class="row mycontainer">
                 <div class="col-sm-12 col-md-6">
-                  <p class="font-18">Beneficiario: <span class="font-bold">Flexi</span></p>
-                  <p class="font-18">RFC: <span class="font-bold">FLES120799PY2</span></p>
-                  <p class="font-18">Direccion: <span class="font-bold">Av. Siempre Viva #58 Colonia Centro</span></p>                  
-                  <p class="font-18">Nombre del contacto: <span class="font-bold">Luis Jesus Martinez</span> </p>
-                  <p class="font-18">Correo de contacto: <span class="font-bold">Luis@Felix.com </span> </p>
-                  <p class="font-18">Teléfono <span class="font-bold">55842412 Ext: 121 </span> </p>
+                  <p class="font-18">Beneficiario: <span class="font-bold">{{beneficiario.nombre}}</span></p>
+                  <p class="font-18">RFC: <span class="font-bold">{{beneficiario.RFC}}</span></p>
+                  <p class="font-18">Direccion: <span class="font-bold">{{beneficiario.direccion}}</span></p>                  
+                  <p class="font-18">Nombre del contacto: <span class="font-bold">{{beneficiario.contacto.nombre}}</span> </p>
+                  <p class="font-18">Correo de contacto: <span class="font-bold">{{beneficiario.contacto.correo}} </span> </p>
+                  <p class="font-18">Teléfono <span class="font-bold">{{beneficiario.contacto.telefono}} Ext: {{beneficiario.contacto.extension}} </span> </p>
 
                   
                 </div>
                 <div class="col-sm-12 col-md-6 align-left">
-                  <p class="font-18">Saldo : <span class="font-bold">178,824.00</span></p>
+                  <p class="font-18">Saldo : <span class="font-bold">{{beneficiario.saldo}}</span></p>
                   <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></td>
-                  <p class="font-18">Razón social: <span class="font-bold">Flexi S.A de C.V.</span></p>
-                  <p class="font-18">Banco: <span class="font-bold">Bancomer</span></p>
-                  <p class="font-18">Cuenta: <span class="font-bold">28017616</span></p>
+                  <p class="font-18">Razón social: <span class="font-bold">{{beneficiario.razon_social}}</span></p>
+                  <p class="font-18">Banco: <span class="font-bold">{{beneficiario.banco}}</span></p>
+                  <p class="font-18">Cuenta: <span class="font-bold">{{beneficiario.cuenta_banco}}</span></p>
                 </div>
               </div>
             </div>
@@ -83,16 +83,17 @@
                             </tr>
                         </tfoot>
                         <tbody>
+                          {% for egreso in beneficiario.egresos %}
                             <tr>
                                 <td></td>
-                                <td>26</td>
-                                <td>15/01/2019</td>
-                                <td>30/01/2019</td>
-                                <td>$100,000.00</td>
-                                <td>FA-003</td>
+                                <td>{{egreso.id}}</td>
+                                <td>{{egreso.fecha_programada_pago}}</td>
+                                <td>{{egreso.fecha_vencimiento}}</td>
+                                <td>{{egreso.monto_total}}</td>
+                                <td>{{egreso.numero_documento}}</td>
                                 <td> <span class="badge bg-red">No Comenzado</span></td>
                                 <td>
-                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                     <i class="material-icons">visibility</i>
                                   </a>
                                   <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
@@ -103,25 +104,7 @@
                                   </a>
                                 </td>
                             </tr>
-                                <td></td>
-                                <td>27</td>
-                                <td>15/01/2019</td>
-                                <td>30/01/2019</td>
-                                <td>$200,000.00</td>
-                                <td>FA-004</td>
-                                <td> <span class="badge bg-orange">Parcial</span></td>
-                                <td>
-                                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso_2" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                    <i class="material-icons">visibility</i>
-                                  </a>
-                                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#largeModal" >
-                                    <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
-                                  </a>
-                                  <a class="btn btn-xs btn-warning waves-effect" data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago">
-                                    <i class="material-icons">update</i>
-                                  </a>
-                                </td>
-                            </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                   </form>
@@ -166,16 +149,17 @@
                 </tr>
               </tfoot>
               <tbody>
+                {% for pago in beneficiario.pagos %}
                 <tr>
-                  <td>15</td>
-                  <td>15/01/19</td>
-                  <td>Cheque</td>
-                  <td>Bancomer 1</td>
-                  <td>CH000123</td>
-                  <td>$300,000.00</td>
+                  <td>{{pago.id}}</td>
+                  <td>{{pago.fecha_pago}}</td>
+                  <td>{{pago.forma_pago}}</td>
+                  <td>{{pago.cuenta}}</td>
+                  <td>{{pago.referencia_pago}}</td>
+                  <td>{{pago.monto_total}}</td>
                   <td><span class="badge bg-green">Liquidado</span></td>
                   <td>
-                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago/{{pago.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                       <i class="material-icons">visibility</i>
                     </a>
                     <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
@@ -183,6 +167,7 @@
                     </a>
                   </td>
                 </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
