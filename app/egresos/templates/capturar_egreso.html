@@ -103,6 +103,8 @@
                     </button>
                   </div>
                   <div style="padding:10px;" class="body" id="clone">
+
+<!--  
                     <div id="detalle">
                       <div class="input-group ">
                           <div class="row">
@@ -172,12 +174,9 @@
                               <label for="descripcion">Descripcíon</label>
                               <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
                             </div>
-                       
-
                           <hr>
-                        </div> 
+                        </div>  -->
 
-<!-- 
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
@@ -236,7 +235,7 @@
                           <td><input type="text" id="descripcion" name="descripcion"></td>
                         </tr>
                       </tbody>
-                    </table> -->
+                    </table> 
                   </div>
 
                   <div class="input-group ">
@@ -332,14 +331,14 @@
 
 
     $("#add-row").click(function () {
-        counter += 1;
-        var packing = $('#detalle');
-        var clone = packing.clone();
-        clone.appendTo('#clone');
-        // var $tableBody = $('#table').find("tbody"),
-        // $trLast = $tableBody.find("tr:last"),
-        // $trNew = $trLast.clone();
-        // $trLast.after($trNew);
+        // counter += 1;
+        // var packing = $('#detalle');
+        // var clone = packing.clone();
+        // clone.appendTo('#clone');
+        var $tableBody = $('#table').find("tbody"),
+        $trLast = $tableBody.find("tr:last"),
+        $trNew = $trLast.clone();
+        $trLast.after($trNew);
 
         // var elmnt = document.getElementById("detalle");
         // var clone = elmnt.cloneNode(true);
