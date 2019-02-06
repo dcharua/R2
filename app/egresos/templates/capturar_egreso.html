@@ -17,17 +17,21 @@
             <div class="col-sm-12 text-left">
 
               <div class="input-group">
-                <label for="beneficiario"> Beneficiario </label><br>
-                <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required"
-                  data-live-search="true" title="Seleccione un Beneficiario..."
-                  data-width="50%">
-                  {% for beneficiario in beneficiarios %}
-                  <option value="{{beneficiario.id}}"> {{ beneficiario.nombre }} </option>
-                  {% endfor %}
-                </select>
-                <input type="checkbox" id="basic_checkbox_2" class="filled-in" checked />
-                <label style="margin-left: 40px;" for="basic_checkbox_2">Usar como provedor</label>
-                <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <label for="beneficiario"> Beneficiario </label><br>
+                    <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required"
+                      data-live-search="true" title="Seleccione un Beneficiario..."
+                      data-width="50%">
+                      {% for beneficiario in beneficiarios %}
+                      <option value="{{beneficiario.id}}"> {{ beneficiario.nombre }} </option>
+                      {% endfor %}
+                    </select>
+                    <input type="checkbox" id="basic_checkbox_2" class="filled-in" checked />
+                    <label style="margin-left: 40px;" for="basic_checkbox_2">Usar como provedor</label>
+                    <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                  </div>
+                </div>
               </div>
 
 
@@ -35,7 +39,7 @@
                 <div class="row">
                   <div class="col-sm-12 col-md-6 ">
                     <label> Fecha de Vencimiento </label>
-                    <div class='input-group date mydatepicker' data-provide="datepicker">
+                    <div class='date mydatepicker' data-provide="datepicker">
                       <input type='text' class="form-control" name="fecha_vencimiento"/>
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
@@ -45,7 +49,7 @@
 
                   <div class="col-sm-12 col-md-6">
                     <label> Fecha programada de pago </label>
-                    <div class='input-group date mydatepicker' data-provide="datepicker">
+                    <div class='date mydatepicker' data-provide="datepicker">
                       <input type='text' class="form-control" name="fecha_programada_pago" />
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
@@ -53,6 +57,7 @@
                     </div>
                   </div>
                 </div>
+              </div>
 
                 <div class="input-group">
                   <div class="row">
@@ -97,7 +102,82 @@
                       <i class="material-icons">add</i>
                     </button>
                   </div>
-                  <div style="padding:10px;" class="body">
+                  <div style="padding:10px;" class="body" id="clone">
+                    <div id="detalle">
+                      <div class="input-group ">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                              <label for="centro_negocios"> Centro de negocios </label>
+                                <select class="selectpicker" 
+                                  data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
+                                  {% for centro in centros_negocios %}
+                                  <option value="{{centro.id}}"> {{ centro.nombre }} </option>
+                                  {% endfor %}
+                                </select>
+                            </div>
+          
+                            <div class="col-sm-12 col-md-6">
+                              <label for="proveedor"> Proveedor </label>
+                                <select class="selectpicker"  data-live-search="true" 
+                                name="proveedor" title="Seleccione un Proveedor..."  data-width="100%">
+                                {% for provedor in proveedores %}
+                                <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="input-group ">
+                          <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                              <label for="categoria"> Categoría </label>
+                                <select class="selectpicker" data-live-search="true" 
+                                name="categoria" title="Seleccione una Categoria..."
+                                data-width="100%">
+                                {% for categoria in categorias %}
+                                <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+          
+                            <div class="col-sm-12 col-md-6">
+                              <label for="concepto"> Concepto </label>
+                              <select class="selectpicker"  
+                              data-live-search="true" name="concepto" title="Seleccione un Concepto..."  data-width="100%">
+                              {% for concepto in conceptos %}
+                              <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                              {% endfor %}
+                            </select>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="input-group ">
+                            <div class="row">
+                              <div class="col-sm-12 col-md-6 ">
+                                <label for="monto"> Monto </label>
+                                <input class="form-control" type="number"  name="monto" data-validation="number">
+                              </div>
+                              <div class="col-sm-12 col-md-6">
+                                <label for="numero_control"> Numero de control </label>
+                                <input class="form-control" type="text"  name="numero_control">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="input-group ">
+                              <label for="descripcion">Descripcíon</label>
+                              <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
+                            </div>
+                       
+
+                          <hr>
+                        </div> 
+
+<!-- 
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
@@ -156,11 +236,11 @@
                           <td><input type="text" id="descripcion" name="descripcion"></td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> -->
                   </div>
 
                   <div class="input-group ">
-                    <label for="lname">Comentario</label>
+                    <label for="comentario">Comentario</label>
                     <textarea class="form-control" type="text" id="comentario" name="comentario" placeholder=""></textarea>
                   </div>
 
@@ -248,13 +328,26 @@
 {% block javascripts %} {{ super()}}
 <script>
   $(document).ready(function () {
+    var counter=0;
 
 
     $("#add-row").click(function () {
-        var $tableBody = $('#table').find("tbody"),
-        $trLast = $tableBody.find("tr:last"),
-        $trNew = $trLast.clone();
-        $trLast.after($trNew);
+        counter += 1;
+        var packing = $('#detalle');
+        var clone = packing.clone();
+        clone.appendTo('#clone');
+        // var $tableBody = $('#table').find("tbody"),
+        // $trLast = $tableBody.find("tr:last"),
+        // $trNew = $trLast.clone();
+        // $trLast.after($trNew);
+
+        // var elmnt = document.getElementById("detalle");
+        // var clone = elmnt.cloneNode(true);
+        // clone.id ="detalle"+i++;
+        //var html = '<div id="detalle"><div class="input-group "><div class="row"><div class="col-sm-12 col-md-6 "><label for="centro_negocios"> Centro de negocios </label><select class="selectpicker" data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">{% for centro in centros_negocios %}<option value="{{centro.id}}"> {{ centro.nombre }} </option>{% endfor %}</select></div><div class="col-sm-12 col-md-6"><label for="proveedor"> Proveedor </label><select class="selectpicker"  data-live-search="true" name="proveedor" title="Seleccione un Proveedor..."  data-width="100%">{% for provedor in proveedores %}<option value="{{provedor.id}}"> {{provedor.nombre }} </option>{% endfor %}</select></div></div></div>'
+        //document.getElementById('clone').insertAdjacentHTML('beforeend', clone);
+        // document.getElementById("clone").appendChild(clone);
+
     });
 
     $("#delete-row").click(function () {

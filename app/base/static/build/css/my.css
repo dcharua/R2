@@ -104,3 +104,12 @@
 div.form-error strong, div.form-error ul li {
   color:#fff !important;
 }
+
+.input-group-addon {
+  position: absolute;
+  right: 0;
+}
+
+.input-group{
+  margin-bottom: 0px !important;
+}

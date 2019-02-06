@@ -1,9 +1,9 @@
 from app.egresos import blueprint
-from flask import render_template, request
+from flask import render_template, request, redirect, flash
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
-from app.egresos.models import *
+from app.db_models.models import *
 from datetime import date
 
 @blueprint.route('/<template>')
@@ -11,13 +11,15 @@ from datetime import date
 def route_template(template):
     return render_template(template + '.html')
 
+
+#####  EGRESOS ROUTES #########
+#Egresos Create
 @blueprint.route('capturar_egreso', methods=['GET', 'POST'])
 def capturar_egreso():
     if request.form:
         data = request.form
         montos = list(map(int, data.getlist("monto")))
         monto_total = sum(montos)
-        print(data)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"], 
         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
         monto_total=monto_total, referencia=data["referencia"], empresa_id=data["empresa"], comentario=data["comentario"])
@@ -61,12 +63,13 @@ def capturar_egreso():
                            cuentas_banco=cuentas_banco,
                            formas_pago = formas_pago)
 
-
+#Egresos View all
 @blueprint.route('cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
     egresos = Egresos.query.all()
     return render_template("cuentas_por_pagar.html", egresos=egresos)
 
+#Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
@@ -75,9 +78,25 @@ def perfil_egreso(egreso_id):
     pagos = Pagos.query.join(Egresos.pagos, Beneficiarios).filter(Egresos.id == egreso_id)
     detalles = DetallesEgreso.query.filter(DetallesEgreso.egreso_id == egreso_id)
     return render_template("perfil_egreso.html", egreso=egreso, pagos=pagos, detalles=detalles)
-    
 
- 
+#Egresos Edit   
+@blueprint.route('editar_egreso/<int:egreso_id>"', methods=['GET', 'POST'])
+def editar_egreso(egreso_id):
+    return redirect("/")
+    
+#Egresos Delete
+@blueprint.route("/borrar_egreso/<int:egreso_id>",  methods=['GET', 'POST'])
+def delete_egreso(egreso_id):
+    egreso = Egresos.query.get(egreso_id)
+    db.session.delete(egreso)
+    db.session.commit()
+    flash('Egreso borrado', 'success')
+    return redirect("/")
+
+
+##### PAGOS ROUTES  #########
+
+
 @blueprint.route('pagos_realizados', methods=['GET', 'POST'])
 def pagos_realizados():
     pagos = Pagos.query.all()
