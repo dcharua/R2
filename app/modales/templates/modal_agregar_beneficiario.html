@@ -1,5 +1,4 @@
-{% extends "base_site.html" %}
-{% block content %}
+
 <!-- Modal pagos -->
 <div class="modal fade" id="modal_agregar_beneficiario" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -29,8 +28,8 @@
                                     <input type='text' class="form-control" name="razon_social" />
                                 </div>
                                 <div class="col-sm-12 col-md-6">
-                                    <label for="rfc"> RFC </label>
-                                    <input type='text' class="form-control" name="rfc" />
+                                    <label for="RFC"> RFC </label>
+                                    <input type='text' class="form-control" name="RFC" />
                                 </div>
                             </div>
                         
@@ -72,42 +71,42 @@
                           <table id="table" style="table-layout: fixed;" class="table table-striped">
                             <thead>
                               <tr>
-                                <th>Centro de Negocio</th>
-                                <th>Proveedor</th>
-                                <th>Categoría</th>
-                                <th>Concepto</th>
-                                <th>Monto</th>
-                                <th># de Control</th>
-                                <th>Descripcíon</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                                <th>Extensión</th>
+                                <th>Puesto</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <td>
-                                        <input type="text" id="a" name="a" style="width:100%">
+                                    <input type="text" name="nombre_contacto" style="width:100%">
                                 </td>
                                 <td>
-                                        <input type="text" id="a" name="a" style="width:100%">
+                                    <input type="email" name="correo_contacto" style="width:100%">
                                 </td>
                                 <td>
-                                        <input type="text" id="a" name="a" style="width:100%">
+                                    <input type="tel" name="telefono_contacto" style="width:100%">
                                 </td>
                                 <td>
-                                        <input type="text" id="a" name="a" style="width:100%">
+                                    <input type="number" name="extension_contacto" style="width:100%">
                                 </td>
                                 <td>
-                                  <input class="form-control" type="number"  name="monto" data-validation="number">
+                                  <input class="form-control" type="text"  name="puesto_contacto" >
                                 </td>
-                                <td>
-                                  <input class="form-control" type="text"  name="numero_control">
-                                </td>
-      
-                                <td><input type="text" id="descripcion" name="descripcion" style="width:100%"></td>
                               </tr>
                             </tbody>
                           </table> 
                         </div> 
-                            
+                <div class="input-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="cometarios">Comentarios</label>
+                            <textarea name="comentarios" style="width:100%"></textarea>
+                        </div>
+                    </div>
+                </div>
 
                 
             </div>
@@ -123,8 +122,8 @@
         </div>
     </div>
 </div>
-{% endblock content %}
-{% block javascripts %} {{ super()}}
+<script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
+
 <script>
 
     $(document).ready(function () {
@@ -148,4 +147,3 @@
 
   });
 </script>
-{% endblock javascripts %}

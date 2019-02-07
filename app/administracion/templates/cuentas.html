@@ -9,7 +9,7 @@
                       Lista de Cuentas
                   </h2> 
                   <div class="select-btn-group">
-                      <span class="btn btn-warning" >Agregar Cuenta</span>
+                      <span  data-toggle="modal" data-target="#modal_agregar_cuenta" class="btn btn-warning" >Agregar Cuenta</span>
                   </div>
               </div>
               <div class="body">
@@ -40,22 +40,24 @@
                               </tr>
                           </tfoot>
                           <tbody>
+                                {% for cuenta in cuentas %}
                               <tr>
-                                  <td>1</td>
-                                  <td>Santander</td>
+                                  <td>{{cuenta.id}}</td>
+                                  <td>{{cuenta}}</td>
                                   <td>14/06/2018</td>
-                                  <td>$1,854,654.54</td>
+                                  <td>{{cuenta.saldo}}</td>
                                   <td>$1,854,654.54</td>
                                   <td>$0.00</td>
                                   
                                   <td> <span class="badge bg-light-green">Completo</span></td>
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/conciliaciones/perfil_cuenta" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-xs btn-info waves-effect" href="/conciliaciones/perfil_cuenta/{{cuenta.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
 
                                   </td>
                               </tr>
+                              {% endfor %}
                           </tbody>
                       </table>
                   </div>
@@ -65,7 +67,7 @@
   </div>
   <!-- #END# Basic Examples -->
 
-{% include "modal_cobrar.html" %}
+  {% include "modal_agregar_cuenta.html" %}
 
 {% endblock content %}
 

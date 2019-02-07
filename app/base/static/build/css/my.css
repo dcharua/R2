@@ -117,3 +117,11 @@ div.form-error strong, div.form-error ul li {
 .mar-t-0{
   margin-top: 0 !important;
 }
+
+.f-right{
+  float: right !important;
+}
+
+.f-left{
+  float: left !important;
+}

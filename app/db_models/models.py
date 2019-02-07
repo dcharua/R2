@@ -29,11 +29,12 @@ class Beneficiarios(db.Model):
     cuenta_banco = Column(String(20))
     banco = Column(String(30))
     saldo = Column(Numeric) 
+    comentarios = Column(String(250))
     egresos = relationship("Egresos")
     detalles_egresos = relationship("DetallesEgreso")
     pagos = relationship("Pagos")
     
-    contacto=relationship("ContactoBeneficiario", uselist=False)
+    contacto=relationship("ContactoBeneficiario")
    
 
     def __repr__(self):

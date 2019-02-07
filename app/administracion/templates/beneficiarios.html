@@ -17,44 +17,43 @@
                       <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
-                                <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                 <th>ID</th>
-                                <th>Beneficiario</th>
-                                <th>Telefono</th>
-                                <th>Contacto</th>
-                                <th>Referencia</th>
-                                <th>Status</th>
+                                <th>nombre</th>
+                                <th>RFC</th>
+                                <th>Razon Social</th>
+                                <th>Cuenta Banco</th>
+                                <th>Saldo</th>
                                 <th>Acciones</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
-                                <th></th>
                                 <th>ID</th>
-                                <th>Beneficiario</th>
-                                <th>Telefono</th>
-                                <th>Contacto</th>
-                                <th>Referencia</th>
-                                <th>Status</th>
+                                <th>nombre</th>
+                                <th>RFC</th>
+                                <th>Razon Social</th>
+                                <th>Cuenta Banco</th>
+                                <th>Saldo</th>
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
+                              {% for beneficiario in beneficiarios %}
                               <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <td>1</td>
-                                  <td>Felxi</td>
-                                  <td>12345678</td>
-                                  <td>Gael Sanchez</td>
-                                  <td>Abc138Gs</td>
-                                  <td> <span class="badge bg-green">Activo</span></td>
+                                  <td>{{beneficiario.id}}</td>
+                                  <td>{{beneficiario.nombre}}</td>
+                                  <td>{{beneficiario.RFC}}</td>
+                                  <td>{{beneficiario.razon_social}}</td>
+                                  <td>{{beneficiario.banco}} / {{beneficiario.cuenta_banco}}</td>
+                                  <td>{{beneficiario.saldo}}</td>
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_beneficiario" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_beneficiario/{{beneficiario.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
                                     </a>
                                     </a>
                                   </td>
                               </tr>
+                              {% endfor %}
                           </tbody>
                       </table>
                   </div>
