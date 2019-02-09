@@ -103,10 +103,11 @@ def get_data_pagar(egreso_id):
 def mandar_pagar():
         if request.form:
                 data = request.form
-                print(data)
                 egreso = Egresos.query.get(data["egreso_id"])
                 pago = Pagos(conciliado=False, monto_total=egreso.monto_total, cuenta_id=data["cuenta_id"], forma_pago_id=data["forma_pago_id"])
                 pago.egresos.append(egreso)
+                egreso.monto_pagado = pago.monto_total
+                egreso.pagado = True
                 pago.beneficiario = egreso.beneficiario
                 db.session.add(pago)
                 db.session.commit()

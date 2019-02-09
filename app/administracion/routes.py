@@ -39,9 +39,7 @@ def centros_negocios():
 @login_required
 def otros():
     categorias = Categorias.query.all()
-    centros_negocios = CentrosNegocio.query.all()
     conceptos = Conceptos.query.all()
     empresas = Empresas.query.all()
     formas_pago = FormasPago.query.all()
-    return render_template("otros.html", categorias=categorias, centros_negocios=centros_negocios, conceptos=conceptos,
-    empresas=empresas, formas_pago=formas_pago)
+    return render_template("otros.html", categorias=categorias, conceptos=conceptos, empresas=empresas, formas_pago=formas_pago)

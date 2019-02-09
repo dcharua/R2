@@ -32,7 +32,8 @@
                                   <th>Beneficiario</th>
                                   <th>Fecha programada</th>
                                   <th>Fecha de vencimiento</th>
-                                  <th>Monto</th>
+                                  <th>Monto Pagado</th>
+                                  <th>Monto Total</th>
                                   <th># de documento</th>
                                   <th>Status</th>
                                   <th style="width: 132px;">Acciones</th>
@@ -45,21 +46,23 @@
                                 <th>Beneficiario</th>
                                 <th>Fecha programada</th>
                                 <th>Fecha de vencimiento</th>
-                                <th>Monto</th>
+                                <th>Monto Pagado</th>
+                                <th>Monto Total</th>
                                 <th># de documento</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
-                            {% for egreso in egresos %}
+                            {% for egreso in egresos_pendientes %}
                               <tr>
                                   <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
                                   <td>{{egreso.id}}</td>
                                   <td>{{egreso.beneficiario}}</td>
                                   <td>{{egreso.fecha_programada_pago}}</td>
                                   <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{egreso.monto_total}}</td>
+                                  <td>{{egreso.monto_pagado}}$</td>
+                                  <td>{{egreso.monto_total}}$</td>
                                   <td>{{egreso.numero_documento}}</td>
                                   <td> <span class="badge bg-red">No Comenzado</span></td>
                                   <td>
@@ -111,7 +114,8 @@
                                   <th>Beneficiario</th>
                                   <th>Fecha programada</th>
                                   <th>Fecha de vencimiento</th>
-                                  <th>Monto</th>
+                                  <th>Monto Total</th>
+                                  <th>Monto Pagado</th>
                                   <th># de documento</th>
                                   <th>Status</th>
                                   <th style="width: 132px;">Acciones</th>
@@ -124,23 +128,25 @@
                                 <th>Beneficiario</th>
                                 <th>Fecha programada</th>
                                 <th>Fecha de vencimiento</th>
-                                <th>Monto</th>
+                                <th>Monto Total</th>
+                                <th>Monto Pagado</th>
                                 <th># de documento</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
-                            {% for egreso in egresos_realizados %}
+                            {% for egreso in egresos_pagados %}
                               <tr>
                                   <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
                                   <td>{{egreso.id}}</td>
                                   <td>{{egreso.beneficiario}}</td>
                                   <td>{{egreso.fecha_programada_pago}}</td>
                                   <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{egreso.monto_total}}</td>
+                                  <td>{{egreso.monto_pagado}}$</td>
+                                  <td>{{egreso.monto_total}}$</td>
                                   <td>{{egreso.numero_documento}}</td>
-                                  <td> <span class="badge bg-red">No Comenzado</span></td>
+                                  <td> <span class="badge bg-green">Pagado</span></td>
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
