@@ -18,7 +18,6 @@
                   </h2>
                   <div class="select-btn-group">
                       <span class="btn btn-primary" color="red" >Generar pagos</span>
-                      <span class="btn bg-deep-purple" >Conciliar movimientos</span>
                   </div>
               </div>
               <div class="body">
@@ -29,11 +28,9 @@
                                   <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                   <th>ID</th>
                                   <th>Beneficiario</th>
-                                  <th>Fecha de pago</th>
                                   <th>Cuenta</th>
                                   <th>Forma de pago</th>
                                   <th>Monto</th>
-                                  <th>Referencia</th>
                                   <th>Status</th>
                                   <th>Acciones</th>
                               </tr>
@@ -43,37 +40,33 @@
                                   <th></th>
                                   <th>ID</th>
                                   <th>Beneficiario</th>
-                                  <th>Fecha de pago</th>
                                   <th>Cuenta</th>
                                   <th>Forma de pago</th>
                                   <th>Monto</th>
-                                  <th>Referencia</th>
                                   <th>Status</th>
                                   <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
-                              <tr>
-                                  <td></td>
-                                  <td>1</td>
-                                  <td>Felxi</td>
-                                  <td>24/08/2018</td>
-                                  <td>Bancomer</td>
-                                  <td>Transferencia</td>
-                                  <td>$320,800</td>
-                                  <td>Abc138Gs</td>
-                                  <td> <span class="badge bg-red">Por Pagar</span></td>
-                                  <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                      <i class="material-icons">visibility</i>
-                                    </a>
-                                    <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
-                                      <i class="material-icons">payment</i>
-                                    </a>
-                                    <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#modal_conciliar_movimiento"  >
-                                      <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
-                                    </a>
-                                  </td>
+                            {% for pago in pagos %}
+                            <tr>
+                                <td></td>
+                                <td>{{pago.id}}</td>
+                                <td>{{pago.beneficiario}}</td>
+                                <td>{{pago.cuenta}}</td>
+                                <td>{{pago.forma_pago}}</td>
+                                <td>{{pago.monto_total}}</td>
+                                <td> </td>
+                                <td> 
+                                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <i class="material-icons">visibility</i>
+                                  </a>
+                                  <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
+                                    <i class="material-icons">payment</i>
+                                  </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
                               </tr>
                           </tbody>
                       </table>
@@ -90,6 +83,9 @@
                     <h2>
                       Pagos Realizados
                     </h2>
+                    <div class="select-btn-group">
+                        <span class="btn bg-deep-purple" >Conciliar movimientos</span>                        
+                    </div>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -120,6 +116,9 @@
                                     <td> 
                                       <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
+                                      </a>
+                                      <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#modal_conciliar_movimiento"  >
+                                        <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
                                       </a>
                                     </td>
                                 </tr>

@@ -27,7 +27,13 @@ def clientes():
 @login_required
 def cuentas():
     cuentas = Cuentas.query.all()
-    return render_template("cuentas.html", cuentas=cuentas)      
+    return render_template("cuentas.html", cuentas=cuentas)   
+
+@blueprint.route('centros_negocios', methods=['GET', 'POST'])
+@login_required
+def centros_negocios():
+    centros = CentrosNegocio.query.all()
+    return render_template("centros_negocios.html", centros=centros)
 
 @blueprint.route('otros', methods=['GET', 'POST'])
 @login_required

@@ -118,6 +118,10 @@ div.form-error strong, div.form-error ul li {
   margin-top: 0 !important;
 }
 
+.mar-b-10{
+  margin-bottom: 10px !important;
+}
+
 .f-right{
   float: right !important;
 }

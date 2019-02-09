@@ -77,6 +77,13 @@ class CentrosNegocio(db.Model):
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     nombre = Column(String(50))
+    numero = Column(String(20))
+    tipo = Column(String(50))
+    direccion =  Column(String(50))
+    arrendadora = Column(String(50))
+    comentario = Column(String(250))
+    empresa_id = Column(Integer, ForeignKey('empresas.id'))
+    empresa = relationship("Empresas", back_populates="centro")
     detalles_egresos = relationship("DetallesEgreso")
 
     def __repr__(self):
@@ -142,8 +149,10 @@ class Egresos(db.Model):
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
     monto_total = Column(Numeric)
+    monto_pagado = Column(Numeric)
     referencia = Column(String(40))
     comentario = Column(String(200))
+    pagado = Column(Boolean)
     detalles = relationship("DetallesEgreso")
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="egresos")
@@ -165,6 +174,7 @@ class Empresas(db.Model):
     id = Column(Integer, primary_key=True)
     nombre = Column(String(50))
     egresos = relationship("Egresos")
+    centro = relationship("CentrosNegocio")
 
     def __repr__(self):
         return self.nombre 

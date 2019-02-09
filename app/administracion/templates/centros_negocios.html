@@ -1,0 +1,89 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+              <div class="header bg-black">
+                  <h2>
+                      Lista de Centro de Negocio
+                  </h2> 
+                  <div class="select-btn-group">
+                      <span  data-toggle="modal" data-target="#modal_agregar_centro" class="btn btn-warning" >Agregar Centro de Negocios</span>
+                  </div>
+              </div>
+              <div class="body">
+                  <div class="table-responsive">
+                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                          <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Numero</th>
+                                <th>Tipo</th>
+                                <th>Empresa</th>
+                                <th>Acciones</th>
+                              </tr>
+                          </thead>
+                          <tfoot>
+                              <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Numero</th>
+                                <th>Tipo</th>
+                                <th>Empresa</th>
+                                <th>Acciones</th>
+                              </tr>
+                          </tfoot>
+                          <tbody>
+                              {% for centro in centros %}
+                              <tr>
+                                  <td>{{centro.id}}</td>
+                                  <td>{{centro.nombre}}</td>
+                                  <td>{{centro.numero}}</td>
+                                  <td>{{centro.tipo}}</td>
+                                  <td>{{centro.empresa}}</td>
+                                  <td>
+                                    <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_centro/{{centro.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+                                    </a>
+                                  </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- #END# Basic Examples -->
+
+{% include "modal_agregar_centro.html" %}
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+  $('.js-basic-example').DataTable({
+    dom: 'Bfrtip',
+     responsive: true,
+     buttons: [
+         'copy', 'csv', 'excel', 'pdf', 'print'
+     ]
+  });
+</script>
+{% endblock javascripts %}

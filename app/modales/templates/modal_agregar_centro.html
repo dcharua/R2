@@ -9,11 +9,62 @@
                     </div>
                     <div class="modal-body">
                         <div class="row" style="margin-bottom:20px !important">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 col-md-6">
                                 <label for="nombre"> Centro de Negocios </label>
                                 <input type='text' class="form-control" name="nombre" />
                             </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="beneficiario"> Empresa </label><br>
+                                    <select class="selectpicker" id="empresa" name="empresa" data-validation="required"
+                                        data-live-search="true" title="Seleccione una Empresa..."
+                                        data-width="100%">
+                                        {% for empresa in empresas %}
+                                        <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
+                                        {% endfor %}
+                                    </select>
+                                
+                            </div>
                         </div>
+
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="numero"> Numero del Centro de Negocios </label>
+                                    <input type='text' class="form-control" name="numero" />
+                               
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="beneficiario"> Tipo </label><br>
+                                    <select class="selectpicker" id="tipo" name="tipo" data-validation="required"
+                                      data-live-search="true" title="Seleccione un Tipo de Negocios..."
+                                      data-width="100%">
+                                      <option value="Tienda fisica"> Tienda fisica </option>
+                                      <option value="E-commerce"> E-commerce</option>
+                                      <option value="Mayorista"> Mayorista</option>
+                                      <option value="Administración"> Administración</option>
+                                      <option value="Socios"> Socios</option>
+                                    </select>
+                              
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="direccion"> Dirección </label>
+                                    <input type='text' class="form-control" name="direccion" />
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="arrendadora"> Arrendadora </label>
+                                    <input type='text' class="form-control" name="arrendadora" />
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12">
+                                    <label for="arrendadora"> Comentario </label>
+                                    <textarea name="comentario" id="comentario" style="width:100%"></textarea>
+                                 </div>
+                        </div>
+
                     </div>
         
                     <div class="modal-footer">

@@ -18,22 +18,29 @@
 
               <div class="input-group">
                 <div class="row">
-                  <div class="col-sm-12">
+                  <div class="col-sm-12 col-md-6">
                     <label for="beneficiario"> Beneficiario </label><br>
                     <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required"
                       data-live-search="true" title="Seleccione un Beneficiario..."
-                      data-width="50%">
+                      data-width="100%">
                       {% for beneficiario in beneficiarios %}
                       <option value="{{beneficiario.id}}"> {{ beneficiario.nombre }} </option>
                       {% endfor %}
                     </select>
-                    <input type="checkbox" id="basic_checkbox_2" class="filled-in" checked />
-                    <label style="margin-left: 40px;" for="basic_checkbox_2">Usar como provedor</label>
-                    <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                  </div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="beneficiario"> Empresa </label><br>
+                      <select class="selectpicker" id="empresa" name="empresa" data-validation="required"
+                        data-live-search="true" title="Seleccione una Empresa..."
+                        data-width="100%">
+                        {% for empresa in empresas %}
+                        <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    
                   </div>
                 </div>
-              </div>
-
 
               <div class="input-group ">
                 <div class="row">
@@ -65,24 +72,9 @@
                       <label for="ref"># de Documento</label>
                       <input class="form-control" type="text" id="ref" name="numero_documento">
                     </div>
-                  </div>
-                </div>
-
-                <div class="input-group">
-                  <div class="row">
                     <div class="col-sm-12 col-md-6 ">
                       <label for="referencia">Referencia/ Orden de compra </label>
                       <input class="form-control" type="number" id="referencia" name="referencia">
-                    </div>
-                    <div class="col-sm-12 col-md-6 ">
-                      <label for="beneficiario"> Empresa </label><br>
-                      <select class="selectpicker" id="beneficiario" name="empresa" data-validation="required"
-                        data-live-search="true" title="Seleccione una Empresa..."
-                        data-width="100%">
-                        {% for empresa in empresas %}
-                        <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
-                        {% endfor %}
-                      </select>
                     </div>
                   </div>
                 </div>
@@ -243,7 +235,7 @@
                     <textarea class="form-control" type="text" id="comentario" name="comentario" placeholder=""></textarea>
                   </div>
 
-                  <div class="switch">
+                  <div class="switch" style="margin-top: 10px">
                     <h2 class="subtitle">Pagado</h2>
                     <label style="margin-top: 10px"><input id="pagado" name ="pagado" type="checkbox"><span class="lever"></span></label>
                   </div>
@@ -252,7 +244,7 @@
                     <hr>
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label for="beneficiario"> Cuenta de banco </label><br>
                           <select class="selectpicker" id="cuenta_banco" 
                             data-live-search="true" name="cuenta_banco" title="Seleccione una cuenta de banco..." data-width="100%">
@@ -261,7 +253,7 @@
                             {% endfor %}
                           </select>
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label> Fecha de pago </label>
                           <div class='input-group date mydatepicker' data-provide="datepicker">
                             <input type='text' class="form-control" name="fecha_pago" />
@@ -275,7 +267,7 @@
 
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label for="beneficiario"> Forma de pago </label><br>
                           <select class="selectpicker" id="concepto" 
                             data-live-search="true" name="forma_pago" title="Seleccione una forma de pago..." data-width="100%">
@@ -293,11 +285,11 @@
 
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label style="margin-top: 7px;" for="fname">Monto</label>
                           <input class="form-control" type="number" id="monto_pagado" name="monto_pagado" data-validation="number">
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
                           <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
                           <input disabled placeholder="Referencia" class="form-control" type="text" id="referencia_conciliacion"
@@ -312,9 +304,11 @@
                     </div>
                   </div>
 
-                  <div class="input-group">
+                  <div class="input-group" style="margin-top:20px;">
                     <button class="btn btn-primary" style="float: right;">Registrar Egreso</button>
                   </div>
+                </div>
+
           </form>
         </div>
 

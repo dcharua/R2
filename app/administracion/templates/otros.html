@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-sm-12 col-md-4">
+    <div class="col-sm-12 col-md-6">
         <div class="card">
             <div class="header">
                 <span data-toggle="modal" data-target="#modal_agregar_categoria" class="btn btn-warning f-right">Agregar</span>
@@ -19,23 +19,7 @@
         </div>
     </div>
 
-    <div class="col-sm-12 col-md-4">
-        <div class="card">
-            <div class="header">
-                <span data-toggle="modal" data-target="#modal_agregar_centro" class="btn btn-warning f-right">Agregar</span>
-                <h2>Centros de negocios</h2>
-            </div>
-            <div class="body">
-                <ul>
-                    {%for centro in centros_negocios%}
-                    <li>{{centro}}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4">
+    <div class="col-sm-12 col-md-6">
         <div class="card">
             <div class="header">
                 <span data-toggle="modal" data-target="#modal_agregar_concepto" class="btn btn-warning f-right">Agregar</span>

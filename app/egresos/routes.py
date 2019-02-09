@@ -67,7 +67,9 @@ def capturar_egreso():
 @blueprint.route('cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
     egresos = Egresos.query.all()
-    return render_template("cuentas_por_pagar.html", egresos=egresos)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    return render_template("cuentas_por_pagar.html", egresos=egresos, formas_pago=formas_pago, cuentas=cuentas)
 
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])

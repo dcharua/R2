@@ -1,5 +1,5 @@
 from app.modales import blueprint
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
@@ -54,8 +54,9 @@ def agregar_categoria():
 def agregar_centro():
     if request.form:
         data = request.form
-        centro = CentrosNegocio(nombre=data["nombre"]) 
-        db.session.add(centro)
+        centro = CentrosNegocio(nombre=data["nombre"], numero=data["numero"],  tipo=data["tipo"],  direccion=data["direccion"],  
+        empresa_id=data["empresa"],  arrendadora=data["arrendadora"],  comentario=data["comentario"]  ) 
+        db.session.add(centro) 
         db.session.commit()   
         return redirect("/administracion/otros")  
 
@@ -88,4 +89,25 @@ def agregar_forma_pago():
         forma_pago = FormasPago(nombre=data["nombre"]) 
         db.session.add(forma_pago)
         db.session.commit()   
-        return redirect("/administracion/otros")                                                                       
+        return redirect("/administracion/otros")    
+        
+@blueprint.route('get_data_pagar<int:egreso_id>', methods=['GET', 'POST'])
+@login_required
+def get_data_pagar(egreso_id):
+        egreso = Egresos.query.get(egreso_id)
+        print(egreso.monto_total)
+        return jsonify(egreso_id = egreso.id, beneficiario = egreso.beneficiario.nombre, monto_total=str(egreso.monto_total), numero_documento= egreso.numero_documento)
+
+@blueprint.route('mandar_pagar', methods=['GET', 'POST'])
+@login_required
+def mandar_pagar():
+        if request.form:
+                data = request.form
+                print(data)
+                egreso = Egresos.query.get(data["egreso_id"])
+                pago = Pagos(conciliado=False, monto_total=egreso.monto_total, cuenta_id=data["cuenta_id"], forma_pago_id=data["forma_pago_id"])
+                pago.egresos.append(egreso)
+                pago.beneficiario = egreso.beneficiario
+                db.session.add(pago)
+                db.session.commit()
+                return  redirect("/egresos/pagos_realizados")   

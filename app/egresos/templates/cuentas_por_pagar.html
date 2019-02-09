@@ -66,7 +66,7 @@
                                     <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_pagar" >
+                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-modal" data-toggle="modal" data-target="#modal_pagar" data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}" >
                                       <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
                                     </a>
                                     <a class="btn btn-xs btn-warning waves-effect" data-toggle="modal" data-target="#modal_reprogramar_fecha" >
@@ -179,6 +179,39 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
+
+var modalDiv = $("#modal_pagar");
+
+$(".open-modal").on("click", function() {
+    console.log("i")
+  $.ajax({
+    url: $(this).attr("data-url"),
+    success: function(data) {
+        const html = `<div class="row mar-b-10" >
+                    <div class="col-sm-12 col-md-6 ">
+                      <p class="font-18">Beneficiario:  <span class="font-bold">${data.beneficiario}</span></p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <p class="font-18"># de Documento: <span class="font-bold">${data.numero_documento}</span></p>
+                    </div>
+                  </div>
+                  <div class="row mar-b-10">
+                    <div class="col-sm-12 col-md-6 "></div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <p class="font-18">Monto Total:  <span class="font-bold">$ ${data.monto_total}</span></p>
+                    </div>
+                  </div>
+                  <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
+                  <hr<
+                    
+                  `
+    let element = document.querySelector(".here");
+    element.innerHTML = "";
+    element.insertAdjacentHTML('beforeend', html);                  
+    $("#id").text(data)
+    }
+  });
+});
 
   $(function () {
     //Tooltip

@@ -1,5 +1,48 @@
 
-  <!-- Modal pagos -->
+  
+  <div class="modal fade" id="modal_pagar" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title" id="largeModalLabel">Pagos a generar | fecha .. 24/12/18</h4>
+          </div>
+          <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('modales_blueprint.mandar_pagar') }}">            
+          <div class="modal-body">
+            <div class="here"></div>
+              <div class="input-group">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6 nomargin">
+                      <label for="beneficiario"> Forma de pago </label><br>
+                      <select class="selectpicker" id="forma_pago" data-live-search="true" name="forma_pago_id" title="Seleccione una Forma de Pago..." data-width="100%">
+                         {% for forma in formas_pago %} 
+                         <option value="{{forma.id}}"> {{ forma }} </option>
+                        {% endfor %} 
+                      </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 nomargin">
+                        <label for="beneficiario"> Cuenta </label><br>
+                        <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_id" title="Seleccione una Cuenta.." data-width="100%">
+                           {% for cuenta in cuentas %} 
+                           <option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                          {% endfor %} 
+                        </select>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-link waves-effect ">Enviar</button>
+                <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                  <i class="material-icons">close</i>
+                </button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+  
+  <!-- Modal pagos 
   <div class="modal fade" id="modal_pagar" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -10,7 +53,7 @@
                   <div class="box">
                   <div class="row">
                     <div class="col-sm-12 col-md-6 nomargin">
-                      <p class="font-18">Beneficiario: <span class="font-bold">Tom Brady</span></p>
+                      <p class="font-18" id="id">Beneficiario: <span class="font-bold">Tom Brady</span></p>
                     </div>
                     <div class="col-sm-12 col-md-6 nomargin">
                       <p class="font-18">Monto a pagar: <span class="font-bold">$10343.00</span></p>
@@ -22,17 +65,17 @@
                       <div class="col-sm-12 col-md-6 nomargin">
                         <label for="beneficiario"> Forma de pago </label><br>
                         <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                          <!-- {% for w in concepto %} -->
+                           {% for w in concepto %} 
                           <option> {{ w | safe }} </option>
-                          <!-- {% endfor %} -->
+                          {% endfor %} 
                         </select>
                       </div>
                       <div class="col-sm-12 col-md-6 nomargin">
                         <label> Cuenta </label>
                         <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                          <!-- {% for w in concepto %} -->
+                          {% for w in concepto %} 
                           <option> {{ w | safe }} </option>
-                          <!-- {% endfor %} -->
+                          {% endfor %} 
                         </select>
                       </div>
                     </div>
@@ -77,17 +120,17 @@
                       <div class="col-sm-12 col-md-6 nomargin">
                         <label for="beneficiario"> Forma de pago </label><br>
                         <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una forma de pago..." data-width="100%">
-                          <!-- {% for w in concepto %} -->
+                          {% for w in concepto %} 
                           <option> {{ w | safe }} </option>
-                          <!-- {% endfor %} -->
+                           {% endfor %} 
                         </select>
                       </div>
                       <div class="col-sm-12 col-md-6 nomargin">
                         <label> Cuenta </label>
                         <select class="selectpicker" id="concepto2" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione una cuenta..." data-width="100%">
-                          <!-- {% for w in concepto %} -->
+                           {% for w in concepto %} 
                           <option> {{ w | safe }} </option>
-                          <!-- {% endfor %} -->
+                          {% endfor %} 
                         </select>
                       </div>
                     </div>
@@ -140,15 +183,4 @@
             </div>
         </div>
     </div>
-
-
-<script>
-    $(function () {
-        $('.js-modal-buttons .btn').on('click', function () {
-            var color = $(this).data('color');
-            $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
-            $('#mdModal').modal('show');
-        });
-    });
-
-</script>
+  -->
