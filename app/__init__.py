@@ -56,8 +56,6 @@ def create_app(config):
     )
 
     db = SQLAlchemy(app)
-    #print('app/__init__.py heree')
-    #print(str(app))
     login_manager = LoginManager()
     register_extensions(app)
     register_blueprints(app)

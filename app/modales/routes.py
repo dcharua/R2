@@ -95,7 +95,6 @@ def agregar_forma_pago():
 @login_required
 def get_data_pagar(egreso_id):
         egreso = Egresos.query.get(egreso_id)
-        print(egreso.monto_total)
         return jsonify(egreso_id = egreso.id, beneficiario = egreso.beneficiario.nombre, monto_total=str(egreso.monto_total), numero_documento= egreso.numero_documento)
 
 @blueprint.route('mandar_pagar', methods=['GET', 'POST'])
@@ -110,5 +109,25 @@ def mandar_pagar():
                 egreso.pagado = True
                 pago.beneficiario = egreso.beneficiario
                 db.session.add(pago)
+                db.session.commit()
+                return  redirect("/egresos/pagos_realizados")   
+
+
+@blueprint.route('get_data_conciliar<int:pago_id>', methods=['GET', 'POST'])
+@login_required
+def get_data_conciliar(pago_id):
+        pago = Pagos.query.get(pago_id)
+        return jsonify(pago_id = pago.id, beneficiario = pago.beneficiario.nombre, monto_total=str(pago.monto_total))
+
+@blueprint.route('conciliar_movimento', methods=['GET', 'POST'])
+@login_required
+def conciliar_movimento():
+        if request.form:
+                data = request.form
+                pago = Pagos.query.get(data["pago_id"])
+                pago.conciliado = True;
+                pago.referencia_conciliacion = data["referencia"]
+                pago.fecha_pago = data["fecha"]
+                pago.comentario = data["comentario"]
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")   

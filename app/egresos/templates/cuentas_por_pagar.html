@@ -151,7 +151,6 @@
                                     <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-
                                   </td>
                               </tr>
                               {% endfor %}
@@ -186,10 +185,7 @@
 
 <script>
 
-var modalDiv = $("#modal_pagar");
-
 $(".open-modal").on("click", function() {
-    console.log("i")
   $.ajax({
     url: $(this).attr("data-url"),
     success: function(data) {
@@ -202,21 +198,17 @@ $(".open-modal").on("click", function() {
                     </div>
                   </div>
                   <div class="row mar-b-10">
-                    <div class="col-sm-12 col-md-6 "></div>
                     <div class="col-sm-12 col-md-6 ">
                       <p class="font-18">Monto Total:  <span class="font-bold">$ ${data.monto_total}</span></p>
                     </div>
                   </div>
                   <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
-                  <hr<
-                    
-                  `
-    let element = document.querySelector(".here");
-    element.innerHTML = "";
-    element.insertAdjacentHTML('beforeend', html);                  
-    $("#id").text(data)
-    }
-  });
+                  <hr>`
+        let element = document.querySelector(".here");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        }
+    });
 });
 
   $(function () {

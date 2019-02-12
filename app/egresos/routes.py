@@ -73,8 +73,6 @@ def capturar_egreso():
 def cuentas_por_pagar():
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
-    print(egresos_pendientes)
-    print(egresos_pagados)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     return render_template("cuentas_por_pagar.html", egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
@@ -111,7 +109,6 @@ def delete_egreso(egreso_id):
 def pagos_realizados():
     pagos = Pagos.query.filter(Pagos.fecha_pago == None).all()
     pagos_realizados = Pagos.query.filter(Pagos.fecha_pago != None).all()
-    print(pagos_realizados)
     return render_template("pagos_realizados.html", pagos=pagos, pagos_realizados=pagos_realizados)
 
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])

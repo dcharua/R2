@@ -12,7 +12,8 @@
 	//bootstrao date picker
 	$('.mydatepicker').datepicker({
 		format: "yyyy/mm/dd",
-		autoclose: true
+		autoclose: true,
+		 orientation: 'auto top'
 	});
 	//autosize for textarea
 	autosize($('textarea'));
