@@ -178,14 +178,14 @@
                           <th>Concepto</th>
                           <th>Monto</th>
                           <th># de Control</th>
-                          <th style="width: 25%;">Descripcíon</th>
+                          <th>Descripcíon</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
+                      <tbody class="here">
+                        <tr >
                           <td>
                             <select class="selectpicker" 
-                              data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
+                              name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
                               {% for centro in centros_negocios %}
                               <option value="{{centro.id}}"> {{ centro.nombre }} </option>
                               {% endfor %}
@@ -211,7 +211,8 @@
                           </td>
                           <td>
                             <select class="selectpicker"  
-                              data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
+                             
+                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
                               {% for concepto in conceptos %}
                               <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                               {% endfor %}
@@ -224,7 +225,7 @@
                             <input class="form-control" type="text"  name="numero_control">
                           </td>
 
-                          <td><input type="text" id="descripcion" name="descripcion"></td>
+                          <td><input type="text" id="descripcion" name="descripcion" style="width:100%"></td>
                         </tr>
                       </tbody>
                     </table> 
@@ -329,11 +330,64 @@
         // var packing = $('#detalle');
         // var clone = packing.clone();
         // clone.appendTo('#clone');
-        var $tableBody = $('#table').find("tbody"),
-        $trLast = $tableBody.find("tr:last"),
-        $trNew = $trLast.clone();
-        $trLast.after($trNew);
+        // var $tableBody = $('#table').find("tbody"),
+        // $trLast = $tableBody.find("tr:last"),
+        // $trNew = $trLast.clone();
+        // $trLast.after($trNew);
+        const html = `
+                        <tr>
+                          <td>
+                            <select class="selectpicker" 
+                              name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
+                              {% for centro in centros_negocios %}
+                              <option value="{{centro.id}}"> {{ centro.nombre }} </option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          <td>
+                            <select class="selectpicker"  data-live-search="true" 
+                             name="proveedor" title="Seleccione un Proveedor..."
+                              data-width="80%">
+                              {% for provedor in proveedores %}
+                              <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          <td>
+                            <select class="selectpicker" data-live-search="true" 
+                              name="categoria" title="Seleccione una Categoria..."
+                              data-width="80%">
+                              {% for categoria in categorias %}
+                              <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          <td>
+                            <select class="selectpicker"  
+                              data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
+                              {% for concepto in conceptos %}
+                              <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          <td>
+                            <input class="form-control" type="number"  name="monto" data-validation="number">
+                          </td>
+                          <td>
+                            <input class="form-control" type="text"  name="numero_control">
+                          </td>
 
+                          <td><input type="text" id="descripcion" name="descripcion" style="width:100%"></td>
+                        </tr>`
+        let element = document.querySelector(".here");
+        element.insertAdjacentHTML('beforeend', html);
+        // $('.bootstrap-select').each(function( index ) {
+        //   if($(this).find('.bootstrap-select').length){
+        //     $(this).replaceWith($(this).children()[0]); 
+        //   }            
+        // });
+
+        $('.selectpicker').selectpicker('refresh');
         // var elmnt = document.getElementById("detalle");
         // var clone = elmnt.cloneNode(true);
         // clone.id ="detalle"+i++;

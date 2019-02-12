@@ -34,7 +34,7 @@ def agregar_beneficiario():
 def agregar_cuenta():
     if request.form:
         data = request.form
-        cuenta = Cuentas(banco=data["banco"], numero=data["numero"], saldo=data["saldo"]) 
+        cuenta = Cuentas(nombre=data["nombre"], banco=data["banco"], numero=data["numero"], saldo=data["saldo"], empresa_id=data["empresa"], comentario=data["comentario"]) 
         db.session.add(cuenta)
         db.session.commit()   
         return redirect("/administracion/cuentas")    

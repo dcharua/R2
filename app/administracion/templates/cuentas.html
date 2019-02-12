@@ -19,6 +19,8 @@
                               <tr>
                                   <th>ID</th>
                                   <th>Cuenta</th>
+                                  <th>Banco</th>
+                                  <th>Numero</th>
                                   <th>Ultima Conciliacíon</th>
                                   <th>Saldo en Cuenta</th>
                                   <th>Saldo en Sistema</th>
@@ -29,23 +31,27 @@
                           </thead>
                           <tfoot>
                               <tr>
-                                  <th>ID</th>
-                                  <th>Cuenta</th>
-                                  <th>Ultima Conciliacíon</th>
-                                  <th>Saldo en Cuenta</th>
-                                  <th>Saldo en Sistema</th>
-                                  <th>Diferencia</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
+                                <th>ID</th>
+                                <th>Cuenta</th>
+                                <th>Banco</th>
+                                <th>Numero</th>
+                                <th>Ultima Conciliacíon</th>
+                                <th>Saldo en Cuenta</th>
+                                <th>Saldo en Sistema</th>
+                                <th>Diferencia</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
                                 {% for cuenta in cuentas %}
                               <tr>
                                   <td>{{cuenta.id}}</td>
-                                  <td>{{cuenta}}</td>
+                                  <td>{{cuenta.nombre}}</td>
+                                  <td>{{cuenta.banco}}</td>
+                                  <td>{{cuenta.numero}}</td>
                                   <td>14/06/2018</td>
-                                  <td>{{cuenta.saldo}}</td>
+                                  <td>{{"${:,.2f}".format(cuenta.saldo)}}</td>
                                   <td>$1,854,654.54</td>
                                   <td>$0.00</td>
                                   

@@ -8,6 +8,22 @@
                         <h3 class="modal-title" id="largeModalLabel"> Agregar Cuenta</h3>
                     </div>
                     <div class="modal-body">
+                    <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="nombre"> Nombre </label>
+                                <input type='text' class="form-control" name="nombre" />
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <label for="beneficiario"> Empresa </label><br>
+                                <select class="selectpicker" id="empresa" name="empresa" data-validation="required"
+                                    data-live-search="true" title="Seleccione una Empresa..."
+                                    data-width="100%">
+                                    {% for empresa in empresas %}
+                                    <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
                         <div class="row" style="margin-bottom:20px !important">
                             <div class="col-sm-12 col-md-6">
                                 <label for="banco"> Banco </label>
@@ -20,11 +36,19 @@
                         </div>
                     
                         <div class="row" style="margin-bottom:20px !important">
-                            <div class="col-sm-12">
-                                <label for="saldo">Saldo </label>
+                            <div class="col-sm-12 col-md-6">
+                                <label for="saldo">Saldo Inicial</label>
                                 <input type='number' class="form-control" name="saldo" />
                             </div>
                         </div>
+
+                        <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12">
+                                    <label for="arrendadora"> Comentario </label>
+                                    <textarea name="comentario" id="comentario" style="width:100%"></textarea>
+                                 </div>
+                        </div>
+
                     </div>
         
                     <div class="modal-footer">

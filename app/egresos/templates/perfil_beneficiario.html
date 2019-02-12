@@ -27,7 +27,7 @@
                   
                 </div>
                 <div class="col-sm-12 col-md-6 align-left">
-                  <p class="font-18">Saldo : <span class="font-bold">{{beneficiario.saldo}}</span></p>
+                  <p class="font-18">Saldo : <span class="font-bold">{{"${:,.2f}".format(beneficiario.saldo)}}</span></p>
                   <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></td>
                   <p class="font-18">Razón social: <span class="font-bold">{{beneficiario.razon_social}}</span></p>
                   <p class="font-18">Banco: <span class="font-bold">{{beneficiario.banco}}</span></p>
@@ -89,7 +89,7 @@
                                 <td>{{egreso.id}}</td>
                                 <td>{{egreso.fecha_programada_pago}}</td>
                                 <td>{{egreso.fecha_vencimiento}}</td>
-                                <td>{{egreso.monto_total}}</td>
+                                <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                                 <td>{{egreso.numero_documento}}</td>
                                 <td> <span class="badge bg-red">No Comenzado</span></td>
                                 <td>
@@ -156,7 +156,7 @@
                   <td>{{pago.forma_pago}}</td>
                   <td>{{pago.cuenta}}</td>
                   <td>{{pago.referencia_pago}}</td>
-                  <td>{{pago.monto_total}}</td>
+                  <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
                   <td><span class="badge bg-green">Liquidado</span></td>
                   <td>
                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago/{{pago.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">

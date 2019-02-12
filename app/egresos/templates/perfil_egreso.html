@@ -127,7 +127,7 @@
                                     <td>{{pago.beneficiario.nombre}}</td>
                                     <td>{{pago.fecha_pago}}</td>
                                     <td>{{pago.cuenta_banco}}</td>
-                                    <td>{{pago.monto_total}}</td>
+                                    <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                                     <td>{{pago.referencia_pago}}</td>
                                     <td> </td>
                                     <td> 
@@ -185,7 +185,7 @@
                 <td>{{detalle.centro_negocios}}</td>
                 <td>{{detalle.categoria}}</td>
                 <td>{{detalle.concepto}}</td>
-                <td>{{detalle.monto}}</td>
+                <td>{{"${:,.2f}".format(detalle.monto)}}</td>
                 <td>{{detalle.descripcion}}</td>
                 <td>{{detalle.numero_control}}</td>
                 <th>

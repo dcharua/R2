@@ -61,8 +61,8 @@
                                   <td>{{egreso.beneficiario}}</td>
                                   <td>{{egreso.fecha_programada_pago}}</td>
                                   <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{egreso.monto_pagado}}$</td>
-                                  <td>{{egreso.monto_total}}$</td>
+                                  <td>{{"${:,.2f}".format(egreso.monto_pagado)}}</td>
+                                  <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
                                   <td>{{egreso.numero_documento}}</td>
                                   <td> <span class="badge bg-red">No Comenzado</span></td>
                                   <td>
@@ -143,8 +143,8 @@
                                   <td>{{egreso.beneficiario}}</td>
                                   <td>{{egreso.fecha_programada_pago}}</td>
                                   <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{egreso.monto_pagado}}$</td>
-                                  <td>{{egreso.monto_total}}$</td>
+                                  <td>{{"${:,.2f}".format(egreso.monto_pagado)}}</td>
+                                  <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                                   <td>{{egreso.numero_documento}}</td>
                                   <td> <span class="badge bg-green">Pagado</span></td>
                                   <td>

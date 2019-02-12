@@ -17,7 +17,7 @@
             <p class="font-18">Beneficiario: <span class="font-bold">{{pago.beneficiario}}</span></p>
             <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
             <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
-            <p class="font-18">Monto total: <span class="font-bold">{{pago.monto_total}}</span></p>
+            <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
           </div>
           <div class="col-sm-12 col-md-6 align-left">
             <p class="font-18">Status: <span class="badge bg-green">Liquidado</span></p>
@@ -73,7 +73,7 @@
                 <td>{{egreso.id}}</td>
                 <td>{{egreso.beneficiario}}</td>
                 <td>{{egreso.numero_documento}}</td>
-                <td>{{egreso.monto_total}}</td>
+                <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                 <td><span class="badge bg-green">Liquidado</span></td>
                 <td>
                   <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">

@@ -25,7 +25,7 @@ class Beneficiarios(db.Model):
     nombre = Column(String(50))
     RFC = Column(String(20))
     direccion = Column(String(150))
-    razon_social = Column(String(20))
+    razon_social = Column(String(50))
     cuenta_banco = Column(String(20))
     banco = Column(String(30))
     saldo = Column(Numeric) 
@@ -61,8 +61,12 @@ class Cuentas(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    nombre = Column(String(50))
     banco = Column(String(50))
     numero = Column(String(50))
+    comentario = Column(String(250))
+    empresa_id = Column(Integer, ForeignKey('empresas.id'))
+    empresa = relationship("Empresas", back_populates="cuenta")
     saldo = Column(Numeric)    
     pagos = relationship("Pagos")
 
@@ -175,6 +179,7 @@ class Empresas(db.Model):
     nombre = Column(String(50))
     egresos = relationship("Egresos")
     centro = relationship("CentrosNegocio")
+    cuenta= relationship("Cuentas")
 
     def __repr__(self):
         return self.nombre 
