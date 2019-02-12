@@ -33,7 +33,8 @@ def cuentas():
 @login_required
 def centros_negocios():
     centros = CentrosNegocio.query.all()
-    return render_template("centros_negocios.html", centros=centros)
+    empresas = Empresas.query.all()
+    return render_template("centros_negocios.html", centros=centros, empresas=empresas)
 
 @blueprint.route('otros', methods=['GET', 'POST'])
 @login_required
