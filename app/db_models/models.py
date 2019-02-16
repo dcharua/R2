@@ -67,7 +67,8 @@ class Cuentas(db.Model):
     comentario = Column(String(250))
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="cuenta")
-    saldo = Column(Numeric)    
+    saldo = Column(Numeric)  
+    numero_cheque = Column(Numeric)     
     pagos = relationship("Pagos")
 
     def __repr__(self):
@@ -157,6 +158,7 @@ class Egresos(db.Model):
     referencia = Column(String(40))
     comentario = Column(String(200))
     pagado = Column(Boolean)
+    status = Column(String(20))
     detalles = relationship("DetallesEgreso")
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="egresos")
@@ -164,6 +166,36 @@ class Egresos(db.Model):
     empresa = relationship("Empresas", back_populates="egresos")
     pagos = relationship("Pagos", secondary=egresos_has_pagos)
 
+    def setStatus(self, pagos=None):
+        if pagos is None:
+            egreso = self.query.get(self.id)
+            pagos = egreso.query.join(Egresos.pagos).filter_by(id = self.id) 
+        monto_pagos = 0
+        por_conciliar = False
+        for pago in pagos:
+            print('pago monto' + str(pago.monto_total))
+            if pago.status != 'cancelado':
+                monto_pagos += pago.monto_total
+            if pago.status == 'por_conciliar':
+                por_conciliar = True
+
+        print('monto pagado' + str(monto_pagos))
+        if (monto_pagos == 0):
+            print('in')
+            self.status = 'pendiente'
+
+        elif (self.monto_pagado == self.monto_total):
+            if por_conciliar:
+                self.status = 'por_conciliar'
+            else:
+                self.status = 'liquidado'
+            
+
+        elif (monto_pagos < self.monto_total): 
+            if(monto_pagos == self.monto_total):
+                self.status = 'solicitado'
+            elif(monto_pagos < self.monto_total):
+                 self.status = 'parcial'
 
     def __repr__(self):
         return '<Egreso {}>'.format(self.id)    
@@ -207,7 +239,8 @@ class Pagos(db.Model):
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     referencia_pago = Column(String(20))
     fecha_pago = Column(Date)
-    conciliado = Column(Boolean)
+    fecha_conciliacion = Column(String(20))
+    status = Column(String(20))
     referencia_conciliacion= Column(String(20))
     monto_total = Column(Numeric)
     comentario = Column(String(200))

@@ -29,26 +29,24 @@
                               <tr>
                                   <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                   <th>ID</th>
+                                  <th># documento</th>
                                   <th>Beneficiario</th>
-                                  <th>Fecha programada</th>
-                                  <th>Fecha de vencimiento</th>
-                                  <th>Monto Pagado</th>
+                                  <th>Fecha <br> programada</th>
+                                  <th>Fecha de  <br> vencimiento</th>
                                   <th>Monto Total</th>
-                                  <th># de documento</th>
                                   <th>Status</th>
-                                  <th style="width: 132px;">Acciones</th>
+                                  <th>Acciones</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
                                 <th></th>
                                 <th>ID</th>
+                                <th># documento</th>
                                 <th>Beneficiario</th>
-                                <th>Fecha programada</th>
-                                <th>Fecha de vencimiento</th>
-                                <th>Monto Pagado</th>
+                                <th>Fecha <br> programada</th>
+                                <th>Fecha de  <br> vencimiento</th>
                                 <th>Monto Total</th>
-                                <th># de documento</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -58,20 +56,30 @@
                               <tr>
                                   <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
                                   <td>{{egreso.id}}</td>
+                                  <td>{{egreso.numero_documento}}</td>
                                   <td>{{egreso.beneficiario}}</td>
                                   <td>{{egreso.fecha_programada_pago}}</td>
                                   <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{"${:,.2f}".format(egreso.monto_pagado)}}</td>
                                   <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
-                                  <td>{{egreso.numero_documento}}</td>
-                                  <td> <span class="badge bg-red">No Comenzado</span></td>
+                                  <td>{% if egreso.status == 'pendiente'%} 
+                                        <span class="badge bg-blue">Pendiente</span>
+                                      {% endif %}
+                                      {% if egreso.status == 'solicitado'%} 
+                                        <span class="badge bg-green">Solicitado</span>
+                                      {% endif %}
+                                      {% if egreso.status == 'parcial'%} 
+                                        <span class="badge bg-orange">Parcial</span>
+                                      {% endif %}
+                                </td>
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-modal" data-toggle="modal" data-target="#modal_pagar" data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}" >
-                                      <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">payment</i>
-                                    </a>
+                                    {% if egreso.status != 'solicitado' %} 
+                                        <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-modal" data-toggle="modal" data-target="#modal_pagar" data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}" >
+                                        <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
+                                        </a>
+                                    {% endif %}
                                     <a class="btn btn-xs btn-warning waves-effect" data-toggle="modal" data-target="#modal_reprogramar_fecha" >
                                       <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                                     </a>
@@ -111,26 +119,24 @@
                               <tr>
                                   <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                   <th>ID</th>
+                                  <th># documento</th>
                                   <th>Beneficiario</th>
-                                  <th>Fecha programada</th>
-                                  <th>Fecha de vencimiento</th>
+                                  <th>Fecha <br> programada</th>
+                                  <th>Fecha de  <br> vencimiento</th>
                                   <th>Monto Total</th>
-                                  <th>Monto Pagado</th>
-                                  <th># de documento</th>
                                   <th>Status</th>
-                                  <th style="width: 132px;">Acciones</th>
+                                  <th>Acciones</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
                                 <th></th>
                                 <th>ID</th>
+                                <th># documento</th>
                                 <th>Beneficiario</th>
-                                <th>Fecha programada</th>
-                                <th>Fecha de vencimiento</th>
+                                <th>Fecha <br> programada</th>
+                                <th>Fecha de  <br> vencimiento</th>
                                 <th>Monto Total</th>
-                                <th>Monto Pagado</th>
-                                <th># de documento</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -140,13 +146,20 @@
                               <tr>
                                   <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
                                   <td>{{egreso.id}}</td>
+                                  <td>{{egreso.numero_documento}}</td>
                                   <td>{{egreso.beneficiario}}</td>
                                   <td>{{egreso.fecha_programada_pago}}</td>
                                   <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{"${:,.2f}".format(egreso.monto_pagado)}}</td>
                                   <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                                  <td>{{egreso.numero_documento}}</td>
-                                  <td> <span class="badge bg-green">Pagado</span></td>
+                                  <td> {% if egreso.status == 'liquidado'%} 
+                                        <span class="badge bg-green">Liquidado</span>
+                                      {% endif %}
+                                      {% if egreso.status == 'cancelado'%} 
+                                        <span class="badge bg-red">Cancelado</span>
+                                      {% endif %}
+                                      {% if egreso.status == 'por_conciliar'%} 
+                                        <span class="badge bg-orange">Por conciliar</span>
+                                      {% endif %}</td>
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
@@ -194,12 +207,12 @@ $(".open-modal").on("click", function() {
                       <p class="font-18">Beneficiario:  <span class="font-bold">${data.beneficiario}</span></p>
                     </div>
                     <div class="col-sm-12 col-md-6 ">
-                      <p class="font-18"># de Documento: <span class="font-bold">${data.numero_documento}</span></p>
+                      <p class="font-18"># de documento: <span class="font-bold">${data.numero_documento}</span></p>
                     </div>
                   </div>
                   <div class="row mar-b-10">
                     <div class="col-sm-12 col-md-6 ">
-                      <p class="font-18">Monto Total:  <span class="font-bold">$ ${data.monto_total}</span></p>
+                      <p class="font-18">Monto pendiente:  <span class="font-bold">$ ${data.monto_total}</span></p>
                     </div>
                   </div>
                   <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
@@ -210,6 +223,14 @@ $(".open-modal").on("click", function() {
         }
     });
 });
+
+$("#parcial").change(function () {
+    if (this.checked) {
+      $("#monto_parcial").fadeIn();
+    } else {
+      $("#monto_parcial").fadeOut();
+    }
+  });
 
   $(function () {
     //Tooltip

@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 ">
                       <label for="referencia">Referencia/ Orden de compra </label>
-                      <input class="form-control" type="number" id="referencia" name="referencia">
+                      <input class="form-control" type="text" id="referencia" name="referencia">
                     </div>
                   </div>
                 </div>
@@ -95,80 +95,6 @@
                     </button>
                   </div>
                   <div style="padding:10px;" class="body" id="clone">
-
-<!--  
-                    <div id="detalle">
-                      <div class="input-group ">
-                          <div class="row">
-                            <div class="col-sm-12 col-md-6 ">
-                              <label for="centro_negocios"> Centro de negocios </label>
-                                <select class="selectpicker" 
-                                  data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
-                                  {% for centro in centros_negocios %}
-                                  <option value="{{centro.id}}"> {{ centro.nombre }} </option>
-                                  {% endfor %}
-                                </select>
-                            </div>
-          
-                            <div class="col-sm-12 col-md-6">
-                              <label for="proveedor"> Proveedor </label>
-                                <select class="selectpicker"  data-live-search="true" 
-                                name="proveedor" title="Seleccione un Proveedor..."  data-width="100%">
-                                {% for provedor in proveedores %}
-                                <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
-                                {% endfor %}
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="input-group ">
-                          <div class="row">
-                            <div class="col-sm-12 col-md-6 ">
-                              <label for="categoria"> Categoría </label>
-                                <select class="selectpicker" data-live-search="true" 
-                                name="categoria" title="Seleccione una Categoria..."
-                                data-width="100%">
-                                {% for categoria in categorias %}
-                                <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
-                                {% endfor %}
-                              </select>
-                            </div>
-          
-                            <div class="col-sm-12 col-md-6">
-                              <label for="concepto"> Concepto </label>
-                              <select class="selectpicker"  
-                              data-live-search="true" name="concepto" title="Seleccione un Concepto..."  data-width="100%">
-                              {% for concepto in conceptos %}
-                              <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
-                              {% endfor %}
-                            </select>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="input-group ">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-6 ">
-                                <label for="monto"> Monto </label>
-                                <input class="form-control" type="number"  name="monto" data-validation="number">
-                              </div>
-                              <div class="col-sm-12 col-md-6">
-                                <label for="numero_control"> Numero de control </label>
-                                <input class="form-control" type="text"  name="numero_control">
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="input-group ">
-                              <label for="descripcion">Descripcíon</label>
-                              <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
-                            </div>
-                          <hr>
-                        </div>  -->
-
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
@@ -326,14 +252,6 @@
 
 
     $("#add-row").click(function () {
-        // counter += 1;
-        // var packing = $('#detalle');
-        // var clone = packing.clone();
-        // clone.appendTo('#clone');
-        // var $tableBody = $('#table').find("tbody"),
-        // $trLast = $tableBody.find("tr:last"),
-        // $trNew = $trLast.clone();
-        // $trLast.after($trNew);
         const html = `
                         <tr>
                           <td>
@@ -381,19 +299,9 @@
                         </tr>`
         let element = document.querySelector(".here");
         element.insertAdjacentHTML('beforeend', html);
-        // $('.bootstrap-select').each(function( index ) {
-        //   if($(this).find('.bootstrap-select').length){
-        //     $(this).replaceWith($(this).children()[0]); 
-        //   }            
-        // });
 
         $('.selectpicker').selectpicker('refresh');
-        // var elmnt = document.getElementById("detalle");
-        // var clone = elmnt.cloneNode(true);
-        // clone.id ="detalle"+i++;
-        //var html = '<div id="detalle"><div class="input-group "><div class="row"><div class="col-sm-12 col-md-6 "><label for="centro_negocios"> Centro de negocios </label><select class="selectpicker" data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">{% for centro in centros_negocios %}<option value="{{centro.id}}"> {{ centro.nombre }} </option>{% endfor %}</select></div><div class="col-sm-12 col-md-6"><label for="proveedor"> Proveedor </label><select class="selectpicker"  data-live-search="true" name="proveedor" title="Seleccione un Proveedor..."  data-width="100%">{% for provedor in proveedores %}<option value="{{provedor.id}}"> {{provedor.nombre }} </option>{% endfor %}</select></div></div></div>'
-        //document.getElementById('clone').insertAdjacentHTML('beforeend', clone);
-        // document.getElementById("clone").appendChild(clone);
+      
 
     });
 

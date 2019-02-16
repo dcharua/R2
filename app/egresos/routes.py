@@ -23,7 +23,7 @@ def capturar_egreso():
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"], 
         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
         monto_total=monto_total, referencia=data["referencia"], empresa_id=data["empresa"], comentario=data["comentario"], 
-        pagado = False, monto_pagado = 0)
+        pagado = False, monto_pagado = 0, status='pendiente')
         for i in range(len(data.getlist("monto"))):
             detalle = DetallesEgreso(centro_negocios_id=data.getlist("centro_negocios")[i], proveedor_id=data.getlist("proveedor")[i],
             categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist("concepto")[i], monto=data.getlist("monto")[i], 
@@ -33,18 +33,29 @@ def capturar_egreso():
             monto_pagado=data["monto_pagado"]
             egreso.monto_pagado=monto_pagado
             if ('conciliado_check' in data):
-                conciliado = True
+                status = 'conciliado'
                 refrencia_conciliacion = data["referencia_conciliacion"]
+                if egreso.monto_pagado == egreso.monto_total:
+                    egreso.status = 'liquidado'
+                else: 
+                    egreso.status = 'parcial'
             else:
-                 conciliado = False    
-                 refrencia_conciliacion = ""
-            pago = Pagos(forma_pago_id = data["forma_pago"], cuenta_id= data["cuenta_banco"], referencia_pago = data["forma_pago"],fecha_pago = data["fecha_pago"], conciliado = conciliado, 
+                status = 'por_conciliar'    
+                refrencia_conciliacion = ""
+                if egreso-monto_pagado == egreso.monto_total:
+                    egreso.status = 'por_conciliar'
+                else:
+                    egreso.status = 'parcial'
+
+            pago = Pagos(forma_pago_id = data["forma_pago"], cuenta_id= data["cuenta_banco"], referencia_pago = data["forma_pago"],fecha_pago = data["fecha_pago"], status = status, 
             referencia_conciliacion= refrencia_conciliacion,  monto_total = monto_pagado, comentario = data["comentario_pago"], beneficiario_id=1)
             if  float(monto_pagado) >= monto_total:
                 egreso.pagado = True       
             egreso.pagos.append(pago)
+
         db.session.add(egreso)
         db.session.commit()
+        
 
     beneficiarios = Beneficiarios.query.all()
     empresas= Empresas.query.all()
@@ -107,8 +118,8 @@ def delete_egreso(egreso_id):
 
 @blueprint.route('pagos_realizados', methods=['GET', 'POST'])
 def pagos_realizados():
-    pagos = Pagos.query.filter(Pagos.fecha_pago == None).all()
-    pagos_realizados = Pagos.query.filter(Pagos.fecha_pago != None).all()
+    pagos = Pagos.query.filter(Pagos.status == 'solicitado').all()
+    pagos_realizados = Pagos.query.filter(Pagos.status.like("%conci%")).all()
     return render_template("pagos_realizados.html", pagos=pagos, pagos_realizados=pagos_realizados)
 
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])
