@@ -155,6 +155,8 @@ class Egresos(db.Model):
     numero_documento = Column(String(20))
     monto_total = Column(Numeric)
     monto_pagado = Column(Numeric)
+    monto_solicitado = Column(Numeric)
+    monto_por_conciliar = Column(Numeric)
     referencia = Column(String(40))
     comentario = Column(String(200))
     pagado = Column(Boolean)

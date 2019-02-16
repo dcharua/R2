@@ -2,55 +2,37 @@
 <div class="modal fade" id="modal_reprogramar_fecha" tabindex="-1" role="dialog">
   <div class="modal-dialog " role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="largeModalLabel"> Cambio de fecha programada de pago</h3>
-      </div>
-      <div class="modal-body">
+      <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('modales_blueprint.reprogramar_fecha') }}">
 
-        <div class="row">
-          <div class="col-sm-12 ">
-            <p class="font-18">Seleccionar nueva fecha: </p>
-          </div>
-
+        <div class="modal-header">
+          <h3 class="modal-title" id="largeModalLabel"> Cambio de fecha programada de pago</h3>
         </div>
-
-
-        <div class="input-group">
-          <div class="row">
-            <div class="col-sm-12 col-md-9 ">
-              <label> Fecha programada de pago </label>
-              <div class='input-group date mydatepicker' data-provide="datepicker">
-                <input type='text' name="fecha" class="form-control" />
-                <span class="input-group-addon">
-                  <i class="material-icons mydate">date_range</i>
-                </span>
+        <div class="modal-body">
+          <div class="input-group">
+            <div class="row">
+              <div class="col-sm-12 col-md-9 ">
+                <label> Nueva fecha programada de pago </label>
+                <div class='input-group date mydatepicker' data-provide="datepicker">
+                  <input type='text' name="fecha" class="form-control" />
+                  <span class="input-group-addon">
+                    <i class="material-icons mydate">date_range</i>
+                  </span>
+                </div>
               </div>
+
             </div>
-
           </div>
+
+          <div class="egreso_id_here"></div>
+
         </div>
-
-
-
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Reprogramar Fecha</button>
-        <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-          <i class="material-icons">close</i>
-        </button>
-      </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-link waves-effect ">Enviar</button>
+          <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
-
-
-<script>
-  $(function () {
-    $('.js-modal-buttons .btn').on('click', function () {
-      var color = $(this).data('color');
-      $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
-      $('#mdModal').modal('show');
-    });
-  });
-</script>

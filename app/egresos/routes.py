@@ -22,8 +22,8 @@ def capturar_egreso():
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"], 
         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
-        monto_total=monto_total, referencia=data["referencia"], empresa_id=data["empresa"], comentario=data["comentario"], 
-        pagado = False, monto_pagado = 0, status='pendiente')
+        monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"], 
+        empresa_id=data["empresa"], comentario=data["comentario"], pagado = False, status='pendiente')
         for i in range(len(data.getlist("monto"))):
             detalle = DetallesEgreso(centro_negocios_id=data.getlist("centro_negocios")[i], proveedor_id=data.getlist("proveedor")[i],
             categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist("concepto")[i], monto=data.getlist("monto")[i], 
@@ -40,6 +40,7 @@ def capturar_egreso():
                 else: 
                     egreso.status = 'parcial'
             else:
+                egreso.monto_por_conciliar = monto_pagado
                 status = 'por_conciliar'    
                 refrencia_conciliacion = ""
                 if egreso-monto_pagado == egreso.monto_total:
@@ -55,6 +56,7 @@ def capturar_egreso():
 
         db.session.add(egreso)
         db.session.commit()
+        return redirect("/egresos/cuentas_por_pagar")
         
 
     beneficiarios = Beneficiarios.query.all()

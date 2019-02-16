@@ -80,7 +80,7 @@
                                         <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
                                         </a>
                                     {% endif %}
-                                    <a class="btn btn-xs btn-warning waves-effect" data-toggle="modal" data-target="#modal_reprogramar_fecha" >
+                                    <a class="btn btn-xs btn-warning waves-effect open-reprogramar" data-toggle="modal" data-target="#modal_reprogramar_fecha" data-id="{{egreso.id}}">
                                       <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                                     </a>
                                   </td>
@@ -197,6 +197,13 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
+
+$(".open-reprogramar").on("click", function() {
+    const html = `  <input type="hidden" id="egreso_id" name="egreso_id" value="${$(this).attr("data-id")}">`
+    let element = document.querySelector(".egreso_id_here");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+});
 
 $(".open-modal").on("click", function() {
   $.ajax({
