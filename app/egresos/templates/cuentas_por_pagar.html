@@ -1,190 +1,199 @@
 {% extends "base_site.html" %}
 
 {% block stylesheets %}
-  {{ super() }}
+{{ super() }}
 {% endblock stylesheets %}
 
 {% block content %}
 <!-- Basic Examples -->
-  <div class="row clearfix">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="card">
-              <div class="header bg-black">
-                  <h2>
-                      Cuentas  por pagar
-                  </h2>
-                  <div class="select-btn-group">
-                      <span class="btn btn-primary">Pagar</span>
-                      <span class="btn btn-warning" >Reprogramar fecha</span>
-                  </div>
-              </div>
-              <div class="body">
-                 
-                  <div class="table-responsive">
-                      <form id="frm-example" action="/path/to/your/script" method="POST">
-                       
-                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  cellspacing="0" width="100%">
-                        
-                          <thead>
-                              <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <th>ID</th>
-                                  <th># documento</th>
-                                  <th>Beneficiario</th>
-                                  <th>Fecha <br> programada</th>
-                                  <th>Fecha de  <br> vencimiento</th>
-                                  <th>Monto Total</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
-                              </tr>
-                          </thead>
-                          <tfoot>
-                              <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th># documento</th>
-                                <th>Beneficiario</th>
-                                <th>Fecha <br> programada</th>
-                                <th>Fecha de  <br> vencimiento</th>
-                                <th>Monto Total</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                              </tr>
-                          </tfoot>
-                          <tbody>
-                            {% for egreso in egresos_pendientes %}
-                              <tr>
-                                  <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
-                                  <td>{{egreso.id}}</td>
-                                  <td>{{egreso.numero_documento}}</td>
-                                  <td>{{egreso.beneficiario}}</td>
-                                  <td>{{egreso.fecha_programada_pago}}</td>
-                                  <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
-                                  <td>{% if egreso.status == 'pendiente'%} 
-                                        <span class="badge bg-blue">Pendiente</span>
-                                      {% endif %}
-                                      {% if egreso.status == 'solicitado'%} 
-                                        <span class="badge bg-green">Solicitado</span>
-                                      {% endif %}
-                                      {% if egreso.status == 'parcial'%} 
-                                        <span class="badge bg-orange">Parcial</span>
-                                      {% endif %}
-                                </td>
-                                  <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                      <i class="material-icons">visibility</i>
-                                    </a>
-                                    {% if egreso.status != 'solicitado' %} 
-                                        <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-modal" data-toggle="modal" data-target="#modal_pagar" data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}" >
-                                        <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
-                                        </a>
-                                    {% endif %}
-                                    <a class="btn btn-xs btn-warning waves-effect open-reprogramar" data-toggle="modal" data-target="#modal_reprogramar_fecha" data-id="{{egreso.id}}">
-                                      <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
-                                    </a>
-                                  </td>
-                              </tr>
-                              {% endfor %}
-                          </tbody>
-                      </table>
-                    </form>
-                  </div>
-              </div>
-          </div>
+<div class="row clearfix">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header bg-black">
+        <h2>
+          Cuentas por pagar
+        </h2>
+        <div class="select-btn-group">
+          <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal" data-target="#modal_solicitar_multiple">Pagar</span>
+          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar
+            fecha</span>
+        </div>
       </div>
-      
-      
-      
-      
-       <!-- #Cuentas Pagadas -->
-      
-      
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="card">
-              <div class="header bg-black">
-                  <h2>
-                      Cuentas Pagadas
-                  </h2>
+      <div class="body">
 
-              </div>
-              <div class="body">
-                 
-                  <div class="table-responsive">
-                      <form id="frm-example" action="/path/to/your/script" method="POST">
-                       
-                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable"  cellspacing="0" width="100%">
-                        
-                          <thead>
-                              <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <th>ID</th>
-                                  <th># documento</th>
-                                  <th>Beneficiario</th>
-                                  <th>Fecha <br> programada</th>
-                                  <th>Fecha de  <br> vencimiento</th>
-                                  <th>Monto Total</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
-                              </tr>
-                          </thead>
-                          <tfoot>
-                              <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th># documento</th>
-                                <th>Beneficiario</th>
-                                <th>Fecha <br> programada</th>
-                                <th>Fecha de  <br> vencimiento</th>
-                                <th>Monto Total</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                              </tr>
-                          </tfoot>
-                          <tbody>
-                            {% for egreso in egresos_pagados %}
-                              <tr>
-                                  <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
-                                  <td>{{egreso.id}}</td>
-                                  <td>{{egreso.numero_documento}}</td>
-                                  <td>{{egreso.beneficiario}}</td>
-                                  <td>{{egreso.fecha_programada_pago}}</td>
-                                  <td>{{egreso.fecha_vencimiento}}</td>
-                                  <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                                  <td> {% if egreso.status == 'liquidado'%} 
-                                        <span class="badge bg-green">Liquidado</span>
-                                      {% endif %}
-                                      {% if egreso.status == 'cancelado'%} 
-                                        <span class="badge bg-red">Cancelado</span>
-                                      {% endif %}
-                                      {% if egreso.status == 'por_conciliar'%} 
-                                        <span class="badge bg-orange">Por conciliar</span>
-                                      {% endif %}</td>
-                                  <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                      <i class="material-icons">visibility</i>
-                                    </a>
-                                  </td>
-                              </tr>
-                              {% endfor %}
-                          </tbody>
-                      </table>
-                    </form>
-                  </div>
-              </div>
-          </div>
+        <div class="table-responsive">
+
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
+            width="100%">
+
+            <thead>
+              <tr>
+                <th><input name="select_all" value="1" id="example-select-all" type="checkbox" class="table-check" /></th>
+                <th>ID</th>
+                <th># documento</th>
+                <th>Beneficiario</th>
+                <th>Fecha <br> programada</th>
+                <th>Fecha de <br> vencimiento</th>
+                <th>Monto Total</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th># documento</th>
+                <th>Beneficiario</th>
+                <th>Fecha <br> programada</th>
+                <th>Fecha de <br> vencimiento</th>
+                <th>Monto Total</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for egreso in egresos_pendientes %}
+              <tr>
+                <td><input name="select_all" value="{{egreso.id}}" id="example-select-all" type="checkbox" class="table-check tabla1" /></td>
+                <td>{{egreso.id}}</td>
+                <td>{{egreso.numero_documento}}</td>
+                <td>{{egreso.beneficiario}}</td>
+                <td>{{egreso.fecha_programada_pago}}</td>
+                <td>{{egreso.fecha_vencimiento}}</td>
+                <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
+                <td>{% if egreso.status == 'pendiente'%}
+                  <span class="badge bg-blue">Pendiente</span>
+                  {% endif %}
+                  {% if egreso.status == 'solicitado'%}
+                  <span class="badge bg-green">Solicitado</span>
+                  {% endif %}
+                  {% if egreso.status == 'parcial'%}
+                  <span class="badge bg-orange">Parcial</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% if egreso.status != 'solicitado' %}
+                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" id="open-pagar" data-toggle="modal"
+                    data-target="#modal_pagar" data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
+                    <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
+                  </a>
+                  {% endif %}
+                  <a class="btn btn-xs btn-warning waves-effect" id="open-reprogramar" data-toggle="modal" data-target="#modal_reprogramar_fecha"
+                    data-id="{{egreso.id}}">
+                    <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </form>
+        </div>
       </div>
+    </div>
   </div>
-  <!-- #END# Basic Examples -->
+
+
+
+
+  <!-- #Cuentas Pagadas -->
+
+
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header bg-black">
+        <h2>
+          Cuentas Pagadas
+        </h2>
+
+      </div>
+      <div class="body">
+
+        <div class="table-responsive">
+          <form id="frm-example" action="/path/to/your/script" method="POST">
+
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
+              width="100%">
+
+              <thead>
+                <tr>
+                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                  <th>ID</th>
+                  <th># documento</th>
+                  <th>Beneficiario</th>
+                  <th>Fecha <br> programada</th>
+                  <th>Fecha de <br> vencimiento</th>
+                  <th>Monto Total</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th># documento</th>
+                  <th>Beneficiario</th>
+                  <th>Fecha <br> programada</th>
+                  <th>Fecha de <br> vencimiento</th>
+                  <th>Monto Total</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for egreso in egresos_pagados %}
+                <tr>
+                  <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
+                  <td>{{egreso.id}}</td>
+                  <td>{{egreso.numero_documento}}</td>
+                  <td>{{egreso.beneficiario}}</td>
+                  <td>{{egreso.fecha_programada_pago}}</td>
+                  <td>{{egreso.fecha_vencimiento}}</td>
+                  <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
+                  <td> {% if egreso.status == 'liquidado'%}
+                    <span class="badge bg-green">Liquidado</span>
+                    {% endif %}
+                    {% if egreso.status == 'cancelado'%}
+                    <span class="badge bg-red">Cancelado</span>
+                    {% endif %}
+                    {% if egreso.status == 'por_conciliar'%}
+                    <span class="badge bg-orange">Por conciliar</span>
+                    {% endif %}</td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip"
+                      data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- #END# Basic Examples -->
 
 {% include "modal_pagar.html" %}
 
+{% include "modal_pagar_multiple.html" %}
+
 {% include "modal_reprogramar_fecha.html" %}
+
+{% include "modal_reprogramar_fecha_multiple.html" %}
 
 {% endblock content %}
 
 {% block javascripts %}
-  {{ super() }}
+{{ super() }}
 <!-- Jquery DataTable Plugin Js -->
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
@@ -197,19 +206,46 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
-
-$(".open-reprogramar").on("click", function() {
+  //reprogramar un egreso
+  $("#open-reprogramar").on("click", function () {
     const html = `  <input type="hidden" id="egreso_id" name="egreso_id" value="${$(this).attr("data-id")}">`
     let element = document.querySelector(".egreso_id_here");
-        element.innerHTML = "";
-        element.insertAdjacentHTML('beforeend', html);
-});
+    element.innerHTML = "";
+    element.insertAdjacentHTML('beforeend', html);
+  });
 
-$(".open-modal").on("click", function() {
-  $.ajax({
-    url: $(this).attr("data-url"),
-    success: function(data) {
-        const html = `<div class="row mar-b-10" >
+
+  //reprogramar multiple
+  $('#reprogramar_multiple').on('submit', function (e) {
+    // Iterate over all checkboxes in the table
+    let egresos = []
+    $('.tabla1').each(function () {
+      // If checkbox is checked
+      if (this.checked) {
+        egresos.push($(this).val())
+      }
+    })
+    $.get({
+      url: '/modales/reprogramar_fecha_multiple',
+      data: {
+        egresos: egresos,
+        fecha: $('#fecha').val()
+      },
+      success: function (data) {
+        location.reload();
+      }
+    });
+    // Prevent actual form submission
+    e.preventDefault();
+  });
+
+  //solcitar pagar un egreso
+  $("#open-pagar").on("click", function () {
+    $.ajax({
+      url: $(this).attr("data-url"),
+      success: function (data) {
+        const html =
+          `<div class="row mar-b-10" >
                     <div class="col-sm-12 col-md-6 ">
                       <p class="font-18">Beneficiario:  <span class="font-bold">${data.beneficiario}</span></p>
                     </div>
@@ -227,11 +263,121 @@ $(".open-modal").on("click", function() {
         let element = document.querySelector(".here");
         element.innerHTML = "";
         element.insertAdjacentHTML('beforeend', html);
-        }
+      }
     });
-});
+  });
 
-$("#parcial").change(function () {
+
+  //Solicitar Multiple get modal info
+  $('#open-pagar-multiple').on("click", function () {
+    let egresos = []
+    // Iterate over all checkboxes in the table
+    $('.tabla1').each(function () {
+
+      // If checkbox is checked
+      if (this.checked) {
+        egresos.push($(this).val())
+      }
+    })
+    console.log(egresos)
+    $.get({
+      url: '/modales/get_data_pagar_multiple',
+      data: {
+        egresos: egresos
+      },
+      success: function (data) {
+        document.querySelector(".multiple-here").innerHTML = "";
+        //group by beneficiarios
+        data = _.mapValues(_.groupBy(data, 'beneficiario'), clist => clist.map(egreso => _.omit(egreso,
+          'beneficiario')));
+
+        var counter = 0;
+        var monto_total = 0;
+        //for each beneficiario
+        Object.keys(data).forEach(function (beneficiario) {
+          var total = data[beneficiario].map(data => Number(data.monto_total)).reduce((prev, next) =>
+            prev + next);
+          monto_total += total;
+          const html =
+            `<div class="box">
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18" id="id">Beneficiario: <span class="font-bold">${beneficiario}</span></p>
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18">Monto a pagar: <span class="font-bold">${money.format(total)}</span></p>
+                    <input type="hidden" id="monto_total_${counter}" name="monto_total_${counter}" value="${total}">
+                  </div>
+                </div>
+
+                <div class="input-group">
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="beneficiario"> Forma de pago </label><br>
+                        <select class="selectpicker" id="forma_pago" data-live-search="true" name="forma_pago_id_${counter}" title="Seleccione una Forma de Pago..." data-width="100%">
+                          {% for forma in formas_pago %} 
+                          <option value="{{forma.id}}"> {{ forma }} </option>
+                          {% endfor %} 
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="beneficiario"> Cuenta </label><br>
+                        <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_id_${counter}" title="Seleccione una Cuenta.." data-width="100%">
+                          {% for cuenta in cuentas %} 
+                          <option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                          {% endfor %} 
+                        </select>
+                    </div>
+                  </div>
+                </div>
+
+                <table id="table" style="table-layout: fixed;" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>ID egreso</th>
+                      <th>Monto</th>
+                      <th># de documento</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table${counter}">
+                  </tbody>
+                </table>
+              </div>`
+          //insert beneficiario group
+          document.querySelector(".multiple-here").insertAdjacentHTML('beforeend', html);
+          //for each egreso in beneficiario
+          data[beneficiario].forEach(data => {
+            const table_data =
+              `
+                  <tr>
+                    <th>${data.egreso_id}</th>
+                    <th>${money.format(data.monto_total)}</th>
+                    <th>${data.numero_documento}</th>
+                  </tr>
+                  <input type="hidden" id="egreso${counter}" name="egreso_${counter}" value="${data.egreso_id}">
+                  `
+            //insert row to table
+            document.querySelector('.table' + counter).insertAdjacentHTML('beforeend', table_data);
+          })
+          counter++;
+          $('.selectpicker').selectpicker('refresh');
+        });
+        //insert monto total
+        document.querySelector(".monto-here").insertAdjacentHTML('beforeend',
+          `<p class="font-18 right">Monto total a pagar: <span class="font-bold">${money.format(monto_total)}</span></p>
+          <input type="hidden" id="cantidad" name="cantidad" value=${counter}>
+          `
+        );
+      }
+    });
+    //show modal  
+    $('#modal_pagar_multiple').modal('show');
+  });
+
+ 
+
+  //monto parcial checkbox
+  $("#parcial").change(function () {
     if (this.checked) {
       $("#monto_parcial").fadeIn();
     } else {
@@ -239,79 +385,29 @@ $("#parcial").change(function () {
     }
   });
 
+  //tooltip
   $(function () {
     //Tooltip
     $('[data-toggle="tooltip"]').tooltip({
-        container: 'body'
+      container: 'body'
     });
 
     //Popover
     $('[data-toggle="popover"]').popover();
   })
 
+  //Jquery table
   var table = $('.js-basic-example').DataTable({
-     'columnDefs': [{
-         'targets': 0,
-         'className': 'dt-body-center',
-         'render': function (data, type, full, meta){
-             return '<input type="checkbox" name="id[]" value="' 
-                + $('<div/>').text(data).html() + '">';
-         }
-      }],
-      'order': [1, 'asc'],
-
+    'order': [1, 'asc'],
   });
 
-     // Handle click on "Select all" control
-     $('#example-select-all').on('click', function(){
-      // Check/uncheck all checkboxes in the table
-      var rows = table.rows({ 'search': 'applied' }).nodes();
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
-   });
-
-    // Handle click on checkbox to set state of "Select all" control
-    $('#example tbody').on('change', 'input[type="checkbox"]', function(){
-      // If checkbox is not checked
-      if(!this.checked){
-         var el = $('#example-select-all').get(0);
-         // If "Select all" control is checked and has 'indeterminate' property
-         if(el && el.checked && ('indeterminate' in el)){
-            // Set visual state of "Select all" control 
-            // as 'indeterminate'
-            el.indeterminate = true;
-         }
-      }
-   });
-    
-   $('#frm-example').on('submit', function(e){
-      var form = this;
-
-      // Iterate over all checkboxes in the table
-      table.$('input[type="checkbox"]').each(function(){
-         // If checkbox doesn't exist in DOM
-         if(!$.contains(document, this)){
-            // If checkbox is checked
-            if(this.checked){
-               // Create a hidden element 
-               $(form).append(
-                  $('<input>')
-                     .attr('type', 'hidden')
-                     .attr('name', this.name)
-                     .val(this.value)
-               );
-            }
-         } 
-      });
-
-      // FOR TESTING ONLY
-      
-      // Output form data to a console
-      $('#example-console').text($(form).serialize()); 
-      console.log("Form submission", $(form).serialize()); 
-       
-      // Prevent actual form submission
-      e.preventDefault();
-   });
-
+  // "Select all" control
+  $('#example-select-all').on('click', function () {
+    // Check/uncheck all checkboxes in the table
+    var rows = table.rows({
+      'search': 'applied'
+    }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+  });
 </script>
 {% endblock javascripts %}
