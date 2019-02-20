@@ -78,12 +78,12 @@
                     <i class="material-icons">visibility</i>
                   </a>
                   {% if egreso.status != 'solicitado' %}
-                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect" id="open-pagar" data-toggle="modal"
-                    data-target="#modal_pagar" data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
+                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar"  data-toggle="modal"
+                    data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
                     <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
                   </a>
                   {% endif %}
-                  <a class="btn btn-xs btn-warning waves-effect" id="open-reprogramar" data-toggle="modal" data-target="#modal_reprogramar_fecha"
+                  <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha"
                     data-id="{{egreso.id}}">
                     <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                   </a>
@@ -92,7 +92,6 @@
               {% endfor %}
             </tbody>
           </table>
-          </form>
         </div>
       </div>
     </div>
@@ -115,7 +114,6 @@
       <div class="body">
 
         <div class="table-responsive">
-          <form id="frm-example" action="/path/to/your/script" method="POST">
 
             <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
               width="100%">
@@ -240,10 +238,11 @@
   });
 
   //solcitar pagar un egreso
-  $("#open-pagar").on("click", function () {
+  $(".open-pagar").on("click", function () {
     $.ajax({
       url: $(this).attr("data-url"),
       success: function (data) {
+  
         const html =
           `<div class="row mar-b-10" >
                     <div class="col-sm-12 col-md-6 ">
@@ -263,6 +262,7 @@
         let element = document.querySelector(".here");
         element.innerHTML = "";
         element.insertAdjacentHTML('beforeend', html);
+        $('#modal_pagar').modal('show');
       }
     });
   });

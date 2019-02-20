@@ -77,3 +77,6 @@ https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
 
 ### CRUD 
 https://www.codementor.io/garethdwyer/building-a-crud-application-with-flask-and-sqlalchemy-dm3wv7yu2
+
+### SQL Relationships
+https://www.pythoncentral.io/migrate-sqlalchemy-databases-alembic/
