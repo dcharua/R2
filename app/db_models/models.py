@@ -90,6 +90,23 @@ class CentrosNegocio(db.Model):
         return self.nombre
 
 
+class Clientes(db.Model):
+    __tablename__ = 'clientes'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(50))
+    RFC = Column(String(50))
+    direccion = Column(String(50))
+    razon_social = Column(String(50))
+    cuenta_banco = Column(String(50))
+    saldo = Column(Numeric)
+    comentarios = Column(String(50))
+    banco = Column(String(50))
+    
+    def __repr__(self):
+        return self.nombre
+
 class Conceptos(db.Model):
     __tablename__ = 'conceptos'
     __table_args__ = {'extend_existing': True}
@@ -223,66 +240,16 @@ class Empresas(db.Model):
     def __repr__(self):
         return self.nombre 
 
-
-
-class Clientes(db.Model):
-    __tablename__ = 'clientes'
+class FormasPago(db.Model):
+    __tablename__ = 'formas_pago'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
     nombre = Column(String(50))
-    RFC = Column(String(50))
-    direccion = Column(String(50))
-    razon_social = Column(String(50))
-    cuenta_banco = Column(String(50))
-    saldo = Column(Numeric)
-    comentarios = Column(String(50))
-    banco = Column(String(50))
-    
-    def __repr__(self):
-        return self.nombre
-
-####################
-#     INGRESOS            
-####################
- 
-
-
-class Pagos_Ingresos(db.Model):
-    __tablename__ = 'pagos_ingresos'
-    __table_args__ = {'extend_existing': True}
-
-    id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    fecha_pago = Column(Date)
-    referencia_pago = Column(String(20))
-    monto = Column(Numeric)
-    comentario = Column(String(200))
-    conciliado = Column(String(20))
-    referencia_conciliacion= Column(String(20))
-    cliente_id = Column(Integer, ForeignKey('clientes.id'))
-    cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
-    forma_pago_id = Column(Integer, ForeignKey('formas_pago.id'))
+    pagos = relationship("Pagos")
 
     def __repr__(self):
-        return '<Pago {}>'.format(self.id) 
-
-
-
-
-
-
-class Tipo_Ingreso(db.Model):
-    __tablename__ = 'tipo_ingre'
-    __table_args__ = {'extend_existing': True}
-
-    id = Column(Integer, primary_key=True)
-    tipo = Column(String(50))
-    ingresos = relationship("Ingresos_Tabla")
-
-    def __repr__(self):
-        return self.tipo
-    
-    
+        return self.nombre  
 
 class Ingresos_Tabla(db.Model):
     __tablename__ = 'Ingresos'
@@ -306,27 +273,26 @@ class Ingresos_Tabla(db.Model):
         return '<Ingreso {}>'.format(self.id)
 
 
-
-
-
-
-
-
-
-####################
-#       PAGOS  
-####################
-
-class FormasPago(db.Model):
-    __tablename__ = 'formas_pago'
+class Pagos_Ingresos(db.Model):
+    __tablename__ = 'pagos_ingresos'
     __table_args__ = {'extend_existing': True}
 
-    id = Column(Integer, primary_key=True)
-    nombre = Column(String(50))
-    pagos = relationship("Pagos")
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    fecha_pago = Column(Date)
+    referencia_pago = Column(String(20))
+    monto = Column(Numeric)
+    comentario = Column(String(200))
+    conciliado = Column(String(20))
+    referencia_conciliacion= Column(String(20))
+    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+    cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
+    forma_pago_id = Column(Integer, ForeignKey('formas_pago.id'))
 
     def __repr__(self):
-        return self.nombre  
+        return '<Pago {}>'.format(self.id) 
+
+
+
 
 class Pagos(db.Model):
     __tablename__ = 'pagos_egresos'
@@ -350,6 +316,25 @@ class Pagos(db.Model):
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id)           
+
+
+
+
+class Tipo_Ingreso(db.Model):
+    __tablename__ = 'tipo_ingre'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True)
+    tipo = Column(String(50))
+    ingresos = relationship("Ingresos_Tabla")
+
+    def __repr__(self):
+        return self.tipo
+    
+
+
+
+
 
 #After insert events
 def after_insert_listener(mapper, connection, target):

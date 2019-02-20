@@ -17,9 +17,9 @@
             <div class="body">
               <div class="row mycontainer">
                 <div class="col-sm-12 col-md-6">
-                  <p class="font-18">Cliente: <span class="font-bold">Flexi</span></p>
-                  <p class="font-18">RFC: <span class="font-bold">FLES120799PY2</span></p>
-                  <p class="font-18">Direccion: <span class="font-bold">Av. Siempre Viva #58 Colonia Centro</span></p>                  
+                  <p class="font-18">Cliente: <span class="font-bold">{{cliente.nombre}}</span></p>
+                  <p class="font-18">RFC: <span class="font-bold">{{cliente.RFC}}</span></p>
+                  <p class="font-18">Direccion: <span class="font-bold">{{cliente.direccion}}</span></p>                  
                   <p class="font-18">Nombre del contacto: <span class="font-bold">Luis Jesus Martinez</span> </p>
                   <p class="font-18">Correo de contacto: <span class="font-bold">Luis@Felix.com </span> </p>
                   <p class="font-18">Teléfono <span class="font-bold">55842412 Ext: 121 </span> </p>
@@ -29,9 +29,9 @@
                 <div class="col-sm-12 col-md-6 align-left">
                   <p class="font-18">Saldo : <span class="font-bold">1,824.00</span></p>
                   <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></td>
-                  <p class="font-18">Razón social: <span class="font-bold">Flexi S.A de C.V.</span></p>
-                  <p class="font-18">Banco: <span class="font-bold">Bancomer</span></p>
-                  <p class="font-18">Cuenta: <span class="font-bold">28017616</span></p>
+                  <p class="font-18">Razón social: <span class="font-bold">{{cliente.razon_social}}</span></p>
+                  <p class="font-18">Banco: <span class="font-bold">{{cliente.banco}}</span></p>
+                  <p class="font-18">Cuenta: <span class="font-bold">{{cliente.cuenta}}</span></p>
                 </div>
               </div>
             </div>

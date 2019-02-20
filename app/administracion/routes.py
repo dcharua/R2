@@ -22,7 +22,13 @@ def beneficiarios():
 @login_required
 def clientes():
     clientes = Clientes.query.all()
-    return render_template("clientes.html", clientes = clientes)      
+    return render_template("clientes.html", clientes = clientes)   
+
+@blueprint.route('/perfil_de_cliente/<int:cliente_id>', methods=['GET', 'POST'])
+def perfil_de_cliente(cliente_id):
+    cliente = Clientes.query.get(cliente_id)
+
+    return render_template("perfil_de_cliente.html", cliente = cliente)   
 
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required
