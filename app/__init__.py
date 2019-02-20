@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from importlib import import_module
 from logging import basicConfig, DEBUG, getLogger, StreamHandler
 from os import path, environ
+import os
 import pandas as pd
 import pymysql
 import pyodbc
@@ -45,14 +46,20 @@ def configure_logs(app):
 
 
 def create_app(config):
+    
+
     app = Flask(__name__, static_folder='base/static')
     #app.config.from_object(config)
     app.config.from_mapping(
-        SECRET_KEY=environ.get('KEY'),
+        #SECRET_KEY=environ.get('KEY'),
+        SECRET_KEY = os.urandom(32),
         DEBUG=True,
         LOGIN_DISABLED = True,
         #SQLALCHEMY_DATABASE_URI ="mssql+pyodbc://%s:%s@%s/%s?driver=ODBC+Driver+17+for+SQL+Server" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
         SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
+        # Para Adrian
+        #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
+        
     )
 
     db = SQLAlchemy(app)

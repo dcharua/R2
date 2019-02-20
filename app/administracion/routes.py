@@ -12,7 +12,7 @@ def route_template(template):
     return render_template(template + '.html')
 
 
-@blueprint.route('beneficiarios', methods=['GET', 'POST'])
+@blueprint.route('/beneficiarios', methods=['GET', 'POST'])
 @login_required
 def beneficiarios():
     beneficiarios = Beneficiarios.query.all()
@@ -23,21 +23,21 @@ def beneficiarios():
 def clientes():
     return render_template("clientes.html", cuentas=cuentas)      
 
-@blueprint.route('cuentas', methods=['GET', 'POST'])
+@blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required
 def cuentas():
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
     return render_template("cuentas.html", cuentas=cuentas, empresas=empresas)   
 
-@blueprint.route('centros_negocios', methods=['GET', 'POST'])
+@blueprint.route('/centros_negocios', methods=['GET', 'POST'])
 @login_required
 def centros_negocios():
     centros = CentrosNegocio.query.all()
     empresas = Empresas.query.all()
     return render_template("centros_negocios.html", centros=centros, empresas=empresas)
 
-@blueprint.route('otros', methods=['GET', 'POST'])
+@blueprint.route('/otros', methods=['GET', 'POST'])
 @login_required
 def otros():
     categorias = Categorias.query.all()

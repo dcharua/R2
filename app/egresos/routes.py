@@ -14,8 +14,9 @@ def route_template(template):
 
 #####  EGRESOS ROUTES #########
 #Egresos Create
-@blueprint.route('capturar_egreso', methods=['GET', 'POST'])
+@blueprint.route('/capturar_egreso', methods=['GET', 'POST'])
 def capturar_egreso():
+    
     if request.form:
         data = request.form
         montos = list(map(int, data.getlist("monto")))
@@ -82,13 +83,14 @@ def capturar_egreso():
                            formas_pago = formas_pago)
 
 #Egresos View all
-@blueprint.route('cuentas_por_pagar', methods=['GET', 'POST'])
+@blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     return render_template("cuentas_por_pagar.html", egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
+
 
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
@@ -100,11 +102,13 @@ def perfil_egreso(egreso_id):
     detalles = DetallesEgreso.query.filter(DetallesEgreso.egreso_id == egreso_id)
     return render_template("perfil_egreso.html", egreso=egreso, pagos=pagos, detalles=detalles)
 
+
 #Egresos Edit   
-@blueprint.route('editar_egreso/<int:egreso_id>"', methods=['GET', 'POST'])
+@blueprint.route('/editar_egreso/<int:egreso_id>"', methods=['GET', 'POST'])
 def editar_egreso(egreso_id):
     return redirect("/")
     
+
 #Egresos Delete
 @blueprint.route("/borrar_egreso/<int:egreso_id>",  methods=['GET', 'POST'])
 def delete_egreso(egreso_id):
@@ -118,11 +122,12 @@ def delete_egreso(egreso_id):
 ##### PAGOS ROUTES  #########
 
 
-@blueprint.route('pagos_realizados', methods=['GET', 'POST'])
+@blueprint.route('/pagos_realizados', methods=['GET', 'POST'])
 def pagos_realizados():
     pagos = Pagos.query.filter(Pagos.status == 'solicitado').all()
     pagos_realizados = Pagos.query.filter(Pagos.status.like("%conci%")).all()
     return render_template("pagos_realizados.html", pagos=pagos, pagos_realizados=pagos_realizados)
+
 
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])
 def perfil_pago(pago_id):

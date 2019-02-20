@@ -12,7 +12,7 @@ def route_template(template):
     return render_template(template + '.html')
 
 
-@blueprint.route('capturar_ingreso', methods=['GET', 'POST'])
+@blueprint.route('/capturar_ingreso', methods=['GET', 'POST'])
 def captura_ingresos():
     #import df_to_table as df_to_table
     
@@ -42,7 +42,7 @@ def captura_ingresos():
 
 
 
-@blueprint.route('ingresos_tiendas', methods=['GET', 'POST'])
+@blueprint.route('/ingresos_tiendas', methods=['GET', 'POST'])
 def ingresos_tiendas():
     #import df_to_table as df_to_table
     
