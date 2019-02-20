@@ -72,11 +72,31 @@
 
 </div>
 
+<div class="row">
+    <div class="col-sm-12 col-md-6">
+        <div class="card">
+            <div class="header">
+                <span data-toggle="modal" data-target="#modal_agregar_tipo_ingreso" class="btn btn-warning f-right">Agregar</span>
+                <h2>Tipo de Ingreso</h2>
+            </div>
+            <div class="body">
+                <ul>
+                    {%for tipo_ingreso in tipo_ingresos%}
+                    <li>{{tipo_ingreso}}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 {% include "modal_agregar_categoria.html" %}
 {% include "modal_agregar_centro.html" %}
 {% include "modal_agregar_concepto.html" %}
 {% include "modal_agregar_empresa.html" %}
 {% include "modal_agregar_forma_pago.html" %}
+{% include "modal_agregar_tipo_ingreso.html" %}
 
 {% endblock content %}
 

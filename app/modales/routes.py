@@ -13,7 +13,7 @@ def route_template(template):
     return render_template(template + '.html')
 
 
-@blueprint.route('agregar_beneficiario', methods=['GET', 'POST'])
+@blueprint.route('/agregar_beneficiario', methods=['GET', 'POST'])
 @login_required
 def agregar_beneficiario():
     if request.form:
@@ -28,8 +28,21 @@ def agregar_beneficiario():
         db.session.add(beneficiario)
         db.session.commit()   
         return redirect("/administracion/beneficiarios")
+    
+    
+@blueprint.route('/agregar_cliente', methods=['GET', 'POST'])
+@login_required
+def agregar_cliente():
+    if request.form:
+        data = request.form
+        cliente = Clientes(nombre = data["nombre"], RFC = data["RFC"], 
+            direccion = data["direccion"], razon_social = data["razon_social"],
+            cuenta_banco = data["cuenta_banco"], saldo = 0, comentarios = data["comentarios"],banco = data["banco"]) 
+        db.session.add(cliente)
+        db.session.commit()   
+        return redirect("/administracion/clientes")
 
-@blueprint.route('agregar_cuenta', methods=['GET', 'POST'])
+@blueprint.route('/agregar_cuenta', methods=['GET', 'POST'])
 @login_required
 def agregar_cuenta():
     if request.form:
@@ -39,7 +52,8 @@ def agregar_cuenta():
         db.session.commit()   
         return redirect("/administracion/cuentas")    
 
-@blueprint.route('agregar_categoria', methods=['GET', 'POST'])
+
+@blueprint.route('/agregar_categoria', methods=['GET', 'POST'])
 @login_required
 def agregar_categoria():
     if request.form:
@@ -49,7 +63,8 @@ def agregar_categoria():
         db.session.commit()   
         return redirect("/administracion/otros")     
 
-@blueprint.route('agregar_centro', methods=['GET', 'POST'])
+
+@blueprint.route('/agregar_centro', methods=['GET', 'POST'])
 @login_required
 def agregar_centro():
     if request.form:
@@ -61,7 +76,7 @@ def agregar_centro():
         return redirect("/administracion/otros")  
 
 
-@blueprint.route('agregar_concepto', methods=['GET', 'POST'])
+@blueprint.route('/agregar_concepto', methods=['GET', 'POST'])
 @login_required
 def agregar_concepto():
     if request.form:
@@ -71,7 +86,8 @@ def agregar_concepto():
         db.session.commit()   
         return redirect("/administracion/otros")      
 
-@blueprint.route('agregar_empresa', methods=['GET', 'POST'])
+
+@blueprint.route('/agregar_empresa', methods=['GET', 'POST'])
 @login_required
 def agregar_empresa():
     if request.form:
@@ -80,8 +96,11 @@ def agregar_empresa():
         db.session.add(empresa)
         db.session.commit()   
         return redirect("/administracion/otros")
+    
+
         
-@blueprint.route('agregar_forma_pago', methods=['GET', 'POST'])
+    
+@blueprint.route('/agregar_forma_pago', methods=['GET', 'POST'])
 @login_required
 def agregar_forma_pago():
     if request.form:
@@ -89,7 +108,30 @@ def agregar_forma_pago():
         forma_pago = FormasPago(nombre=data["nombre"]) 
         db.session.add(forma_pago)
         db.session.commit()   
-        return redirect("/administracion/otros")    
+        return redirect("/administracion/otros")   
+    
+
+@blueprint.route('/agregar_tipo_ingreso', methods=['GET', 'POST'])
+@login_required
+def agregar_tipo_ingreso():
+    if request.form:
+        data = request.form
+
+        print('AAAAA/n/n/n/n/n/n')
+        
+        tipo_ingreso = Tipo_Ingreso(tipo = data["tipo"]) 
+        print('/n/n/n/n/n/n',tipo_ingreso)
+        print('/n/n/n/n/n/n')
+        db.session.add(tipo_ingreso)
+        db.session.commit()   
+        return redirect("/administracion/otros")     
+    
+    
+    
+    
+###############################
+#         INGRESOS
+###############################
 
 
 #####  SOLICITAR PAGO #######
@@ -102,6 +144,7 @@ def get_data_pagar(egreso_id):
         print(egreso)
         monto_pendiente = egreso.monto_total - egreso.monto_solicitado - egreso.monto_pagado
         return jsonify(egreso_id = egreso.id, beneficiario = egreso.beneficiario.nombre, monto_total=str(monto_pendiente), numero_documento= egreso.numero_documento)
+
 
 # Solcitar pago form submit
 @blueprint.route('mandar_pagar', methods=['GET', 'POST'])
@@ -127,6 +170,7 @@ def mandar_pagar():
                 print("error")
                 return  redirect("/egresos/pagos_realizados")   
 
+
 # Solicitar multiples pagos data for modal 
 @blueprint.route('get_data_pagar_multiple', methods=['GET', 'POST'])
 @login_required
@@ -138,6 +182,7 @@ def get_data_pagar_multiple():
                 monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
                 list.append({'egreso_id': e.id, 'beneficiario': e.beneficiario.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
         return jsonify(list)
+
 
 #Solicitar pago from sumbit
 @blueprint.route('mandar_pagar_multiple', methods=['GET', 'POST'])
@@ -159,6 +204,7 @@ def mandar_pagar_multiple():
                 return  redirect("/egresos/pagos_realizados")   
 
 
+
 ### CONCILIAT PAGOS ###
 #Conciliar pago data for modal
 @blueprint.route('get_data_conciliar<int:pago_id>', methods=['GET', 'POST'])
@@ -166,6 +212,7 @@ def mandar_pagar_multiple():
 def get_data_conciliar(pago_id):
         pago = Pagos.query.get(pago_id)
         return jsonify(pago_id = pago.id, beneficiario = pago.beneficiario.nombre, monto_total=str(pago.monto_total), referencia = pago.referencia_pago , cuenta=pago.cuenta.nombre)
+
 
 #Conciliar pago form sumbit
 @blueprint.route('conciliar_movimento', methods=['GET', 'POST'])
@@ -185,6 +232,7 @@ def conciliar_movimento():
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")   
 
+
 ### GENERAR PAGO ###
 #Generar pago for modal
 @blueprint.route('get_data_generar_pago<int:pago_id>', methods=['GET', 'POST'])
@@ -194,7 +242,8 @@ def get_data_generar_pago(pago_id):
         return jsonify(pago_id = pago.id, beneficiario = pago.beneficiario.nombre, 
         monto_total=str(pago.monto_total), cuenta=pago.cuenta.nombre, forma_pago = pago.forma_pago.nombre, 
         referencia = pago.referencia_pago, numero_cheque = str(pago.cuenta.numero_cheque + 1), cuenta_beneficiario=pago.beneficiario.cuenta_banco)     
-        
+ 
+       
 # Generar pago form sumbit
 @blueprint.route('generar_pago', methods=['GET', 'POST'])
 @login_required
@@ -242,6 +291,7 @@ def generar_pago():
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")
 
+
 #reprogramar_fecha
 @blueprint.route('reprogramar_fecha', methods=['GET', 'POST'])
 @login_required
@@ -266,3 +316,6 @@ def reprogramar_fecha_multiple():
         db.session.commit()
         return redirect("/egresos/cuentas_por_pagar")
         
+    
+    
+    

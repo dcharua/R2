@@ -3,40 +3,43 @@
 {% block content %}
 
 <div class="block-header">
-  <h2>{{title}}</h2>
 </div>
 <div class="row clearfix">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <div class="header">
-        <h2>{{title}}<h2>
         <h2>Porfavor registre el ingreso llenando el siguiente formulario</h2>
       </div>
       <div class="body">
-        <div class="row clearfix">
+        <div class="row">
           <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('ingresos_blueprint.captura_ingresos') }}">
-            <div class="col-sm-12 text-left">
+            <div class="col-sm-12 col-md-12">
                 <div class="input-group">
                     <label for="tipo "> Tipo de Ingreso </label><br>
                   <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo" title="Seleccione un tipo de ingreso..." data-width="80%">
-                      {% for w in categoria %}
+                      {% for w in tipo_ingreso %}
                       <option> {{ w | safe }} </option>
                       {% endfor %}
                     </select>
                   </div>
-
+          
+            <br></br>
               <div class="input-group">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6">
                 <label for="beneficiario"> Cliente </label><br>
                 <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="50%">
-                  {% for w in vendor %}
-                  <option> {{ w | safe }} </option>
+                  {% for c in clientes %}
+                  <option> {{ c | safe }} </option>
                   {% endfor %}
                 </select>
                 <input type="checkbox" id="basic_checkbox_2" class="filled-in" checked />
                 <label style="margin-left: 40px;" for="basic_checkbox_2">Usar como provedor</label>
-                <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                <a href="/administracion/clientes" >
+                    <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
+                </a>
               </div>
-
+            </div>
 
               <div class="input-group nomargin">
                 <div class="row">
@@ -71,6 +74,8 @@
                   </div>
                 </div>
 
+
+            <br></br>
                 <div class="caracteristicas">
 
                   <div style="padding:10px;" class="header">

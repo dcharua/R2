@@ -1,0 +1,104 @@
+<!-- Modal Agregar Cliente -->
+<div class="modal fade" id="modal_agregar_cliente" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+                <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('modales_blueprint.agregar_cliente') }}">
+
+            <div class="modal-header">
+                <h3 class="modal-title" id="largeModalLabel"> Agregar Cliente</h3>
+            </div>
+            <div class="modal-body">
+                        <div class="input-group" style="margin-bottom:20px !important">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4 for="nombre"> Nombre </h4>
+                                    <input type='text' class="form-control" name="nombre" />
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <h4>Datos Generales</h4>
+                        <hr class="mar-t-0">
+                            <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="razon_social"> Razón Social </label>
+                                    <input type='text' class="form-control" name="razon_social" />
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <label for="RFC"> RFC </label>
+                                    <input type='text' class="form-control" name="RFC" />
+                                </div>
+                            </div>
+                        
+                            <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12">
+                                    <label for="direccion">Dirección </label>
+                                    <input type='text' class="form-control" name="direccion" />
+                                </div>
+                            </div>
+
+                            <h4>Datos Bancarios</h4>
+                            <hr class="mar-t-0">
+                          
+                                <div class="row" style="margin-bottom:20px !important">
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="cuenta_banco"> Cuenta de Banco </label>
+                                        <input type='text' class="form-control" name="cuenta_banco" />
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <label for="banco"> Banco </label>
+                                        <input type='text' class="form-control" name="banco" />
+                                    </div>
+                                </div>
+
+
+                <div class="input-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="cometarios">Comentarios</label>
+                            <textarea name="comentarios" style="width:100%"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Agregar Cliente</button>
+                <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+    var counter=0;
+
+
+    $("#add-row").click(function () {
+        console.log("in")
+        var $tableBody = $('#table').find("tbody"),
+        $trLast = $tableBody.find("tr:last"),
+        $trNew = $trLast.clone();
+        $trLast.after($trNew);
+    });
+
+    $("#delete-row").click(function () {
+      if ($('#table tr:last').index() != 0)
+        $('#table tr:last').remove();
+    });
+    document.getElementById("delete-row").click();
+
+  });
+</script>

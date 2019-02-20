@@ -9,7 +9,7 @@
                       Lista de Cientes
                   </h2> 
                   <div class="select-btn-group">
-                      <span class="btn btn-warning" >Agregar Cliente {{title}}</span>
+                      <span data-toggle="modal" data-target="#modal_agregar_cliente" class="btn btn-warning f-right"> Agregar Cliente </span>
                   </div>
               </div>
               <div class="body">
@@ -19,11 +19,14 @@
                               <tr>
                                 <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                 <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Telefono</th>
-                                <th>Contacto</th>
-                                <th>Referencia</th>
-                                <th>Status</th>
+                                <th>Nombre</th>
+                                <th>RFC</th>
+                                <th>Telefono y Direccion</th>
+                                <th>Razon_social</th>
+                                <th>Cuenta_banco</th>
+                                <th>Saldo</th>
+                                <th>Banco</th>
+                                <th>Comentarios</th>
                                 <th>Acciones</th>
                               </tr>
                           </thead>
@@ -31,30 +34,39 @@
                               <tr>
                                 <th></th>
                                 <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Telefono</th>
-                                <th>Contacto</th>
-                                <th>Referencia</th>
-                                <th>Status</th>
+                                <th>Nombre</th>
+                                <th>RFC</th>
+                                <th>Telefono y Direccion</th>
+                                <th>Razon_social</th>
+                                <th>Cuenta_banco</th>
+                                <th>Saldo</th>
+                                <th>Banco</th>
+                                <th>Comentarios</th>
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
+                              {% for cliente in clientes %}
                               <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <td>1</td>
-                                  <td>Felxi</td>
-                                  <td>12345678</td>
-                                  <td>Gael Sanchez</td>
-                                  <td>Abc138Gs</td>
-                                  <td> <span class="badge bg-green">Activo</span></td>
+                                  <td></td>
+                                  <td>{{cliente.id}}</td>
+                                  <td>{{cliente.nombre}}</td>
+                                  <td>{{cliente.RFC}}</td>
+                                  <td>{{cliente.direccion}}</td>
+                                  <td>{{cliente.razon_social}}</td>
+                                  <td>{{cliente.cuenta_banco}}</td>
+                                  <td>{{cliente.saldo}}</td>
+                                  <td>{{cliente.banco}}</td>
+                                  <td>{{cliente.comentarios}}</td>
+                                  
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_cliente" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_centro/{{cliente.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
                                     </a>
                                     </a>
                                   </td>
                               </tr>
+                              {% endfor %}
                           </tbody>
                       </table>
                   </div>
@@ -64,7 +76,7 @@
   </div>
   <!-- #END# Basic Examples -->
 
-{% include "modal_cobrar.html" %}
+{% include "modal_agregar_cliente.html" %}
 
 {% endblock content %}
 
