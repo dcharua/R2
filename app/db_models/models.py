@@ -1,18 +1,13 @@
 from sqlalchemy import Binary, Column, Integer, String, Date, Numeric, Table, ForeignKey, Boolean
 from app import db
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy import event
 from sqlalchemy.ext.declarative import declarative_base
 from flask import flash, redirect
 
 Base = declarative_base()
 
-#Association tables for many to many
 
-egresos_has_pagos = Table('egresos_has_pagos', db.Model.metadata,
-    Column('egreso_id', Integer, ForeignKey('egresos.id'), primary_key=True),
-    Column('pago_id', Integer, ForeignKey('pagos_egresos.id'), primary_key=True)
-)
 
 
 #Tables in alpha order
@@ -143,6 +138,15 @@ class DetallesEgreso(db.Model):
     def __repr__(self):
         return '<DetallesEgreso {}>'.format(self.id)   
 
+class EgresosHasPagos(db.Model):
+    __tablename__ = 'egresos_has_pagos'
+
+    egreso_id = Column(Integer, ForeignKey('egresos.id'), primary_key=True)
+    pago_id = Column(Integer, ForeignKey('pagos_egresos.id'), primary_key=True)
+    monto = Column(Numeric)
+    egreso = relationship("Egresos", backref=backref("pagos_assoc"))
+    pago =  relationship("Pagos", backref=backref("egresos_assoc"))
+
 
 class Egresos(db.Model):
 
@@ -166,7 +170,7 @@ class Egresos(db.Model):
     beneficiario = relationship("Beneficiarios", back_populates="egresos")
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="egresos")
-    pagos = relationship("Pagos", secondary=egresos_has_pagos)
+    pagos = relationship("Pagos", secondary='egresos_has_pagos')
 
     def setStatus(self, pagos=None):
         if pagos is None:
@@ -252,7 +256,7 @@ class Pagos(db.Model):
     forma_pago = relationship("FormasPago", back_populates="pagos")
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="pagos")
-    egresos = relationship("Egresos", secondary=egresos_has_pagos)
+    egresos = relationship("Egresos", secondary='egresos_has_pagos')
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id)           
