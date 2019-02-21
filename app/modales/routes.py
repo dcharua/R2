@@ -53,8 +53,12 @@ def agregar_cuenta():
         db.session.commit()   
         return redirect("/administracion/cuentas")    
 
+@blueprint.route('/agregar_categoria', methods=['GET', 'POST'])
+@login_required
+def agregar_categoria():    
     if request.form:
         data = request.form
+        categoria = Categorias(nombre=data["nombre"]) 
         db.session.add(categoria)
         db.session.commit()   
         return redirect("/administracion/otros")     
@@ -95,16 +99,16 @@ def agregar_empresa():
     
 
         
-<<<<<<< HEAD
-#agregar forma pago
-@blueprint.route('agregar_forma_pago', methods=['GET', 'POST'])
-=======
-    
-    if request.form:
-        data = request.form
-        db.session.add(forma_pago)
-        db.session.commit()   
-        return redirect("/administracion/otros")   
+#agregar_forma pago
+@blueprint.route('/agregar_forma_pago', methods=['GET', 'POST'])
+@login_required
+def agregar_forma_pago():
+        if request.form:
+                data = request.form
+                forma_pago= FormasPago(nombre=data["nombre"])
+                db.session.add(forma_pago)
+                db.session.commit()   
+                return redirect("/administracion/otros")   
     
 
 @blueprint.route('/agregar_tipo_ingreso', methods=['GET', 'POST'])
@@ -175,13 +179,9 @@ def get_data_pagar_multiple():
                 list.append({'egreso_id': e.id, 'beneficiario': e.beneficiario.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
         return jsonify(list)
 
-<<<<<<< HEAD
-#Solicitar pago multiple from sumbit
-=======
 
 #Solicitar pago from sumbit
->>>>>>> c7c8d3f28e6103596e66213a595a5da3474ca742
-@blueprint.route('mandar_pagar_multiple', methods=['GET', 'POST'])
+@blueprint.route('/mandar_pagar_multiple', methods=['GET', 'POST'])
 @login_required
 def mandar_pagar_multiple():
         if request.form:
@@ -230,25 +230,10 @@ def conciliar_movimento():
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")   
 
-<<<<<<< HEAD
-#Conciliar multiples pagos data for modal
-@blueprint.route('get_data_conciliar_multiple', methods=['GET', 'POST'])
-@login_required
-def get_data_conciliar_multiple():
-        list = []
-        pagos = request.args.getlist('pagos[]')
-        for pago in pagos:
-                p =  Pagos.query.get(pago)
-                list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'referencia': p.referencia_pago, 'cuenta': p.cuenta.nombre})
-        return jsonify(list)
-        
-
-=======
->>>>>>> c7c8d3f28e6103596e66213a595a5da3474ca742
 
 ### GENERAR PAGO ###
 #Generar pago for modal
-@blueprint.route('get_data_generar_pago<int:pago_id>', methods=['GET', 'POST'])
+@blueprint.route('/get_data_generar_pago<int:pago_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_generar_pago(pago_id):
         pago = Pagos.query.get(pago_id)
