@@ -27,3 +27,15 @@
 	currency: 'USD',
 	minimumFractionDigits: 2
   })
+
+
+//tooltip
+$(function () {
+	//Tooltip
+	$('[data-toggle="tooltip"]').tooltip({
+		container: 'body'
+	});
+
+	//Popover
+	$('[data-toggle="popover"]').popover();
+	})

@@ -1,7 +1,7 @@
 {% extends "base_site.html" %}
 
 {% block stylesheets %}
-  {{ super() }}
+{{ super() }}
 {% endblock stylesheets %}
 
 {% block content %}
@@ -9,45 +9,45 @@
 
 <!-- #END# Basic Examples -->
 
-  <div class="row clearfix">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="card">
-              <div class="header bg-black">
-                  <h2>
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header bg-black">
+                <h2>
                     Pagos Pendientes
-                  </h2>
-                  <!-- <div class="select-btn-group">
+                </h2>
+                <!-- <div class="select-btn-group">
                       <span class="btn btn-primary" color="red" >Generar pagos</span>
                   </div> -->
-              </div>
-              <div class="body">
-                  <div class="table-responsive">
-                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                          <thead>
-                              <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <th>ID</th>
-                                  <th>Beneficiario</th>
-                                  <th>Cuenta</th>
-                                  <th>Forma de pago</th>
-                                  <th>Monto</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
-                              </tr>
-                          </thead>
-                          <tfoot>
-                              <tr>
-                                  <th></th>
-                                  <th>ID</th>
-                                  <th>Beneficiario</th>
-                                  <th>Cuenta</th>
-                                  <th>Forma de pago</th>
-                                  <th>Monto</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
-                              </tr>
-                          </tfoot>
-                          <tbody>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th>Cuenta</th>
+                                <th>Forma de pago</th>
+                                <th>Monto</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th>Cuenta</th>
+                                <th>Forma de pago</th>
+                                <th>Monto</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
                             {% for pago in pagos %}
                             <tr>
                                 <td></td>
@@ -57,90 +57,96 @@
                                 <td>{{pago.forma_pago}}</td>
                                 <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                                 <td><span class="badge bg-blue">Solicitado</span> </td>
-                                <td> 
-                                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                    <i class="material-icons">visibility</i>
-                                  </a>
-                                  <a class="btn btn-xs btn-success waves-effect generar_pago"  data-toggle="modal" data-target="#modal_generar_pago" data-url="{{ url_for('modales_blueprint.get_data_generar_pago', pago_id=pago.id) }}" >
-                                    <i class="material-icons">payment</i>
-                                  </a>
+                                <td>
+                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+                                    <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('modales_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                                        <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Generar pago">payment</i>
+                                    </a>
                                 </td>
                             </tr>
                             {% endfor %}
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
-      </div>
-    </div>
-    <!-- PAGOS COMPLETADOS TABLE -->
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header bg-black">
-                    <h2>
-                      Pagos Realizados
-                    </h2>
-                    <div class="select-btn-group">
-                        <span class="btn bg-deep-purple" >Conciliar movimientos</span>                        
-                    </div>
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th>Beneficiario</th>
-                                    <th>Fecha de pago</th>
-                                    <th>Cuenta</th>
-                                    <th>Monto</th>
-                                    <th>Referencia</th>
-                                    <th>Status</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                              {% for pago in pagos_realizados %}
-                                <tr>
-                                    <td></td>
-                                    <td>{{pago.id}}</td>
-                                    <td>{{pago.beneficiario}}</td>
-                                    <td>{{pago.fecha_pago}}</td>
-                                    <td>{{pago.cuenta}}</td>
-                                    <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
-                                    <td>{{pago.referencia_pago}}</td>
-                                    <td> 
-                                        {% if pago.status == 'conciliado' %}  
-                                        <span class="badge bg-green">Liquidado</span>
-                                        {% endif %}
-                                        {% if pago.status == 'por_conciliar' %}  
-                                        <span class="badge bg-orange">Por conciliar</span>
-                                        {% endif %}
-                                    </td>
-                                    <td> 
-                                      <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}' data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                      </a>
-                                      {% if pago.status != 'conciliado' %}
-                                      <a class="btn btn-xs bg-deep-purple waves-effect open-modal" data-toggle="modal" data-target="#modal_conciliar_movimiento" data-url="{{ url_for('modales_blueprint.get_data_conciliar', pago_id=pago.id) }}" >
-                                            <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">assignment_turned_in</i>
-                                          </a>
-                                    {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<!-- PAGOS COMPLETADOS TABLE -->
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header bg-black">
+                <h2>
+                    Pagos Realizados
+                </h2>
+                <div class="select-btn-group">
+                    <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
+                </div>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                        <thead>
+                            <tr>
+                                <th><input name="select_all" value="1" class="select-all table-check" type="checkbox" /></th>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th>Fecha de pago</th>
+                                <th>Cuenta</th>
+                                <th>Monto</th>
+                                <th>Referencia</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for pago in pagos_realizados %}
+                            <tr>
+                                <td> 
+                                    {% if pago.status != 'conciliado' %}
+                                        <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                                    {% endif %}
+                                </td>
+                                <td>{{pago.id}}</td>
+                                <td>{{pago.beneficiario}}</td>
+                                <td>{{pago.fecha_pago}}</td>
+                                <td>{{pago.cuenta}}</td>
+                                <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
+                                <td>{{pago.referencia_pago}}</td>
+                                <td>
+                                    {% if pago.status == 'conciliado' %}
+                                    <span class="badge bg-green">Liquidado</span>
+                                    {% endif %}
+                                    {% if pago.status == 'por_conciliar' %}
+                                    <span class="badge bg-orange">Por conciliar</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+                                    {% if pago.status != 'conciliado' %}
+                                    <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('modales_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                                        <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">assignment_turned_in</i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {% include "modal_conciliar_movimiento.html" %}
@@ -149,7 +155,7 @@
 {% endblock content %}
 
 {% block javascripts %}
-  {{ super() }}
+{{ super() }}
 <!-- Jquery DataTable Plugin Js -->
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
@@ -163,12 +169,12 @@
 
 <script>
     //Modal generar pago
-    $(".generar_pago").on("click", function() {
+    $(".open-generar-pago").on("click", function () {
         $.ajax({
-        url: $(this).attr("data-url"),
-        success: function(data) {
-            const html = 
-            `<div class="row" style="margin-bottom:10px;">
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `<div class="row" style="margin-bottom:10px;">
                                 <div class="col-sm-12 col-md-6 ">
                                     <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
                                 </div>
@@ -188,51 +194,53 @@
                     <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                     <hr>
                     `
-            let element = document.querySelector(".generar_here");
-            element.innerHTML = "";
-            element.insertAdjacentHTML('beforeend', html);
-
-            if (data.forma_pago.toLowerCase() == 'cheque'){
-                $('#referencia_pago').val(data.numero_cheque);
-                let element = document.querySelector(".alert-here");
+                let element = document.querySelector(".generar_here");
                 element.innerHTML = "";
-                const ref = `<div class="alert alert-warning alert-dismissible" style="margin-bottom:0" role="alert">
+                element.insertAdjacentHTML('beforeend', html);
+
+                if (data.forma_pago.toLowerCase() == 'cheque') {
+                    $('#referencia_pago').val(data.numero_cheque);
+                    let element = document.querySelector(".alert-here");
+                    element.innerHTML = "";
+                    const ref =
+                        `<div class="alert alert-warning alert-dismissible" style="margin-bottom:0" role="alert">
                                 Revisar que el folio del cheque sea correcto
                             </div>`
-                element.insertAdjacentHTML('beforeend', ref);
-            }
+                    element.insertAdjacentHTML('beforeend', ref);
+                }
 
-            if (data.forma_pago.toLowerCase() == 'transferencia'){
-                let element = document.querySelector(".alert-here");
-                element.innerHTML = "";
-                const ref = `<div class="alert alert-info alert-dismissible" style="margin-bottom:0" role="alert">
+                if (data.forma_pago.toLowerCase() == 'transferencia') {
+                    let element = document.querySelector(".alert-here");
+                    element.innerHTML = "";
+                    const ref =
+                        `<div class="alert alert-info alert-dismissible" style="margin-bottom:0" role="alert">
                                 Revisar que la cuenta del beneficiario sea ${data.cuenta_beneficiario}
                             </div>`
-                element.insertAdjacentHTML('beforeend', ref);
+                    element.insertAdjacentHTML('beforeend', ref);
+                }
+                $('#modal_generar_pago').modal('show');
             }
+        });
+    });
+
+    // Conciliado check for modal generar pago
+    $("#conciliado_check").change(function () {
+        if (this.checked) {
+            $("#referencia_conciliacion").fadeIn()
+        } else {
+            $("#referencia_conciliacion").fadeOut()
         }
     });
-}); 
 
 
 
- 
-    $("#conciliado_check").change(function () {
-    if (this.checked) {
-      $("#referencia_conciliacion").fadeIn()
-    } else {
-      $("#referencia_conciliacion").fadeOut()
-    }
-  });
-
-
-
-  //Modal Conciliar
-  $(".open-modal").on("click", function() {
-    $.ajax({
-        url: $(this).attr("data-url"),
-        success: function(data) {
-        const html = `<div class="row" style="margin-bottom:20px;">
+    //Modal Conciliar
+    $(".open-conciliar").on("click", function () {
+        $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
                             </div>
@@ -251,86 +259,82 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <hr>`
-        let element = document.querySelector(".here");
-        element.innerHTML = "";
-        element.insertAdjacentHTML('beforeend', html);
-        $('.selectpicker').selectpicker('refresh');
-        }
-    });
-    });
-
-  $(function () {
-    //Tooltip
-    $('[data-toggle="tooltip"]').tooltip({
-        container: 'body'
-    });
-
-    //Popover
-    $('[data-toggle="popover"]').popover();
-  })
-
-  var table = $('.js-basic-example').DataTable({
-     'columnDefs': [{
-         'targets': 0,
-         'className': 'dt-body-center',
-         'render': function (data, type, full, meta){
-             return '<input type="checkbox" name="id[]" value="' 
-                + $('<div/>').text(data).html() + '">';
-         }
-      }],
-      'order': [1, 'asc'],
-
-  });
-
-     // Handle click on "Select all" control
-     $('#example-select-all').on('click', function(){
-      // Check/uncheck all checkboxes in the table
-      var rows = table.rows({ 'search': 'applied' }).nodes();
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
-   });
-
-    // Handle click on checkbox to set state of "Select all" control
-    $('#example tbody').on('change', 'input[type="checkbox"]', function(){
-      // If checkbox is not checked
-      if(!this.checked){
-         var el = $('#example-select-all').get(0);
-         // If "Select all" control is checked and has 'indeterminate' property
-         if(el && el.checked && ('indeterminate' in el)){
-            // Set visual state of "Select all" control 
-            // as 'indeterminate'
-            el.indeterminate = true;
-         }
-      }
-   });
-    
-   $('#frm-example').on('submit', function(e){
-      var form = this;
-
-      // Iterate over all checkboxes in the table
-      table.$('input[type="checkbox"]').each(function(){
-         // If checkbox doesn't exist in DOM
-         if(!$.contains(document, this)){
-            // If checkbox is checked
-            if(this.checked){
-               // Create a hidden element 
-               $(form).append(
-                  $('<input>')
-                     .attr('type', 'hidden')
-                     .attr('name', this.name)
-                     .val(this.value)
-               );
+                let element = document.querySelector(".here");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#modal_conciliar_movimiento').modal('show');
             }
-         } 
-      });
+        });
+    });
 
-      // FOR TESTING ONLY
-      
-      // Output form data to a console
-      $('#example-console').text($(form).serialize()); 
-      console.log("Form submission", $(form).serialize()); 
-       
-      // Prevent actual form submission
-      e.preventDefault();
-   });
+    //Modal Conciliar multiple
+
+    $("#open-conciliar-multiple").on("click", function () {
+        let pagos = []
+        // Iterate over all checkboxes in the table
+        $('.conciliar-table').each(function () {
+
+            // If checkbox is checked
+            if (this.checked) {
+                pagos.push($(this).val())
+            }
+        })
+
+        $.get({
+            url: '/modales/get_data_conciliar_multiple',
+            data: {
+                pagos: pagos
+            },
+            success: function (data) {
+                let element = document.querySelector(".here");
+                element.innerHTML = "";
+                data.forEach( pago => {
+                    const html =
+                    `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Beneficiario: <span class="font-bold">${pago.beneficiario}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(pago.monto_total)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${pago.cuenta}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Referencia de pago : <span class="font-bold">${pago.referencia}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
+                <hr>`
+                element.insertAdjacentHTML('beforeend', html);
+                $('#modal_conciliar_movimiento').modal('show');
+ 
+                });
+                
+            }
+        });
+    });
+
+    //Jquery table
+    var table = $('.js-basic-example').DataTable({
+        'order': [1, 'asc'],
+        "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+        } ]
+    });
+
+    // "Select all" control
+    $('.select-all').on('click', function () {
+        // Check/uncheck all checkboxes in the table
+        var rows = table.rows({
+            'search': 'applied'
+        }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
 </script>
 {% endblock javascripts %}
