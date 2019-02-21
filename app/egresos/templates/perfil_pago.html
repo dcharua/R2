@@ -20,8 +20,22 @@
             <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
           </div>
           <div class="col-sm-12 col-md-6 align-left">
-            <p class="font-18">Status: <span class="badge bg-green">Liquidado</span></p>
-            <p class="font-18">Empresa: <span class="font-bold">1 Rudos</span></p>
+
+            <p class="font-18">Status:
+                {% if pago.status == 'conciliado' %}
+                <span class="badge bg-green">Liquidado</span>
+                {% endif %}
+                {% if pago.status == 'por_conciliar' %}
+                <span class="badge bg-orange">Por conciliar</span>
+                {% endif %}
+                {% if pago.status == 'solicitado' %}
+                <span class="badge bg-blue">Solicitado</span>
+                {% endif %}
+                {% if pago.status == 'cancelado' %}
+                <span class="badge bg-red">Solicitado</span>
+                {% endif %}
+            </p>
+            <p class="font-18">Empresa: <span class="font-bold">{{pago.empresa}}</span></p>
             <p class="font-18">Fecha de pago: <span class="font-bold">{{pago.fecha_pago}}</span></p>
             <p class="font-18">Cuenta de banco: <span class="font-bold">{{pago.cuenta}}</span></p>
           </div>
@@ -74,14 +88,33 @@
                 <td>{{egreso.beneficiario}}</td>
                 <td>{{egreso.numero_documento}}</td>
                 <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                <td><span class="badge bg-green">Liquidado</span></td>
+                <td>
+                    {% if egreso.status == 'pendiente'%}
+                    <span class="badge bg-blue">Pendiente</span>
+                    {% endif %}
+                    {% if egreso.status == 'solicitado'%}
+                    <span class="badge bg-green">Solicitado</span>
+                    {% endif %}
+                    {% if egreso.status == 'parcial'%}
+                    <span class="badge bg-orange">Parcial</span>
+                    {% endif %}
+                    {% if egreso.status == 'liquidado'%}
+                    <span class="badge bg-green">Liquidado</span>
+                    {% endif %}
+                    {% if egreso.status == 'cancelado'%}
+                    <span class="badge bg-red">Cancelado</span>
+                    {% endif %}
+                    {% if egreso.status == 'por_conciliar'%}
+                    <span class="badge bg-orange">Por conciliar</span>
+                    {% endif %}
+                </td>
                 <td>
                   <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
-                  <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
+                  <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
                     <i class="material-icons">delete</i>
-                  </a>
+                  </a> -->
                 </td>
               </tr>
               {% endfor %}

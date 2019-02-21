@@ -100,9 +100,8 @@ def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
     egreso.beneficiario= Beneficiarios.query.get(egreso.beneficiario_id)
     egreso.empresa = Empresas.query.get(egreso.empresa_id)
-    pagos = Pagos.query.join(Egresos.pagos, Beneficiarios).filter(Egresos.id == egreso_id)
     detalles = DetallesEgreso.query.filter(DetallesEgreso.egreso_id == egreso_id)
-    return render_template("perfil_egreso.html", egreso=egreso, pagos=pagos, detalles=detalles)
+    return render_template("perfil_egreso.html", egreso=egreso, pagos=egreso.pagos, detalles=detalles)
 
 
 #Egresos Edit   

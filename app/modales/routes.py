@@ -153,15 +153,17 @@ def mandar_pagar():
                 egreso = Egresos.query.get(data["egreso_id"])
                 if ('parcial' in data):
                         monto_total = data["monto_parcial"]
-                        egreso.status = 'parcial'
                 else:
                         monto_total = egreso.monto_total - egreso.monto_solicitado - egreso.monto_pagado
-                        egreso.status = 'solicitado'
-
                 pago = Pagos(status='solicitado', beneficiario=egreso.beneficiario, monto_total=monto_total, cuenta_id=data["cuenta_id"], forma_pago_id=data["forma_pago_id"])
-                #pago.beneficiario = egreso.beneficiario
+              
                 ep = EgresosHasPagos(egreso = egreso, pago = pago, monto = monto_total)    
                 egreso.monto_solicitado += int(pago.monto_total)
+
+                if egreso.monto_total == egreso.monto_solicitado + egreso.monto_pagado:
+                        egreso.status = 'solicitado'
+                else:
+                        egreso.status = 'parcial'
                 db.session.add(ep)
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")   
@@ -230,6 +232,16 @@ def conciliar_movimento():
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")   
 
+#Conciliar multiples pagos data for modal
+@blueprint.route('get_data_conciliar_multiple', methods=['GET', 'POST'])
+@login_required
+def get_data_conciliar_multiple():
+        list = []
+        pagos = request.args.getlist('pagos[]')
+        for pago in pagos:
+                p =  Pagos.query.get(pago)
+                list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'referencia': p.referencia_pago, 'cuenta': p.cuenta.nombre})
+        return jsonify(list)
 
 ### GENERAR PAGO ###
 #Generar pago for modal
@@ -249,11 +261,12 @@ def generar_pago():
         if request.form:
                 data = request.form
                 pago = Pagos.query.get(data["pago_id"])
-                #egreso = Egresos.query.join(Egresos.pagos).filter_by(id = pago.id).all()
-                if len(pago.egresos) == 1:
-                        egreso = pago.egresos[0]
-                        egreso.monto_pagado += pago.monto_total
-                        egreso.monto_solicitado -= pago.monto_total
+                pago.referencia_pago = data["referencia_pago"]
+                pago.fecha_pago = data["fecha_pago"]
+                for egreso in pago.egresos:
+                        ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
+                        egreso.monto_pagado += ep.monto
+                        egreso.monto_solicitado -= ep.monto
                         if egreso.monto_pagado == egreso.monto_total:
                                 egreso.pagado = True
                         if ('conciliado_check' in data):
@@ -262,30 +275,11 @@ def generar_pago():
                                 if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
                                         egreso.status = 'liquidado'
                         else:
-                                egreso.monto_por_conciliar += pago.monto_total
+                                egreso.monto_por_conciliar += ep.monto
                                 pago.status = 'por_conciliar'
                                 if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
                                         egreso.status = 'por_conciliar'
 
-                else:
-                        for egreso in pago.egresos:
-                                ep = EgresosHasPagos.query.filter_by(egreso_id=e.id , pago_id =pago.id ).first()
-                                egreso.monto_pagado += ep.monto
-                                egreso.monto_solicitado -= ep.monto
-                                if egreso.monto_pagado == e.monto_total:
-                                        egreso.pagado = True
-                                if ('conciliado_check' in data):
-                                        pago.status = 'conciliado';
-                                        pago.referencia_conciliacion = data["referencia_conciliacion"]
-                                        if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
-                                                egreso.status = 'liquidado'
-                                else:
-                                        egreso.monto_por_conciliar += ep.monto
-                                        pago.status = 'por_conciliar'
-                                        if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
-                                                egreso.status = 'por_conciliar'
-
-                pago.fecha_pago = data["fecha_pago"]
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")
 

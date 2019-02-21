@@ -62,7 +62,8 @@
                 <td>{{egreso.fecha_programada_pago}}</td>
                 <td>{{egreso.fecha_vencimiento}}</td>
                 <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
-                <td>{% if egreso.status == 'pendiente'%}
+                <td>
+                  {% if egreso.status == 'pendiente'%}
                   <span class="badge bg-blue">Pendiente</span>
                   {% endif %}
                   {% if egreso.status == 'solicitado'%}

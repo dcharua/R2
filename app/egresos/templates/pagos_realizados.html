@@ -53,7 +53,7 @@
                                 <td></td>
                                 <td>{{pago.id}}</td>
                                 <td>{{pago.beneficiario}}</td>
-                                <td>{{pago.cuenta}}</td>
+                                <td>{{pago.cuenta.nombre}}</td>
                                 <td>{{pago.forma_pago}}</td>
                                 <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                                 <td><span class="badge bg-blue">Solicitado</span> </td>
@@ -116,7 +116,7 @@
                                 <td>{{pago.id}}</td>
                                 <td>{{pago.beneficiario}}</td>
                                 <td>{{pago.fecha_pago}}</td>
-                                <td>{{pago.cuenta}}</td>
+                                <td>{{pago.cuenta.nombre}}</td>
                                 <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                                 <td>{{pago.referencia_pago}}</td>
                                 <td>
