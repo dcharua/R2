@@ -21,7 +21,14 @@ def beneficiarios():
 @blueprint.route('/clientes', methods=['GET', 'POST'])
 @login_required
 def clientes():
-    return render_template("clientes.html", cuentas=cuentas)      
+    clientes = Clientes.query.all()
+    return render_template("clientes.html", clientes = clientes)   
+
+@blueprint.route('/perfil_de_cliente/<int:cliente_id>', methods=['GET', 'POST'])
+def perfil_de_cliente(cliente_id):
+    cliente = Clientes.query.get(cliente_id)
+
+    return render_template("perfil_de_cliente.html", cliente = cliente)   
 
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required
@@ -44,4 +51,5 @@ def otros():
     conceptos = Conceptos.query.all()
     empresas = Empresas.query.all()
     formas_pago = FormasPago.query.all()
-    return render_template("otros.html", categorias=categorias, conceptos=conceptos, empresas=empresas, formas_pago=formas_pago)
+    tipo_ingresos = Tipo_Ingreso.query.all()
+    return render_template("otros.html", tipo_ingresos = tipo_ingresos, categorias=categorias, conceptos=conceptos, empresas=empresas, formas_pago=formas_pago)
