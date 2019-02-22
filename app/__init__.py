@@ -49,7 +49,7 @@ def create_app(config):
     
 
     app = Flask(__name__, static_folder='base/static')
-    #app.config.from_object(config)
+    app.config.from_object(config)
     app.config.from_mapping(
         #SECRET_KEY=environ.get('KEY'),
         SECRET_KEY = os.urandom(32),

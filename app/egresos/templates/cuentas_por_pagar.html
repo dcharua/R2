@@ -28,7 +28,7 @@
 
             <thead>
               <tr>
-                <th><input name="select_all" value="1" id="example-select-all" type="checkbox" class="table-check" /></th>
+                <th><input name="select_all" value="1" class="table-check select-all" type="checkbox"  /></th>
                 <th>ID</th>
                 <th># documento</th>
                 <th>Beneficiario</th>
@@ -55,14 +55,15 @@
             <tbody>
               {% for egreso in egresos_pendientes %}
               <tr>
-                <td><input name="select_all" value="{{egreso.id}}" id="example-select-all" type="checkbox" class="table-check tabla1" /></td>
+                <td><input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" /></td>
                 <td>{{egreso.id}}</td>
                 <td>{{egreso.numero_documento}}</td>
                 <td>{{egreso.beneficiario}}</td>
                 <td>{{egreso.fecha_programada_pago}}</td>
                 <td>{{egreso.fecha_vencimiento}}</td>
                 <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
-                <td>{% if egreso.status == 'pendiente'%}
+                <td>
+                  {% if egreso.status == 'pendiente'%}
                   <span class="badge bg-blue">Pendiente</span>
                   {% endif %}
                   {% if egreso.status == 'solicitado'%}
@@ -83,8 +84,7 @@
                     <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
                   </a>
                   {% endif %}
-                  <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha"
-                    data-id="{{egreso.id}}">
+                  <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha" data-id="{{egreso.id}}">
                     <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                   </a>
                 </td>
@@ -120,7 +120,7 @@
 
               <thead>
                 <tr>
-                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                  <th><input name="select_all" value="1" class="select-all" type="checkbox" /></th>
                   <th>ID</th>
                   <th># documento</th>
                   <th>Beneficiario</th>
@@ -147,7 +147,7 @@
               <tbody>
                 {% for egreso in egresos_pagados %}
                 <tr>
-                  <td><input name="select_all" value="1" id="example-select-all" type="checkbox" /></td>
+                  <td><input name="select_all" value="1" class="select-all" type="checkbox" /></td>
                   <td>{{egreso.id}}</td>
                   <td>{{egreso.numero_documento}}</td>
                   <td>{{egreso.beneficiario}}</td>
@@ -217,7 +217,7 @@
   $('#reprogramar_multiple').on('submit', function (e) {
     // Iterate over all checkboxes in the table
     let egresos = []
-    $('.tabla1').each(function () {
+    $('.pendientes-table').each(function () {
       // If checkbox is checked
       if (this.checked) {
         egresos.push($(this).val())
@@ -272,20 +272,20 @@
   $('#open-pagar-multiple').on("click", function () {
     let egresos = []
     // Iterate over all checkboxes in the table
-    $('.tabla1').each(function () {
+    $('.pendientes-table').each(function () {
 
       // If checkbox is checked
       if (this.checked) {
         egresos.push($(this).val())
       }
     })
-    console.log(egresos)
     $.get({
       url: '/modales/get_data_pagar_multiple',
       data: {
         egresos: egresos
       },
       success: function (data) {
+        // Clean modal
         document.querySelector(".multiple-here").innerHTML = "";
         //group by beneficiarios
         data = _.mapValues(_.groupBy(data, 'beneficiario'), clist => clist.map(egreso => _.omit(egreso,
@@ -362,6 +362,9 @@
           counter++;
           $('.selectpicker').selectpicker('refresh');
         });
+
+        //clean monto
+        document.querySelector(".monto-here").innerHTML = "";
         //insert monto total
         document.querySelector(".monto-here").insertAdjacentHTML('beforeend',
           `<p class="font-18 right">Monto total a pagar: <span class="font-bold">${money.format(monto_total)}</span></p>
@@ -385,24 +388,19 @@
     }
   });
 
-  //tooltip
-  $(function () {
-    //Tooltip
-    $('[data-toggle="tooltip"]').tooltip({
-      container: 'body'
-    });
 
-    //Popover
-    $('[data-toggle="popover"]').popover();
-  })
 
   //Jquery table
   var table = $('.js-basic-example').DataTable({
     'order': [1, 'asc'],
+    "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+        } ]
   });
 
   // "Select all" control
-  $('#example-select-all').on('click', function () {
+  $('.select-all').on('click', function () {
     // Check/uncheck all checkboxes in the table
     var rows = table.rows({
       'search': 'applied'

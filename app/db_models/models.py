@@ -8,8 +8,6 @@ from flask import flash, redirect
 Base = declarative_base()
 
 
-
-
 #Tables in alpha order
 
 class Beneficiarios(db.Model):

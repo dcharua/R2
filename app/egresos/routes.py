@@ -44,7 +44,7 @@ def capturar_egreso():
                 egreso.monto_por_conciliar = monto_pagado
                 status = 'por_conciliar'    
                 refrencia_conciliacion = ""
-                if egreso-monto_pagado == egreso.monto_total:
+                if egreso.monto_pagado == egreso.monto_total:
                     egreso.status = 'por_conciliar'
                 else:
                     egreso.status = 'parcial'
@@ -52,10 +52,12 @@ def capturar_egreso():
             pago = Pagos(forma_pago_id = data["forma_pago"], cuenta_id= data["cuenta_banco"], referencia_pago = data["forma_pago"],fecha_pago = data["fecha_pago"], status = status, 
             referencia_conciliacion= refrencia_conciliacion,  monto_total = monto_pagado, comentario = data["comentario_pago"], beneficiario_id=1)
             if  float(monto_pagado) >= monto_total:
-                egreso.pagado = True       
-            egreso.pagos.append(pago)
-
-        db.session.add(egreso)
+                egreso.pagado = True    
+            ep = EgresosHasPagos(egreso = egreso, pago = pago, monto = monto_pagado)    
+        if ('pagado' in data):
+            db.session.add(ep)
+        else:
+            db.session.add(egreso)
         db.session.commit()
         return redirect("/egresos/cuentas_por_pagar")
         
@@ -98,9 +100,8 @@ def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
     egreso.beneficiario= Beneficiarios.query.get(egreso.beneficiario_id)
     egreso.empresa = Empresas.query.get(egreso.empresa_id)
-    pagos = Pagos.query.join(Egresos.pagos, Beneficiarios).filter(Egresos.id == egreso_id)
     detalles = DetallesEgreso.query.filter(DetallesEgreso.egreso_id == egreso_id)
-    return render_template("perfil_egreso.html", egreso=egreso, pagos=pagos, detalles=detalles)
+    return render_template("perfil_egreso.html", egreso=egreso, pagos=egreso.pagos, detalles=detalles)
 
 
 #Egresos Edit   
@@ -121,20 +122,22 @@ def delete_egreso(egreso_id):
 
 ##### PAGOS ROUTES  #########
 
-
+#pagos tablas
 @blueprint.route('/pagos_realizados', methods=['GET', 'POST'])
 def pagos_realizados():
     pagos = Pagos.query.filter(Pagos.status == 'solicitado').all()
     pagos_realizados = Pagos.query.filter(Pagos.status.like("%conci%")).all()
     return render_template("pagos_realizados.html", pagos=pagos, pagos_realizados=pagos_realizados)
 
-
+#perfil pago
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])
 def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)    
     return render_template("perfil_pago.html", pago=pago)
    
 
+
+#####perfil beneficiario
 @blueprint.route('/perfil_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
 def perfil_beneficiario(beneficiario_id):
     beneficiario = Beneficiarios.query.get(beneficiario_id)
