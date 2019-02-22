@@ -20,13 +20,9 @@
                                 <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>RFC</th>
-                                <th>Telefono y Direccion</th>
-                                <th>Razon_social</th>
-                                <th>Cuenta_banco</th>
                                 <th>Saldo</th>
                                 <th>Banco</th>
-                                <th>Comentarios</th>
+                                <th>status</th>
                                 <th>Acciones</th>
                               </tr>
                           </thead>
@@ -35,13 +31,9 @@
                                 <th></th>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>RFC</th>
-                                <th>Telefono y Direccion</th>
-                                <th>Razon_social</th>
-                                <th>Cuenta_banco</th>
                                 <th>Saldo</th>
                                 <th>Banco</th>
-                                <th>Comentarios</th>
+                                <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
@@ -51,13 +43,9 @@
                                   <td></td>
                                   <td>{{cliente.id}}</td>
                                   <td>{{cliente.nombre}}</td>
-                                  <td>{{cliente.RFC}}</td>
-                                  <td>{{cliente.direccion}}</td>
-                                  <td>{{cliente.razon_social}}</td>
-                                  <td>{{cliente.cuenta_banco}}</td>
                                   <td>{{cliente.saldo}}</td>
                                   <td>{{cliente.banco}}</td>
-                                  <td>{{cliente.comentarios}}</td>
+                                  <td>{{cliente.status}}</td>
                                   
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_cliente/{{cliente.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">

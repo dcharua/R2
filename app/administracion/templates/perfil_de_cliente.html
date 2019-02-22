@@ -20,18 +20,14 @@
                   <p class="font-18">Cliente: <span class="font-bold">{{cliente.nombre}}</span></p>
                   <p class="font-18">RFC: <span class="font-bold">{{cliente.RFC}}</span></p>
                   <p class="font-18">Direccion: <span class="font-bold">{{cliente.direccion}}</span></p>                  
-                  <p class="font-18">Nombre del contacto: <span class="font-bold">Luis Jesus Martinez</span> </p>
-                  <p class="font-18">Correo de contacto: <span class="font-bold">Luis@Felix.com </span> </p>
-                  <p class="font-18">Teléfono <span class="font-bold">55842412 Ext: 121 </span> </p>
-
+                  <p class="font-18">Razón social: <span class="font-bold">{{cliente.razon_social}}</span></p>
                   
                 </div>
                 <div class="col-sm-12 col-md-6 align-left">
-                  <p class="font-18">Saldo : <span class="font-bold">1,824.00</span></p>
-                  <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></td>
-                  <p class="font-18">Razón social: <span class="font-bold">{{cliente.razon_social}}</span></p>
+                  <p class="font-18">Saldo : <span class="font-bold">{{cliente.saldo}}</span></p>
+                  <p class="font-18">Status: <span class="badge bg-green">{{cliente.status}}</span></td>
                   <p class="font-18">Banco: <span class="font-bold">{{cliente.banco}}</span></p>
-                  <p class="font-18">Cuenta: <span class="font-bold">{{cliente.cuenta}}</span></p>
+                  <p class="font-18">Cuenta: <span class="font-bold">{{cliente.cuenta_banco}}</span></p>
                 </div>
               </div>
             </div>
@@ -189,7 +185,50 @@
         </div>
       </div>
 
-      
+  
+    <!-- PAGOS TABLE -->
+    <div class="card">
+        <div class="header">
+          <h2>Contactos</h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Extensión</th>
+                    <th>Puesto</th>
+                    <th>Accion</th>
+                  </tr>
+              </thead>
+
+              <tbody>
+                  {% for contacto in contactos_cliente %}
+                  <tr>
+                      <td>{{contacto.nombre}}</td>
+                      <td>{{contacto.correo}}</td>
+                      <td>{{contacto.telefono}}</td>
+                      <td>{{contacto.extension}}</td>
+                      <td>{{contacto.puesto}}</td>
+                      
+                      <td>
+                        <a class="btn btn-xs btn-info waves-effect" href="/" data-toggle="tooltip" data-placement="top" title="Editar Contacto">
+                          <i class="material-icons">visibility</i>
+                        </a>
+                      </td>
+
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    
       <div class="row">
           <div class="col-sm-12 col-md-8">
                 <div class="card">

@@ -27,8 +27,11 @@ def clientes():
 @blueprint.route('/perfil_de_cliente/<int:cliente_id>', methods=['GET', 'POST'])
 def perfil_de_cliente(cliente_id):
     cliente = Clientes.query.get(cliente_id)
+    contactos_cliente = ContactoCliente.query.filter(ContactoCliente.cliente_id == cliente_id).all()
+    #contactos_cliente = ContactoCliente.query.all()
+    print(contactos_cliente)
 
-    return render_template("perfil_de_cliente.html", cliente = cliente)   
+    return render_template("perfil_de_cliente.html", cliente = cliente, contactos_cliente = contactos_cliente)   
 
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required
