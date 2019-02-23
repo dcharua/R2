@@ -112,12 +112,20 @@ def editar_egreso(egreso_id):
 
 #Egresos Delete
 @blueprint.route("/borrar_egreso/<int:egreso_id>",  methods=['GET', 'POST'])
-def delete_egreso(egreso_id):
+def borrar_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
     db.session.delete(egreso)
     db.session.commit()
-    flash('Egreso borrado', 'success')
-    return redirect("/")
+    return  jsonify("deleted")
+
+#Egresos Delete
+@blueprint.route("/cancelar_egreso/<int:egreso_id>",  methods=['GET', 'POST'])
+def cancelar_egreso(egreso_id):
+    egreso = Egresos.query.get(egreso_id)
+    egreso.status ='cancelado'
+    db.session.commit()
+    return  jsonify("deleted")
+
 
 
 ##### PAGOS ROUTES  #########
@@ -126,7 +134,7 @@ def delete_egreso(egreso_id):
 @blueprint.route('/pagos_realizados', methods=['GET', 'POST'])
 def pagos_realizados():
     pagos = Pagos.query.filter(Pagos.status == 'solicitado').all()
-    pagos_realizados = Pagos.query.filter(Pagos.status.like("%conci%")).all()
+    pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado').all()
     return render_template("pagos_realizados.html", pagos=pagos, pagos_realizados=pagos_realizados)
 
 #perfil pago
@@ -153,7 +161,22 @@ def borrar_pago(pago_id):
     db.session.commit()
     return  jsonify("deleted")
 
-
+###### Cancelar pago
+@blueprint.route("/cancelar_pago/<int:pago_id>",  methods=['GET', 'POST'])
+def cancelar_pago(pago_id):
+    pago = Pagos.query.get(pago_id)
+    for egreso in pago.egresos:
+        ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
+        egreso.monto_pagado -= ep.monto
+        if pago.status == 'por_conciliar':
+            egreso.monto_por_conciliar -= ep.monto
+        ep.monto = 0
+        
+    pago.status = 'cancelado'
+    db.session.commit()
+    for egreso in pago.egresos:
+        egreso.setStatus()
+    return  jsonify("deleted")
 
 
 ###########MODALES  ###########

@@ -8,20 +8,31 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">Pago</h2>
-      </div>
+        {% if pago.status != 'solicitado' and pago.status != 'cancelado' %}
+        <div class="select-btn-group">
+          <span id="open-conciliar-multiple" class="btn bg-red cancel-pago" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_pago', pago_id=pago.id) }}">Cancelar pago</span>
+        </div>
+        {% endif %}
+        {% if pago.status == 'solicitado' and pago.status != 'cancelado' %}
+        <div class="select-btn-group">
+          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar pago</span>
+        </div>
+        {% endif %}
+        </div>
 
-      <div class="body">
-        <div class="row mycontainer">
-          <div class="col-sm-12 col-md-6">
-            <p class="font-18">Id: <span class="font-bold">{{pago.id}}</span></p>
-            <p class="font-18">Beneficiario: <span class="font-bold">{{pago.beneficiario}}</span></p>
-            <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
-            <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
-            <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
-          </div>
-          <div class="col-sm-12 col-md-6 align-left">
 
-            <p class="font-18">Status:
+        <div class="body">
+          <div class="row mycontainer">
+            <div class="col-sm-12 col-md-6">
+              <p class="font-18">Id: <span class="font-bold">{{pago.id}}</span></p>
+              <p class="font-18">Beneficiario: <span class="font-bold">{{pago.beneficiario}}</span></p>
+              <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
+              <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
+              <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
+            </div>
+            <div class="col-sm-12 col-md-6 align-left">
+
+              <p class="font-18">Status:
                 {% if pago.status == 'conciliado' %}
                 <span class="badge bg-green">Liquidado</span>
                 {% endif %}
@@ -32,63 +43,63 @@
                 <span class="badge bg-blue">Solicitado</span>
                 {% endif %}
                 {% if pago.status == 'cancelado' %}
-                <span class="badge bg-red">Solicitado</span>
+                <span class="badge bg-red">Cancelado</span>
                 {% endif %}
-            </p>
-            <p class="font-18">Empresa: <span class="font-bold">{{pago.empresa}}</span></p>
-            <p class="font-18">Fecha de pago: <span class="font-bold">{{pago.fecha_pago}}</span></p>
-            <p class="font-18">Cuenta de banco: <span class="font-bold">{{pago.cuenta}}</span></p>
+              </p>
+              <p class="font-18">Empresa: <span class="font-bold">{{pago.empresa}}</span></p>
+              <p class="font-18">Fecha de pago: <span class="font-bold">{{pago.fecha_pago}}</span></p>
+              <p class="font-18">Cuenta de banco: <span class="font-bold">{{pago.cuenta}}</span></p>
+            </div>
           </div>
-        </div>
-        <div class="row mycontainer">
-          <div class="col-sm-12">
-            <div class="border-box">
-              <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">{{pago.comentario}} </p>
+          <div class="row mycontainer">
+            <div class="col-sm-12">
+              <div class="border-box">
+                <p class="font-18 font-bold">Comentarios</p>
+                <p class="font-18">{{pago.comentario}} </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
 
-    <!-- DETALLES TABLE -->
-    <div class="card">
-      <div class="header bg-black">
-        <h2>Cuentas o Documentos pagados</h2>
-      </div>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Beneficiario</th>
-                <th># Documento</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Accion</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>ID</th>
-                <th>Beneficiario</th>
-                <th># Documento</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Accion</th>
-              </tr>
-            </tfoot>
-            
-            <tbody>
-              {% for egreso in pago.egresos %}
-              <tr>
-                <td>{{egreso.id}}</td>
-                <td>{{egreso.beneficiario}}</td>
-                <td>{{egreso.numero_documento}}</td>
-                <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                <td>
+      <!-- DETALLES TABLE -->
+      <div class="card">
+        <div class="header bg-black">
+          <h2>Cuentas o Documentos pagados</h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Beneficiario</th>
+                  <th># Documento</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Accion</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Beneficiario</th>
+                  <th># Documento</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Accion</th>
+                </tr>
+              </tfoot>
+
+              <tbody>
+                {% for egreso in pago.egresos %}
+                <tr>
+                  <td>{{egreso.id}}</td>
+                  <td>{{egreso.beneficiario}}</td>
+                  <td>{{egreso.numero_documento}}</td>
+                  <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
+                  <td>
                     {% if egreso.status == 'pendiente'%}
                     <span class="badge bg-blue">Pendiente</span>
                     {% endif %}
@@ -107,46 +118,103 @@
                     {% if egreso.status == 'por_conciliar'%}
                     <span class="badge bg-orange">Por conciliar</span>
                     {% endif %}
-                </td>
-                <td>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                    <i class="material-icons">visibility</i>
-                  </a>
-                  <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
+                  </td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip"
+                      data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
                     <i class="material-icons">delete</i>
                   </a> -->
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
 
 
-    {% endblock content %}
+      {% endblock content %}
 
-    {% block javascripts %}
-    {{ super() }}
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+      {% block javascripts %}
+      {{ super() }}
+      <!-- Jquery DataTable Plugin Js -->
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
+      <script>
+        $('.js-basic-example').DataTable({
+          dom: 'Bfrtip',
+          responsive: true,
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ]
+        });
 
-    <script>
-      $('.js-basic-example').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-      });
-    </script>
-    {% endblock javascripts %}
+        //Borrar pago con sweer alert
+        $('.delete-pago').on('click', function () {
+          var element = this;
+          swal({
+            title: "Estas seguro?",
+            text: "Se borrara el registro de esta solicitud de pago!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+          }, function () {
+            console.log(element)
+            $.ajax({
+              url: $(element).attr("data-url"),
+              success: function (data) {
+                if (data) {
+                  swal("Borrado!", "El pago ha sido eliminado.", "success");
+                  setTimeout(function () {
+                    location.replace('/egresos/cuentas_por_pagar');
+                  }, 2000);
+                }
+              }
+            })
+
+          });
+        });
+
+        //cancelar pago con sweer alert
+        $('.cancel-pago').on('click', function () {
+          var element = this;
+          swal({
+            title: "Estas seguro?",
+            text: "Se cancelara el pago y se restara de sus documentos asociados!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+          }, function () {
+            console.log(element)
+            $.ajax({
+              url: $(element).attr("data-url"),
+              success: function (data) {
+                if (data) {
+                  swal("Borrado!", "El pago ha sido cancelado.", "success");
+                  setTimeout(function () {
+                    location.reload();
+                  }, 2000);
+                }
+              }
+            })
+
+          });
+        });
+      </script>
+      {% endblock javascripts %}

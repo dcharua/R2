@@ -1,7 +1,6 @@
-from sqlalchemy import Binary, Column, Integer, String, Date, Numeric, Table, ForeignKey, Boolean
+from sqlalchemy import Binary, Column, Integer, String, Date, Numeric, Table, ForeignKey, Boolean, not_, event
 from app import db
 from sqlalchemy.orm import relationship, backref
-from sqlalchemy import event
 from sqlalchemy.ext.declarative import declarative_base
 from flask import flash, redirect
 

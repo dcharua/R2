@@ -391,13 +391,19 @@
 
 
   //Jquery table
-  var table = $('.js-basic-example').DataTable({
-    'order': [1, 'asc'],
-    "columnDefs": [ {
+
+  $('.js-basic-example').DataTable({
+          dom: 'Bfrtip',
+          responsive: true,
+          "order": [[ 1, 'desc' ], [ 2, 'asc' ]],
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ],
+          "columnDefs": [ {
         "targets": 0,
         "orderable": false
         } ]
-  });
+      });
 
   // "Select all" control
   $('.select-all').on('click', function () {

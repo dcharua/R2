@@ -8,7 +8,18 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">Detalle de Egreso</h2>
-      </div>
+        {% if egreso.pagos|length >  0 %}
+        <div class="select-btn-group">
+          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar egresos</span>
+        </div>
+        {% endif %}
+        {% if egreso.pagos|length  == 0 %}
+        <div class="select-btn-group">
+          <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar egreso</span>
+        </div>
+        {% endif %}
+        </div>
+
 
       <div class="body">
         <div class="row mycontainer">
@@ -104,7 +115,7 @@
                   </tr>
                 </tfoot>
                 <tbody>
-                  {% for pago in pagos %}
+                  {% for pago in egreso.pagos %}
                   {% if pago.status == 'solicitado' %}
                   <tr>
                     <td></td>
@@ -185,13 +196,16 @@
                       {% if pago.status == 'por_conciliar' %}
                       <span class="badge bg-orange">Por conciliar</span>
                       {% endif %}
+                      {% if pago.status == 'cancelado' %}
+                      <span class="badge bg-orange">Cancelado</span>
+                      {% endif %}
                     </td>
                     <td>
                       <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}' data-toggle="tooltip"
                         data-placement="top" title="Ver detalle">
                         <i class="material-icons">visibility</i>
                       </a>
-                      {% if pago.status != 'conciliado' %}
+                      {% if pago.status == 'por_conciliar' %}
                       <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
                         <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">assignment_turned_in</i>
                       </a>
@@ -283,6 +297,7 @@
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
       //Modal generar pago
@@ -454,5 +469,61 @@
         }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
-    </script>
-    {% endblock javascripts %}
+
+    //Borrar egreso con sweer alert
+    $('.delete-egreso').on('click', function () {
+          var element = this;
+          swal({
+            title: "Estas seguro?",
+            text: "Se borrara el registro de esta cuenta por pagar!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+          }, function () {
+            console.log(element)
+            $.ajax({
+              url: $(element).attr("data-url"),
+              success: function (data) {
+                if (data) {
+                  swal("Borrado!", "El egreso ha sido eliminado.", "success");
+                  setTimeout(function () {
+                    location.replace('/egresos/cuentas_por_pagar');
+                  }, 2000);
+                }
+              }
+            })
+
+          });
+        });
+
+        //cancelar pago con sweer alert
+        $('.cancel-egreso').on('click', function () {
+          var element = this;
+          swal({
+            title: "Estas seguro?",
+            text: "Se cancelara el pago y se restara de sus documentos asociados!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+          }, function () {
+            console.log(element)
+            $.ajax({
+              url: $(element).attr("data-url"),
+              success: function (data) {
+                if (data) {
+                  swal("Borrado!", "El egreso ha sido cancelado.", "success");
+                  setTimeout(function () {
+                    location.reload();
+                  }, 2000);
+                }
+              }
+            })
+
+          });
+        });
+      </script>
+      {% endblock javascripts %}
