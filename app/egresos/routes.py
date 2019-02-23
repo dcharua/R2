@@ -159,7 +159,7 @@ def borrar_pago(pago_id):
 ###########MODALES  ###########
 #####  SOLICITAR PAGO #######
 #Solicitar pago data for modal
-@blueprint.route('get_data_pagar<int:egreso_id>', methods=['GET', 'POST'])
+@blueprint.route('/get_data_pagar<int:egreso_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_pagar(egreso_id):
         egreso = Egresos.query.get(egreso_id)
@@ -168,7 +168,7 @@ def get_data_pagar(egreso_id):
 
 
 # Solcitar pago form submit
-@blueprint.route('mandar_pagar', methods=['GET', 'POST'])
+@blueprint.route('/mandar_pagar', methods=['GET', 'POST'])
 @login_required
 def mandar_pagar():
         if request.form:
@@ -193,7 +193,7 @@ def mandar_pagar():
 
 
 # Solicitar multiples pagos data for modal 
-@blueprint.route('get_data_pagar_multiple', methods=['GET', 'POST'])
+@blueprint.route('/get_data_pagar_multiple', methods=['GET', 'POST'])
 @login_required
 def get_data_pagar_multiple():
         list = []
@@ -227,7 +227,7 @@ def mandar_pagar_multiple():
 
 ### CONCILIAT PAGOS ###
 #Conciliar pago data for modal
-@blueprint.route('get_data_conciliar<int:pago_id>', methods=['GET', 'POST'])
+@blueprint.route('/get_data_conciliar<int:pago_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_conciliar(pago_id):
         pago = Pagos.query.get(pago_id)
@@ -235,7 +235,7 @@ def get_data_conciliar(pago_id):
 
 
 #Conciliar pago form sumbit
-@blueprint.route('conciliar_movimento', methods=['GET', 'POST'])
+@blueprint.route('/conciliar_movimento', methods=['GET', 'POST'])
 @login_required
 def conciliar_movimento():
         if request.form:
@@ -256,7 +256,7 @@ def conciliar_movimento():
                 return  redirect("/egresos/pagos_realizados")   
 
 #Conciliar multiples pagos data for modal
-@blueprint.route('get_data_conciliar_multiple', methods=['GET', 'POST'])
+@blueprint.route('/get_data_conciliar_multiple', methods=['GET', 'POST'])
 @login_required
 def get_data_conciliar_multiple():
         list = []
@@ -278,7 +278,7 @@ def get_data_generar_pago(pago_id):
  
        
 # Generar pago form sumbit
-@blueprint.route('generar_pago', methods=['GET', 'POST'])
+@blueprint.route('/generar_pago', methods=['GET', 'POST'])
 @login_required
 def generar_pago():
         if request.form:
@@ -308,7 +308,7 @@ def generar_pago():
 
 
 #reprogramar_fecha
-@blueprint.route('reprogramar_fecha', methods=['GET', 'POST'])
+@blueprint.route('/reprogramar_fecha', methods=['GET', 'POST'])
 @login_required
 def reprogramar_fecha():
         if request.form:
@@ -320,7 +320,7 @@ def reprogramar_fecha():
 
 
 #reprogramar fecha multiple
-@blueprint.route('reprogramar_fecha_multiple', methods=['GET', 'POST'])
+@blueprint.route('/reprogramar_fecha_multiple', methods=['GET', 'POST'])
 @login_required
 def reprogramar_fecha_multiple():      
         egresos = request.args.getlist('egresos[]')
