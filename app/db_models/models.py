@@ -22,13 +22,13 @@ class Beneficiarios(db.Model):
     cuenta_banco = Column(String(20))
     banco = Column(String(30))
     saldo = Column(Numeric) 
+    status = Column(String(20))
     comentarios = Column(String(250))
     egresos = relationship("Egresos")
     detalles_egresos = relationship("DetallesEgreso")
     pagos = relationship("Pagos")
     
-    contacto=relationship("ContactoBeneficiario")
-   
+    contacto=relationship("ContactoBeneficiario") 
 
     def __repr__(self):
         return self.nombre 
@@ -99,8 +99,11 @@ class Clientes(db.Model):
     razon_social = Column(String(50))
     cuenta_banco = Column(String(50))
     saldo = Column(Numeric)
+    status = Column(String(50))
     comentarios = Column(String(50))
     banco = Column(String(50))
+    
+    contacto = relationship("ContactoCliente") 
     
     def __repr__(self):
         return self.nombre
@@ -129,7 +132,22 @@ class ContactoBeneficiario(db.Model):
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
 
     def __repr__(self):
-        return self.nombre   
+        return self.nombre  
+    
+class ContactoCliente(db.Model):
+    __tablename__ = 'contacto_cliente'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    nombre = Column(String(50))
+    correo = Column(String(50))
+    telefono = Column(String(30))
+    extension = Column(String(10))
+    puesto = Column(String(30))
+    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+
+    def __repr__(self):
+        return self.nombre
 
 
 class DetallesEgreso(db.Model):

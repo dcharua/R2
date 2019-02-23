@@ -20,13 +20,9 @@
                                 <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>RFC</th>
-                                <th>Telefono y Direccion</th>
-                                <th>Razon_social</th>
-                                <th>Cuenta_banco</th>
+                                <th>Banco</th> 
                                 <th>Saldo</th>
-                                <th>Banco</th>
-                                <th>Comentarios</th>
+                                <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
                           </thead>
@@ -35,13 +31,9 @@
                                 <th></th>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>RFC</th>
-                                <th>Telefono y Direccion</th>
-                                <th>Razon_social</th>
-                                <th>Cuenta_banco</th>
+                                <th>Banco</th> 
                                 <th>Saldo</th>
-                                <th>Banco</th>
-                                <th>Comentarios</th>
+                                <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
@@ -51,13 +43,28 @@
                                   <td></td>
                                   <td>{{cliente.id}}</td>
                                   <td>{{cliente.nombre}}</td>
-                                  <td>{{cliente.RFC}}</td>
-                                  <td>{{cliente.direccion}}</td>
-                                  <td>{{cliente.razon_social}}</td>
-                                  <td>{{cliente.cuenta_banco}}</td>
-                                  <td>{{cliente.saldo}}</td>
                                   <td>{{cliente.banco}}</td>
-                                  <td>{{cliente.comentarios}}</td>
+                                  <td>{{cliente.saldo}}</td>
+                                  <td>
+                                      {% if cliente.status == 'pendiente'%}
+                                      <span class="badge bg-blue">Pendiente</span>
+                                      {% endif %}
+                                      {% if cliente.status == 'solicitado'%}
+                                      <span class="badge bg-green">Solicitado</span>
+                                      {% endif %}
+                                      {% if cliente.status == 'parcial'%}
+                                      <span class="badge bg-orange">Parcial</span>
+                                      {% endif %}
+                                      {% if cliente.status == 'liquidado'%}
+                                      <span class="badge bg-green">Liquidado</span>
+                                      {% endif %}
+                                      {% if cliente.status == 'cancelado'%}
+                                      <span class="badge bg-red">Cancelado</span>
+                                      {% endif %}
+                                      {% if cliente.status == 'por_conciliar'%}
+                                      <span class="badge bg-orange">Por conciliar</span>
+                                      {% endif %}
+                                  </td>
                                   
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_cliente/{{cliente.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">

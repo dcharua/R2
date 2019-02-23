@@ -21,7 +21,7 @@ def agregar_beneficiario():
         data = request.form
         beneficiario = Beneficiarios(nombre=data["nombre"], RFC=data["RFC"], 
             direccion=data["direccion"], razon_social=data["razon_social"],
-            cuenta_banco=data["cuenta_banco"], banco=data["banco"])
+            cuenta_banco=data["cuenta_banco"], saldo = 0, status = 'liquidado', banco=data["banco"])
         for i in range(len(data.getlist("nombre_contacto"))):
             contacto = ContactoBeneficiario(nombre=data.getlist("nombre_contacto")[i], correo=data.getlist("correo_contacto")[i],
             telefono=data.getlist("telefono_contacto")[i], extension=data.getlist("extension_contacto")[i], puesto=data.getlist("puesto_contacto")[i])
@@ -38,7 +38,14 @@ def agregar_cliente():
         data = request.form
         cliente = Clientes(nombre = data["nombre"], RFC = data["RFC"], 
             direccion = data["direccion"], razon_social = data["razon_social"],
-            cuenta_banco = data["cuenta_banco"], saldo = 0, comentarios = data["comentarios"],banco = data["banco"]) 
+            cuenta_banco = data["cuenta_banco"], saldo = 0, status = 'liquidado', comentarios = data["comentarios"],banco = data["banco"]) 
+        
+        print(data)
+        for i in range(len(data.getlist("nombre_contacto"))):         
+            contacto = ContactoCliente(nombre=data.getlist("nombre_contacto")[i], correo = data.getlist("correo_contacto")[i],
+            telefono = data.getlist("telefono_contacto")[i], extension = data.getlist("extension_contacto")[i], puesto=data.getlist("puesto_contacto")[i])
+            cliente.contacto.append(contacto)
+            print(contacto)
         db.session.add(cliente)
         db.session.commit()   
         return redirect("/administracion/clientes")
