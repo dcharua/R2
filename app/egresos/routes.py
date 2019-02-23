@@ -152,10 +152,3 @@ def borrar_pago(pago_id):
     db.session.delete(pago)
     db.session.commit()
     return  jsonify("deleted")
-
-
-#####perfil beneficiario
-@blueprint.route('/perfil_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
-def perfil_beneficiario(beneficiario_id):
-    beneficiario = Beneficiarios.query.get(beneficiario_id)
-    return render_template("perfil_beneficiario.html", beneficiario=beneficiario)   
