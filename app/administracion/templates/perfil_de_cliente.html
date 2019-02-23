@@ -24,8 +24,27 @@
                   
                 </div>
                 <div class="col-sm-12 col-md-6 align-left">
-                  <p class="font-18">Saldo : <span class="font-bold">{{cliente.saldo}}</span></p>
-                  <p class="font-18">Status: <span class="badge bg-green">{{cliente.status}}</span></td>
+                  <p class="font-18">Saldo : $ <span class="font-bold">{{cliente.saldo}}</span></p>
+                  <p class="font-18">Status:
+                      {% if cliente.status == 'pendiente'%}
+                      <span class="badge bg-blue">Pendiente</span>
+                      {% endif %}
+                      {% if cliente.status == 'solicitado'%}
+                      <span class="badge bg-green">Solicitado</span>
+                      {% endif %}
+                      {% if cliente.status == 'parcial'%}
+                      <span class="badge bg-orange">Parcial</span>
+                      {% endif %}
+                      {% if cliente.status == 'liquidado'%}
+                      <span class="badge bg-green">Liquidado</span>
+                      {% endif %}
+                      {% if cliente.status == 'cancelado'%}
+                      <span class="badge bg-red">Cancelado</span>
+                      {% endif %}
+                      {% if cliente.status == 'por_conciliar'%}
+                      <span class="badge bg-orange">Por conciliar</span>
+                      {% endif %}
+                  </p>
                   <p class="font-18">Banco: <span class="font-bold">{{cliente.banco}}</span></p>
                   <p class="font-18">Cuenta: <span class="font-bold">{{cliente.cuenta_banco}}</span></p>
                 </div>
@@ -174,9 +193,6 @@
                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                       <i class="material-icons">visibility</i>
                     </a>
-                    <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
-                      <i class="material-icons">assignment_turned_in</i>
-                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -186,7 +202,7 @@
       </div>
 
   
-    <!-- PAGOS TABLE -->
+    <!-- CONTACTOS TABLE -->
     <div class="card">
         <div class="header">
           <h2>Contactos</h2>

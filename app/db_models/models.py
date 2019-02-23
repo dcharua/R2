@@ -22,6 +22,7 @@ class Beneficiarios(db.Model):
     cuenta_banco = Column(String(20))
     banco = Column(String(30))
     saldo = Column(Numeric) 
+    status = Column(String(20))
     comentarios = Column(String(250))
     egresos = relationship("Egresos")
     detalles_egresos = relationship("DetallesEgreso")
