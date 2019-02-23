@@ -80,7 +80,7 @@
                   </a>
                   {% if egreso.status != 'solicitado' %}
                   <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar"  data-toggle="modal"
-                    data-url="{{ url_for('modales_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
+                    data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
                     <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
                   </a>
                   {% endif %}
@@ -224,7 +224,7 @@
       }
     })
     $.get({
-      url: '/modales/reprogramar_fecha_multiple',
+      url: '/egresos/reprogramar_fecha_multiple',
       data: {
         egresos: egresos,
         fecha: $('#fecha').val()
@@ -280,7 +280,7 @@
       }
     })
     $.get({
-      url: '/modales/get_data_pagar_multiple',
+      url: '/egresos/get_data_pagar_multiple',
       data: {
         egresos: egresos
       },

@@ -119,7 +119,7 @@
                         data-placement="top" title="Ver detalle">
                         <i class="material-icons">visibility</i>
                       </a>
-                      <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('modales_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                      <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
                         <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Generar pago">payment</i>
                       </a>
                     </td>
@@ -192,7 +192,7 @@
                         <i class="material-icons">visibility</i>
                       </a>
                       {% if pago.status != 'conciliado' %}
-                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('modales_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
                         <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">assignment_turned_in</i>
                       </a>
                       {% endif %}
@@ -400,7 +400,7 @@
         })
 
         $.get({
-            url: '/modales/get_data_conciliar_multiple',
+            url: '/egresos/get_data_conciliar_multiple',
             data: {
                 pagos: pagos
             },
