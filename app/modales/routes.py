@@ -193,7 +193,7 @@ def mandar_pagar_multiple():
                         for egreso in data.getlist("egreso_%d" % i):
                                 e = Egresos.query.get(egreso)
                                 e.status = 'solicitado'
-                                e.monto_solicitado =  e.monto_total - e.monto_solicitado - e.monto_pagado
+                                e.monto_solicitado +=  e.monto_total - e.monto_pagado
                                 pago.beneficiario = e.beneficiario
                                 ep = EgresosHasPagos(egreso=e, pago=pago, monto=e.monto_solicitado)
                                 db.session.add(ep)

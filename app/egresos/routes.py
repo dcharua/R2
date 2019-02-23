@@ -1,5 +1,5 @@
 from app.egresos import blueprint
-from flask import render_template, request, redirect, flash
+from flask import render_template, request, redirect, flash, jsonify
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
@@ -135,6 +135,23 @@ def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)    
     return render_template("perfil_pago.html", pago=pago)
    
+
+
+###### Borrar pago
+@blueprint.route("/borrar_pago/<int:pago_id>",  methods=['GET', 'POST'])
+def borrar_pago(pago_id):
+    pago = Pagos.query.get(pago_id)
+    for egreso in pago.egresos:
+        ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
+        egreso.monto_solicitado -= ep.monto
+        if egreso.monto_pagado > 0:
+            egreso.status = 'parcial'
+        else:
+            egreso.status = 'pendiente'    
+    db.session.delete(ep)
+    db.session.delete(pago)
+    db.session.commit()
+    return  jsonify("deleted")
 
 
 #####perfil beneficiario
