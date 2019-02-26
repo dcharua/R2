@@ -80,6 +80,7 @@
                   </div>
                 </div>
 
+
                 <div class="caracteristicas">
 
 
@@ -95,6 +96,7 @@
                       <i class="material-icons">add</i>
                     </button>
                   </div>
+                  
                   <div style="padding:10px;" class="body" id="clone">
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
@@ -109,37 +111,30 @@
                         </tr>
                       </thead>
                       <tbody class="here">
-                        <tr >
+                        <tr>
                           <td>
-                            <select class="selectpicker" 
-                              name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
+                            <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
                               {% for centro in centros_negocios %}
                               <option value="{{centro.id}}"> {{ centro.nombre }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker"  data-live-search="true" 
-                             name="proveedor" title="Seleccione un Proveedor..."
-                              data-width="80%">
+                            <select class="selectpicker"  data-live-search="true" name="proveedor" title="Seleccione un Proveedor..." data-width="80%">
                               {% for provedor in proveedores %}
                               <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker" data-live-search="true" 
-                              name="categoria" title="Seleccione una Categoria..."
-                              data-width="80%">
+                            <select class="selectpicker" data-live-search="true" name="categoria" title="Seleccione una Categoria..." data-width="80%">
                               {% for categoria in categorias %}
                               <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker"  
-                             
-                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
+                            <select class="selectpicker"  data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
                               {% for concepto in conceptos %}
                               <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                               {% endfor %}

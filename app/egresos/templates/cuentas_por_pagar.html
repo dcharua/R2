@@ -13,18 +13,18 @@
         <h2>
           Cuentas por pagar
         </h2>
+        
         <div class="select-btn-group">
           <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal" data-target="#modal_solicitar_multiple">Pagar</span>
-          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar
-            fecha</span>
+          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar fecha</span>
         </div>
       </div>
+      
       <div class="body">
 
         <div class="table-responsive">
 
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
-            width="100%">
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0" width="100%">
 
             <thead>
               <tr>
@@ -52,6 +52,7 @@
                 <th>Acciones</th>
               </tr>
             </tfoot>
+            
             <tbody>
               {% for egreso in egresos_pendientes %}
               <tr>

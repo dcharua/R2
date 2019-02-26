@@ -331,6 +331,9 @@ class Ingresos(db.Model):
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
     monto_total = Column(Numeric)
+    monto_pagado = Column(Numeric)
+    monto_solicitado = Column(Numeric)
+    monto_por_conciliar = Column(Numeric)
     
     detalles = relationship("DetallesIngreso")
     comentario = Column(String(200))
@@ -338,9 +341,7 @@ class Ingresos(db.Model):
     
     pagado = Column(Boolean)
     
-    monto_pagado = Column(Numeric)
-    monto_solicitado = Column(Numeric)
-    monto_por_conciliar = Column(Numeric)
+
          
     
     pagos_ingresos = relationship("Pagos_Ingresos", secondary='ingresos_has_pagos')
