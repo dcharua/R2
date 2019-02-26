@@ -25,14 +25,17 @@ def capturar_egreso():
         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
         monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"], 
         empresa_id=data["empresa"], comentario=data["comentario"], pagado = False, status='pendiente')
+       
         for i in range(len(data.getlist("monto"))):
             detalle = DetallesEgreso(centro_negocios_id=data.getlist("centro_negocios")[i], proveedor_id=data.getlist("proveedor")[i],
             categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist("concepto")[i], monto=data.getlist("monto")[i], 
             numero_control=data.getlist("numero_control")[i], descripcion=data.getlist("descripcion")[i])
             egreso.detalles.append(detalle)
         if ('pagado' in data):
+            
             monto_pagado=data["monto_pagado"]
             egreso.monto_pagado=monto_pagado
+            
             if ('conciliado_check' in data):
                 status = 'conciliado'
                 refrencia_conciliacion = data["referencia_conciliacion"]

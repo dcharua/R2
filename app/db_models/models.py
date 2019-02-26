@@ -23,8 +23,11 @@ class Beneficiarios(db.Model):
     saldo = Column(Numeric) 
     status = Column(String(20))
     comentarios = Column(String(250))
+   
+    
     egresos = relationship("Egresos")
     detalles_egresos = relationship("DetallesEgreso")
+    
     pagos = relationship("Pagos")
     
     contacto=relationship("ContactoBeneficiario") 
@@ -43,28 +46,10 @@ class Categorias(db.Model):
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     nombre = Column(String(50))
     detalles_egresos = relationship("DetallesEgreso")
+    detalles_ingresos = relationship("DetallesIngreso")
 
     def __repr__(self):
         return self.nombre        
-
-
-class Cuentas(db.Model):
-    __tablename__ = 'cuentas'
-    __table_args__ = {'extend_existing': True}
-
-    id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    nombre = Column(String(50))
-    banco = Column(String(50))
-    numero = Column(String(50))
-    comentario = Column(String(250))
-    empresa_id = Column(Integer, ForeignKey('empresas.id'))
-    empresa = relationship("Empresas", back_populates="cuenta")
-    saldo = Column(Numeric)  
-    numero_cheque = Column(Numeric)     
-    pagos = relationship("Pagos")
-
-    def __repr__(self):
-        return self.banco + ' / ' + self.numero       
 
 
 
@@ -82,6 +67,7 @@ class CentrosNegocio(db.Model):
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="centro")
     detalles_egresos = relationship("DetallesEgreso")
+    detalles_ingresos = relationship("DetallesIngreso")
 
     def __repr__(self):
         return self.nombre
@@ -104,6 +90,10 @@ class Clientes(db.Model):
     
     contacto = relationship("ContactoCliente") 
     
+    ingresos = relationship("Ingresos")
+    detalles_ingresos = relationship("DetallesIngreso")
+    pagos_ingresos = relationship("Pagos_Ingresos")
+    
     def __repr__(self):
         return self.nombre
 
@@ -114,6 +104,7 @@ class Conceptos(db.Model):
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     nombre = Column(String(50))
     detalles_egresos = relationship("DetallesEgreso")
+    detalles_ingresos = relationship("DetallesIngreso")
 
     def __repr__(self):
         return self.nombre       
@@ -149,6 +140,26 @@ class ContactoCliente(db.Model):
         return self.nombre
 
 
+class Cuentas(db.Model):
+    __tablename__ = 'cuentas'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    nombre = Column(String(50))
+    banco = Column(String(50))
+    numero = Column(String(50))
+    comentario = Column(String(250))
+    empresa_id = Column(Integer, ForeignKey('empresas.id'))
+    empresa = relationship("Empresas", back_populates="cuenta")
+    saldo = Column(Numeric)  
+    numero_cheque = Column(Numeric)     
+    pagos = relationship("Pagos")
+    pagos_ingresos = relationship("Pagos_Ingresos")
+
+    def __repr__(self):
+        return self.banco + ' / ' + self.numero       
+
+
 class DetallesEgreso(db.Model):
     __tablename__ = 'egresos_detalles'
     __table_args__ = {'extend_existing': True}
@@ -165,10 +176,35 @@ class DetallesEgreso(db.Model):
     monto = Column(Numeric)
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
-    egreso_id= Column(Integer, ForeignKey('egresos.id'))
+    egreso_id = Column(Integer, ForeignKey('egresos.id'))
 
     def __repr__(self):
-        return '<DetallesEgreso {}>'.format(self.id)   
+        return '<DetallesEgreso {}>'.format(self.id) 
+    
+class DetallesIngreso(db.Model):
+    __tablename__ = 'ingresos_detalles'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
+   
+    
+    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+    cliente = relationship("Clientes", back_populates="detalles_ingresos")
+    
+    categoria_id = Column(Integer, ForeignKey('categorias.id'))
+    categoria = relationship("Categorias", back_populates="detalles_ingresos")
+    concepto_id = Column(Integer, ForeignKey('conceptos.id'))
+    concepto = relationship("Conceptos", back_populates="detalles_ingresos")
+    centro_negocios_id = Column(Integer, ForeignKey('centros_negocio.id'))
+    centro_negocios = relationship("CentrosNegocio", back_populates="detalles_ingresos")
+
+    monto = Column(Numeric)
+    numero_control = Column(String(200))
+    descripcion = Column(String(200)) 
+    ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
+
+    def __repr__(self):
+        return '<DetallesIngreso {}>'.format(self.id) 
 
 class EgresosHasPagos(db.Model):
     __tablename__ = 'egresos_has_pagos'
@@ -240,7 +276,9 @@ class Egresos(db.Model):
 
     def get_egreso_id(self, id):
         return Egresos.query.filter_by(id=id).first()
-
+    
+    
+ 
 
 class Empresas(db.Model):
     __tablename__ = 'empresas'
@@ -250,10 +288,11 @@ class Empresas(db.Model):
     nombre = Column(String(50))
     egresos = relationship("Egresos")
     centro = relationship("CentrosNegocio")
-    cuenta= relationship("Cuentas")
+    cuenta = relationship("Cuentas")
 
     def __repr__(self):
         return self.nombre 
+
 
 class FormasPago(db.Model):
     __tablename__ = 'formas_pago'
@@ -262,46 +301,90 @@ class FormasPago(db.Model):
     id = Column(Integer, primary_key=True)
     nombre = Column(String(50))
     pagos = relationship("Pagos")
+    pagos_ingresos = relationship("Pagos_Ingresos")
 
     def __repr__(self):
         return self.nombre  
 
-class Ingresos_Tabla(db.Model):
-    __tablename__ = 'Ingresos'
+
+
+
+#########3#########3#########3#########3#########3#########3
+#########3#########3#########3#########3#########3#########3
+
+class Ingresos(db.Model):
+
+    __tablename__ = 'ingresos'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    fecha_vencimiento = Column(Date)
-    fecha_programada = Column(Date)
-    numero_documento = Column(String(45))
-    monto_total = Column(Numeric)
     
-    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+    status = Column(String(20))
+    
     tipo_ingreso_id = Column(Integer, ForeignKey('tipo_ingre.id'))
     tipo_ingreso = relationship("Tipo_Ingreso", back_populates="ingresos")
-    empresa= Column(String(45))
-    comentario = Column(String(200))
-    pagos_ingresos_id = Column(Integer, ForeignKey('pagos_ingresos.id'))
+      
+    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+    cliente = relationship("Clientes", back_populates="ingresos") 
     
+    fecha_vencimiento = Column(Date)
+    fecha_programada_pago = Column(Date)
+    numero_documento = Column(String(20))
+    monto_total = Column(Numeric)
+    
+    detalles = relationship("DetallesIngreso")
+    comentario = Column(String(200))
+    
+    
+    pagado = Column(Boolean)
+    
+    monto_pagado = Column(Numeric)
+    monto_solicitado = Column(Numeric)
+    monto_por_conciliar = Column(Numeric)
+         
+    
+    pagos_ingresos = relationship("Pagos_Ingresos", secondary='ingresos_has_pagos')
+
 
     def __repr__(self):
-        return '<Ingreso {}>'.format(self.id)
+        return '<ingreso {}>'.format(self.id)    
 
+    
+    
+    
+class IngresosHasPagos(db.Model):
+    __tablename__ = 'ingresos_has_pagos'
+
+    ingreso_id = Column(Integer, ForeignKey('ingresos.id'), primary_key=True)
+    pago_id = Column(Integer, ForeignKey('pagos_ingresos.id'), primary_key=True)
+    monto = Column(Numeric)
+    ingreso = relationship("Ingresos", backref=backref("pagos_assoc"))
+    pago =  relationship("Pagos_Ingresos", backref=backref("ingresos_assoc"))  
+    
 
 class Pagos_Ingresos(db.Model):
     __tablename__ = 'pagos_ingresos'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    fecha_pago = Column(Date)
     referencia_pago = Column(String(20))
-    monto = Column(Numeric)
+    fecha_pago = Column(Date)
+    fecha_conciliacion = Column(String(20))
+    status = Column(String(20))
+    referencia_conciliacion = Column(String(20))
+    monto_total = Column(Numeric)
     comentario = Column(String(200))
-    conciliado = Column(String(20))
-    referencia_conciliacion= Column(String(20))
-    cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
+    cuenta = relationship("Cuentas", back_populates="pagos_ingresos")
+    
     forma_pago_id = Column(Integer, ForeignKey('formas_pago.id'))
+    forma_pago = relationship("FormasPago", back_populates="pagos_ingresos")
+    
+    cliente_id = Column(Integer, ForeignKey('clientes.id'))
+    cliente = relationship("Clientes", back_populates="pagos_ingresos")
+    
+    ingresos = relationship("Ingresos", secondary='ingresos_has_pagos')
+
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id) 
@@ -341,7 +424,7 @@ class Tipo_Ingreso(db.Model):
 
     id = Column(Integer, primary_key=True)
     tipo = Column(String(50))
-    ingresos = relationship("Ingresos_Tabla")
+    ingresos = relationship("Ingresos")
 
     def __repr__(self):
         return self.tipo
