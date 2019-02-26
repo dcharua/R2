@@ -143,7 +143,7 @@
                                     </a>
                                     {% if pago.status == 'por_conciliar' %}
                                     <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                                        <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">assignment_turned_in</i>
+                                        <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
                                     </a>
                                     {% endif %}
                                 </td>
