@@ -15,8 +15,8 @@
           <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('ingresos_blueprint.captura_ingresos') }}">
             <div class="col-sm-12 col-md-12">
                 <div class="input-group">
-                    <label for="tipo "> Tipo de Ingreso </label><br>
-                  <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo" title="Seleccione un tipo de ingreso..." data-width="80%">
+                    <label for="tipo_ingreso"> Tipo de Ingreso </label><br>
+                  <select class="selectpicker" id="tipo_ingreso" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo_ingreso" title="Seleccione un tipo de ingreso..." data-width="50%">
                       {% for w in tipo_ingreso %}
                       <option> {{ w | safe }} </option>
                       {% endfor %}
@@ -27,14 +27,12 @@
               <div class="input-group">
                 <div class="row">
                   <div class="col-sm-12 col-md-6">
-                <label for="beneficiario"> Cliente </label><br>
+                <label for="cliente"> Cliente </label><br>
                 <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="50%">
                   {% for c in clientes %}
                   <option> {{ c | safe }} </option>
                   {% endfor %}
                 </select>
-                <input type="checkbox" id="basic_checkbox_2" class="filled-in" checked />
-                <label style="margin-left: 40px;" for="basic_checkbox_2">Usar como provedor</label>
                 <a href="/administracion/clientes" >
                     <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
                 </a>
@@ -46,7 +44,7 @@
                   <div class="col-sm-12 col-md-6 nomargin">
                     <label> Fecha de Vencimiento </label>
                     <div class='input-group date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" />
+                      <input type='text' class="form-control" name="fecha_vencimiento"/>
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
                       </span>
@@ -56,7 +54,7 @@
                   <div class="col-sm-12 col-md-6">
                     <label> Fecha programada de pago </label>
                     <div class='input-group date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" name="fecha de vencimiento" />
+                      <input type='text' class="form-control" name="fecha_programada_pago" />
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
                       </span>
@@ -64,12 +62,12 @@
                   </div </div> </div> <div class="input-group">
                   <div class="row">
                     <div class="col-sm-12 col-md-6 nomargin">
-                      <label for="ref"># de documento</label>
-                      <input class="form-control" type="text" id="ref" name="Referencía">
+                      <label for="numero_documento"># de documento</label>
+                      <input class="form-control" type="text" id="numero_documento" name="numero_documento">
                     </div>
                     <div class="col-sm-12 col-md-6 nomargin">
                       <label for="ref">Monto total</label>
-                      <input disabled class="form-control" type="number" id="ref" name="Referencía">
+                      <input disabled class="form-control" type="number" id="monto_total" name="monto_total">
                     </div>
                   </div>
                 </div>
@@ -94,6 +92,7 @@
                         <tr>
                           <th>Categoría</th>
                           <th>Concepto</th>
+                          <th>Centro Negocio</th>
                           <th>Monto</th>
                           <th># de Control</th>
                           <th>Descripcíon</th>
@@ -103,7 +102,7 @@
                         <tr>
                           <td>
                             <select class="selectpicker" id="categoria" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="categoria" title="Seleccione una Categoria de Gasto..." data-width="80%">
-                              {% for w in categoria %}
+                              {% for w in categorias %}
                               <option> {{ w | safe }} </option>
                               {% endfor %}
                             </select>
@@ -111,7 +110,15 @@
 
                           <td>
                             <select class="selectpicker" id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%">
-                              {% for w in concepto %}
+                              {% for w in conceptos %}
+                              <option> {{ w | safe }} </option>
+                              {% endfor %}
+                            </select>
+                          </td>
+                          
+                          <td>
+                            <select class="selectpicker" id="centro_negocios" onchange='ajaxFirstOnChange()' data-live-search="true" name="centro_negocios" title="Seleccione un Centro de Negocio..." data-width="80%">
+                              {% for w in centros_negocios %}
                               <option> {{ w | safe }} </option>
                               {% endfor %}
                             </select>
@@ -122,7 +129,7 @@
                           </td>
 
                           <td>
-                              <input class="form-control" type="text" id="numero" name="numero">
+                              <input class="form-control" type="text" id="numero_control" name="numero_control">
                             </td>
   
 
@@ -134,11 +141,11 @@
 
                   <div class="input-group ">
                     <label for="lname">Comentario</label>
-                    <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
+                    <textarea class="form-control" type="text" id="comentario" name="comentario" placeholder=""></textarea>
                   </div>
 
                   <div class="switch">
-                    <h2 class="subtitle">Pagado</h2>
+                    <h2 class="subtitle">Recibido</h2>
                     <label style="margin-top: 10px"><input id="pagado" type="checkbox"><span class="lever"></span></label>
                   </div>
 
@@ -150,7 +157,7 @@
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Cuenta de banco </label><br>
                           <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
-                            {% for w in concepto %}
+                            {% for w in cuentas_banco %}
                             <option> {{ w | safe }} </option>
                             {% endfor %}
                           </select>
@@ -171,15 +178,15 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
-                            {% for w in concepto %}
+                          <select class="selectpicker" multiple id="forma_pago" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                            {% for w in formas_pago %}
                             <option> {{ w | safe }} </option>
                             {% endfor %}
                           </select>
                         </div>
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label> Referencia de pago </label>
-                          <input class="form-control" type="text" id="monto" name="monto">
+                          <input class="form-control" type="text" id="referencia_pago" name="referencia_pago">
                         </div>
                       </div>
                     </div>
@@ -188,19 +195,19 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label style="margin-top: 7px;" for="fname">Monto</label>
-                          <input class="form-control" type="number" id="monto" name="monto">
+                          <input class="form-control" type="number" id="monto_pagado" name="monto_pagado">
                         </div>
                         <div class="col-sm-12 col-md-6 nomargin">
-                          <input type="checkbox" id="movimiento" class="filled-in" />
-                          <label class="grey-font" for="movimiento">Movimiento conciliado</label>
-                          <input disabled placeholder="Referencia" class="form-control" type="text" id="movimiento-input" name="monto">
-                        </div>
+                          <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in"  />
+                          <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
+                          <input disabled placeholder="Referencia" class="form-control" type="text" id="referencia_conciliacion"
+                            name="referencia_conciliacion"> </div>
                       </div>
                     </div>
 
                     <div class="input-group ">
-                      <label for="lname">Comentario</label>
-                      <textarea class="form-control" type="text" id="descripcion" name="descripcion" placeholder=""></textarea>
+                      <label for="comentario_pago">Comentario del Pago</label>
+                      <textarea class="form-control" type="text" id="comentario_pago" name="comentario_pago"></textarea>
                     </div>
                   </div>
 
@@ -253,14 +260,14 @@
                     }
                     });
 
-                    $("#movimiento").change(function() {
-                    if(this.checked) {
-                    console.log("chec")
-                    $("#movimiento-input").prop('disabled', false);
-                    } else{
-                    console.log("un")
-                    $("#movimiento-input").prop('disabled', true);
-                    }
+
+
+                    $("#conciliado_check").change(function () {
+                      if (this.checked) {
+                        $("#referencia_conciliacion").prop('disabled', false);
+                      } else {
+                        $("#referencia_conciliacion").prop('disabled', true);
+                      }
                     });
 
 
