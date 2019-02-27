@@ -117,10 +117,9 @@ def cuentas_por_pagar():
 @blueprint.route('/perfil_ingreso/<int:ingreso_id>', methods=['GET', 'POST'])
 def perfil_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
-    ingreso.beneficiario= Clientes.query.get(ingreso.cliente_id)
-    ingreso.empresa = Empresas.query.get(ingreso.empresa_id)
+    ingreso.cliente = Clientes.query.get(ingreso.cliente_id)
     detalles = DetallesIngreso.query.filter(DetallesIngreso.ingreso_id == ingreso_id)
-    return render_template("perfil_ingreso.html", ingreso=ingreso, pagos=ingreso.pagos, detalles=detalles)
+    return render_template("perfil_ingreso.html", ingreso=ingreso, pagos_ingresos = ingreso.pagos_ingresos, detalles=detalles)
 
 
 #Egresos Edit   

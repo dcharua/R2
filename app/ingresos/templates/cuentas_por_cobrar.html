@@ -108,65 +108,82 @@
       
       <!-- CUENTAS COBRADAS -->
       
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="card">
-              <div class="header bg-black">
-                  <h2>
-                      Cuentas Cobradas
-                  </h2>
-              </div>
-              <div class="body">
-                  <div class="table-responsive">
-                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                          <thead>
-                              <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <th>ID</th>
-                                  <th>Cliente</th>
-                                  <th>Fecha programada</th>
-                                  <th>Fecha de vencimiento</th>
-                                  <th>Monto</th>
-                                  <th># Documento</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
-                              </tr>
-                          </thead>
-                          <tfoot>
-                              <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Fecha programada</th>
-                                <th>Fecha de vencimiento</th>
-                                <th>Monto</th>
-                                <th># Documento</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                              </tr>
-                          </tfoot>
-                          <tbody>
-                              <tr>
-                                  <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                  <td>1</td>
-                                  <td>Felxi</td>
-                                  <td>14/06/2018</td>
-                                  <td>21/12/2018</td>
-                                  <td>$320,800</td>
-                                  <td>Abc138Gs</td>
-                                  <td> <span class="badge bg-red">Incompleto</span></td>
-                                  <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_ingreso" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                    </a>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header bg-black">
+        <h2>
+           Cuentas Cobradas
+        </h2>
+
       </div>
+      <div class="body">
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"  width="100%">
+              
+              <thead>
+                  <tr>
+                      <th><input name="select_all" value="1" class="select-all" type="checkbox" /></th>
+                      <th>ID</th>
+                      <th>Cliente</th>
+                      <th>Fecha programada</th>
+                      <th>Fecha de vencimiento</th>
+                      <th>Monto</th>
+                      <th># Documento</th>
+                      <th>Status</th>
+                      <th>Acciones</th>
+                  </tr>
+              </thead>
+              <tfoot>
+                  <tr>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Fecha programada</th>
+                    <th>Fecha de vencimiento</th>
+                    <th>Monto</th>
+                    <th># Documento</th>
+                    <th>Status</th>
+                    <th>Acciones</th>
+                  </tr> 
+              </tfoot>
+              
+              
+              <tbody>
+                {% for ingreso in ingresos_recibidos %}
+                <tr>
+                  <td><input name="select_all" value="1" class="select-all" type="checkbox" /></td>
+                  <td>{{ingreso.id}}</td>
+                  <td>{{ingreso.cliente}}</td>
+                  <td>{{ingreso.fecha_programada_pago}}</td>
+                  <td>{{ingreso.fecha_vencimiento}}</td>
+                  <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
+                  <td>{{ingreso.numero_documento}}</td>
+                  <td> {% if ingreso.status == 'liquidado'%}
+                    <span class="badge bg-green">Liquidado</span>
+                    {% endif %}
+                    {% if ingreso.status == 'cancelado'%}
+                    <span class="badge bg-red">Cancelado</span>
+                    {% endif %}
+                    {% if ingreso.status == 'por_conciliar'%}
+                    <span class="badge bg-orange">Por conciliar</span>
+                    {% endif %}</td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_ingreso/{{ingreso.id}}' data-toggle="tooltip"
+                      data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
   <!-- #END# Basic Examples -->
 
 {% include "modal_cobrar.html" %}
@@ -205,17 +222,17 @@
   //reprogramar multiple
   $('#reprogramar_multiple').on('submit', function (e) {
     // Iterate over all checkboxes in the table
-    let egresos = []
+    let ingresos = []
     $('.pendientes-table').each(function () {
       // If checkbox is checked
       if (this.checked) {
-        egresos.push($(this).val())
+        ingresos.push($(this).val())
       }
     })
     $.get({
-      url: '/egresos/reprogramar_fecha_multiple',
+      url: '/ingresos/reprogramar_fecha_multiple',
       data: {
-        egresos: egresos,
+        ingresos: ingresos,
         fecha: $('#fecha').val()
       },
       success: function (data) {
@@ -271,13 +288,13 @@
     $.get({
       url: '/ingresos/get_data_pagar_multiple',
       data: {
-        egresos: egresos
+        ingresos: ingresos
       },
       success: function (data) {
         // Clean modal
         document.querySelector(".multiple-here").innerHTML = "";
         //group by clientes
-        data = _.mapValues(_.groupBy(data, 'cliente'), clist => clist.map(egreso => _.omit(ingreso,
+        data = _.mapValues(_.groupBy(data, 'cliente'), clist => clist.map(ingreso => _.omit(ingreso,
           'cliente')));
 
         var counter = 0;

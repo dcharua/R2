@@ -8,33 +8,58 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">Detalle de Ingreso</h2>
-      </div>
+        {% if ingreso.pagos_ingresos|length >  0 %}
+        <div class="select-btn-group">
+          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.cancelar_ingreso', ingreso_id=ingreso.id) }}">Cancelar Ingresos</span>
+        </div>
+        {% endif %}
+        {% if ingreso.pagos_ingresos|length  == 0 %}
+        <div class="select-btn-group">
+          <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar ingreso</span>
+        </div>
+        {% endif %}
+        </div>
+
 
       <div class="body">
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-8">
-            <p class="font-18">Fuente de Ingreso: <span class="font-bold">Centro de Negocios Tienda 1</span></p>
-            <br></br>
-            <!-- <p class="font-18">Id: <span class="font-bold">10</span></p> -->
-            <p class="font-18">Centro de Negocios: <span class="font-bold">Tienda 1</span></p>
-            <p class="font-18">Tipo de Ingreso: <span class="font-bold">Venta Tienda</span></p>
-            <p class="font-18">Fecha de Registro: <span class="font-bold">10/02/2019</span></p>
-            <p class="font-18">Fecha de Vencimiento: <span class="font-bold">15/02/2019</span></p>
-            <p class="font-18">Referencia/Orden de Venta: <span class="font-bold">V20190108</span></p>
-            <p class="font-18">Cuenta de Banco: <span class="font-bold">Varias</span></p>
-            
+            <b>
+              <p class="font-18">Cliente: <span class="font-bold">{{ingreso.cliente}}</span></p>
+            </b>
+            <p class="font-18">Id: <span class="font-bold">{{ingreso.id}}</span></p>
+            <p class="font-18"># de Documento: <span class="font-bold">{{ingreso.numero_documento}}</span></p>
+            <p class="font-18">Fecha de Vencimento: <span class="font-bold">{{ingreso.fecha_vencimiento}}</span></p>
+            <p class="font-18">Fecha programada de pago: <span class="font-bold">{{ingreso.fecha_programada_pago}}</span></p>
           </div>
           <div class="col-sm-12 col-md-4 align-left">
-            <p class="font-18">Status: <span class="badge bg-yellow">En Transito</span></p>
-            <br></br>
-            
-            <p class="font-18">Monto de Venta: <span class="font-bold">$60,000.00</span></p>
-
-            <br></br>
-            <p class="font-18">Monto Pagado: <span class="font-bold">$45,000.00</span></p>
-            <p class="font-18">Monto Pendiente: <span class="font-bold">$15,000.00</span></p>
-            
-            
+            <b>
+              <p class="font-18">Status: 
+                  {% if ingreso.status == 'pendiente'%}
+                  <span class="badge bg-blue">Pendiente</span>
+                  {% endif %}
+                  {% if ingreso.status == 'solicitado'%}
+                  <span class="badge bg-green">Solicitado</span>
+                  {% endif %}
+                  {% if ingreso.status == 'parcial'%}
+                  <span class="badge bg-orange">Parcial</span>
+                  {% endif %}
+                  {% if ingreso.status == 'liquidado'%}
+                  <span class="badge bg-green">Liquidado</span>
+                  {% endif %}
+                  {% if ingreso.status == 'cancelado'%}
+                  <span class="badge bg-red">Cancelado</span>
+                  {% endif %}
+                  {% if ingreso.status == 'por_conciliar'%}
+                  <span class="badge bg-orange">Por conciliar</span>
+                  {% endif %}
+              </p>
+            </b>
+            <b>
+              <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_total)}}</span></p>
+            </b>
+            <p class="font-18">Monto Pagado: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_pagado)}}</span></p>
+            <p class="font-18">Monto Pendiente: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_total - ingreso.monto_pagado)}}</span></p>
 
           </div>
         </div>
@@ -42,7 +67,7 @@
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18"> </p>
+              <p class="font-18">{{ingreso.comentario}} </p>
             </div>
           </div>
         </div>
@@ -50,255 +75,172 @@
     </div>
 
 
-    <!-- DETALLES TABLE -->
-    <!-- 
-    <div class="card">
-      <div class="header bg-black">
-        <h2>Detalles</h2>
-      </div>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-            <thead>
-              <tr>
-                <th>Categoria</th>
-                <th>Concepto</th>
-                <th>Monto</th>
-                <th>Descipcíon</th>
-                <th># de documento</th>
-                <th>Editar</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>Categoria</th>
-                <th>Concepto</th>
-                <th>Monto</th>
-                <th>Descipcíon</th>
-                <th># de documento</th>
-                <th>Editar</th>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>Venta</td>
-                <td>Producto</td>
-                <td>$60,000.00</td>
-                <td>Venta Total</td>
-                <td>V20190108</td>
-                <th>
-                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
-                    <i class="material-icons">edit</i>
-                  </a>
-                </th>
-              </tr>
-              
-              <tr>
-                <td>Comisiones Método de Pago</td>
-                <td>AMex</td>
-                <td>($5,000.00)</td>
-                <td></td>
-                <td></td>
-                <th>
-                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
-                    <i class="material-icons">edit</i>
-                  </a>
-                </th>
-              </tr>
-              
-              <tr>
-                <td>Comisiones Método de Pago</td>
-                <td>Bancomer</td>
-                <td>($2,500.00)</td>
-                <td></td>
-                <td></td>
-                <th>
-                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
-                    <i class="material-icons">edit</i>
-                  </a>
-                </th>
-              </tr>
-              
-              <tr>
-                <td>Comisiones Método de Pago</td>
-                <td>Banamex</td>
-                <td>($2,500.00)</td>
-                <td></td>
-                <td></td>
-                <th>
-                  <a class="btn btn-small btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip" data-placement="top" title="Editar">
-                    <i class="material-icons">edit</i>
-                  </a>
-                </th>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    -->
-
-    <!-- Ingresos Completados TABLE -->
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header bg-black">
-                    <h2>
-                      Ingresos Completados
-                    </h2>
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fecha de pago</th>
-                                    <th>Forma</th>
-                                    <th>Cuenta</th>
-                                    <th>Descripcion</th>
-                                    <th>Monto Venta</th>
-
-                                    <th>Status</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th><b>Total: </b></th>
-                                    <th>$45,000.00</th>
-
-                                    <th> </th>
-                                    <th>
-                                    </th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr>
-                                    <td>23</td>
-                                    <td>10/01/2019</td>
-                                    <td>Deposito</td>
-                                    <td>Bancomer 1</td>
-                                    <td>Efectivo</td>
-                                    <td>$30,000.00</td>
-
-                                    <td> <span class="badge bg-green">Liquidado</span></td>
-                                    <td>
-                                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                      </a>
-
-                                    </td>
-                                </tr>
-                                
-                                <tr class='clickable-row' data-href="/egresos/perfil_pago">
-                                    <td>24</td>
-                                    <td>12/01/2019</td>
-                                    <td>Transf.</td>
-                                    <td>Banamex 1</td>
-                                    <td>Banamex / Bancomer</td>
-                                    <td>$15,000.00</td>
-
-                                    <td> <span class="badge bg-green">Liquidado</span></td>
-                                    <td>
-                                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                      </a>
-
-                                    </td>
-                                </tr>
-                                
-
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- Ingresos por Cobrar TABLE -->
+
     <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">               
-                <div class="header bg-black">
-                    <h2>
-                      Ingresos Programados
-                    </h2>
-                </div> 
-                <div class="body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover table-condensed js-basic-example dataTable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fecha de pago</th>
-                                    <th>Forma</th>
-                                    <th>Cuenta</th>
-                                    <th>Descripcion</th>
-                                    <th>Monto Venta</th>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header bg-black">
+            <h2>
+              Ingresos Programados
+            </h2>
+          </div>
+          <div class="body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha de pago</th>
+                        <th>Forma</th>
+                        <th>Cuenta</th>
+                        <th>Descripcion</th>
+                        <th>Monto Venta</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha de pago</th>
+                        <th>Forma</th>
+                        <th>Cuenta</th>
+                        <th>Descripcion</th>
+                        <th>Monto Venta</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                    </tr>
+                </tfoot>
 
-                                    <th>Status</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th><b>Total: </b></th>
-                                    <th>$15,000.00</th>
-
-                                    <th> </th>
-                                    <th>
-                                    </th>
-                                </tr>
-                            </tfoot>
-
-                            <tbody>
-                                <tr>
-                                    <td>25</td>
-                                    <td>13/01/2019</td>
-                                    <td>Transf.</td>
-                                    <td>Banamex 1</td>
-                                    <td>Amex</td>
-                                    <td>$15,000.00</td>
-
-                                    <td> <span class="badge bg-yellow">Transito</span></td>
-                                    <td>
-                                      <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_pago_ingreso" data-toggle="tooltip" data-placement="top" title="Editar">
-                                        <i class="material-icons">edit</i>
-                                      </a>
-                                      <a class="btn btn-xs bg-purple waves-effect" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">
-                                        <i class="material-icons">assignment_turned_in</i>
-                                      </a>
-                                    </td>
-                                </tr>
-                                
-
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <tbody>
+                  {% for pago in ingreso.pagos_ingresos %}
+                  {% if pago.status == 'solicitado' %}
+                  <tr>
+                    <td></td>
+                    <td>{{pago.id}}</td>
+                    <td>{{pago.fecha_pago}}</td>
+                    <td>{{pago.forma_pago}}</td>
+                    <td>{{pago.cuenta.nombre}}</td>
+                    <td>{{pago.descripcion}}</td>
+                    <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
+                    <td><span class="badge bg-blue">Solicitado</span> </td>
+                    <td>
+                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago/{{pago.id}}' data-toggle="tooltip"
+                        data-placement="top" title="Ver detalle">
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('ingresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                        <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Generar pago">payment</i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+    
+ 
+    
+
+    <!-- Ingresos Completados TABLE -->
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <div class="header bg-black">
+            <h2>
+              Ingresos Completados
+            </h2>
+          </div>
+          <div class="body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha de pago</th>
+                        <th>Forma</th>
+                        <th>Cuenta</th>
+                        <th>Descripcion</th>
+                        <th>Monto Venta</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha de pago</th>
+                        <th>Forma</th>
+                        <th>Cuenta</th>
+                        <th>Descripcion</th>
+                        <th>Monto Venta</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                    </tr>
+                </tfoot>
+                    
+                    
+                <tbody>
+                  {% for pago in pagos_ingresos %}
+                  {% if pago.status != 'solicitado' %}
+                  <tr>
+                    <td>
+                      {% if pago.status != 'conciliado' %}
+                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                      {% endif %}
+                    </td>
+                    <td>{{pago.id}}</td>
+                    <td>{{pago.fecha_pago}}</td>
+                    <td>{{pago.forma_pago}}</td>
+                    <td>{{pago.cuenta.nombre}}</td>
+                    <td>{{pago.descripcion}}</td>
+                    <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
+                    <td> {% if pago.status == 'conciliado' %}
+                      <span class="badge bg-green">Liquidado</span>
+                      {% endif %}
+                      {% if pago.status == 'por_conciliar' %}
+                      <span class="badge bg-orange">Por conciliar</span>
+                      {% endif %}
+                      {% if pago.status == 'cancelado' %}
+                      <span class="badge bg-orange">Cancelado</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago/{{pago.id}}' data-toggle="tooltip"
+                        data-placement="top" title="Ver detalle">
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      {% if pago.status == 'por_conciliar' %}
+                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Mandar a Cobrar" class="material-icons">assignment_turned_in</i>
+                      </a>
+                      {% endif %}
+                      </a>
+                    </td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     
     
-    
-    
-<!-- DETALLES TABLE -->
-    
+      
+    <!-- DETALLES TABLE -->
+
     <div class="card">
       <div class="header bg-black">
         <h2>Detalles</h2>
@@ -308,45 +250,54 @@
           <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
             <thead>
               <tr>
+                <th>Cliente</th>
                 <th>Centro de Negocios</th>
                 <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
-                <th>Descipcíon</th>
-                <th># de documento</th>
+                <th>Descripcíon</th>
+                <th># control</th>
                 <th>Editar</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
+                <th>Cliente</th>
                 <th>Centro de Negocios</th>
                 <th>Categoría</th>
                 <th>Concepto</th>
                 <th>Monto</th>
-                <th>Descipcíon</th>
-                <th># de documento</th>
+                <th>Descripcíon</th>
+                <th># control</th>
                 <th>Editar</th>
               </tr>
             </tfoot>
             <tbody>
+              {% for detalle in detalles %}
               <tr>
-                <td>Tienda 1</td>
-                <td>Ventas</td>
-                <td>Zapatos</td>
-                <td>$60,000.00</td>
-                <td></td>
-                <td>VT-00123</td>
+                <td>{{detalle.cliente}}</td>
+                <td>{{detalle.centro_negocios}}</td>
+                <td>{{detalle.categoria}}</td>
+                <td>{{detalle.concepto}}</td>
+                <td>{{"${:,.2f}".format(detalle.monto)}}</td>
+                <td>{{detalle.descripcion}}</td>
+                <td>{{detalle.numero_control}}</td>
                 <th>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_ingreso" data-toggle="tooltip" data-placement="top" title="Editar">
+                  <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_egreso" data-toggle="tooltip"
+                    data-placement="top" title="Editar">
                     <i class="material-icons">edit</i>
                   </a>
                 </th>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
     </div>
+
+    {% include "modal_conciliar_movimiento.html" %}
+    {% include "modal_generar_pago.html" %}
     
     {% endblock content %}
 
@@ -362,22 +313,233 @@
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
-      $('.js-basic-example').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+      //Modal generar pago
+      $(".open-generar-pago").on("click", function () {
+        $.ajax({
+          url: $(this).attr("data-url"),
+          success: function (data) {
+            const html =
+              `<div class="row" style="margin-bottom:10px;">
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
+                                </div>
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Monto a total: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom:10px;">
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
+                                </div>
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Forma de pago: <span class="font-bold">${data.forma_pago}</span></p>
+                                </div>
+                            </div>
+                    <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                    <hr>
+                    `
+            let element = document.querySelector(".generar_here");
+            element.innerHTML = "";
+            element.insertAdjacentHTML('beforeend', html);
+
+            if (data.forma_pago.toLowerCase() == 'cheque') {
+              $('#referencia_pago').val(data.numero_cheque);
+              let element = document.querySelector(".alert-here");
+              element.innerHTML = "";
+              const ref =
+                `<div class="alert alert-warning alert-dismissible" style="margin-bottom:0" role="alert">
+                                Revisar que el folio del cheque sea correcto
+                 </div>`
+              element.insertAdjacentHTML('beforeend', ref);
+            }
+
+            if (data.forma_pago.toLowerCase() == 'transferencia') {
+              let element = document.querySelector(".alert-here");
+              element.innerHTML = "";
+              const ref =
+                `<div class="alert alert-info alert-dismissible" style="margin-bottom:0" role="alert">
+                                Revisar que la cuenta del cliente sea ${data.cuenta_clinete}
+                            </div>`
+              element.insertAdjacentHTML('beforeend', ref);
+            }
+            $('#modal_generar_pago').modal('show');
+          }
+        });
       });
-    </script>
-    
-    <script>
-    jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
+
+
+    // Conciliado check for modal generar pago
+    $("#conciliado_check").change(function () {
+        if (this.checked) {
+            $("#referencia_conciliacion").fadeIn()
+        } else {
+            $("#referencia_conciliacion").fadeOut()
+        }
+    });
+
+
+
+    //Modal Conciliar
+    $(".open-conciliar").on("click", function () {
+        $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cliente: <span class="font-bold">${data.clinete}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Referencia de pago : <span class="font-bold">${data.referencia}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <hr>`
+                let element = document.querySelector(".here");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#modal_conciliar_movimiento').modal('show');
+            }
         });
     });
-    </script>
-    {% endblock javascripts %}
+
+    //Modal Conciliar multiple
+
+    $("#open-conciliar-multiple").on("click", function () {
+        let pagos = []
+        // Iterate over all checkboxes in the table
+        $('.conciliar-table').each(function () {
+
+            // If checkbox is checked
+            if (this.checked) {
+                pagos.push($(this).val())
+            }
+        })
+
+        $.get({
+            url: '/ingresos/get_data_conciliar_multiple',
+            data: {
+                pagos: pagos
+            },
+            success: function (data) {
+                let element = document.querySelector(".here");
+                element.innerHTML = "";
+                data.forEach( pago => {
+                    const html =
+                    `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cliente: <span class="font-bold">${pago.cliente}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(pago.monto_total)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${pago.cuenta}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Referencia de pago : <span class="font-bold">${pago.referencia}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
+                <hr>`
+                element.insertAdjacentHTML('beforeend', html);
+                $('#modal_conciliar_movimiento').modal('show');
+ 
+                });
+                
+            }
+        });
+    });
+
+    //Jquery table
+    var table = $('.js-basic-example').DataTable({
+        'order': [1, 'asc'],
+        "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+        } ]
+    });
+
+    // "Select all" control
+    $('.select-all').on('click', function () {
+        // Check/uncheck all checkboxes in the table
+        var rows = table.rows({
+            'search': 'applied'
+        }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    //Borrar ingreso con sweer alert
+    $('.delete-ingreso').on('click', function () {
+          var element = this;
+          swal({
+            title: "Estas seguro?",
+            text: "Se borrara el registro de esta cuenta por Cobrar!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+          }, function () {
+            console.log(element)
+            $.ajax({
+              url: $(element).attr("data-url"),
+              success: function (data) {
+                if (data) {
+                  swal("Borrado!", "El ingreso ha sido eliminado.", "success");
+                  setTimeout(function () {
+                    location.replace('/ingresos/cuentas_por_cobrar');
+                  }, 2000);
+                }
+              }
+            })
+
+          });
+        });
+
+        //cancelar pago con sweer alert
+        $('.cancel-ingreso').on('click', function () {
+          var element = this;
+          swal({
+            title: "Estas seguro?",
+            text: "Se cancelara el pago y se restara de sus documentos asociados!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+          }, function () {
+            console.log(element)
+            $.ajax({
+              url: $(element).attr("data-url"),
+              success: function (data) {
+                if (data) {
+                  swal("Borrado!", "El ingreso ha sido cancelado.", "success");
+                  setTimeout(function () {
+                    location.reload();
+                  }, 2000);
+                }
+              }
+            })
+
+          });
+        });
+      </script>
+      {% endblock javascripts %}

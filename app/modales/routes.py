@@ -124,18 +124,11 @@ def agregar_tipo_ingreso():
     if request.form:
         data = request.form
 
-        print('AAAAA/n/n/n/n/n/n')
-        
         tipo_ingreso = Tipo_Ingreso(tipo = data["tipo"]) 
-        print('/n/n/n/n/n/n',tipo_ingreso)
-        print('/n/n/n/n/n/n')
+
         db.session.add(tipo_ingreso)
         db.session.commit()   
         return redirect("/administracion/otros")     
     
     
     
-    
-###############################
-#         INGRESOS
-###############################
