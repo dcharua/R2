@@ -1,5 +1,5 @@
 from app.ingresos import blueprint
-from flask import render_template, request
+from flask import render_template, request, redirect, flash, jsonify
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
@@ -71,12 +71,9 @@ def captura_ingresos():
             ep = IngresosHasPagos(ingreso = ingreso, pago_ingreso = pago_ingreso, monto = monto_total)    
         
 
-        if ('pagado' in data):
-            db.session.add(ep)
-        else:
-            db.session.add(ingreso)
+        if ('pagado' in data): db.session.add(ep)
+        else: db.session.add(ingreso)
         
-
         db.session.commit()
         
         return redirect("/ingresos/cuentas_por_cobrar")
@@ -205,7 +202,7 @@ def cancelar_pago(pago_id):
 def get_data_pagar(ingreso_id):
         ingreso = Ingresos.query.get(ingreso_id)
         monto_pendiente = ingreso.monto_total - ingreso.monto_solicitado - ingreso.monto_pagado
-        return jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total=str(monto_pendiente), numero_documento = ingreso.numero_documento)
+        return jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total = str(monto_pendiente), numero_documento = ingreso.numero_documento)
 
 
 # Solcitar pago form submit

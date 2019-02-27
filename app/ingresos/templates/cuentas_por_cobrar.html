@@ -188,6 +188,8 @@
 
 {% include "modal_cobrar.html" %}
 
+{% include "modal_pagar.html" %}
+
 {% include "modal_pagar_multiple.html" %}
 
 {% include "modal_reprogramar_fecha.html" %}
@@ -242,6 +244,8 @@
     // Prevent actual form submission
     e.preventDefault();
   });
+
+
 
   //solcitar pagar un ingreso
   $(".open-pagar").on("click", function () {
