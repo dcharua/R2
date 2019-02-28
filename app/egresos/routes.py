@@ -102,10 +102,12 @@ def cuentas_por_pagar():
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
-    egreso.beneficiario= Beneficiarios.query.get(egreso.beneficiario_id)
-    egreso.empresa = Empresas.query.get(egreso.empresa_id)
-    detalles = DetallesEgreso.query.filter(DetallesEgreso.egreso_id == egreso_id)
-    return render_template("perfil_egreso.html", egreso=egreso, pagos=egreso.pagos, detalles=detalles)
+    centros_negocio= CentrosNegocio.query.all()
+    proveedores = Beneficiarios.query.all()
+    categorias = Categorias.query.all()
+    conceptos = Conceptos.query.all()
+    
+    return render_template("perfil_egreso.html", egreso=egreso, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos)
 
 
 #Egresos Edit   
@@ -359,5 +361,44 @@ def reprogramar_fecha_multiple():
         return redirect("/egresos/cuentas_por_pagar")
         
     
-    
-    
+### Detalles ###
+#Agregar detalle al egreso
+@blueprint.route('/agregar_detalle<int:egreso_id>', methods=['GET', 'POST'])
+@login_required
+def agregar_detalle(egreso_id):
+        if request.form:
+                egreso = Egresos.query.get(egreso_id)
+                data = request.form
+                detalle = DetallesEgreso(centro_negocios_id=data["centro_negocios"], proveedor_id=data["proveedor"], categoria_id=data["categoria"], 
+                concepto_id=data["concepto"], monto=data["monto"],  numero_control=data["numero_control"], descripcion=data["comentario"])
+                egreso.detalles.append(detalle)
+                egreso.monto_total+= int(detalle.monto);
+                #Checar el status y que hacer con pago negativo
+                egreso.setStatus()
+                db.session.commit()
+                return redirect("/egresos/perfil_egreso/"+str(egreso_id))
+
+#Ge data for editar detalle de egreso
+@blueprint.route('/get_data_editar_detalle<int:detalle_id>', methods=['GET', 'POST'])
+@login_required
+def get_data_editar_detalle(detalle_id):
+        detalle = DetallesEgreso.query.get(detalle_id)
+        return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, proveedor=detalle.proveedor_id,  monto=str(detalle.monto), 
+        categoria = detalle.categoria_id , concepto=detalle.concepto_id, numero_control=detalle.numero_control, descripcion = detalle.descripcion)
+
+ #Ge data for editar detalle de egreso
+@blueprint.route('/editar_detalle<int:egreso_id>', methods=['GET', 'POST'])
+@login_required
+def editar_detalle(egreso_id):
+        if request.form:
+                data = request.form
+                detalle = DetallesEgreso.query.get(data["id"])
+                detalle. centro_negocios_id=data["centro_negocios"] 
+                detalle.proveedor_id=data["proveedor"]
+                detalle.categoria_id=data["categoria"]
+                detalle.concepto_id=data["concepto"]
+                detalle.monto=data["monto"]  
+                detalle.numero_control=data["numero_control"]
+                detalle.descripcion=data["comentario"]
+                db.session.commit()
+                return redirect("/egresos/perfil_egreso/"+str(egreso_id))

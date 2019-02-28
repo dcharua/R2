@@ -8,17 +8,19 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">Detalle de Egreso</h2>
-        {% if egreso.pagos|length >  0 %}
+        {% if egreso.pagos|length > 0 %}
         <div class="select-btn-group">
-          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar egresos</span>
+          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
+            egresos</span>
         </div>
         {% endif %}
-        {% if egreso.pagos|length  == 0 %}
+        {% if egreso.pagos|length == 0 %}
         <div class="select-btn-group">
-          <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar egreso</span>
+          <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar
+            egreso</span>
         </div>
         {% endif %}
-        </div>
+      </div>
 
 
       <div class="body">
@@ -34,25 +36,25 @@
           </div>
           <div class="col-sm-12 col-md-4 align-left">
             <b>
-              <p class="font-18">Status: 
-                  {% if egreso.status == 'pendiente'%}
-                  <span class="badge bg-blue">Pendiente</span>
-                  {% endif %}
-                  {% if egreso.status == 'solicitado'%}
-                  <span class="badge bg-green">Solicitado</span>
-                  {% endif %}
-                  {% if egreso.status == 'parcial'%}
-                  <span class="badge bg-orange">Parcial</span>
-                  {% endif %}
-                  {% if egreso.status == 'liquidado'%}
-                  <span class="badge bg-green">Liquidado</span>
-                  {% endif %}
-                  {% if egreso.status == 'cancelado'%}
-                  <span class="badge bg-red">Cancelado</span>
-                  {% endif %}
-                  {% if egreso.status == 'por_conciliar'%}
-                  <span class="badge bg-orange">Por conciliar</span>
-                  {% endif %}
+              <p class="font-18">Status:
+                {% if egreso.status == 'pendiente'%}
+                <span class="badge bg-blue">Pendiente</span>
+                {% endif %}
+                {% if egreso.status == 'solicitado'%}
+                <span class="badge bg-green">Solicitado</span>
+                {% endif %}
+                {% if egreso.status == 'parcial'%}
+                <span class="badge bg-orange">Parcial</span>
+                {% endif %}
+                {% if egreso.status == 'liquidado'%}
+                <span class="badge bg-green">Liquidado</span>
+                {% endif %}
+                {% if egreso.status == 'cancelado'%}
+                <span class="badge bg-red">Cancelado</span>
+                {% endif %}
+                {% if egreso.status == 'por_conciliar'%}
+                <span class="badge bg-orange">Por conciliar</span>
+                {% endif %}
               </p>
             </b>
             <b>
@@ -92,7 +94,6 @@
               <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                 <thead>
                   <tr>
-                    <th></th>
                     <th>ID</th>
                     <th>Beneficiario</th>
                     <th>Cuenta</th>
@@ -104,7 +105,6 @@
                 </thead>
                 <tfoot>
                   <tr>
-                    <th></th>
                     <th>ID</th>
                     <th>Beneficiario</th>
                     <th>Cuenta</th>
@@ -118,7 +118,6 @@
                   {% for pago in egreso.pagos %}
                   {% if pago.status == 'solicitado' %}
                   <tr>
-                    <td></td>
                     <td>{{pago.id}}</td>
                     <td>{{pago.beneficiario}}</td>
                     <td>{{pago.cuenta.nombre}}</td>
@@ -228,6 +227,10 @@
     <div class="card">
       <div class="header bg-black">
         <h2>Detalles</h2>
+        <div class="select-btn-group">
+          <span id="open-agregar-detalle" class="btn bg-green" data-type="confirm" data-toggle="modal" data-target="#modal_agregar_detalle">Agregar
+            detalle</span>
+        </div>
       </div>
       <div class="body">
         <div class="table-responsive">
@@ -257,7 +260,7 @@
               </tr>
             </tfoot>
             <tbody>
-              {% for detalle in detalles %}
+              {% for detalle in egreso.detalles %}
               <tr>
                 <td>{{detalle.proveedor}}</td>
                 <td>{{detalle.centro_negocios}}</td>
@@ -267,9 +270,8 @@
                 <td>{{detalle.descripcion}}</td>
                 <td>{{detalle.numero_control}}</td>
                 <th>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso" data-toggle="tooltip"
-                    data-placement="top" title="Editar">
-                    <i class="material-icons">edit</i>
+                  <a class="btn btn-xs btn-info waves-effect editar-detalle"  data-url="{{ url_for('egresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
+                    <i  data-toggle="tooltip"    data-placement="top" title="Editar" class="material-icons">edit</i>
                   </a>
                 </th>
               </tr>
@@ -282,7 +284,9 @@
 
     {% include "modal_conciliar_movimiento.html" %}
     {% include "modal_generar_pago.html" %}
-    
+    {% include "modal_agregar_detalle.html" %}
+    {% include "modal_editar_detalle.html" %}
+
     {% endblock content %}
 
     {% block javascripts %}
@@ -356,24 +360,24 @@
       });
 
 
-    // Conciliado check for modal generar pago
-    $("#conciliado_check").change(function () {
+      // Conciliado check for modal generar pago
+      $("#conciliado_check").change(function () {
         if (this.checked) {
-            $("#referencia_conciliacion").fadeIn()
+          $("#referencia_conciliacion").fadeIn()
         } else {
-            $("#referencia_conciliacion").fadeOut()
+          $("#referencia_conciliacion").fadeOut()
         }
-    });
+      });
 
 
 
-    //Modal Conciliar
-    $(".open-conciliar").on("click", function () {
+      //Modal Conciliar
+      $(".open-conciliar").on("click", function () {
         $.ajax({
-            url: $(this).attr("data-url"),
-            success: function (data) {
-                const html =
-                    `<div class="row" style="margin-bottom:20px;">
+          url: $(this).attr("data-url"),
+          success: function (data) {
+            const html =
+              `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
                             </div>
@@ -392,39 +396,39 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <hr>`
-                let element = document.querySelector(".here");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                $('.selectpicker').selectpicker('refresh');
-                $('#modal_conciliar_movimiento').modal('show');
-            }
+            let element = document.querySelector(".here");
+            element.innerHTML = "";
+            element.insertAdjacentHTML('beforeend', html);
+            $('.selectpicker').selectpicker('refresh');
+            $('#modal_conciliar_movimiento').modal('show');
+          }
         });
-    });
+      });
 
-    //Modal Conciliar multiple
+      //Modal Conciliar multiple
 
-    $("#open-conciliar-multiple").on("click", function () {
+      $("#open-conciliar-multiple").on("click", function () {
         let pagos = []
         // Iterate over all checkboxes in the table
         $('.conciliar-table').each(function () {
 
-            // If checkbox is checked
-            if (this.checked) {
-                pagos.push($(this).val())
-            }
+          // If checkbox is checked
+          if (this.checked) {
+            pagos.push($(this).val())
+          }
         })
 
         $.get({
-            url: '/egresos/get_data_conciliar_multiple',
-            data: {
-                pagos: pagos
-            },
-            success: function (data) {
-                let element = document.querySelector(".here");
-                element.innerHTML = "";
-                data.forEach( pago => {
-                    const html =
-                    `<div class="row" style="margin-bottom:20px;">
+          url: '/egresos/get_data_conciliar_multiple',
+          data: {
+            pagos: pagos
+          },
+          success: function (data) {
+            let element = document.querySelector(".here");
+            element.innerHTML = "";
+            data.forEach(pago => {
+              const html =
+                `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${pago.beneficiario}</span></p>
                             </div>
@@ -443,87 +447,176 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
                 <hr>`
-                element.insertAdjacentHTML('beforeend', html);
-                $('#modal_conciliar_movimiento').modal('show');
- 
-                });
-                
-            }
+              element.insertAdjacentHTML('beforeend', html);
+              $('#modal_conciliar_movimiento').modal('show');
+
+            });
+
+          }
         });
-    });
+      });
 
-    //Jquery table
-    var table = $('.js-basic-example').DataTable({
+      //Jquery table
+      var table = $('.js-basic-example').DataTable({
         'order': [1, 'asc'],
-        "columnDefs": [ {
-        "targets": 0,
-        "orderable": false
-        } ]
-    });
+        "columnDefs": [{
+          "targets": 0,
+          "orderable": false
+        }]
+      });
 
-    // "Select all" control
-    $('.select-all').on('click', function () {
+      // "Select all" control
+      $('.select-all').on('click', function () {
         // Check/uncheck all checkboxes in the table
         var rows = table.rows({
-            'search': 'applied'
+          'search': 'applied'
         }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
-    });
+      });
 
-    //Borrar egreso con sweer alert
-    $('.delete-egreso').on('click', function () {
-          var element = this;
-          swal({
-            title: "Estas seguro?",
-            text: "Se borrara el registro de esta cuenta por pagar!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Si, borrar!",
-            closeOnConfirm: false
-          }, function () {
-            console.log(element)
-            $.ajax({
-              url: $(element).attr("data-url"),
-              success: function (data) {
-                if (data) {
-                  swal("Borrado!", "El egreso ha sido eliminado.", "success");
-                  setTimeout(function () {
-                    location.replace('/egresos/cuentas_por_pagar');
-                  }, 2000);
-                }
+      //Borrar egreso con sweer alert
+      $('.delete-egreso').on('click', function () {
+        var element = this;
+        swal({
+          title: "Estas seguro?",
+          text: "Se borrara el registro de esta cuenta por pagar!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, borrar!",
+          closeOnConfirm: false
+        }, function () {
+          console.log(element)
+          $.ajax({
+            url: $(element).attr("data-url"),
+            success: function (data) {
+              if (data) {
+                swal("Borrado!", "El egreso ha sido eliminado.", "success");
+                setTimeout(function () {
+                  location.replace('/egresos/cuentas_por_pagar');
+                }, 2000);
               }
-            })
+            }
+          })
 
-          });
         });
+      });
 
-        //cancelar pago con sweer alert
-        $('.cancel-egreso').on('click', function () {
-          var element = this;
-          swal({
-            title: "Estas seguro?",
-            text: "Se cancelara el pago y se restara de sus documentos asociados!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Si, borrar!",
-            closeOnConfirm: false
-          }, function () {
-            console.log(element)
-            $.ajax({
-              url: $(element).attr("data-url"),
-              success: function (data) {
-                if (data) {
-                  swal("Borrado!", "El egreso ha sido cancelado.", "success");
-                  setTimeout(function () {
-                    location.reload();
-                  }, 2000);
-                }
+      //cancelar pago con sweer alert
+      $('.cancel-egreso').on('click', function () {
+        var element = this;
+        swal({
+          title: "Estas seguro?",
+          text: "Se cancelara el pago y se restara de sus documentos asociados!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, borrar!",
+          closeOnConfirm: false
+        }, function () {
+          console.log(element)
+          $.ajax({
+            url: $(element).attr("data-url"),
+            success: function (data) {
+              if (data) {
+                swal("Borrado!", "El egreso ha sido cancelado.", "success");
+                setTimeout(function () {
+                  location.reload();
+                }, 2000);
               }
-            })
+            }
+          })
 
-          });
         });
-      </script>
-      {% endblock javascripts %}
+      });
+
+    
+      $('.editar-detalle').on('click', function () {
+        console.log('in')
+        $.ajax({
+          url: $(this).attr("data-url"),
+          success: function (data) {
+            const html =`
+            <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.editar_detalle', egreso_id=egreso.id) }}">
+                <input type="hidden" id="id" name="id" value="${data.id}">  
+            <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="beneficiario"> Centro de negocios </label><br>
+                                    <select class="selectpicker"  data-live-search="true" 
+                                    name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
+                                    {% for centro in centros_negocio %}
+                                    <option value="{{centro.id}}"> {{ centro.nombre }} </option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="proveedor"> Proveedor </label><br>
+                                    <select class="selectpicker"  data-live-search="true" 
+                                    name="proveedor" title="Seleccione un Proveedor..."
+                                     data-width="100%">
+                                     {% for provedor in proveedores %}
+                                     <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
+                                     {% endfor %}
+                                   </select>
+                                
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="categoria"> Categoría </label>
+                                <select class="selectpicker" data-live-search="true" 
+                                  name="categoria" title="Seleccione una Categoria..."
+                                  data-width="100%">
+                                  {% for categoria in categorias %}
+                                  <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                                  {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <label for="concepto"> Concepto</label>
+                                <select class="selectpicker"  
+                                data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                                {% for concepto in conceptos %}
+                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="monto">Monto</label>
+                                <input type='number' class="form-control" name="montoh" value="${data.monto}"  disabled />
+                                <input type='hidden' class="form-control" name="monto" value="${data.monto}"  />
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="numero_control"># de control</label>
+                                    <input type='text' class="form-control" name="numero_control" value="${data.numero_control}" />
+                                </div>
+                        </div>
+    
+                        <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12">
+                                    <label for="arrendadora"> Detallea </label>
+                                    <textarea name="comentario" id="comentario" style="width:100%" > ${data.descripcion}</textarea>
+                                 </div>
+                        </div>
+                         </div>
+        
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Editar Detalle</button>
+                        <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </form>`
+            let element = document.querySelector(".detalle-here");
+            element.innerHTML = "";
+            element.insertAdjacentHTML('beforeend', html);
+            $('.selectpicker').selectpicker('refresh');
+            $('#modal_editar_detalle').modal('show');
+          }
+        });
+      });
+    </script>
+    {% endblock javascripts %}

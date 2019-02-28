@@ -318,15 +318,11 @@ class Ingresos(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    
     status = Column(String(20))
-    
     tipo_ingreso_id = Column(Integer, ForeignKey('tipo_ingre.id'))
     tipo_ingreso = relationship("Tipo_Ingreso", back_populates="ingresos")
-      
     cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cliente = relationship("Clientes", back_populates="ingresos") 
-    
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
@@ -334,16 +330,9 @@ class Ingresos(db.Model):
     monto_pagado = Column(Numeric)
     monto_solicitado = Column(Numeric)
     monto_por_conciliar = Column(Numeric)
-    
     detalles = relationship("DetallesIngreso")
     comentario = Column(String(200))
-    
-    
     pagado = Column(Boolean)
-    
-
-         
-    
     pagos_ingresos = relationship("Pagos_Ingresos", secondary='ingresos_has_pagos')
 
 
