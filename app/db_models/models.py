@@ -335,6 +335,36 @@ class Ingresos(db.Model):
     pagado = Column(Boolean)
     pagos_ingresos = relationship("Pagos_Ingresos", secondary='ingresos_has_pagos')
 
+    def setStatus(self, pagos=None):
+        if pagos is None:
+            ingreso = self.query.get(self.id)
+            pagos_ingresos = ingreso.query.join(Ingresos.pagos_ingresos).filter_by(id = self.id) 
+        monto_pagos = 0
+        por_conciliar = False
+        for pago in pagos_ingresos:
+            print('pago monto' + str(pago.monto_total))
+            if pago.status != 'cancelado':
+                monto_pagos += pago.monto_total
+            if pago.status == 'por_conciliar':
+                por_conciliar = True
+
+        print('monto pagado' + str(monto_pagos))
+        if (monto_pagos == 0):
+            print('in')
+            self.status = 'pendiente'
+
+        elif (self.monto_pagado == self.monto_total):
+            if por_conciliar:
+                self.status = 'por_conciliar'
+            else:
+                self.status = 'liquidado'
+            
+
+        elif (monto_pagos < self.monto_total): 
+            if(monto_pagos == self.monto_total):
+                self.status = 'solicitado'
+            elif(monto_pagos < self.monto_total):
+                 self.status = 'parcial'
 
     def __repr__(self):
         return '<ingreso {}>'.format(self.id)    

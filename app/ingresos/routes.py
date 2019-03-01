@@ -114,9 +114,11 @@ def cuentas_por_pagar():
 @blueprint.route('/perfil_ingreso/<int:ingreso_id>', methods=['GET', 'POST'])
 def perfil_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
-    ingreso.cliente = Clientes.query.get(ingreso.cliente_id)
-    detalles = DetallesIngreso.query.filter(DetallesIngreso.ingreso_id == ingreso_id)
-    return render_template("perfil_ingreso.html", ingreso=ingreso, pagos_ingresos = ingreso.pagos_ingresos, detalles=detalles)
+    clientes = Clientes.query.all()
+    centros_negocio = CentrosNegocio.query.all()
+    categorias = Categorias.query.all()
+    conceptos = Conceptos.query.all()
+    return render_template("perfil_ingreso.html", ingreso = ingreso, centros_negocio = centros_negocio, clientes = clientes, categorias = categorias, conceptos=conceptos)
 
 
 #Egresos Edit   
@@ -397,3 +399,46 @@ def ingresos_tiendas():
                            categoria = categoria,
                            concepto = concepto,
                            velocity_max = 1)
+    
+    
+@blueprint.route('/agregar_detalle<int:ingreso_id>', methods=['GET', 'POST'])
+@login_required
+def agregar_detalle(ingreso_id):
+        if request.form:
+                ingreso = Ingresos.query.get(ingreso_id)
+                data = request.form
+                detalle = DetallesIngreso(centro_negocios_id=data["centro_negocios"], cliente_id=data["cliente"], categoria_id=data["categoria"], 
+                concepto_id=data["concepto"], monto=data["monto"],  numero_control=data["numero_control"], descripcion=data["comentario"])
+                ingreso.detalles.append(detalle)
+                ingreso.monto_total += int(detalle.monto);
+                #Checar el status y que hacer con pago negativo
+                ingreso.setStatus()
+                db.session.commit()
+                return redirect("/ingresos/perfil_ingreso/"+str(ingreso_id))
+    
+#Ge data for editar detalle de egreso
+@blueprint.route('/get_data_editar_detalle<int:detalle_id>', methods=['GET', 'POST'])
+@login_required
+def get_data_editar_detalle(detalle_id):
+        detalle = DetallesIngreso.query.get(detalle_id)
+        return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, cliente=detalle.cliente_id,  monto=str(detalle.monto), 
+        categoria = detalle.categoria_id , concepto=detalle.concepto_id, numero_control=detalle.numero_control, descripcion = detalle.descripcion)
+
+
+
+ #Ge data for editar detalle de egreso
+@blueprint.route('/editar_detalle<int:ingreso_id>', methods=['GET', 'POST'])
+@login_required
+def editar_detalle(ingreso_id):
+        if request.form:
+                data = request.form
+                detalle = DetallesIngreso.query.get(data["id"])
+                detalle. centro_negocios_id=data["centro_negocios"] 
+                detalle.cliente_id = data["cliente"]
+                detalle.categoria_id = data["categoria"]
+                detalle.concepto_id = data["concepto"]
+                detalle.monto = data["monto"]  
+                detalle.numero_control = data["numero_control"]
+                detalle.descripcion = data["comentario"]
+                db.session.commit()
+                return redirect("/ingresos/perfil_ingreso/"+str(ingreso_id))

@@ -244,6 +244,10 @@
     <div class="card">
       <div class="header bg-black">
         <h2>Detalles</h2>
+        <div class="select-btn-group">
+          <span id="open-agregar-detalle" class="btn bg-green" data-type="confirm" data-toggle="modal" data-target="#modal_agregar_detalle_ingresos">Agregar
+            detalle</span>
+        </div>
       </div>
       <div class="body">
         <div class="table-responsive">
@@ -273,7 +277,7 @@
               </tr>
             </tfoot>
             <tbody>
-              {% for detalle in detalles %}
+              {% for detalle in ingreso.detalles %}
               <tr>
                 <td>{{detalle.cliente}}</td>
                 <td>{{detalle.centro_negocios}}</td>
@@ -283,9 +287,8 @@
                 <td>{{detalle.descripcion}}</td>
                 <td>{{detalle.numero_control}}</td>
                 <th>
-                  <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_egreso" data-toggle="tooltip"
-                    data-placement="top" title="Editar">
-                    <i class="material-icons">edit</i>
+                  <a class="btn btn-xs btn-info waves-effect editar-detalle"  data-url="{{ url_for('ingresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
+                    <i  data-toggle="tooltip"    data-placement="top" title="Editar" class="material-icons">edit</i>
                   </a>
                 </th>
               </tr>
@@ -298,6 +301,9 @@
 
     {% include "modal_conciliar_movimiento.html" %}
     {% include "modal_generar_pago.html" %}
+    
+    {% include "modal_agregar_detalle_ingresos.html" %}
+    {% include "modal_editar_detalle.html" %}
     
     {% endblock content %}
 
@@ -541,5 +547,95 @@
 
           });
         });
+ 
+
+                 
+      $('.editar-detalle').on('click', function () {
+        console.log('in')
+        $.ajax({
+          url: $(this).attr("data-url"),
+          success: function (data) {
+            const html =`
+            <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
+                <input type="hidden" id="id" name="id" value="${data.id}">  
+            <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="centro_negocios"> Centro de negocios </label><br>
+                                    <select class="selectpicker"  data-live-search="true" 
+                                    name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
+                                    {% for centro in centros_negocio %}
+                                    <option value="{{centro.id}}"> {{ centro.nombre }} </option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="cliente"> Cliente </label><br>
+                                    <select class="selectpicker"  data-live-search="true" 
+                                    name="cliente" title="Seleccione un Cliente..."
+                                     data-width="100%">
+                                     {% for cliente in clientes %}
+                                     <option value="{{cliente.id}}"> {{cliente.nombre }} </option>
+                                     {% endfor %}
+                                   </select>
+                                
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="categoria"> Categoría </label>
+                                <select class="selectpicker" data-live-search="true" 
+                                  name="categoria" title="Seleccione una Categoria..."
+                                  data-width="100%">
+                                  {% for categoria in categorias %}
+                                  <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                                  {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <label for="concepto"> Concepto</label>
+                                <select class="selectpicker"  
+                                data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                                {% for concepto in conceptos %}
+                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="monto">Monto</label>
+                                <input type='number' class="form-control" name="montoh" value="${data.monto}"  disabled />
+                                <input type='hidden' class="form-control" name="monto" value="${data.monto}"  />
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="numero_control"># de control</label>
+                                    <input type='text' class="form-control" name="numero_control" value="${data.numero_control}" />
+                                </div>
+                        </div>
+    
+                        <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12">
+                                    <label for="arrendadora"> Detallea </label>
+                                    <textarea name="comentario" id="comentario" style="width:100%" > ${data.descripcion}</textarea>
+                                 </div>
+                        </div>
+                         </div>
+        
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Editar Detalle</button>
+                        <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </form>`
+            let element = document.querySelector(".detalle-here");
+            element.innerHTML = "";
+            element.insertAdjacentHTML('beforeend', html);
+            $('.selectpicker').selectpicker('refresh');
+            $('#modal_editar_detalle').modal('show');
+          }
+        });
+      });
       </script>
       {% endblock javascripts %}
