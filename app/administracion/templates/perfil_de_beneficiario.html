@@ -11,43 +11,110 @@
         <!-- INFO CARD -->
         <div class="card">
           <div class="header bg-black">
-            <h2 class="font-24">Datos de Beneficiario</h2>
+            <h2 class="font-24">{{beneficiario.nombre}}</h2>
           </div>
 
           <div class="body">
-            <div class="row mycontainer">
-              <div class="col-sm-12 col-md-6">
-                <p class="font-18">Beneficiario: <span class="font-bold">{{beneficiario.nombre}}</span></p>
-                <p class="font-18">RFC: <span class="font-bold">{{beneficiario.RFC}}</span></p>
-                <p class="font-18">Direccion: <span class="font-bold">{{beneficiario.direccion}}</span></p>
-                <p class="font-18">Razón social: <span class="font-bold">{{beneficiario.razon_social}}</span></p>
+            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+              <li role="presentation" class="active"><a href="#datos" data-toggle="tab">Datos generales</a></li>
+              <li role="presentation"><a href="#contactos" data-toggle="tab">Contactos</a></li>
+              <li role="presentation"><a href="#categorias" data-toggle="tab">Categorías</a></li>
+              <li role="presentation"><a href="#comentarios" data-toggle="tab">Comentarios</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="datos">
+                <div class="row mycontainer">
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18">Beneficiario: <span class="font-bold">{{beneficiario.nombre}}</span></p>
+                    <p class="font-18">RFC: <span class="font-bold">{{beneficiario.RFC}}</span></p>
+                    <p class="font-18">Direccion: <span class="font-bold">{{beneficiario.direccion}}</span></p>
+                    <p class="font-18">Razón social: <span class="font-bold">{{beneficiario.razon_social}}</span></p>
 
 
+                  </div>
+                  <div class="col-sm-12 col-md-6 align-left">
+
+                    <p class="font-18">Status:
+                      {% if beneficiario.status == 'pendiente'%}
+                      <span class="badge bg-blue">Pendiente</span>
+                      {% endif %}
+                      {% if beneficiario.status == 'solicitado'%}
+                      <span class="badge bg-green">Solicitado</span>
+                      {% endif %}
+                      {% if beneficiario.status == 'parcial'%}
+                      <span class="badge bg-orange">Parcial</span>
+                      {% endif %}
+                      {% if beneficiario.status == 'liquidado'%}
+                      <span class="badge bg-green">Liquidado</span>
+                      {% endif %}
+                      {% if beneficiario.status == 'cancelado'%}
+                      <span class="badge bg-red">Cancelado</span>
+                      {% endif %}
+                      {% if beneficiario.status == 'por_conciliar'%}
+                      <span class="badge bg-orange">Por conciliar</span>
+                      {% endif %}
+                    </p>
+                    <p class="font-18">Banco: <span class="font-bold">{{beneficiario.banco}}</span></p>
+                    <p class="font-18">Cuenta: <span class="font-bold">{{beneficiario.cuenta_banco}}</span></p>
+                  </div>
+                </div>
               </div>
-              <div class="col-sm-12 col-md-6 align-left">
 
-                <p class="font-18">Status:
-                  {% if beneficiario.status == 'pendiente'%}
-                  <span class="badge bg-blue">Pendiente</span>
-                  {% endif %}
-                  {% if beneficiario.status == 'solicitado'%}
-                  <span class="badge bg-green">Solicitado</span>
-                  {% endif %}
-                  {% if beneficiario.status == 'parcial'%}
-                  <span class="badge bg-orange">Parcial</span>
-                  {% endif %}
-                  {% if beneficiario.status == 'liquidado'%}
-                  <span class="badge bg-green">Liquidado</span>
-                  {% endif %}
-                  {% if beneficiario.status == 'cancelado'%}
-                  <span class="badge bg-red">Cancelado</span>
-                  {% endif %}
-                  {% if beneficiario.status == 'por_conciliar'%}
-                  <span class="badge bg-orange">Por conciliar</span>
-                  {% endif %}
-                </p>
-                <p class="font-18">Banco: <span class="font-bold">{{beneficiario.banco}}</span></p>
-                <p class="font-18">Cuenta: <span class="font-bold">{{beneficiario.cuenta_banco}}</span></p>
+              <div role="tabpanel" class="tab-pane fade" id="contactos">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                      <th>Teléfono</th>
+                      <th>Extensión</th>
+                      <th>Puesto</th>
+                      <th>Editar</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for contacto in beneficiario.contacto %}
+                    <tr>
+                      <td>{{contacto.nombre}}</td>
+                      <td>{{contacto.correo}}</td>
+                      <td>{{contacto.telefono}}</td>
+                      <td>{{contacto.extension}}</td>
+                      <td>{{contacto.puesto}}</td>
+
+                      <td>
+                        <a class="btn btn-xs btn-info waves-effect" href="/" data-toggle="tooltip" data-placement="top"
+                          title="Editar Contacto">
+                          <i class="material-icons">visibility</i>
+                        </a>
+                      </td>
+
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              <div role="tabpanel" class="tab-pane fade" id="categorias">
+                <span data-toggle="modal" data-target="#modal_agregar_categoria_beneficiario" class="btn btn-success f-right">Asignar
+                  categoría</span>
+                <ul>
+                  {%for categoria in beneficiario.categorias%}
+                  <li> <b>{{categoria}} </b>
+                    <ul>
+                      {%for concepto in categoria.conceptos%}
+                      <li>{{concepto}}</li>
+                      {% endfor %}
+                    </ul>
+
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="comentarios">
+                <p>{{beneficiario.comentarios }}</p>
               </div>
             </div>
           </div>
@@ -255,85 +322,13 @@
         </div>
 
 
-        <!-- CONTACTOS TABLE -->
-        <div class="card">
-          <div class="header">
-            <h2>Contactos</h2>
-          </div>
-          <div class="body">
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Teléfono</th>
-                    <th>Extensión</th>
-                    <th>Puesto</th>
-                    <th>Editar</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {% for contacto in beneficiario.contacto %}
-                  <tr>
-                    <td>{{contacto.nombre}}</td>
-                    <td>{{contacto.correo}}</td>
-                    <td>{{contacto.telefono}}</td>
-                    <td>{{contacto.extension}}</td>
-                    <td>{{contacto.puesto}}</td>
-
-                    <td>
-                      <a class="btn btn-xs btn-info waves-effect" href="/" data-toggle="tooltip" data-placement="top"
-                        title="Editar Contacto">
-                        <i class="material-icons">visibility</i>
-                      </a>
-                    </td>
-
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="col-sm-12 col-md-8">
-            <div class="card">
-              <div class="header">
-                <h2>Categorías y conceptos asociados</h2>
-              </div>
-              <div class="body">
-
-              </div>
-            </div>
-
-          </div>
-          <div class="col-sm-12 col-md-4">
-            <div class="card">
-              <div class="header">
-                <h2>Cuentas asociadas</h2>
-              </div>
-              <div class="body">
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
         {% include "modal_pagar.html" %}
-
         {% include "modal_pagar_multiple.html" %}
-
         {% include "modal_reprogramar_fecha.html" %}
-
         {% include "modal_reprogramar_fecha_multiple.html" %}
-
         {% include "modal_conciliar_movimiento.html" %}
         {% include "modal_generar_pago.html" %}
+        {% include "modal_agregar_categoria_beneficiario.html" %}
         {% endblock content %}
 
         {% block javascripts %}

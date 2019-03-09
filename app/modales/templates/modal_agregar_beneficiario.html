@@ -1,122 +1,133 @@
-
 <!-- Modal pagos -->
 <div class="modal fade" id="modal_agregar_beneficiario" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-                <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('modales_blueprint.agregar_beneficiario') }}">
+            <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('administracion_blueprint.agregar_beneficiario') }}">
 
-            <div class="modal-header">
-                <h3 class="modal-title" id="largeModalLabel"> Agregar Beneficiario</h3>
-            </div>
-            <div class="modal-body">
-                        <div class="input-group" style="margin-bottom:20px !important">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h4 for="nombre"> Nombre </h4>
-                                    <input type='text' class="form-control" name="nombre" />
-                                </div>
+                <div class="modal-header">
+                    <h3 class="modal-title" id="largeModalLabel"> Agregar Beneficiario</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group" style="margin-bottom:20px !important">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 for="nombre"> Nombre </h4>
+                                <input type='text' class="form-control" name="nombre" />
                             </div>
-                        </div>
-
-
-
-                        <h4>Datos Generales</h4>
-                        <hr class="mar-t-0">
-                            <div class="row" style="margin-bottom:20px !important">
-                                <div class="col-sm-12 col-md-6">
-                                    <label for="razon_social"> Razón Social </label>
-                                    <input type='text' class="form-control" name="razon_social" />
-                                </div>
-                                <div class="col-sm-12 col-md-6">
-                                    <label for="RFC"> RFC </label>
-                                    <input type='text' class="form-control" name="RFC" />
-                                </div>
-                            </div>
-                        
-                            <div class="row" style="margin-bottom:20px !important">
-                                <div class="col-sm-12">
-                                    <label for="direccion">Dirección </label>
-                                    <input type='text' class="form-control" name="direccion" />
-                                </div>
-                            </div>
-
-                            <h4>Datos Bancarios</h4>
-                            <hr class="mar-t-0">
-                          
-                                <div class="row" style="margin-bottom:20px !important">
-                                    <div class="col-sm-12 col-md-6">
-                                        <label for="cuenta_banco"> Cuenta de Banco </label>
-                                        <input type='text' class="form-control" name="cuenta_banco" />
-                                    </div>
-                                    <div class="col-sm-12 col-md-6">
-                                        <label for="banco"> Banco </label>
-                                        <input type='text' class="form-control" name="banco" />
-                                    </div>
-                                </div>
-
-                        <div style="padding:10px;" class="header">
-                          <h4>Contactos del Beneficiario</h4>
-                          <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
-                            data-toggle="tooltip" data-placement="top" title="Remover concepto de pago">
-                            <i class="material-icons">remove</i>
-                          </button>
-      
-                          <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
-                            data-toggle="tooltip" data-placement="top" title="Agregar concepto de pago">
-                            <i class="material-icons">add</i>
-                          </button>
-                        </div>
-                        <div style="padding:10px;" class="body" id="clone">
-      
-                          <table id="table" style="table-layout: fixed;" class="table table-striped">
-                            <thead>
-                              <tr>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Teléfono</th>
-                                <th>Extensión</th>
-                                <th>Puesto</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                    <input type="text" name="nombre_contacto" style="width:100%">
-                                </td>
-                                <td>
-                                    <input type="email" name="correo_contacto" style="width:100%">
-                                </td>
-                                <td>
-                                    <input type="tel" name="telefono_contacto" style="width:100%">
-                                </td>
-                                <td>
-                                    <input type="number" name="extension_contacto" style="width:100%">
-                                </td>
-                                <td>
-                                  <input class="form-control" type="text"  name="puesto_contacto" >
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table> 
-                        </div> 
-                <div class="input-group">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label for="cometarios">Comentarios</label>
-                            <textarea name="comentarios" style="width:100%"></textarea>
                         </div>
                     </div>
+
+
+
+                    <h4>Datos Generales</h4>
+                    <hr class="mar-t-0">
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="razon_social"> Razón Social </label>
+                            <input type='text' class="form-control" name="razon_social" />
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="RFC"> RFC </label>
+                            <input type='text' class="form-control" name="RFC" />
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12">
+                            <label for="direccion">Dirección </label>
+                            <input type='text' class="form-control" name="direccion" />
+                        </div>
+                    </div>
+
+                    <h4>Datos Bancarios</h4>
+                    <hr class="mar-t-0">
+
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="cuenta_banco"> Cuenta de Banco </label>
+                            <input type='text' class="form-control" name="cuenta_banco" />
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <label for="banco"> Banco </label>
+                            <input type='text' class="form-control" name="banco" />
+                        </div>
+                    </div>
+
+                    <div style="padding:10px;" class="header">
+                        <h4>Contactos del Beneficiario</h4>
+                        <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
+                            data-toggle="tooltip" data-placement="top" title="Remover concepto de pago">
+                            <i class="material-icons">remove</i>
+                        </button>
+
+                        <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
+                            data-toggle="tooltip" data-placement="top" title="Agregar concepto de pago">
+                            <i class="material-icons">add</i>
+                        </button>
+                    </div>
+                    <div style="padding:10px;" class="body" id="clone">
+
+                        <table id="table" style="table-layout: fixed;" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Teléfono</th>
+                                    <th>Extensión</th>
+                                    <th>Puesto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="text" name="nombre_contacto" style="width:100%">
+                                    </td>
+                                    <td>
+                                        <input type="email" name="correo_contacto" style="width:100%">
+                                    </td>
+                                    <td>
+                                        <input type="tel" name="telefono_contacto" style="width:100%">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="extension_contacto" style="width:100%">
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" name="puesto_contacto">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Categorías asociadas</h4>
+                    <select class="selectpicker" multiple data-live-search="true" name="categoria" title="Seleccione las Categorías..."
+                        data-width="100%">
+
+                        {% for categoria in categorias %}
+                        <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                        {% endfor %}
+                    </select>
+                    <hr class="mar-t-0">
+                    <div class="input-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="cometarios">Comentarios</label>
+                                <textarea name="comentarios" style="width:100%"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
 
-                
-            </div>
-
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Agregar Beneficiario</button>
-                <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-                    <i class="material-icons">close</i>
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Agregar Beneficiario</button>
+                    <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
             </form>
 
         </div>
@@ -125,25 +136,24 @@
 <script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
 
 <script>
-
     $(document).ready(function () {
 
-    var counter=0;
+        var counter = 0;
 
 
-    $("#add-row").click(function () {
-        console.log("in")
-        var $tableBody = $('#table').find("tbody"),
-        $trLast = $tableBody.find("tr:last"),
-        $trNew = $trLast.clone();
-        $trLast.after($trNew);
+        $("#add-row").click(function () {
+            console.log("in")
+            var $tableBody = $('#table').find("tbody"),
+                $trLast = $tableBody.find("tr:last"),
+                $trNew = $trLast.clone();
+            $trLast.after($trNew);
+        });
+
+        $("#delete-row").click(function () {
+            if ($('#table tr:last').index() != 0)
+                $('#table tr:last').remove();
+        });
+        document.getElementById("delete-row").click();
+
     });
-
-    $("#delete-row").click(function () {
-      if ($('#table tr:last').index() != 0)
-        $('#table tr:last').remove();
-    });
-    document.getElementById("delete-row").click();
-
-  });
 </script>

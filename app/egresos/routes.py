@@ -388,7 +388,7 @@ def get_data_editar_detalle(detalle_id):
         return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, proveedor=detalle.proveedor_id,  monto=str(detalle.monto), 
         categoria = detalle.categoria_id , concepto=detalle.concepto_id, numero_control=detalle.numero_control, descripcion = detalle.descripcion)
 
- #Ge data for editar detalle de egreso
+ #editar detalle de egreso
 @blueprint.route('/editar_detalle<int:egreso_id>', methods=['GET', 'POST'])
 @login_required
 def editar_detalle(egreso_id):

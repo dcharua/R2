@@ -2,39 +2,6 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-sm-12 col-md-6">
-        <div class="card">
-            <div class="header">
-                <span data-toggle="modal" data-target="#modal_agregar_categoria" class="btn btn-warning f-right">Agregar</span>
-                <h2>Categorías</h2>
-            </div>
-            <div class="body">
-                <ul>
-                    {%for categoria in categorias%}
-                    <li>{{categoria}}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-12 col-md-6">
-        <div class="card">
-            <div class="header">
-                <span data-toggle="modal" data-target="#modal_agregar_concepto" class="btn btn-warning f-right">Agregar</span>
-                <h2>Conceptos</h2>
-            </div>
-            <div class="body">
-                <ul>
-                    {%for concepto in conceptos%}
-                    <li>{{concepto}}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-sm-12 col-md-6">
@@ -69,7 +36,7 @@
             </div>
         </div>
     </div>
-
+    
 </div>
 
 <div class="row">
@@ -85,12 +52,37 @@
                     <li>{{tipo_ingreso}}</li>
                     {% endfor %}
                 </ul>
-
+                
             </div>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-sm-12 col-md-12">
+        <div class="card">
+            <div class="header">
+                <span data-toggle="modal" data-target="#modal_agregar_categoria" class="btn btn-warning f-right">Agregar categoría</span>
+                <span data-toggle="modal" data-target="#modal_agregar_concepto" style="margin-right:10px;"  class="btn btn-warning f-right">Agregar concepto</span>
+                <h2>Categorías</h2>
+            </div>
+            <div class="body">
+                <ul>
+                    {%for categoria in categorias%}
+                        <li> <b>{{categoria}} </b>
+                            <ul>
+                                {%for concepto in categoria.conceptos%}
+                                    <li>{{concepto}}</li>
+                                {% endfor %}
+                            </ul>
+
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {% include "modal_agregar_categoria.html" %}
 {% include "modal_agregar_centro.html" %}
 {% include "modal_agregar_concepto.html" %}

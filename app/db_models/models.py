@@ -7,6 +7,11 @@ from flask import flash, redirect
 Base = declarative_base()
 
 
+beneficiario_has_categorias = Table('beneficiario_has_categorias', db.Model.metadata,
+    Column('beneficiario_id', Integer, ForeignKey('beneficiarios.id'), primary_key=True),
+    Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
+)
+
 #Tables in alpha order
 
 class Beneficiarios(db.Model):
@@ -23,7 +28,7 @@ class Beneficiarios(db.Model):
     saldo = Column(Numeric) 
     status = Column(String(20))
     comentarios = Column(String(250))
-   
+    categorias = relationship("Categorias", secondary=beneficiario_has_categorias)
     
     egresos = relationship("Egresos")
     detalles_egresos = relationship("DetallesEgreso")
@@ -45,9 +50,10 @@ class Categorias(db.Model):
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     nombre = Column(String(50))
+    conceptos = relationship("Conceptos")
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
-
+    beneficiarios = relationship("Beneficiarios", secondary=beneficiario_has_categorias)
     def __repr__(self):
         return self.nombre        
 
@@ -105,7 +111,7 @@ class Conceptos(db.Model):
     nombre = Column(String(50))
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
-
+    categoria_id = Column(Integer, ForeignKey('categorias.id'))
     def __repr__(self):
         return self.nombre       
 

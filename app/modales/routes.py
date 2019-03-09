@@ -14,22 +14,6 @@ def route_template(template):
 
 ###### agregar modales
 
-@blueprint.route('/agregar_beneficiario', methods=['GET', 'POST'])
-@login_required
-def agregar_beneficiario():
-    if request.form:
-        data = request.form
-        beneficiario = Beneficiarios(nombre=data["nombre"], RFC=data["RFC"], 
-            direccion=data["direccion"], razon_social=data["razon_social"],
-            cuenta_banco=data["cuenta_banco"], saldo = 0, status = 'liquidado', banco=data["banco"])
-        for i in range(len(data.getlist("nombre_contacto"))):
-            contacto = ContactoBeneficiario(nombre=data.getlist("nombre_contacto")[i], correo=data.getlist("correo_contacto")[i],
-            telefono=data.getlist("telefono_contacto")[i], extension=data.getlist("extension_contacto")[i], puesto=data.getlist("puesto_contacto")[i])
-            beneficiario.contacto.append(contacto) 
-        db.session.add(beneficiario)
-        db.session.commit()   
-        return redirect("/administracion/beneficiarios")
-    
     
 @blueprint.route('/agregar_cliente', methods=['GET', 'POST'])
 @login_required
@@ -88,7 +72,7 @@ def agregar_centro():
 def agregar_concepto():
     if request.form:
         data = request.form
-        concepto = Conceptos(nombre=data["nombre"]) 
+        concepto = Conceptos(nombre=data["nombre"], categoria_id=data["categoria"]) 
         db.session.add(concepto)
         db.session.commit()   
         return redirect("/administracion/otros")      
