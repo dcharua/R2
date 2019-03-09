@@ -56,7 +56,11 @@
             <tbody>
               {% for egreso in egresos_pendientes %}
               <tr>
-                <td><input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" /></td>
+                <td>
+                    {% if egreso.status != 'solicitado' %}
+                      <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                    {% endif %}
+                  </td>
                 <td>{{egreso.id}}</td>
                 <td>{{egreso.numero_documento}}</td>
                 <td>{{egreso.beneficiario}}</td>
@@ -155,7 +159,8 @@
                   <td>{{egreso.fecha_programada_pago}}</td>
                   <td>{{egreso.fecha_vencimiento}}</td>
                   <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                  <td> {% if egreso.status == 'liquidado'%}
+                  <td> 
+                    {% if egreso.status == 'liquidado'%}
                     <span class="badge bg-green">Liquidado</span>
                     {% endif %}
                     {% if egreso.status == 'cancelado'%}
@@ -393,7 +398,7 @@
 
   //Jquery table
 
-  $('.js-basic-example').DataTable({
+  var table = $('.js-basic-example').DataTable({
           dom: 'Bfrtip',
           responsive: true,
           "order": [[ 1, 'desc' ], [ 2, 'asc' ]],

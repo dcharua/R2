@@ -21,9 +21,9 @@ def beneficiarios():
 @blueprint.route('/perfil_de_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
 def perfil_de_beneficiario(beneficiario_id):
     beneficiario = Beneficiarios.query.get(beneficiario_id)
-    contactos_beneficiario = ContactoBeneficiario.query.filter(ContactoBeneficiario.beneficiario_id == beneficiario_id).all()
-
-    return render_template("perfil_de_beneficiario.html", beneficiario = beneficiario, contactos_beneficiario = contactos_beneficiario)   
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    return render_template("perfil_de_beneficiario.html", beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas)   
 
 @blueprint.route('/clientes', methods=['GET', 'POST'])
 @login_required

@@ -417,11 +417,11 @@ class Pagos(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    referencia_pago = Column(String(20))
+    referencia_pago = Column(String(40))
     fecha_pago = Column(Date)
-    fecha_conciliacion = Column(String(20))
+    fecha_conciliacion = Column(Date)
     status = Column(String(20))
-    referencia_conciliacion = Column(String(20))
+    referencia_conciliacion = Column(String(40))
     monto_total = Column(Numeric)
     comentario = Column(String(200))
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
@@ -449,10 +449,6 @@ class Tipo_Ingreso(db.Model):
     def __repr__(self):
         return self.tipo
     
-
-
-
-
 
 #After insert events
 def after_insert_listener(mapper, connection, target):

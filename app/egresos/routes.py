@@ -40,28 +40,29 @@ def capturar_egreso():
             if ('conciliado_check' in data):
                 status = 'conciliado'
                 refrencia_conciliacion = data["referencia_conciliacion"]
-                if egreso.monto_pagado == egreso.monto_total:
+                if float(egreso.monto_pagado) == float(egreso.monto_total):
                     egreso.status = 'liquidado'
                 else: 
                     egreso.status = 'parcial'
             else:
-                egreso.monto_por_conciliar = monto_pagado
+                egreso.monto_por_conciliar == monto_pagado
                 status = 'por_conciliar'    
                 refrencia_conciliacion = ""
-                if egreso.monto_pagado == egreso.monto_total:
+                if float(egreso.monto_pagado) == float(egreso.monto_total):
                     egreso.status = 'por_conciliar'
                 else:
                     egreso.status = 'parcial'
 
             pago = Pagos(forma_pago_id = data["forma_pago"], cuenta_id= data["cuenta_banco"], referencia_pago = data["forma_pago"],fecha_pago = data["fecha_pago"], status = status, 
-            referencia_conciliacion= refrencia_conciliacion,  monto_total = monto_pagado, comentario = data["comentario_pago"], beneficiario_id=1)
-            if  float(monto_pagado) >= monto_total:
+            referencia_conciliacion= refrencia_conciliacion,  monto_total = monto_pagado, comentario = data["comentario_pago"], beneficiario_id=data["beneficiario"])
+            if  float(monto_pagado) >= float(monto_total):
                 egreso.pagado = True    
             ep = EgresosHasPagos(egreso = egreso, pago = pago, monto = monto_pagado)    
         if ('pagado' in data):
             db.session.add(ep)
         else:
             db.session.add(egreso)
+        print(egreso.status)
         db.session.commit()
         return redirect("/egresos/cuentas_por_pagar")
         
@@ -106,8 +107,9 @@ def perfil_egreso(egreso_id):
     proveedores = Beneficiarios.query.all()
     categorias = Categorias.query.all()
     conceptos = Conceptos.query.all()
-    
-    return render_template("perfil_egreso.html", egreso=egreso, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos)
+    cuentas = Cuentas.query.all()
+    formas_pago = FormasPago.query.all()
+    return render_template("perfil_egreso.html", egreso=egreso, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos Edit   
@@ -373,7 +375,7 @@ def agregar_detalle(egreso_id):
                 concepto_id=data["concepto"], monto=data["monto"],  numero_control=data["numero_control"], descripcion=data["comentario"])
                 egreso.detalles.append(detalle)
                 egreso.monto_total+= int(detalle.monto);
-                #Checar el status y que hacer con pago negativo
+                ######Checar el status y que hacer con pago negativo
                 egreso.setStatus()
                 db.session.commit()
                 return redirect("/egresos/perfil_egreso/"+str(egreso_id))
@@ -402,3 +404,22 @@ def editar_detalle(egreso_id):
                 detalle.descripcion=data["comentario"]
                 db.session.commit()
                 return redirect("/egresos/perfil_egreso/"+str(egreso_id))
+
+
+#Desconciliar Pago
+@blueprint.route("/desconciliar_pago/<int:pago_id>",  methods=['GET', 'POST'])
+def desconciliar_pago(pago_id):
+        pago = Pagos.query.get(pago_id)
+        pago.status = 'por_conciliar';
+        pago.referencia_conciliacion = None
+        pago.fecha_pago = None
+        for egreso in pago.egresos:
+                ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
+                egreso.monto_por_conciliar += ep.monto
+        db.session.commit()
+        ### NO FUNCIONA
+        for egreso in pago.egresos:
+                egreso.setStatus()  
+        db.session.commit()
+        return  redirect("/egresos/pagos_realizados")   
+

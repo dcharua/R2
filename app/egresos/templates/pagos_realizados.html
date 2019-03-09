@@ -115,7 +115,7 @@
                             {% for pago in pagos_realizados %}
                             <tr>
                                 <td>
-                                    {% if pago.status != 'conciliado' %}
+                                    {% if pago.status == 'por_conciliar' %}
                                     <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
                                     {% endif %}
                                 </td>
@@ -143,7 +143,8 @@
                                     </a>
                                     {% if pago.status == 'por_conciliar' %}
                                     <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                                        <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
+                                        <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
+                                            class="material-icons">assignment_turned_in</i>
                                     </a>
                                     {% endif %}
                                 </td>
@@ -269,7 +270,7 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <hr>`
-                let element = document.querySelector(".here");
+                let element = document.querySelector(".here-conciliar");
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
                 $('.selectpicker').selectpicker('refresh');
@@ -297,7 +298,7 @@
                 pagos: pagos
             },
             success: function (data) {
-                let element = document.querySelector(".here");
+                let element = document.querySelector(".here-conciliar");
                 element.innerHTML = "";
                 data.forEach(pago => {
                     const html =
@@ -367,9 +368,11 @@
                 success: function (data) {
                     if (data) {
                         swal("Borrado!", "El pago ha sido eliminado.", "success");
-                        setTimeout(function(){ location.reload(); }, 2000);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
 
-                       
+
                     }
                 }
             })

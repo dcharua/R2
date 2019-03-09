@@ -10,7 +10,7 @@
         <h2 class="font-24">Detalle de Egreso</h2>
         {% if egreso.pagos|length > 0 %}
         <div class="select-btn-group">
-          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
+          <span  class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
             egresos</span>
         </div>
         {% endif %}
@@ -88,6 +88,11 @@
             <h2>
               Pagos Programados
             </h2>
+            {% if egreso.status == 'parcial' or egreso.status == 'pendiente' %}
+            <div class="select-btn-group">
+              <span class="btn btn-primary open-pagar" data-toggle="modal" data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">Solicitar pago</span>
+            </div>
+            {% endif %}
           </div>
           <div class="body">
             <div class="table-responsive">
@@ -162,7 +167,7 @@
               <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                 <thead>
                   <tr>
-                    <th><input name="select_all" value="1" class="select-all table-check" type="checkbox" /></th>
+                    <th><input name="select_all" value="1" class="select-all  table-check " type="checkbox" /></th>
                     <th>ID</th>
                     <th>Beneficiario</th>
                     <th>Fecha de pago</th>
@@ -175,12 +180,12 @@
                 </thead>
 
                 <tbody>
-                  {% for pago in pagos %}
+                  {% for pago in  egreso.pagos %}
                   {% if pago.status != 'solicitado' %}
                   <tr>
                     <td>
                       {% if pago.status != 'conciliado' %}
-                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                        <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
                       {% endif %}
                     </td>
                     <td>{{pago.id}}</td>
@@ -206,7 +211,7 @@
                       </a>
                       {% if pago.status == 'por_conciliar' %}
                       <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                        <i data-toggle="tooltip" data-placement="top" title="Mandar a Pagar" class="material-icons">assignment_turned_in</i>
+                        <i data-toggle="tooltip" data-placement="top" title="Concilar" class="material-icons">assignment_turned_in</i>
                       </a>
                       {% endif %}
                       </a>
@@ -281,11 +286,12 @@
         </div>
       </div>
     </div>
-
+    {% include "modal_pagar.html" %}
     {% include "modal_conciliar_movimiento.html" %}
     {% include "modal_generar_pago.html" %}
     {% include "modal_agregar_detalle.html" %}
     {% include "modal_editar_detalle.html" %}
+    
 
     {% endblock content %}
 
@@ -304,6 +310,36 @@
     <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
+
+       //solcitar pagar un egreso
+  $(".open-pagar").on("click", function () {
+    $.ajax({
+      url: $(this).attr("data-url"),
+      success: function (data) {
+        console.log("in")
+        const html =
+          `<div class="row mar-b-10" >
+                    <div class="col-sm-12 col-md-6 ">
+                      <p class="font-18">Beneficiario:  <span class="font-bold">${data.beneficiario}</span></p>
+                    </div>
+                    <div class="col-sm-12 col-md-6 ">
+                      <p class="font-18"># de documento: <span class="font-bold">${data.numero_documento}</span></p>
+                    </div>
+                  </div>
+                  <div class="row mar-b-10">
+                    <div class="col-sm-12 col-md-6 ">
+                      <p class="font-18">Monto pendiente:  <span class="font-bold">$ ${data.monto_total}</span></p>
+                    </div>
+                  </div>
+                  <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
+                  <hr>`
+        let element = document.querySelector(".here");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_pagar').modal('show');
+      }
+    });
+  });
       //Modal generar pago
       $(".open-generar-pago").on("click", function () {
         $.ajax({
@@ -396,7 +432,7 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <hr>`
-            let element = document.querySelector(".here");
+            let element = document.querySelector(".here-conciliar");
             element.innerHTML = "";
             element.insertAdjacentHTML('beforeend', html);
             $('.selectpicker').selectpicker('refresh');
@@ -417,16 +453,18 @@
             pagos.push($(this).val())
           }
         })
-
+        console.log(pagos)
         $.get({
           url: '/egresos/get_data_conciliar_multiple',
           data: {
             pagos: pagos
           },
           success: function (data) {
-            let element = document.querySelector(".here");
+            console.log(data)
+            let element = document.querySelector(".here-conciliar");
             element.innerHTML = "";
             data.forEach(pago => {
+              console.log(pago)
               const html =
                 `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
