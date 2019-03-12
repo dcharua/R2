@@ -13,6 +13,9 @@
           <span class="btn btn-primary open-generar-pago" data-toggle="modal" data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
             pago</span>
           {% endif %}
+          {% if pago.forma_pago.nombre.lower() == 'cheque' %}
+          <span class="btn btn-info" data-toggle="modal"> Imprimir cheque</span>
+          {% endif %}
           {% if pago.status == 'por_conciliar'%}
           <span class=" btn bg-deep-purple open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">Conciliar</span>
           {% endif %}
@@ -57,8 +60,9 @@
               <span class="badge bg-red">Cancelado</span>
               {% endif %}
             </p>
-            <p class="font-18">Empresa: <span class="font-bold">{{pago.empresa}}</span></p>
+            <p class="font-18">Empresa: <span class="font-bold">{{pago.cuenta.empresa}}</span></p>
             <p class="font-18">Fecha de pago: <span class="font-bold">{{pago.fecha_pago}}</span></p>
+            <p class="font-18">Fecha de conciliacion: <span class="font-bold">{{pago.fecha_conciliacion}}</span></p>
             <p class="font-18">Cuenta de banco: <span class="font-bold">{{pago.cuenta}}</span></p>
           </div>
         </div>

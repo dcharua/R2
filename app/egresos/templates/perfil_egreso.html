@@ -10,7 +10,7 @@
         <h2 class="font-24">Detalle de Egreso</h2>
         {% if egreso.pagos|length > 0 %}
         <div class="select-btn-group">
-          <span  class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
+          <span class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
             egresos</span>
         </div>
         {% endif %}
@@ -33,6 +33,7 @@
             <p class="font-18"># de documento: <span class="font-bold">{{egreso.numero_documento}}</span></p>
             <p class="font-18">Fecha de Vencimento: <span class="font-bold">{{egreso.fecha_vencimiento}}</span></p>
             <p class="font-18">Fecha programada de pago: <span class="font-bold">{{egreso.fecha_programada_pago}}</span></p>
+            <p class="font-18">Empresa: <span class="font-bold">{{egreso.empresa}}</span></p>
           </div>
           <div class="col-sm-12 col-md-4 align-left">
             <b>
@@ -63,7 +64,9 @@
             <p class="font-18">Monto Pagado: <span class="font-bold">{{"${:,.2f}".format(egreso.monto_pagado)}}</span></p>
             <p class="font-18">Monto Pendiente: <span class="font-bold">{{"${:,.2f}".format(egreso.monto_total -
                 egreso.monto_pagado)}}</span></p>
-            <p class="font-18">Empresa: <span class="font-bold">{{egreso.empresa}}</span></p>
+            <p class="font-18">Monto Solicitado: <span class="font-bold">{{"${:,.2f}".format(egreso.monto_solicitado)}}</span></p>
+            <p class="font-18">Monto por Conciliar: <span class="font-bold">{{"${:,.2f}".format(egreso.monto_por_conciliar)}}</span></p>
+       
 
           </div>
         </div>
@@ -90,7 +93,8 @@
             </h2>
             {% if egreso.status == 'parcial' or egreso.status == 'pendiente' %}
             <div class="select-btn-group">
-              <span class="btn btn-primary open-pagar" data-toggle="modal" data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">Solicitar pago</span>
+              <span class="btn btn-primary open-pagar" data-toggle="modal" data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">Solicitar
+                pago</span>
             </div>
             {% endif %}
           </div>
@@ -180,12 +184,12 @@
                 </thead>
 
                 <tbody>
-                  {% for pago in  egreso.pagos %}
+                  {% for pago in egreso.pagos %}
                   {% if pago.status != 'solicitado' %}
                   <tr>
                     <td>
-                      {% if pago.status != 'conciliado' %}
-                        <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                      {% if pago.status == 'por_conciliar' %}
+                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
                       {% endif %}
                     </td>
                     <td>{{pago.id}}</td>
@@ -201,7 +205,7 @@
                       <span class="badge bg-orange">Por conciliar</span>
                       {% endif %}
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-orange">Cancelado</span>
+                      <span class="badge bg-red">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
@@ -275,8 +279,8 @@
                 <td>{{detalle.descripcion}}</td>
                 <td>{{detalle.numero_control}}</td>
                 <th>
-                  <a class="btn btn-xs btn-info waves-effect editar-detalle"  data-url="{{ url_for('egresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
-                    <i  data-toggle="tooltip"    data-placement="top" title="Editar" class="material-icons">edit</i>
+                  <a class="btn btn-xs btn-info waves-effect editar-detalle" data-url="{{ url_for('egresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
+                    <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
                   </a>
                 </th>
               </tr>
@@ -291,7 +295,7 @@
     {% include "modal_generar_pago.html" %}
     {% include "modal_agregar_detalle.html" %}
     {% include "modal_editar_detalle.html" %}
-    
+
 
     {% endblock content %}
 
@@ -310,15 +314,14 @@
     <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
     <script>
-
-       //solcitar pagar un egreso
-  $(".open-pagar").on("click", function () {
-    $.ajax({
-      url: $(this).attr("data-url"),
-      success: function (data) {
-        console.log("in")
-        const html =
-          `<div class="row mar-b-10" >
+      //solcitar pagar un egreso
+      $(".open-pagar").on("click", function () {
+        $.ajax({
+          url: $(this).attr("data-url"),
+          success: function (data) {
+            console.log("in")
+            const html =
+              `<div class="row mar-b-10" >
                     <div class="col-sm-12 col-md-6 ">
                       <p class="font-18">Beneficiario:  <span class="font-bold">${data.beneficiario}</span></p>
                     </div>
@@ -333,13 +336,13 @@
                   </div>
                   <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
                   <hr>`
-        let element = document.querySelector(".here");
-        element.innerHTML = "";
-        element.insertAdjacentHTML('beforeend', html);
-        $('#modal_pagar').modal('show');
-      }
-    });
-  });
+            let element = document.querySelector(".here");
+            element.innerHTML = "";
+            element.insertAdjacentHTML('beforeend', html);
+            $('#modal_pagar').modal('show');
+          }
+        });
+      });
       //Modal generar pago
       $(".open-generar-pago").on("click", function () {
         $.ajax({
@@ -568,13 +571,14 @@
         });
       });
 
-    
+
       $('.editar-detalle').on('click', function () {
         console.log('in')
         $.ajax({
           url: $(this).attr("data-url"),
           success: function (data) {
-            const html =`
+            const html =
+              `
             <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.editar_detalle', egreso_id=egreso.id) }}">
                 <input type="hidden" id="id" name="id" value="${data.id}">  
             <div class="row" style="margin-bottom:20px !important">

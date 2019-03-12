@@ -25,7 +25,7 @@ class Beneficiarios(db.Model):
     razon_social = Column(String(50))
     cuenta_banco = Column(String(20))
     banco = Column(String(30))
-    saldo = Column(Numeric) 
+    saldo = Column(Numeric(10, 2)) 
     status = Column(String(20))
     comentarios = Column(String(250))
     categorias = relationship("Categorias", secondary=beneficiario_has_categorias)
@@ -89,7 +89,7 @@ class Clientes(db.Model):
     direccion = Column(String(50))
     razon_social = Column(String(50))
     cuenta_banco = Column(String(50))
-    saldo = Column(Numeric)
+    saldo = Column(Numeric(10, 2))
     status = Column(String(50))
     comentarios = Column(String(50))
     banco = Column(String(50))
@@ -157,8 +157,8 @@ class Cuentas(db.Model):
     comentario = Column(String(250))
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="cuenta")
-    saldo = Column(Numeric)  
-    numero_cheque = Column(Numeric)     
+    saldo = Column(Numeric(10, 2))  
+    numero_cheque = Column(Numeric(10, 2))     
     pagos = relationship("Pagos")
     pagos_ingresos = relationship("Pagos_Ingresos")
 
@@ -179,7 +179,7 @@ class DetallesEgreso(db.Model):
     categoria = relationship("Categorias", back_populates="detalles_egresos")
     concepto_id = Column(Integer, ForeignKey('conceptos.id'))
     concepto = relationship("Conceptos", back_populates="detalles_egresos")
-    monto = Column(Numeric)
+    monto = Column(Numeric(asdecimal=True))
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
     egreso_id = Column(Integer, ForeignKey('egresos.id'))
@@ -204,7 +204,7 @@ class DetallesIngreso(db.Model):
     centro_negocios_id = Column(Integer, ForeignKey('centros_negocio.id'))
     centro_negocios = relationship("CentrosNegocio", back_populates="detalles_ingresos")
 
-    monto = Column(Numeric)
+    monto = Column(Numeric(10, 2))
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
     ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
@@ -217,7 +217,7 @@ class EgresosHasPagos(db.Model):
 
     egreso_id = Column(Integer, ForeignKey('egresos.id'), primary_key=True)
     pago_id = Column(Integer, ForeignKey('pagos_egresos.id'), primary_key=True)
-    monto = Column(Numeric)
+    monto = Column(Numeric(10, 2))
     egreso = relationship("Egresos", backref=backref("pagos_assoc"))
     pago =  relationship("Pagos", backref=backref("egresos_assoc"))
 
@@ -231,10 +231,10 @@ class Egresos(db.Model):
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
-    monto_total = Column(Numeric)
-    monto_pagado = Column(Numeric)
-    monto_solicitado = Column(Numeric)
-    monto_por_conciliar = Column(Numeric)
+    monto_total =  Column(Numeric(10, 2))
+    monto_pagado =  Column(Numeric(10, 2))
+    monto_solicitado =  Column(Numeric(10, 2))
+    monto_por_conciliar = Column(Numeric(10, 2))
     referencia = Column(String(40))
     comentario = Column(String(200))
     pagado = Column(Boolean)
@@ -247,35 +247,24 @@ class Egresos(db.Model):
     pagos = relationship("Pagos", secondary='egresos_has_pagos')
 
     def setStatus(self, pagos=None):
-        if pagos is None:
-            egreso = self.query.get(self.id)
-            pagos = egreso.query.join(Egresos.pagos).filter_by(id = self.id) 
-        monto_pagos = 0
-        por_conciliar = False
-        for pago in pagos:
-            print('pago monto' + str(pago.monto_total))
-            if pago.status != 'cancelado':
-                monto_pagos += pago.monto_total
-            if pago.status == 'por_conciliar':
-                por_conciliar = True
-
-        print('monto pagado' + str(monto_pagos))
-        if (monto_pagos == 0):
-            print('in')
-            self.status = 'pendiente'
-
-        elif (self.monto_pagado == self.monto_total):
-            if por_conciliar:
-                self.status = 'por_conciliar'
+        egreso = self.query.get(self.id)
+        pagos = egreso.query.join(Egresos.pagos).filter_by(id = self.id) 
+        m_pagado = egreso.monto_pagado + egreso.monto_solicitado
+        m_pendiente = egreso.monto_total - egreso.monto_pagado
+        if m_pagado == 0:
+            egreso.status='pendiente'
+        elif m_pendiente != 0 and egreso.monto_solicitado !=0 and (m_pendiente - egreso.monto_solicitado == 0):
+            egreso.status = 'solicitado'
+        elif m_pagado == egreso.monto_total:
+            if egreso.monto_por_conciliar == 0:
+                egreso.status = 'liquidado'
             else:
-                self.status = 'liquidado'
-            
+                egreso.status ='por_conciliar'
 
-        elif (monto_pagos < self.monto_total): 
-            if(monto_pagos == self.monto_total):
-                self.status = 'solicitado'
-            elif(monto_pagos < self.monto_total):
-                 self.status = 'parcial'
+        elif m_pagado < egreso.monto_total:
+            egreso.status = 'parcial'
+ 
+      
 
     def __repr__(self):
         return '<Egreso {}>'.format(self.id)    
@@ -332,10 +321,10 @@ class Ingresos(db.Model):
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
-    monto_total = Column(Numeric)
-    monto_pagado = Column(Numeric)
-    monto_solicitado = Column(Numeric)
-    monto_por_conciliar = Column(Numeric)
+    monto_total = Column(Numeric(10, 2))
+    monto_pagado = Column(Numeric(10, 2))
+    monto_solicitado = Column(Numeric(10, 2))
+    monto_por_conciliar = Column(Numeric(10, 2))
     detalles = relationship("DetallesIngreso")
     comentario = Column(String(200))
     pagado = Column(Boolean)
@@ -383,7 +372,7 @@ class IngresosHasPagos(db.Model):
 
     ingreso_id = Column(Integer, ForeignKey('ingresos.id'), primary_key=True)
     pago_id = Column(Integer, ForeignKey('pagos_ingresos.id'), primary_key=True)
-    monto = Column(Numeric)
+    monto = Column(Numeric(10, 2))
     ingreso = relationship("Ingresos", backref=backref("pagos_assoc"))
     pago =  relationship("Pagos_Ingresos", backref=backref("ingresos_assoc"))  
     
@@ -398,7 +387,7 @@ class Pagos_Ingresos(db.Model):
     fecha_conciliacion = Column(String(20))
     status = Column(String(20))
     referencia_conciliacion = Column(String(20))
-    monto_total = Column(Numeric)
+    monto_total = Column(Numeric(10, 2))
     comentario = Column(String(200))
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
     cuenta = relationship("Cuentas", back_populates="pagos_ingresos")
@@ -428,7 +417,7 @@ class Pagos(db.Model):
     fecha_conciliacion = Column(Date)
     status = Column(String(20))
     referencia_conciliacion = Column(String(40))
-    monto_total = Column(Numeric)
+    monto_total = Column(Numeric(10, 2))
     comentario = Column(String(200))
     cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
     cuenta = relationship("Cuentas", back_populates="pagos")

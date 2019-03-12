@@ -19,9 +19,10 @@ def capturar_egreso():
     
     if request.form:
         data = request.form
-        print("\n\n\n{}\n\n\n".format(data))
-        montos = list(map(int, data.getlist("monto")))
+        montos = list(map(float, data.getlist("monto")))
+        print(montos)
         monto_total = sum(montos)
+        print(monto_total)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"], 
         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
         monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"], 
@@ -29,12 +30,12 @@ def capturar_egreso():
        
         for i in range(len(data.getlist("monto"))):
             detalle = DetallesEgreso(centro_negocios_id=data.getlist("centro_negocios")[i], proveedor_id=data.getlist("proveedor")[i],
-            categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist("concepto")[i], monto=data.getlist("monto")[i], 
+            categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist("concepto")[i], monto=float(data.getlist("monto")[i]), 
             numero_control=data.getlist("numero_control")[i], descripcion=data.getlist("descripcion")[i])
             egreso.detalles.append(detalle)
         if ('pagado' in data):
             
-            monto_pagado=data["monto_pagado"]
+            monto_pagado=float(data["monto_pagado"])
             egreso.monto_pagado=monto_pagado
             
             if ('conciliado_check' in data):
@@ -53,8 +54,8 @@ def capturar_egreso():
                 else:
                     egreso.status = 'parcial'
 
-            pago = Pagos(forma_pago_id = data["forma_pago"], cuenta_id= data["cuenta_banco"], referencia_pago = data["forma_pago"],fecha_pago = data["fecha_pago"], status = status, 
-            referencia_conciliacion= refrencia_conciliacion,  monto_total = monto_pagado, comentario = data["comentario_pago"], beneficiario_id=data["beneficiario"])
+            pago = Pagos(forma_pago_id = data["forma_pago"], cuenta_id= data["cuenta_banco"], referencia_pago = data["referencia_pago"],fecha_pago = data["fecha_pago"], status = status, 
+            referencia_conciliacion= refrencia_conciliacion,  fecha_conciliacion=data["fecha_pago"],  monto_total = monto_pagado, comentario = data["comentario_pago"], beneficiario_id=data["beneficiario"])
             if  float(monto_pagado) >= float(monto_total):
                 egreso.pagado = True    
             ep = EgresosHasPagos(egreso = egreso, pago = pago, monto = monto_pagado)    
@@ -179,11 +180,13 @@ def cancelar_pago(pago_id):
         if pago.status == 'por_conciliar':
             egreso.monto_por_conciliar -= ep.monto
         ep.monto = 0
+        egreso.pagado = False   
         
     pago.status = 'cancelado'
     db.session.commit()
     for egreso in pago.egresos:
         egreso.setStatus()
+    db.session.commit()
     return  jsonify("deleted")
 
 
@@ -276,7 +279,7 @@ def conciliar_movimento():
                         pago = Pagos.query.get(pago_id)
                         pago.status = 'conciliado';
                         pago.referencia_conciliacion = data["referencia"]
-                        pago.fecha_pago = data["fecha"]
+                        pago.fecha_conciliacion = data["fecha"]
                         pago.comentario = data["comentario"]
                         for egreso in pago.egresos:
                                 ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
