@@ -12,6 +12,7 @@ def route_template(template):
     return render_template(template + '.html')
 
 
+
 @blueprint.route('/capturar_ingreso', methods=['GET', 'POST'])
 def captura_ingresos():
     
@@ -32,27 +33,15 @@ def captura_ingresos():
                            monto_total = monto_total, comentario = data["comentario"],pagado = False,      
                            status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0)                                                                                
         
-        
-        for i in range(len(data.getlist("monto"))):           
-            detalle = DetallesIngreso(cliente_id = data["cliente"],
-                                      categoria_id = data.getlist("categoria")[i], 
-                                      concepto_id = data.getlist("concepto")[i], 
-                                      centro_negocios_id = data.getlist("centro_negocios")[i], 
-                                      monto = data.getlist("monto")[i], 
-                                      numero_control = data.getlist("numero_control")[i], 
-                                      descripcion=data.getlist("descripcion")[i])
-            ingreso.detalles.append(detalle)
             
         print(data)  
             
         if ('pagado' in data):
-            print('Linea 48. Pagado')
             monto_pagado = float(data["monto_pagado"])
             
             if ('conciliado_check' in data):
                 status_ingreso = 'conciliado'
-                status_pago = 'conciliado'
-                
+                status_pago = 'conciliado'            
                 
             else:
                 if monto_pagado == monto_total: status_ingreso = 'por_conciliar'
@@ -69,18 +58,19 @@ def captura_ingresos():
                            referencia = data["referencia"],
                            monto_total = monto_total, comentario = data["comentario"],pagado = True,      
                            status = status_ingreso, monto_pagado = monto_pagado, monto_solicitado = 0, monto_por_conciliar = monto_total - monto_pagado)
-                
-            print('Linea 73')
+               
+            
+            print('Linea 63')
             try:
-                pago_ingreso = Pagos_Ingresos(status = status_pago, cliente = data["cliente"], 
+                pago_ingreso = Pagos_Ingresos(status = status_pago, cliente_id = data["cliente"], 
                                   monto_total = monto_pagado, cuenta_id = data["cuenta_id"], 
-                                  fecha_pago = data["fecha_pago"], fecha_conciliacion = str(data["fecha_pago"]),
+                                  fecha_pago = data["fecha_pago"], fecha_conciliacion = data["fecha_pago"],
                                   comentario = data["comentario_pago"],
                                   forma_pago_id = data["forma_pago"],referencia_pago = data["referencia_pago"],
                                   referencia_conciliacion = data["referencia_conciliacion"]
                                   )
             except:
-                print('linea 83')
+                print('linea 73')
                 pago_ingreso = Pagos_Ingresos(status = 'conciliado', cliente_id = (data["cliente"]), 
                                   monto_total = monto_pagado, cuenta_id = int(data["cuenta_id"]), 
                                   fecha_pago = data["fecha_pago"],
@@ -88,8 +78,8 @@ def captura_ingresos():
                                   forma_pago_id = int(data["forma_pago"])
                                   )
       
-            
-            print('Linea 79')
+
+            print('Linea 90')
 
             ep = IngresosHasPagos(ingreso = ingreso, pago = pago_ingreso, monto = monto_total)    
         
@@ -98,6 +88,16 @@ def captura_ingresos():
             db.session.add(ep)
             print('Linea 87')
             db.session.add(pago_ingreso)
+            
+        for i in range(len(data.getlist("monto"))):           
+            detalle = DetallesIngreso(cliente_id = data["cliente"],
+                                      categoria_id = data.getlist("categoria")[i], 
+                                      concepto_id = data.getlist("concepto")[i], 
+                                      centro_negocios_id = data.getlist("centro_negocios")[i], 
+                                      monto = data.getlist("monto")[i], 
+                                      numero_control = data.getlist("numero_control")[i], 
+                                      descripcion=data.getlist("descripcion")[i])
+            ingreso.detalles.append(detalle)
         
         print('Linea 90')
         db.session.add(ingreso)  
@@ -142,7 +142,7 @@ def ingresos_recibidos():
 @blueprint.route('/cuentas_por_cobrar', methods=['GET', 'POST'])
 def cuentas_por_cobrar():
     print(Ingresos.query.all())
-    ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'liquidado').all()
+    ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').all()
     ingresos_pendientes = Ingresos.query.filter(Ingresos.pagado == False).filter(Ingresos.status != 'cancelado').all()
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
     formas_pago = FormasPago.query.all()
@@ -259,11 +259,9 @@ def cancelar_pago(pago_id):
 @blueprint.route('/get_data_pagar<int:ingreso_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_pagar(ingreso_id):
-        ingreso = Ingresos.query.get(ingreso_id)
-        monto_pendiente = ingreso.monto_total - ingreso.monto_solicitado - ingreso.monto_pagado        
-        print('222',jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total = str(monto_pendiente), numero_documento = ingreso.numero_documento))
-
-        return jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total = str(monto_pendiente), numero_documento = ingreso.numero_documento)
+        ingreso = Ingresos.query.get(ingreso_id)   
+        
+        return jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total = str(ingreso.monto_total), monto_pagado = str(ingreso.monto_pagado),numero_documento = ingreso.numero_documento)
 
 
 # Solcitar pago form submit
@@ -276,26 +274,23 @@ def mandar_cobrar():
         ingreso = Ingresos.query.get(data["ingreso_id"])
         
         if ('parcial' in data):
-                monto_total = data["monto_parcial"]
+                monto_total_pago = data["monto_parcial"]
         else:
-                monto_total = ingreso.monto_total - ingreso.monto_solicitado - ingreso.monto_pagado
+                monto_total_pago = ingreso.monto_total - ingreso.monto_pagado
                 
         pago = Pagos_Ingresos(status = 'por_conciliar', cliente = ingreso.cliente, 
-                              monto_total = monto_total, cuenta_id = data["cuenta_id"], 
+                              monto_total = monto_total_pago, cuenta_id = data["cuenta_id"], 
                               forma_pago_id = data["forma_pago_id"],referencia_pago = data["ingreso_id"])
       
-        ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total)    
-        ingreso.monto_solicitado += int(pago.monto_total)
+        ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
 
-        if ingreso.monto_total == ingreso.monto_solicitado + ingreso.monto_pagado:
-            
+        if ingreso.monto_total == ingreso.monto_pagado + ingreso.monto_por_conciliar:            
                 ingreso.status = 'por_conciliar'
                 
-        else:
-                ingreso.status = 'parcial'
+        else: ingreso.status = 'parcial'
                 
-        ingreso.monto_por_conciliar = monto_total  
-        #db.session.add(ep)
+        ingreso.monto_por_conciliar += monto_total_pago  
+        db.session.add(ep)
         db.session.add(pago)
         db.session.commit()
         

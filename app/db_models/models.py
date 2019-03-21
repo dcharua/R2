@@ -352,7 +352,7 @@ class Ingresos(db.Model):
                 self.status = 'por_conciliar'
 
         elif (self.monto_pagado == self.monto_total):
-             self.status = 'liquidado'
+             self.status = 'conciliado'
             
 
 

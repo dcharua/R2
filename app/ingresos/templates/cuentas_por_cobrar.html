@@ -167,21 +167,15 @@
                   <td>{{ingreso.fecha_vencimiento}}</td>
                   <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
                   <td>{{ingreso.numero_documento}}</td>
-                  <td> {% if ingreso.status == 'liquidado'%}
-                    <span class="badge bg-green">Liquidado</span>
-                    {% endif %}
-                    {% if ingreso.status == 'cancelado'%}
-                    <span class="badge bg-red">Cancelado</span>
-                    {% endif %}
-                    {% if ingreso.status == 'por_conciliar'%}
-                    <span class="badge bg-orange">Por conciliar</span>
-                    {% endif %}</td>
+                  <td> <span class="badge bg-green">Liquidado</span></td>
+                  
                   <td>
-                    <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_ingreso/{{ingreso.id}}' data-toggle="tooltip"
-                      data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                  </td>
+                      <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_ingreso/{{ingreso.id}}" data-toggle="tooltip"
+                        data-placement="top" title="Ver detalle">
+                        <i class="material-icons">visibility</i>
+                      </a> 
+                     
+                    </td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -274,7 +268,7 @@
                   </div>
                   <div class="row mar-b-10">
                     <div class="col-sm-12 col-md-6 ">
-                      <p class="font-18">Monto pendiente:  <span class="font-bold">$ ${data.monto_total}</span></p>
+                      <p class="font-18">Monto pendiente:  <span class="font-bold">$ ${data.monto_total - data.monto_pagado}</span></p>
                     </div>
                   </div>
                   <input type="hidden" id="ingreso_id" name="ingreso_id" value="${data.ingreso_id}">
