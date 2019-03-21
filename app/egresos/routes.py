@@ -198,6 +198,7 @@ def cancelar_pago(pago_id):
 def get_data_pagar(egreso_id):
         egreso = Egresos.query.get(egreso_id)
         monto_pendiente = egreso.monto_total - egreso.monto_solicitado - egreso.monto_pagado
+        print('egreso: ',egreso)
         return jsonify(egreso_id = egreso.id, beneficiario = egreso.beneficiario.nombre, monto_total=str(monto_pendiente), numero_documento= egreso.numero_documento)
 
 
@@ -259,7 +260,7 @@ def mandar_pagar_multiple():
 
 
 
-### CONCILIAT PAGOS ###
+### CONCILIAR PAGOS ###
 #Conciliar pago data for modal
 @blueprint.route('/get_data_conciliar<int:pago_id>', methods=['GET', 'POST'])
 @login_required
@@ -296,8 +297,8 @@ def get_data_conciliar_multiple():
         list = []
         pagos = request.args.getlist('pagos[]')
         for pago in pagos:
-                p =  Pagos.query.get(pago)
-                list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'referencia': p.referencia_pago, 'cuenta': p.cuenta.nombre})
+            p =  Pagos.query.get(pago)
+            list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'referencia': p.referencia_pago, 'cuenta': p.cuenta.nombre})
         return jsonify(list)
 
 ### GENERAR PAGO ###

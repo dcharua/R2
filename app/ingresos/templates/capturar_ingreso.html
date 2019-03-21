@@ -37,6 +37,17 @@
                     <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
                 </a>
               </div>
+              
+              <div class="col-sm-12 col-md-6">
+                <label for="cliente"> Empresa </label><br>
+                <select class="selectpicker" id="empresa" name="empresa" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione una Empresa..." data-width="100%">
+                  {% for empresa in empresas %}
+                  <option value="{{empresa.id}}"> {{ empresa.nombre | safe }} </option>
+                  {% endfor %}
+                </select>
+
+              </div>
+              
             </div>
 
             <div class="input-group ">
@@ -67,12 +78,14 @@
                   <div class="row">
                     <div class="col-sm-12 col-md-6 ">
                       <label for="ref"># de Documento</label>
-                      <input class="form-control" type="text" id="ref" name="numero_documento">
+                      <input class="form-control" type="text" id="numero_documento" name="numero_documento">
                     </div>
-                    <div class="col-sm-12 col-md-6 nomargin">
-                      <label for="ref">Monto total</label>
-                      <input disabled class="form-control" type="number" id="monto_total" name="monto_total">
+                    
+                   <div class="col-sm-12 col-md-6 ">
+                      <label for="ref">Refeferencia / Orden de Venta</label>
+                      <input class="form-control" type="text" id="referencia" name="referencia">
                     </div>
+                    
                   </div>
                 </div>
              </div>
@@ -157,7 +170,7 @@
 
                   <div class="switch">
                     <h2 class="subtitle">Recibido</h2>
-                    <label style="margin-top: 10px"><input id="pagado" type="checkbox"><span class="lever"></span></label>
+                    <label style="margin-top: 10px"><input id="pagado" name="pagado" type="checkbox"><span class="lever"></span></label>
                   </div>
 
 
@@ -167,7 +180,7 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Cuenta de banco </label><br>
-                          <select class="selectpicker" multiple id="concepto" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                          <select class="selectpicker" multiple id="cuenta_id" onchange='ajaxFirstOnChange()' data-live-search="true" name="cuenta_id" title="Seleccione un Banco..." data-width="100%">
                             {% for cuenta in cuentas_banco %}
                             <option value="{{cuenta.id}}"> {{ cuenta.nombre | safe }} </option>
                             {% endfor %}
@@ -176,7 +189,7 @@
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label> Fecha de pago </label>
                           <div class='input-group date mydatepicker' data-provide="datepicker">
-                            <input type='text' class="form-control" name="fecha de vencimiento" />
+                            <input type='text' class="form-control" name="fecha_pago" />
                             <span class="input-group-addon">
                               <i class="material-icons mydate">date_range</i>
                             </span>
@@ -189,7 +202,7 @@
                       <div class="row">
                         <div class="col-sm-12 col-md-6 nomargin">
                           <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" multiple id="forma_pago" onchange='ajaxFirstOnChange()' data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                          <select class="selectpicker" multiple id="forma_pago" onchange='ajaxFirstOnChange()' data-live-search="true" name="forma_pago" title="Seleccione uns forma de Pago..." data-width="100%">
                             {% for forma in formas_pago %}
                             <option value="{{forma.id}}"> {{ forma.nombre | safe }} </option>
                             {% endfor %}

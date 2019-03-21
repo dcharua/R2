@@ -8,16 +8,11 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">Detalle de Ingreso</h2>
-        {% if ingreso.pagos_ingresos|length >  0 %}
-        <div class="select-btn-group">
-          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.cancelar_ingreso', ingreso_id=ingreso.id) }}">Cancelar Ingresos</span>
-        </div>
-        {% endif %}
-        {% if ingreso.pagos_ingresos|length  == 0 %}
+
         <div class="select-btn-group">
           <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar ingreso</span>
         </div>
-        {% endif %}
+
         </div>
 
 
@@ -31,6 +26,8 @@
             <p class="font-18"># de Documento: <span class="font-bold">{{ingreso.numero_documento}}</span></p>
             <p class="font-18">Fecha de Vencimento: <span class="font-bold">{{ingreso.fecha_vencimiento}}</span></p>
             <p class="font-18">Fecha programada de pago: <span class="font-bold">{{ingreso.fecha_programada_pago}}</span></p>
+            <p class="font-18">Empresa: <span class="font-bold">{{ingreso.empresa}}</span></p>
+            <p class="font-18">Referencia / Orden de Venta: <span class="font-bold">{{ingreso.referencia}}</span></p>
           </div>
           <div class="col-sm-12 col-md-4 align-left">
             <b>
@@ -45,7 +42,7 @@
                   <span class="badge bg-orange">Parcial</span>
                   {% endif %}
                   {% if ingreso.status == 'liquidado'%}
-                  <span class="badge bg-green">Liquidado</span>
+                  <span class="badge bg-green">Conciliado</span>
                   {% endif %}
                   {% if ingreso.status == 'cancelado'%}
                   <span class="badge bg-red">Cancelado</span>
@@ -58,8 +55,10 @@
             <b>
               <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_total)}}</span></p>
             </b>
-            <p class="font-18">Monto Pagado: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_pagado)}}</span></p>
+            <p class="font-18">Monto Cobrado: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_pagado)}}</span></p>
             <p class="font-18">Monto Pendiente: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_total - ingreso.monto_pagado)}}</span></p>
+            <p class="font-18">Monto por Conciliar: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_por_conciliar)}}</span></p>
+
 
           </div>
         </div>
@@ -84,7 +83,7 @@
         <div class="card">
           <div class="header bg-black">
             <h2>
-              Ingresos Programados
+              Pagos de Ingresos por Coinciliar
             </h2>
           </div>
           <div class="body">
@@ -93,11 +92,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Fecha de pago</th>
                         <th>Forma</th>
                         <th>Cuenta</th>
                         <th>Descripcion</th>
-                        <th>Monto Venta</th>
+                        <th>Monto</th>
                         <th>Status</th>
                         <th>Acciones</th>
                     </tr>
@@ -106,11 +104,10 @@
                 <tfoot>
                     <tr>
                         <th>ID</th>
-                        <th>Fecha de pago</th>
                         <th>Forma</th>
                         <th>Cuenta</th>
                         <th>Descripcion</th>
-                        <th>Monto Venta</th>
+                        <th>Monto</th>
                         <th>Status</th>
                         <th>Acciones</th>
                     </tr>
@@ -118,23 +115,30 @@
 
                 <tbody>
                   {% for pago in ingreso.pagos_ingresos %}
-                  {% if pago.status == 'solicitado' %}
+                  {% if pago.status != 'conciliado' %}
                   <tr>
-                    <td></td>
                     <td>{{pago.id}}</td>
-                    <td>{{pago.fecha_pago}}</td>
                     <td>{{pago.forma_pago}}</td>
                     <td>{{pago.cuenta.nombre}}</td>
                     <td>{{pago.descripcion}}</td>
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
-                    <td><span class="badge bg-blue">Solicitado</span> </td>
+                    <td> {% if pago.status == 'conciliado' %}
+                      <span class="badge bg-green">Liquidado</span>
+                      {% endif %}
+                      {% if pago.status == 'por_conciliar' %}
+                      <span class="badge bg-orange">Por conciliar</span>
+                      {% endif %}
+                      {% if pago.status == 'cancelado' %}
+                      <span class="badge bg-orange">Cancelado</span>
+                      {% endif %}
+                    </td>
                     <td>
-                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago/{{pago.id}}' data-toggle="tooltip"
+                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-toggle="tooltip"
                         data-placement="top" title="Ver detalle">
                         <i class="material-icons">visibility</i>
                       </a>
-                      <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('ingresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
-                        <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Generar pago">payment</i>
+                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', ingreso_id=ingreso.id, pago_id=pago.id) }}">
+                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
                       </a>
                     </td>
                   </tr>
@@ -190,14 +194,10 @@
                     
                     
                 <tbody>
-                  {% for pago in pagos_ingresos %}
-                  {% if pago.status != 'solicitado' %}
+                  {% for pago in ingreso.pagos_ingresos %}
+                  {% if pago.status == 'conciliado' %}
                   <tr>
-                    <td>
-                      {% if pago.status != 'conciliado' %}
-                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
-                      {% endif %}
-                    </td>
+
                     <td>{{pago.id}}</td>
                     <td>{{pago.fecha_pago}}</td>
                     <td>{{pago.forma_pago}}</td>
@@ -299,7 +299,7 @@
       </div>
     </div>
 
-    {% include "modal_conciliar_movimiento.html" %}
+    {% include "modal_conciliar_movimiento_ingreso.html" %}
     {% include "modal_generar_pago.html" %}
     
     {% include "modal_agregar_detalle_ingresos.html" %}
@@ -397,19 +397,16 @@
                 const html =
                     `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Cliente: <span class="font-bold">${data.clinete}</span></p>
+                                <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
                             </div>
                             <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">$ ${data.monto_total}</span></p>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Referencia de pago : <span class="font-bold">${data.referencia}</span></p>
                             </div>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
@@ -418,7 +415,7 @@
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
                 $('.selectpicker').selectpicker('refresh');
-                $('#modal_conciliar_movimiento').modal('show');
+                $('#modal_conciliar_movimiento_ingreso').modal('show');
             }
         });
     });
@@ -491,6 +488,34 @@
         }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
+                
+    //cancelar pago con sweer alert
+    $('.cancel-egreso').on('click', function () {
+        var element = this;
+        swal({
+          title: "Estas seguro?",
+          text: "Se cancelara el pago y se restara de sus documentos asociados!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, borrar!",
+          closeOnConfirm: false
+        }, function () {
+          console.log(element)
+          $.ajax({
+            url: $(element).attr("data-url"),
+            success: function (data) {
+              if (data) {
+                swal("Borrado!", "El ingreso ha sido cancelado.", "success");
+                setTimeout(function () {
+                  location.reload();
+                }, 2000);
+              }
+            }
+          })
+
+        });
+      });
 
     //Borrar ingreso con sweer alert
     $('.delete-egreso').on('click', function () {
@@ -520,33 +545,6 @@
           });
         });
 
-        //cancelar pago con sweer alert
-        $('.cancel-ingreso').on('click', function () {
-          var element = this;
-          swal({
-            title: "Estas seguro?",
-            text: "Se cancelara el pago y se restara de sus documentos asociados!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Si, borrar!",
-            closeOnConfirm: false
-          }, function () {
-            console.log(element)
-            $.ajax({
-              url: $(element).attr("data-url"),
-              success: function (data) {
-                if (data) {
-                  swal("Borrado!", "El ingreso ha sido cancelado.", "success");
-                  setTimeout(function () {
-                    location.reload();
-                  }, 2000);
-                }
-              }
-            })
-
-          });
-        });
  
 
                  
@@ -616,7 +614,7 @@
     
                         <div class="row" style="margin-bottom:20px !important">
                                 <div class="col-sm-12">
-                                    <label for="arrendadora"> Detallea </label>
+                                    <label for="arrendadora"> Detalle </label>
                                     <textarea name="comentario" id="comentario" style="width:100%" > ${data.descripcion}</textarea>
                                  </div>
                         </div>

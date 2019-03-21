@@ -208,6 +208,7 @@ class DetallesIngreso(db.Model):
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
     ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
+    
 
     def __repr__(self):
         return '<DetallesIngreso {}>'.format(self.id) 
@@ -284,7 +285,8 @@ class Empresas(db.Model):
     egresos = relationship("Egresos")
     centro = relationship("CentrosNegocio")
     cuenta = relationship("Cuentas")
-
+    ingresos = relationship("Ingresos")
+    
     def __repr__(self):
         return self.nombre 
 
@@ -318,6 +320,9 @@ class Ingresos(db.Model):
     tipo_ingreso = relationship("Tipo_Ingreso", back_populates="ingresos")
     cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cliente = relationship("Clientes", back_populates="ingresos") 
+    empresa_id = Column(Integer, ForeignKey('empresas.id'))
+    empresa = relationship("Empresas", back_populates="ingresos") 
+    referencia = Column(String(200))
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
@@ -330,36 +335,26 @@ class Ingresos(db.Model):
     pagado = Column(Boolean)
     pagos_ingresos = relationship("Pagos_Ingresos", secondary='ingresos_has_pagos')
 
-    def setStatus(self, pagos=None):
-        if pagos is None:
+    def setStatus(self, pagos_ingresos=None):
+        if pagos_ingresos is None:
             ingreso = self.query.get(self.id)
             pagos_ingresos = ingreso.query.join(Ingresos.pagos_ingresos).filter_by(id = self.id) 
         monto_pagos = 0
-        por_conciliar = False
-        for pago in pagos_ingresos:
-            print('pago monto' + str(pago.monto_total))
-            if pago.status != 'cancelado':
-                monto_pagos += pago.monto_total
-            if pago.status == 'por_conciliar':
-                por_conciliar = True
 
-        print('monto pagado' + str(monto_pagos))
-        if (monto_pagos == 0):
-            print('in')
+
+        if (self.monto_pagado == 0):
             self.status = 'pendiente'
+            
+        elif ((self.monto_pagado > 0) and (self.monto_pagado < self.monto_total)):
+            self.status = 'parcial'
+            
+            if(self.monto_pagado == self.monto_total):
+                self.status = 'por_conciliar'
 
         elif (self.monto_pagado == self.monto_total):
-            if por_conciliar:
-                self.status = 'por_conciliar'
-            else:
-                self.status = 'liquidado'
+             self.status = 'liquidado'
             
 
-        elif (monto_pagos < self.monto_total): 
-            if(monto_pagos == self.monto_total):
-                self.status = 'solicitado'
-            elif(monto_pagos < self.monto_total):
-                 self.status = 'parcial'
 
     def __repr__(self):
         return '<ingreso {}>'.format(self.id)    
