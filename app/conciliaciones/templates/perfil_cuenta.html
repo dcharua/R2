@@ -7,322 +7,437 @@
     <!-- INFO CARD -->
     <div class="card">
       <div class="header bg-black">
-        <h2 class="font-24">Cuenta</h2>
+        <h2 class="font-24">{{cuenta.nombre}}</h2>
       </div>
 
       <div class="body">
-        <div class="row mycontainer">
-          <div class="col-sm-12 col-md-6">
-            <p class="font-18">Id: <span class="font-bold">15615156</span></p>
-            <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></p>
-          </div>
-          <div class="col-sm-12 col-md-6 align-right">
-            <p class="font-18">Saldo Actual: <span class="font-bold">178,824.00</span></p>
-            <p class="font-18">Fecha de ultima conciliacíon: <span class="font-bold">22 dic 2018</span></p>
-          </div>
-        </div>
-        <!-- <div class="row mycontainer">
-          <div class="col-sm-12">
-            <div class="border-box">
-              <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">Lorem ipsum ldoreniducn ounc iub h </p>
+        <ul class="nav nav-tabs tab-nav-right" role="tablist">
+          <li role="presentation" class="active"><a href="#datos" data-toggle="tab">Datos generales</a></li>
+          <li role="presentation"><a href="#saldos" data-toggle="tab">Saldos</a></li>
+          <li role="presentation"><a href="#conciliacion" data-toggle="tab">Úlima conciliación</a></li>
+          <li role="presentation"><a href="#cheques" data-toggle="tab">Cheques</a></li>
+        </ul>
+        <div class="tab-content">
+          <!-- Tab panes -->
+          <div role="tabpanel" class="tab-pane fade in active" id="datos">
+            <div class="row mycontainer">
+              <div class="col-sm-12 col-md-6">
+                <p class="font-18">Nombre: <span class="font-bold">{{cuenta.nombre}}</span></p>
+                <p class="font-18">Banco: <span class="font-bold">{{cuenta.banco}}</span></p>
+                <p class="font-18">Número: <span class="font-bold">{{cuenta.numero}}</span></p>
+              </div>
+              <div class="col-sm-12 col-md-6 align-left">
+                <p class="font-18">Empresa: <span class="font-bold">{{cuenta.empresa.nombre}}</span></p>
+                <p class="font-18">Saldo actual: <span class="font-bold">{{cuenta.saldo}}</span></p>
+              </div>
+            </div>
+            <div class="row mycontainer">
+              <div class="col-sm-12">
+                <div class="border-box">
+                  <p class="font-18 font-bold">Comentarios</p>
+                  <p class="font-18">{{cuenta.comentario}} </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div> -->
-      </div>
-    </div>
 
 
-    <!-- DETALLES TABLE -->
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="card">
-                <div class="header bg-black">
-                    <h2>
-                      Egresos
-                    </h2>
-                    <div class="select-btn-group">
-                        <span class="btn btn-primary">Pagar</span>
-                        <span class="btn bg-deep-purple" >Conciliar movimiento</span>
-                    </div>
-                </div>
-                <div class="body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                            <thead>
-                                <tr>
-                                    <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                    <th>ID</th>
-                                    <th>Fecha</th>
-                                    <th>Beneficiario</th>
-                                    <th>Forma de pago</th>
-                                    <th>Monto</th>
-                                    <th>Referencia</th>
-                                    <th>Status</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                    <th></th>
-                                    <th>ID</th>
-                                    <th>Fecha</th>
-                                    <th>Beneficiario</th>
-                                    <th>Forma de pago</th>
-                                    <th>Monto</th>
-                                    <th>Referencia</th>
-                                    <th>Status</th>
-                                    <th>Acciones</th>
-                                </tr>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td>1</td>
-                                    <td>24/08/2018</td>
-                                    <td>Felxi</td>
-                                    <td>Transferencia</td>
-                                    <td>$320,800</td>
-                                    <td>Abc138Gs</td>
-                                    <td> <span class="badge bg-green">Liquidado</span></td>
-                                    <td>
-                                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                      </a>
-                                      <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
-                                        <i class="material-icons">payment</i>
-                                      </a>
-                                      <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#modal_conciliar_movimiento" >
-                                          <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
-                                      </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+          <div role="tabpanel" class="tab-pane fade" id="saldos">
+            <div class="row mycontainer">
+              <div class="col-sm-12 col-md-6">
+                <p class="font-18">Saldo actual: <span class="font-bold">{{cuenta.saldo}}</span></p>
+                <p class="font-18">Saldo en sistema: <span class="font-bold">{{saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos }}</span></p>
+                <p class="font-18">Saldo en transito ingresos: <span class="font-bold">{{saldo_transito_ingresos}}</span></p>
+                <p class="font-18">Saldo en transito egresos: <span class="font-bold">{{saldo_transito_egresos}}</span></p>
+              </div>
+              <div class="col-sm-12 col-md-6 align-left">
+                
+                <p class="font-18">Saldo conciliado egresos: <span class="font-bold">{{saldo_conciliado_egresos}}</span></p>
+                <p class="font-18">Saldo conciliado ingresos: <span class="font-bold">{{saldo_conciliado_ingresos}}</span></p>
+                <p class="font-18">Saldo solicitado egresos: <span class="font-bold">{{saldo_solicitado_egresos}}</span></p>
+                <p class="font-18">Saldo disponible: <span class="font-bold">{{cuenta.saldo}}</span></p>  
+              </div>
             </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane fade" id="conciliacion">
+            {% if ultima_conciliacion is not none %}
+            {% endif %}
+
+          </div>
+
+          <div role="tabpanel" class="tab-pane fade" id="cheques">
+              <p class="font-18">Último cheque: <span class="font-bold">{{cuenta.numero_cheque}}</span></p>            
+          </div>
         </div>
+
+      </div>
     </div>
+  </div>
 
 
-      <!-- DETALLES TABLE -->
-      <div class="row clearfix">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div class="card">
-                  <div class="header bg-black">
-                      <h2>
-                        Ingresos
-                      </h2>
-                      <div class="select-btn-group">
-                          <span class="btn btn-primary">Pagar</span>
-                          <span class="btn bg-deep-purple" >Conciliar movimiento</span>
-                      </div>
-                  </div>
-                  <div class="body">
-                      <div class="table-responsive">
-                          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                              <thead>
-                                  <tr>
-                                      <th><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                      <th>ID</th>
-                                      <th>Fecha</th>
-                                      <th>Cliente</th>
-                                      <th>Forma de pago</th>
-                                      <th>Monto</th>
-                                      <th>Referencia</th>
-                                      <th>Status</th>
-                                      <th>Acciones</th>
-                                  </tr>
-                              </thead>
-                              <tfoot>
-                                  <tr>
-                                      <th></th>
-                                      <th>ID</th>
-                                      <th>Fecha</th>
-                                      <th>Cliente</th>
-                                      <th>Forma de pago</th>
-                                      <th>Monto</th>
-                                      <th>Referencia</th>
-                                      <th>Status</th>
-                                      <th>Acciones</th>
-                                  </tr>
-                                  </tr>
-                              </tfoot>
-                              <tbody>
-                                  <tr>
-                                      <td></td>
-                                      <td>1</td>
-                                      <td>24/08/2018</td>
-                                      <td>Felxi</td>
-                                      <td>Transferencia</td>
-                                      <td>$320,800</td>
-                                      <td>Abc138Gs</td>
-                                      <td> <span class="badge bg-green">Liquidado</span></td>
-                                      <td>
-                                        <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                          <i class="material-icons">visibility</i>
-                                        </a>
-                                        <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
-                                          <i class="material-icons">payment</i>
-                                        </a>
-                                        <a class="btn btn-xs bg-purple waves-effect"  data-toggle="modal" data-target="#modal_conciliar_movimiento" >
-                                          <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Conciliar movimiento">assignment_turned_in</i>
-                                        </a>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-              </div>
+  <!-- PAGOS COMPLETADOS Egresos TABLE -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header bg-black">
+          <h2>
+            Egresos
+            <div class="select-btn-group">
+              <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
+            </div>
+          </h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                <tr>
+                  <th><input name="select_all2" value="1" class="select-all table-check" type="checkbox" /></th>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Forma</th>
+                  <th>Cuenta</th>
+                  <th>Referencia</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Forma</th>
+                  <th>Cuenta</th>
+                  <th>Referencia</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for pago in cuenta.pagos %}
+                <tr>
+                  <td>
+                    {% if pago.status == 'por_conciliar' %}
+                    <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                    {% endif %}
+                  </td>
+                  <td>{{pago.id}}</td>
+                  <td>{{pago.fecha_pago}}</td>
+                  <td>{{pago.forma_pago}}</td>
+                  <td>{{pago.cuenta}}</td>
+                  <td>{{pago.referencia_pago}}</td>
+                  <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
+                  <td>
+                    {% if pago.status == 'solicitado' %}
+                    <span class="badge bg-blue">Solicitado</span>
+                    {% endif %}
+                    {% if pago.status == 'conciliado' %}
+                    <span class="badge bg-green">Liquidado</span>
+                    {% endif %}
+                    {% if pago.status == 'por_conciliar' %}
+                    <span class="badge bg-orange">Por conciliar</span>
+                    {% endif %}
+                    {% if pago.status == 'cancelado' %}
+                    <span class="badge bg-red">Cancelado</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                      data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    {% if pago.status == 'solicitado' %}
+                    <a class="btn btn-xs btn-success waves-effect open-generar-pago"
+                      data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                      <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                        title="Generar pago">payment</i>
+                    </a>
+                    <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
+                      data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
+                      <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
+                    </a>
+                    {% endif %}
+                    {% if pago.status == 'por_conciliar' %}
+                    <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
+                      data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
+                        class="material-icons">assignment_turned_in</i>
+                    </a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <!-- DETALLES TABLE -->
-      <div class="row clearfix">
-          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div class="card">
-                  <div class="header bg-black">
-                      <h2>
-                        Conciliacíones
-                      </h2>
-                  </div>
-                  <div class="body">
-                      <div class="table-responsive">
-                          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                              <thead>
-                                  <tr>
-                                      <th>ID</th>
-                                      <th>Fecha</th>
-                                      <th>Saldo Real</th>
-                                      <th>Saldo Teórico</th>
-                                      <th>Diferencia </th>
-                                      <th>Ajuste</th>
-                                      <th>Status</th>
-                                      <th>Acciones</th>
-                                  </tr>
-                              </thead>
-                              <tfoot>
-                                  <tr>
-                                      <th>ID</th>
-                                      <th>Fecha</th>
-                                      <th>Saldo Real</th>
-                                      <th>Saldo Teórico</th>
-                                      <th>Diferencia </th>
-                                      <th>Ajuste</th>
-                                      <th>Status</th>
-                                      <th>Acciones</th>
-                                  </tr>
-                                  </tr>
-                              </tfoot>
-                              <tbody>
-                                  <tr>
-                                      <td>1</td>
-                                      <td>24/08/2018</td>
-                                      <td>$3,500,722</td>
-                                      <td>$3,4700,755</td>
-                                      <td>$3,800</td>
-                                      <td>Abc138Gs</td>
-                                      <td> <span class="badge bg-red">Incompleto</span></td>
-                                      <td>
-                                        <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                          <i class="material-icons">visibility</i>
-                                        </a>
-                                        <a class="btn btn-xs btn-success waves-effect" data-toggle="tooltip" data-placement="top" title="Generar pago">
-                                          <i class="material-icons">payment</i>
-                                        </a>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
-                  </div>
-              </div>
+  <!-- PAGOS COMPLETADOS Ingresos TABLE -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header bg-black">
+          <h2>
+            Ingresos
+            <div class="select-btn-group">
+              <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
+            </div>
+          </h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                <tr>
+                  <th><input name="select_all2" value="1" class="select-all table-check" type="checkbox" /></th>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Forma</th>
+                  <th>Cuenta</th>
+                  <th>Referencia</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Forma</th>
+                  <th>Cuenta</th>
+                  <th>Referencia</th>
+                  <th>Monto</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for pago in cuenta.pagos_ingresos %}
+                <tr>
+                  <td>
+                    {% if pago.status == 'por_conciliar' %}
+                    <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                    {% endif %}
+                  </td>
+                  <td>{{pago.id}}</td>
+                  <td>{{pago.fecha_pago}}</td>
+                  <td>{{pago.forma_pago}}</td>
+                  <td>{{pago.cuenta}}</td>
+                  <td>{{pago.referencia_pago}}</td>
+                  <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
+                  <td>
+                    {% if pago.status == 'solicitado' %}
+                    <span class="badge bg-blue">Solicitado</span>
+                    {% endif %}
+                    {% if pago.status == 'conciliado' %}
+                    <span class="badge bg-green">Liquidado</span>
+                    {% endif %}
+                    {% if pago.status == 'por_conciliar' %}
+                    <span class="badge bg-orange">Por conciliar</span>
+                    {% endif %}
+                    {% if pago.status == 'cancelado' %}
+                    <span class="badge bg-red">Cancelado</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                      data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    {% if pago.status == 'solicitado' %}
+                    <a class="btn btn-xs btn-success waves-effect open-generar-pago"
+                      data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                      <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                        title="Generar pago">payment</i>
+                    </a>
+                    <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
+                      data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
+                      <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
+                    </a>
+                    {% endif %}
+                    {% if pago.status == 'por_conciliar' %}
+                    <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
+                      data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
+                        class="material-icons">assignment_turned_in</i>
+                    </a>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
+        </div>
       </div>
-      {% include "modal_conciliar_movimiento.html" %}
+    </div>
+  </div>
 
-      {% endblock content %}
+  <!-- DETALLES TABLE -->
+  <div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="card">
+        <div class="header bg-black">
+          <h2>
+            Conciliacíones de cuenta
+          </h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Saldo Real</th>
+                  <th>Saldo Teórico</th>
+                  <th>Diferencia </th>
+                  <th>Ajuste</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Saldo Real</th>
+                  <th>Saldo Teórico</th>
+                  <th>Diferencia </th>
+                  <th>Ajuste</th>
+                  <th>Status</th>
+                </tr>
+                </tr>
+              </tfoot>
+              <tbody>
+                {% for conciliacion in cuenta.conciliaciones %}
+                <tr>
+                  <td>{{conciliacion.id}}</td>
+                  <td>{{fecha.id}}</td>
+                  <td>{{"${:,.2f}".format(conciliacion.saldo_usuario)}}</td>
+                  <td>{{"${:,.2f}".format(conciliacion.saldo_sistema)}}</td>
+                  <td>{{"${:,.2f}".format(conciliacion.saldo_usuario - conciliacion.saldo_sistema)}}<</td> <td>
+                      {% if conciliacion.egreso_id %}
+                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso_id}}"
+                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      {% elif conciliacion.ingreso_id %}
+                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_ingreso/{{ingreso_id}}"
+                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      {% else %}
+                      Sin Ajuste
+                      {% endif %}
+                  </td>
+                  <td> <span class="badge bg-red">Incompleto</span></td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% include "modal_conciliar_movimiento.html" %}
 
-      {% block javascripts %}
-      {{ super() }}
-      <!-- Jquery DataTable Plugin Js -->
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-  
-      <script>
-      var table = $('.js-basic-example').DataTable({
-     'columnDefs': [{
-         'targets': 0,
-         'className': 'dt-body-center',
-         'render': function (data, type, full, meta){
-             return '<input type="checkbox" name="id[]" value="' 
-                + $('<div/>').text(data).html() + '">';
-         }
+  {% endblock content %}
+
+  {% block javascripts %}
+  {{ super() }}
+  <!-- Jquery DataTable Plugin Js -->
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}">
+  </script>
+  <script
+    src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
+  </script>
+
+  <script>
+    var table = $('.js-basic-example').DataTable({
+      'columnDefs': [{
+        'targets': 0,
+        'className': 'dt-body-center',
+        'render': function (data, type, full, meta) {
+          return '<input type="checkbox" name="id[]" value="' +
+            $('<div/>').text(data).html() + '">';
+        }
       }],
       'order': [1, 'asc'],
 
-  });
+    });
 
-     // Handle click on "Select all" control
-     $('#example-select-all').on('click', function(){
+    // Handle click on "Select all" control
+    $('#example-select-all').on('click', function () {
       // Check/uncheck all checkboxes in the table
-      var rows = table.rows({ 'search': 'applied' }).nodes();
+      var rows = table.rows({
+        'search': 'applied'
+      }).nodes();
       $('input[type="checkbox"]', rows).prop('checked', this.checked);
-   });
+    });
 
     // Handle click on checkbox to set state of "Select all" control
-    $('#example tbody').on('change', 'input[type="checkbox"]', function(){
+    $('#example tbody').on('change', 'input[type="checkbox"]', function () {
       // If checkbox is not checked
-      if(!this.checked){
-         var el = $('#example-select-all').get(0);
-         // If "Select all" control is checked and has 'indeterminate' property
-         if(el && el.checked && ('indeterminate' in el)){
-            // Set visual state of "Select all" control 
-            // as 'indeterminate'
-            el.indeterminate = true;
-         }
+      if (!this.checked) {
+        var el = $('#example-select-all').get(0);
+        // If "Select all" control is checked and has 'indeterminate' property
+        if (el && el.checked && ('indeterminate' in el)) {
+          // Set visual state of "Select all" control 
+          // as 'indeterminate'
+          el.indeterminate = true;
+        }
       }
-   });
-    
-   $('#frm-example').on('submit', function(e){
+    });
+
+    $('#frm-example').on('submit', function (e) {
       var form = this;
 
       // Iterate over all checkboxes in the table
-      table.$('input[type="checkbox"]').each(function(){
-         // If checkbox doesn't exist in DOM
-         if(!$.contains(document, this)){
-            // If checkbox is checked
-            if(this.checked){
-               // Create a hidden element 
-               $(form).append(
-                  $('<input>')
-                     .attr('type', 'hidden')
-                     .attr('name', this.name)
-                     .val(this.value)
-               );
-            }
-         } 
+      table.$('input[type="checkbox"]').each(function () {
+        // If checkbox doesn't exist in DOM
+        if (!$.contains(document, this)) {
+          // If checkbox is checked
+          if (this.checked) {
+            // Create a hidden element 
+            $(form).append(
+              $('<input>')
+              .attr('type', 'hidden')
+              .attr('name', this.name)
+              .val(this.value)
+            );
+          }
+        }
       });
 
       // FOR TESTING ONLY
-      
+
       // Output form data to a console
-      $('#example-console').text($(form).serialize()); 
-      console.log("Form submission", $(form).serialize()); 
-       
+      $('#example-console').text($(form).serialize());
+      console.log("Form submission", $(form).serialize());
+
       // Prevent actual form submission
       e.preventDefault();
-   });
-      </script>
-      {% endblock javascripts %}
-  
+    });
+  </script>
+  {% endblock javascripts %}
