@@ -143,7 +143,7 @@ def ingresos_recibidos():
 def cuentas_por_cobrar():
     print(Ingresos.query.all())
     ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').all()
-    ingresos_pendientes = Ingresos.query.filter(Ingresos.pagado == False).filter(Ingresos.status != 'cancelado').all()
+    ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').filter(Ingresos.status != 'cancelado').all()
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
@@ -158,14 +158,9 @@ def perfil_ingreso(ingreso_id):
     centros_negocio = CentrosNegocio.query.all()
     categorias = Categorias.query.all()
     conceptos = Conceptos.query.all()
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
     
-    pagos = ingreso.pagos_ingresos
-    print(type(pagos))
-    pagos_por_conciliar = []
-    pagos_conciliados = []
-    for pago in pagos:
-        if pago.status == 'conciliado': pagos_conciliados.append(pago)
-        else: pagos_por_conciliar.append(pago)
         
     
     return render_template("perfil_ingreso.html", 
@@ -173,8 +168,9 @@ def perfil_ingreso(ingreso_id):
                            centros_negocio = centros_negocio, 
                            clientes = clientes, 
                            categorias = categorias, 
-                           pagos_por_conciliar = pagos_por_conciliar,
-                           pagos_conciliados = pagos_conciliados)
+                           conceptos = conceptos,
+                           formas_pago = formas_pago, 
+                           cuentas=cuentas)
 
 
 #Egresos Edit   
@@ -260,8 +256,12 @@ def cancelar_pago(pago_id):
 @login_required
 def get_data_pagar(ingreso_id):
         ingreso = Ingresos.query.get(ingreso_id)   
-        
-        return jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total = str(ingreso.monto_total), monto_pagado = str(ingreso.monto_pagado),numero_documento = ingreso.numero_documento)
+        print('Aqui, en routes linea 257:')
+        print('cliente:', str(ingreso.cliente.nombre))
+        print('monto_total:', str(ingreso.monto_total))
+        print('monto_pagado:', str(ingreso.monto_pagado))
+        print('ingreso_id: ',ingreso.id)
+        return jsonify(ingreso_id = ingreso.id, cliente = str(ingreso.cliente.nombre), monto_total = str(ingreso.monto_total), monto_pagado = str(ingreso.monto_pagado),numero_documento = ingreso.numero_documento)
 
 
 # Solcitar pago form submit
@@ -271,12 +271,13 @@ def mandar_cobrar():
 
     if request.form:
         data = request.form
+        print(data)
         ingreso = Ingresos.query.get(data["ingreso_id"])
         
         if ('parcial' in data):
-                monto_total_pago = data["monto_parcial"]
+                monto_total_pago = float(data["monto_parcial"])
         else:
-                monto_total_pago = ingreso.monto_total - ingreso.monto_pagado
+                monto_total_pago = float(ingreso.monto_total - ingreso.monto_pagado - ingreso.monto_por_conciliar)
                 
         pago = Pagos_Ingresos(status = 'por_conciliar', cliente = ingreso.cliente, 
                               monto_total = monto_total_pago, cuenta_id = data["cuenta_id"], 
@@ -284,17 +285,20 @@ def mandar_cobrar():
       
         ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
 
-        if ingreso.monto_total == ingreso.monto_pagado + ingreso.monto_por_conciliar:            
+                
+        ingreso.monto_por_conciliar = float(ingreso.monto_por_conciliar) + monto_total_pago  
+
+        
+        if ingreso.monto_total == float(ingreso.monto_pagado) + float(ingreso.monto_por_conciliar):            
                 ingreso.status = 'por_conciliar'
                 
         else: ingreso.status = 'parcial'
-                
-        ingreso.monto_por_conciliar += monto_total_pago  
+        
         db.session.add(ep)
         db.session.add(pago)
         db.session.commit()
         
-        return  redirect("/ingresos/cuentas_por_cobrar")   
+        return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
 
 
 # Solicitar multiples pagos data for modal 
@@ -311,9 +315,9 @@ def get_data_pagar_multiple():
 
 
 #Solicitar pago from sumbit
-@blueprint.route('/mandar_pagar_multiple', methods=['GET', 'POST'])
+@blueprint.route('/mandar_cobrar_multiple', methods=['GET', 'POST'])
 @login_required
-def mandar_pagar_multiple():
+def mandar_cobrar_multiple():
         if request.form:
                 data = request.form
                 for i in range(int(data["cantidad"])):
@@ -332,36 +336,27 @@ def mandar_pagar_multiple():
 
 ### CONCILIAT PAGOS ###
 #Conciliar pago data for modal
-@blueprint.route('/get_data_conciliar_pago_ingreso<int:ingreso_id><int:pago_id>', methods=['GET', 'POST'])
+@blueprint.route('/get_data_conciliar_pago_ingreso<int:pago_id>', methods=['GET', 'POST'])
 @login_required
-def get_data_conciliar_pago_ingreso(ingreso_id,pago_id):
-        #ingreso = Pagos_Ingresos.query.get(ingreso_id)
-        ingreso = Pagos_Ingresos.query.get(pago_id)
-        print('En ingresos/routes.py - Get_data_conciliar')
-        print(ingreso_id)
-        print(ingreso.cliente.nombre)
-        print(ingreso.monto_total)
-        print(ingreso.cuenta.nombre)
-        print('Pago ID = ',pago_id)
-        return jsonify(pago_id = pago_id, cliente = ingreso.cliente.nombre, monto_total=str(ingreso.monto_total), referencia = ingreso.referencia_pago , cuenta=ingreso.cuenta.nombre)
+def get_data_conciliar_pago_ingreso(pago_id):
+        print('pago id = ',pago_id)
+        pago_ingreso = Pagos_Ingresos.query.get(pago_id)
+        return jsonify(pago_id = pago_id, cliente = pago_ingreso.cliente.nombre, monto_total=str(pago_ingreso.monto_total), referencia = pago_ingreso.referencia_pago , cuenta=pago_ingreso.cuenta.nombre)
 
 @blueprint.route('/get_data_conciliar<int:ingreso_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_conciliar(ingreso_id):
-        ingreso = Pagos_Ingresos.query.get(ingreso_id)
-        print('En ingresos/routes.py - Get_data_conciliar')
-        print(ingreso.cliente.nombre)
-        print(ingreso.monto_total)
-        print(ingreso.cuenta.nombre)
-        print('Pago ID = ',ingreso.cuenta.nombre)
-        return jsonify(ingreso_id = ingreso.id, cliente = ingreso.cliente.nombre, monto_total=str(ingreso.monto_total), referencia = ingreso.referencia_pago , cuenta=ingreso.cuenta.nombre)
+        ingreso = Ingresos.query.get(ingreso_id)
+        return jsonify(ingreso_id = ingreso.id, cliente = str(ingreso.cliente.nombre),empresa = ingreso.empresa.nombre, monto_total=str(ingreso.monto_total), num_documento = ingreso.numero_documento )
 
 
 #Conciliar pago form sumbit
 @blueprint.route('/conciliar_pago_ingreso', methods=['GET', 'POST'])
 @login_required
 def conciliar_pago_ingreso():
+    
         print('En conciliar_pago_ingreso!')
+        
         if request.form:
             data = request.form
             print(data)
@@ -373,9 +368,7 @@ def conciliar_pago_ingreso():
                 pago.referencia_conciliacion = data["referencia"]
                 pago.fecha_pago = data["fecha"]
                 pago.comentario = data["comentario"]
-                
-                
-                
+                                
                 ep = IngresosHasPagos.query.filter_by(pago_id = pago.id ).first()
                 ingreso = Ingresos.query.get(ep.ingreso_id)
                 
@@ -384,7 +377,7 @@ def conciliar_pago_ingreso():
                 ingreso.setStatus()
                 
             db.session.commit()
-            return  redirect("/ingresos/cuentas_por_cobrar")  
+            return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
         
         
     #Conciliar pago form sumbit
@@ -392,23 +385,32 @@ def conciliar_pago_ingreso():
 @login_required
 def conciliar_ingreso():
         print('En conciliar_ingreso!')
+        
         if request.form:
             data = request.form
             print(data)
-            pagos = (data.getlist('pago_id'))
-            for pago_id in pagos:
-                    pago = Pagos_Ingresos.query.get(pago_id)
-                    pago.status = 'conciliado';
-                    pago.referencia_conciliacion = data["referencia"]
-                    pago.fecha_pago = data["fecha"]
-                    pago.comentario = data["comentario"]
-                    for ingreso in pago.Ingresos:
-                            ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id =pago.id ).first()
-                            ingreso.monto_por_conciliar -= ep.monto
-                            if ingreso.monto_total == ingreso.monto_pagado and ingreso.monto_por_conciliar == 0:
-                                    ingreso.status = 'liquidado'     
+            ingreso = Ingresos.query.get(data["ingreso_id"])
+            pagos = ingreso.pagos_ingresos
+
+            print('AQUIII: ',ingreso.pagos_ingresos)
+            
+            
+            for pago in pagos:
+                print(pago.id)
+                pago = Pagos_Ingresos.query.get(pago.id)
+                pago.status = 'conciliado';
+                pago.referencia_conciliacion = data["referencia"]
+                pago.fecha_pago = data["fecha"]
+                pago.fecha_conciliacion = data["fecha"]
+                pago.comentario = data["comentario"]
+                
+                ep = IngresosHasPagos.query.filter_by(pago_id = pago.id ).first()
+                ingreso.monto_por_conciliar -= ep.monto
+                ingreso.monto_pagado += ep.monto
+     
+            ingreso.setStatus()
             db.session.commit()
-            return  redirect("/ingresos/cuentas_por_cobrar")   
+            return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))   
 
 #Conciliar multiples pagos data for modal
 @blueprint.route('/get_data_conciliar_multiple', methods=['GET', 'POST'])
@@ -538,8 +540,10 @@ def agregar_detalle(ingreso_id):
 @login_required
 def get_data_editar_detalle(detalle_id):
         detalle = DetallesIngreso.query.get(detalle_id)
-        return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, cliente=detalle.cliente_id,  monto=str(detalle.monto), 
-        categoria = detalle.categoria_id , concepto=detalle.concepto_id, numero_control=detalle.numero_control, descripcion = detalle.descripcion)
+        return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, 
+                       cliente=detalle.cliente_id,  monto=str(detalle.monto), 
+                       categoria = detalle.categoria_id , concepto=detalle.concepto_id, 
+                       numero_control=detalle.numero_control, descripcion = detalle.descripcion)
 
 
 
