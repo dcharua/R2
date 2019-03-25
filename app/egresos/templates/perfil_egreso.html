@@ -10,13 +10,8 @@
         <h2 class="font-24">Detalle de Egreso</h2>
         {% if egreso.pagos|length > 0 %}
         <div class="select-btn-group">
-<<<<<<< Updated upstream
           <span class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
             egresos</span>
-=======
-          <span id="open-conciliar-multiple" class="btn bg-red cancel-egreso" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
-            Egresos</span>
->>>>>>> Stashed changes
         </div>
         {% endif %}
         {% if egreso.pagos|length == 0 %}

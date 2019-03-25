@@ -103,6 +103,23 @@ class Clientes(db.Model):
     def __repr__(self):
         return self.nombre
 
+class Conciliaciones(db.Model):
+    __tablename__ = 'conciliaciones'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    id_cuenta = Column(Integer, ForeignKey('cuentas.id'))
+    cuenta = relationship("Cuentas", back_populates="conciliaciones")
+    fecha = Column(Date())
+    comentario = Column(String(250))
+    ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
+    egreso_id = Column(Integer, ForeignKey('egresos.id'))
+    status = Column(String(20))
+    saldo_usuario = Column(Numeric(10, 2))
+    saldo_sistema = Column(Numeric(10, 2))
+
+    def __repr__(self):
+        return self.banco + ' / ' + self.numero   
 class Conceptos(db.Model):
     __tablename__ = 'conceptos'
     __table_args__ = {'extend_existing': True}
@@ -155,10 +172,12 @@ class Cuentas(db.Model):
     banco = Column(String(50))
     numero = Column(String(50))
     comentario = Column(String(250))
+    conciliaciones = relationship("Conciliaciones")
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="cuenta")
-    saldo = Column(Numeric(10, 2))  
-    numero_cheque = Column(Numeric(10, 2))     
+    saldo = Column(Numeric(10, 2))
+    saldo_inicial = Column(Numeric(10, 2))
+    numero_cheque = Column(Numeric(8))     
     pagos = relationship("Pagos")
     pagos_ingresos = relationship("Pagos_Ingresos")
 

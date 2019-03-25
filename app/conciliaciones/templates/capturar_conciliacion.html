@@ -1,15 +1,16 @@
 {% extends "base_site.html" %}
 
-
 {% block content %}
-<!-- Basic Examples -->
-  <div class="row clearfix">
+
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
               <div class="header bg-black">
                   <h2>
-                      Cuentas 
-                  </h2>
+                      Lista de Cuentas
+                  </h2> 
+                  <div class="select-btn-group">
+                      <span  data-toggle="modal" data-target="#modal_agregar_cuenta" class="btn btn-warning" >Agregar Cuenta</span>
+                  </div>
               </div>
               <div class="body">
                   <div class="table-responsive">
@@ -18,6 +19,8 @@
                               <tr>
                                   <th>ID</th>
                                   <th>Cuenta</th>
+                                  <th>Banco</th>
+                                  <th>Numero</th>
                                   <th>Ultima Conciliacíon</th>
                                   <th>Saldo en Cuenta</th>
                                   <th>Saldo en Sistema</th>
@@ -28,35 +31,38 @@
                           </thead>
                           <tfoot>
                               <tr>
-                                  <th>ID</th>
-                                  <th>Cuenta</th>
-                                  <th>Ultima Conciliacíon</th>
-                                  <th>Saldo en Cuenta</th>
-                                  <th>Saldo en Sistema</th>
-                                  <th>Diferencia</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
+                                <th>ID</th>
+                                <th>Cuenta</th>
+                                <th>Banco</th>
+                                <th>Numero</th>
+                                <th>Ultima Conciliacíon</th>
+                                <th>Saldo en Cuenta</th>
+                                <th>Saldo en Sistema</th>
+                                <th>Diferencia</th>
+                                <th>Status</th>
+                                <th>Acciones</th>
                               </tr>
                           </tfoot>
                           <tbody>
+                                {% for cuenta in cuentas %}
                               <tr>
-                                  <td>1</td>
-                                  <td>Santander</td>
-                                  <td>14/06/2018</td>
-                                  <td>$1,854,654.54</td>
-                                  <td>$1,854,654.54</td>
-                                  <td>$0.00</td>
-                                  
+                                  <td>{{cuenta.id}}</td>
+                                  <td>{{cuenta.nombre}}</td>
+                                  <td>{{cuenta.banco}}</td>
+                                  <td>{{cuenta.numero}}</td>
+                                  <td>{{cuenta.ultima_conciliacion.fecha}}</td>
+                                  <td>{{"${:,.2f}".format(cuenta.saldo)}}</td>
+                                  <td>{{"${:,.2f}".format(cuenta.saldo_conciliado_ingresos + cuenta.saldo_inicial - cuenta.saldo_conciliado_egresos)}}</td>
+                                  <td>{{"${:,.2f}".format(cuenta.saldo - (cuenta.saldo_conciliado_ingresos + cuenta.saldo_inicial - cuenta.saldo_conciliado_egresos))}}</td>
                                   <td> <span class="badge bg-light-green">Completo</span></td>
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/conciliaciones/perfil_cuenta" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                    <a class="btn btn-xs btn-info waves-effect" href="/conciliaciones/perfil_cuenta/{{cuenta.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                       <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn js-modal-buttons btn-xs btn-success waves-effect" data-toggle="modal" data-target="#modal_conciliar_cuenta" >
-                                      <i data-toggle="tooltip" data-placement="top" title="Conciliar" class="material-icons">payment</i>
-                                    </a>
+
                                   </td>
                               </tr>
+                              {% endfor %}
                           </tbody>
                       </table>
                   </div>
@@ -64,11 +70,10 @@
           </div>
       </div>
   </div>
+  <!-- #END# Basic Examples -->
 
+  {% include "modal_agregar_cuenta.html" %}
 
-{% include "modal_conciliar_cuenta.html" %}
-
-  
 {% endblock content %}
 
 {% block javascripts %}
@@ -85,21 +90,9 @@
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
 <script>
- 
-  $(function () {
-    //Tooltip
-    $('[data-toggle="tooltip"]').tooltip({
-        container: 'body'
-    });
-
-    //Popover
-    $('[data-toggle="popover"]').popover();
-  })
-
   $('.js-basic-example').DataTable({
-     dom: 'Bfrtip',
+    dom: 'Bfrtip',
      responsive: true,
-     select: true,
      buttons: [
          'copy', 'csv', 'excel', 'pdf', 'print'
      ]

@@ -34,15 +34,6 @@ def agregar_cliente():
         db.session.commit()   
         return redirect("/administracion/clientes")
 
-@blueprint.route('/agregar_cuenta', methods=['GET', 'POST'])
-@login_required
-def agregar_cuenta():
-    if request.form:
-        data = request.form
-        cuenta = Cuentas(nombre=data["nombre"], banco=data["banco"], numero=data["numero"], saldo=data["saldo"], empresa_id=data["empresa"], comentario=data["comentario"], numero_cheque=0) 
-        db.session.add(cuenta)
-        db.session.commit()   
-        return redirect("/administracion/cuentas")    
 
 @blueprint.route('/agregar_categoria', methods=['GET', 'POST'])
 @login_required
