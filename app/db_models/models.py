@@ -108,12 +108,12 @@ class Conciliaciones(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
-    id_cuenta = Column(Integer, ForeignKey('cuentas.id'))
+    cuenta_id = Column(Integer, ForeignKey('cuentas.id'))
     cuenta = relationship("Cuentas", back_populates="conciliaciones")
     fecha = Column(Date())
     comentario = Column(String(250))
-    ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
-    egreso_id = Column(Integer, ForeignKey('egresos.id'))
+    ingreso_id = Column(Integer, ForeignKey('pagos_ingresos.id'))
+    egreso_id = Column(Integer, ForeignKey('pagos_egresos.id'))
     status = Column(String(20))
     saldo_usuario = Column(Numeric(10, 2))
     saldo_sistema = Column(Numeric(10, 2))

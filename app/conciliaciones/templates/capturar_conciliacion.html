@@ -2,100 +2,181 @@
 
 {% block content %}
 
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-          <div class="card">
-              <div class="header bg-black">
-                  <h2>
-                      Lista de Cuentas
-                  </h2> 
-                  <div class="select-btn-group">
-                      <span  data-toggle="modal" data-target="#modal_agregar_cuenta" class="btn btn-warning" >Agregar Cuenta</span>
-                  </div>
-              </div>
-              <div class="body">
-                  <div class="table-responsive">
-                      <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                          <thead>
-                              <tr>
-                                  <th>ID</th>
-                                  <th>Cuenta</th>
-                                  <th>Banco</th>
-                                  <th>Numero</th>
-                                  <th>Ultima Conciliacíon</th>
-                                  <th>Saldo en Cuenta</th>
-                                  <th>Saldo en Sistema</th>
-                                  <th>Diferencia</th>
-                                  <th>Status</th>
-                                  <th>Acciones</th>
-                              </tr>
-                          </thead>
-                          <tfoot>
-                              <tr>
-                                <th>ID</th>
-                                <th>Cuenta</th>
-                                <th>Banco</th>
-                                <th>Numero</th>
-                                <th>Ultima Conciliacíon</th>
-                                <th>Saldo en Cuenta</th>
-                                <th>Saldo en Sistema</th>
-                                <th>Diferencia</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                              </tr>
-                          </tfoot>
-                          <tbody>
-                                {% for cuenta in cuentas %}
-                              <tr>
-                                  <td>{{cuenta.id}}</td>
-                                  <td>{{cuenta.nombre}}</td>
-                                  <td>{{cuenta.banco}}</td>
-                                  <td>{{cuenta.numero}}</td>
-                                  <td>{{cuenta.ultima_conciliacion.fecha}}</td>
-                                  <td>{{"${:,.2f}".format(cuenta.saldo)}}</td>
-                                  <td>{{"${:,.2f}".format(cuenta.saldo_conciliado_ingresos + cuenta.saldo_inicial - cuenta.saldo_conciliado_egresos)}}</td>
-                                  <td>{{"${:,.2f}".format(cuenta.saldo - (cuenta.saldo_conciliado_ingresos + cuenta.saldo_inicial - cuenta.saldo_conciliado_egresos))}}</td>
-                                  <td> <span class="badge bg-light-green">Completo</span></td>
-                                  <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/conciliaciones/perfil_cuenta/{{cuenta.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                      <i class="material-icons">visibility</i>
-                                    </a>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+        <div class="header bg-black">
+            <h2>
+                Lista de Cuentas
+            </h2>
+            <div class="select-btn-group">
+                <span data-toggle="modal" data-target="#modal_agregar_cuenta" class="btn btn-warning">Agregar
+                    Cuenta</span>
+            </div>
+        </div>
+        <div class="body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cuenta</th>
+                            <th>Banco</th>
+                            <th>Numero</th>
+                            <th>Ultima Conciliacíon</th>
+                            <th>Saldo en Cuenta</th>
+                            <th>Saldo en Sistema</th>
+                            <th>Diferencia</th>
+                            <th>Status</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cuenta</th>
+                            <th>Banco</th>
+                            <th>Numero</th>
+                            <th>Ultima Conciliacíon</th>
+                            <th>Saldo en Cuenta</th>
+                            <th>Saldo en Sistema</th>
+                            <th>Diferencia</th>
+                            <th>Status</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for cuenta in cuentas %}
+                        <tr>
+                            <td>{{cuenta.id}}</td>
+                            <td>{{cuenta.nombre}}</td>
+                            <td>{{cuenta.banco}}</td>
+                            <td>{{cuenta.numero}}</td>
+                            <td>{{cuenta.ultima_conciliacion.fecha}}</td>
+                            <td>{{"${:,.2f}".format(cuenta.saldo)}}</td>
+                            <td>{{"${:,.2f}".format(cuenta.saldo_conciliado_ingresos + cuenta.saldo_inicial - cuenta.saldo_conciliado_egresos)}}
+                            </td>
+                            <td>{{"${:,.2f}".format(cuenta.saldo - (cuenta.saldo_conciliado_ingresos + cuenta.saldo_inicial - cuenta.saldo_conciliado_egresos))}}
+                            </td>
+                            <td> <span class="badge bg-light-green">Completo</span></td>
+                            <td>
+                                <a class="btn btn-xs btn-info waves-effect"
+                                    href="/conciliaciones/perfil_cuenta/{{cuenta.id}}" data-toggle="tooltip"
+                                    data-placement="top" title="Ver detalle">
+                                    <i class="material-icons">visibility</i>
+                                </a>
 
-                                  </td>
-                              </tr>
-                              {% endfor %}
-                          </tbody>
-                      </table>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  <!-- #END# Basic Examples -->
+                                <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-conciliar-cuenta"
+                                    data-id="{{cuenta.id}}">
+                                    <i data-toggle="tooltip" data-placement="top" title="Conciliar cuenta"
+                                        class="material-icons">payment</i>
+                                </a>
 
-  {% include "modal_agregar_cuenta.html" %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- #END# Basic Examples -->
+{% include "modal_agregar_cuenta.html" %}
+{% include "modal_conciliar_cuenta.html" %}
 
 {% endblock content %}
 
 {% block javascripts %}
-  {{ super() }}
+{{ super() }}
 <!-- Jquery DataTable Plugin Js -->
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}">
+</script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
 
+</script>
+<script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 <script>
-  $('.js-basic-example').DataTable({
-    dom: 'Bfrtip',
-     responsive: true,
-     buttons: [
-         'copy', 'csv', 'excel', 'pdf', 'print'
-     ]
-  });
+    //solcitar pagar un egreso
+    $(".open-conciliar-cuenta").on("click", function () {
+        const html =
+            `<input type="hidden" name="cuenta_id" value="${$(this).data('id')}">
+        <hr>`
+        let element = document.querySelector(".here-cc");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_conciliar_cuenta').modal('show');
+    });
+
+    // hacemos el form sumbit de concilair cuenta con ajax
+    $("#form-cc").submit(function () {
+        $.ajax({
+            url: "/conciliaciones/conciliar_cuenta",
+            data: $("#form-cc").serialize(),
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                //Si la respuesta es exitosa checamos si la conciliacion es correcta (1) o no (2)
+                $('#modal_conciliar_cuenta').modal('hide');
+                if (data.res == 1) {
+                    swal({
+                        title: 'La Conciliación es correcta',
+                        text: "El saldo en sistema y el saldo a conciliar son iguales",
+                        type: "success"
+                    });
+                } else if(data.res == 2) {
+                    //Si no es correcta preguntamos si desear crear el ajuste automatico
+                    swal({
+                        title: "Conciliación no correcta?",
+                        text: 'El saldo en sistema $' + data.saldo_sistema + ' y el saldo a conciliar $' + data.saldo_usuario + ' son distintos',
+                        type: "warning",
+                        showCancelButton: true,
+                        cancelButtonText: "Dejar conciliacion abierta",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ajustar!",
+                        closeOnConfirm: false
+                        }, function () {
+                            //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
+                        $.ajax({
+                            url: '/conciliaciones/ajustar_conciliacion/'+ data.conciliacion,
+                            success: function (data) {
+                                if (data == "exito") {
+                                    swal("Ajustado!", "El ajuste fue correcto.", "success");
+                                    setTimeout(function () {location.reload();}, 2000);
+                                } else {
+                                    swal("Ocurrio un error!", "Por favor crea el ajuste manualmente.", "error");
+                                }
+                            }
+                        })
+                    });
+                }
+            },
+            error: function (e) {
+                $('#modal_conciliar_cuenta').modal('hide');
+                swal("Ocurrio un error!", JSON.stringify(e), "error");
+                console.log(JSON.stringify(e));
+            }
+        });
+        return false;
+    });
+
+
+    $('.js-basic-example').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    });
 </script>
 {% endblock javascripts %}
