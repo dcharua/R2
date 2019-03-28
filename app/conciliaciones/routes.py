@@ -4,7 +4,7 @@ from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
-
+from datetime import date
 
 @blueprint.route('/<template>')
 @login_required
@@ -14,6 +14,7 @@ def route_template(template):
 
 @blueprint.route('/capturar_conciliacion', methods=['GET', 'POST'])
 def capturar_conciliacion():
+    now = date.today()
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
     for cuenta in cuentas:
@@ -38,7 +39,7 @@ def capturar_conciliacion():
         cuenta.ultima_conciliacion = None
         if (cuenta.conciliaciones):
                 cuenta.ultima_conciliacion = cuenta.conciliaciones[-1]
-    return render_template("capturar_conciliacion.html", cuentas=cuentas, empresas=empresas)   
+    return render_template("capturar_conciliacion.html", hoy=now, cuentas=cuentas, empresas=empresas)   
 
 @blueprint.route('/agregar_cuenta', methods=['GET', 'POST'])
 @login_required
@@ -83,6 +84,7 @@ def perfil_cuenta(cuenta_id):
 @login_required
 def conciliar_cuenta():
     if request.form:
+        now = date.today()
         status=None
         
         data = request.form
@@ -96,16 +98,15 @@ def conciliar_cuenta():
         for pago in cuenta.pagos:
             if pago.status == 'conciliado':
                 saldo_sistema -= pago.monto_total
-       
-        conciliacion = Conciliaciones(cuenta_id=data['cuenta_id'], fecha=data["fecha"], saldo_usuario=data["saldo"], 
+
+        conciliacion = Conciliaciones(cuenta_id=data['cuenta_id'], fecha=now, saldo_usuario=data["saldo"], 
         saldo_sistema=saldo_sistema, comentario=data["comentario"], status=status)
-        if int(float(conciliacion.saldo_usuario)) == int(float(conciliacion.saldo_sistema)):
+        if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
             conciliacion.status = 'cerrada'
         else:
             conciliacion.status = 'abierta'
         db.session.add(conciliacion)
         db.session.commit()   
-        print(conciliacion.id)
         if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
             return jsonify({'res':1, 'conciliacion':conciliacion.id ,'saldo_sistema': float(conciliacion.saldo_sistema), 'saldo_usuario': float(conciliacion.saldo_usuario)})
         else:
@@ -120,7 +121,7 @@ def ajustar_conciliacion(conciliacion_id):
     if conciliacion.saldo_usuario > conciliacion.saldo_sistema:
         monto = conciliacion.saldo_usuario - conciliacion.saldo_sistema
         ajuste = Pagos_Ingresos(referencia_pago="ajuste "+str(conciliacion_id), fecha_pago=conciliacion.fecha,
-        status="conciliado", monto_total=monto, cuenta_id=conciliacion.cuenta_id)
+        status="conciliado", monto_total=monto, cuenta_id=conciliacion.cuenta_id, cliente_id=1, forma_pago_id=1)
         db.session.add(ajuste)
         db.session.commit() 
         conciliacion.ingreso_id= ajuste.id
@@ -131,7 +132,7 @@ def ajustar_conciliacion(conciliacion_id):
     else:
         monto = conciliacion.saldo_sistema - conciliacion.saldo_usuario
         ajuste = Pagos(referencia_pago="ajuste "+str(conciliacion_id), fecha_pago=conciliacion.fecha,
-        status="conciliado", monto_total=monto, cuenta_id=conciliacion.cuenta_id)
+        status="conciliado", monto_total=monto, cuenta_id=conciliacion.cuenta_id, beneficiario_id=1, forma_pago_id=1)
         db.session.add(ajuste)
         db.session.commit()
         conciliacion.egreso_id= ajuste.id
@@ -139,3 +140,45 @@ def ajustar_conciliacion(conciliacion_id):
         db.session.commit() 
         return  jsonify("exito")  
     return jsonify("error")  
+
+
+@blueprint.route('/recalcular_conciliacion', methods=['GET', 'POST'])
+@login_required
+def recalcular_conciliacion():
+    if request.form:
+        data = request.form
+        conciliacion = Conciliaciones.query.get(data["conciliacion_id"])
+        if conciliacion.ingreso_id:
+            ingreso = Pagos_Ingresos.query.get(conciliacion.ingreso_id)
+            conciliacion.ingreso_id = None
+            db.session.delete(ingreso)
+        if conciliacion.egreso_id:
+            egreso = Pagos.query.get(conciliacion.egreso_id)
+            conciliacion.egreso_id = None
+            print(egreso)
+            db.session.delete(egreso)
+        db.session.commit() 
+        cuenta = Cuentas.query.get(conciliacion.cuenta_id)
+        cuenta.saldo = data["saldo"]
+        saldo_sistema = cuenta.saldo_inicial
+        for pago in cuenta.pagos_ingresos:
+            if pago.status == 'conciliado':
+                saldo_sistema += pago.monto_total
+
+        for pago in cuenta.pagos:
+            if pago.status == 'conciliado':
+                saldo_sistema -= pago.monto_total
+        
+        conciliacion.saldo_usuario = data["saldo"]
+        conciliacion.saldo_sistema = saldo_sistema
+        if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
+            conciliacion.status = 'cerrada'
+        else:
+            conciliacion.status = 'abierta'
+        db.session.add(conciliacion)
+        db.session.commit()   
+        if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
+            return jsonify({'res':1, 'conciliacion':conciliacion.id ,'saldo_sistema': float(conciliacion.saldo_sistema), 'saldo_usuario': float(conciliacion.saldo_usuario)})
+        else:
+            return jsonify({'res':2, 'conciliacion':conciliacion.id ,'saldo_sistema': float(conciliacion.saldo_sistema), 'saldo_usuario': float(conciliacion.saldo_usuario)})
+    return jsonify("error")

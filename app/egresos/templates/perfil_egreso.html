@@ -319,7 +319,6 @@
         $.ajax({
           url: $(this).attr("data-url"),
           success: function (data) {
-            console.log("in")
             const html =
               `<div class="row mar-b-10" >
                     <div class="col-sm-12 col-md-6 ">
@@ -456,18 +455,15 @@
             pagos.push($(this).val())
           }
         })
-        console.log(pagos)
         $.get({
           url: '/egresos/get_data_conciliar_multiple',
           data: {
             pagos: pagos
           },
           success: function (data) {
-            console.log(data)
             let element = document.querySelector(".here-conciliar");
             element.innerHTML = "";
             data.forEach(pago => {
-              console.log(pago)
               const html =
                 `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
@@ -515,7 +511,7 @@
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
       });
 
-      //Borrar egreso con sweer alert
+      //Borrar egreso con sweet alert
       $('.delete-egreso').on('click', function () {
         var element = this;
         swal({
@@ -527,7 +523,6 @@
           confirmButtonText: "Si, borrar!",
           closeOnConfirm: false
         }, function () {
-          console.log(element)
           $.ajax({
             url: $(element).attr("data-url"),
             success: function (data) {

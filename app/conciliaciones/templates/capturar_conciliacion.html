@@ -64,12 +64,20 @@
                                     data-placement="top" title="Ver detalle">
                                     <i class="material-icons">visibility</i>
                                 </a>
-
+                                {% if cuenta.ultima_conciliacion.fecha != hoy %}
                                 <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-conciliar-cuenta"
                                     data-id="{{cuenta.id}}">
                                     <i data-toggle="tooltip" data-placement="top" title="Conciliar cuenta"
                                         class="material-icons">payment</i>
                                 </a>
+
+                                {% else %}
+                                <a class="btn js-modal-buttons btn-xs btn-danger waves-effect open-recalcular"
+                                    data-id="{{cuenta.ultima_conciliacion.id}}">
+                                    <i data-toggle="tooltip" data-placement="top" title="Recalcular conciliación"
+                                        class="material-icons">payment</i>
+                                </a>
+                                {% endif %}
 
                             </td>
                         </tr>
@@ -83,8 +91,8 @@
 </div>
 <!-- #END# Basic Examples -->
 {% include "modal_agregar_cuenta.html" %}
+{% include "modal_recalcular_conciliacion.html" %}
 {% include "modal_conciliar_cuenta.html" %}
-
 {% endblock content %}
 
 {% block javascripts %}
@@ -169,6 +177,71 @@
         });
         return false;
     });
+
+
+    //recalcular conciliacion
+    $(".open-recalcular").on("click", function () {
+        const html =
+            `<input type="hidden" name="conciliacion_id" value="${$(this).data('id')}">
+        <hr>`
+        let element = document.querySelector(".here-rc");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_recalcular_conciliacion').modal('show');
+    });
+
+    // hacemos el form sumbit de concilair cuenta con ajax
+    $("#form-rc").submit(function () {
+        $.ajax({
+            url: "/conciliaciones/recalcular_conciliacion",
+            data: $("#form-rc").serialize(),
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                //Si la respuesta es exitosa checamos si la conciliacion es correcta (1) o no (2)
+                $('#modal_recalcular_conciliacion').modal('hide');
+                if (data.res == 1) {
+                    swal({
+                        title: 'La Conciliación es correcta',
+                        text: "El saldo en sistema y el saldo a conciliar son iguales",
+                        type: "success"
+                    });
+                } else if(data.res == 2) {
+                    //Si no es correcta preguntamos si desear crear el ajuste automatico
+                    swal({
+                        title: "Conciliación no correcta?",
+                        text: 'El saldo en sistema $' + data.saldo_sistema + ' y el saldo a conciliar $' + data.saldo_usuario + ' son distintos',
+                        type: "warning",
+                        showCancelButton: true,
+                        cancelButtonText: "Dejar conciliacion abierta",
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Ajustar!",
+                        closeOnConfirm: false
+                        }, function () {
+                            //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
+                        $.ajax({
+                            url: '/conciliaciones/ajustar_conciliacion/'+ data.conciliacion,
+                            success: function (data) {
+                                if (data == "exito") {
+                                    swal("Ajustado!", "El ajuste fue correcto.", "success");
+                                    setTimeout(function () {location.reload();}, 2000);
+                                } else {
+                                    swal("Ocurrio un error!", "Por favor crea el ajuste manualmente.", "error");
+                                }
+                            }
+                        })
+                    });
+                }
+            },
+            error: function (e) {
+                $('#modal_recalcular_conciliacion').modal('hide');
+                swal("Ocurrio un error!", JSON.stringify(e), "error");
+                console.log(JSON.stringify(e));
+            }
+        });
+        return false;
+    });
+
 
 
     $('.js-basic-example').DataTable({
