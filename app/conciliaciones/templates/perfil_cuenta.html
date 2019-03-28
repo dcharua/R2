@@ -28,7 +28,7 @@
               </div>
               <div class="col-sm-12 col-md-6 align-left">
                 <p class="font-18">Empresa: <span class="font-bold">{{cuenta.empresa.nombre}}</span></p>
-                <p class="font-18">Saldo actual: <span class="font-bold">{{cuenta.saldo}}</span></p>
+                <p class="font-18">Saldo actual: <span class="font-bold">{{"${:,.2f}".format(cuenta.saldo)}}</span></p>
               </div>
             </div>
             <div class="row mycontainer">
@@ -44,30 +44,91 @@
 
           <div role="tabpanel" class="tab-pane fade" id="saldos">
             <div class="row mycontainer">
-              <div class="col-sm-12 col-md-6">
-                <p class="font-18">Saldo actual: <span class="font-bold">{{cuenta.saldo}}</span></p>
-                <p class="font-18">Saldo en sistema: <span class="font-bold">{{saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos }}</span></p>
-                <p class="font-18">Saldo en transito ingresos: <span class="font-bold">{{saldo_transito_ingresos}}</span></p>
-                <p class="font-18">Saldo en transito egresos: <span class="font-bold">{{saldo_transito_egresos}}</span></p>
+              <div class="col-sm-12 col-md-4">
+                <p class="font-18">Saldo en transito ingresos: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_transito_ingresos)}}</span></p>
+                <p class="font-18">Saldo conciliado ingresos: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_conciliado_ingresos)}}</span></p>
               </div>
-              <div class="col-sm-12 col-md-6 align-left">
-                
-                <p class="font-18">Saldo conciliado egresos: <span class="font-bold">{{saldo_conciliado_egresos}}</span></p>
-                <p class="font-18">Saldo conciliado ingresos: <span class="font-bold">{{saldo_conciliado_ingresos}}</span></p>
-                <p class="font-18">Saldo solicitado egresos: <span class="font-bold">{{saldo_solicitado_egresos}}</span></p>
-                <p class="font-18">Saldo disponible: <span class="font-bold">{{cuenta.saldo}}</span></p>  
+              <div class="col-sm-12 col-md-4">
+                <p class="font-16"> <span class="font-16 label label-success">Saldo disponible</span>
+                  <br> <span class="font-bold">&nbsp; &nbsp; &nbsp; {{"${:,.2f}".format(cuenta.saldo)}}</span>
+                </p>
+                <p class="font-16"> <span class="font-16 label label-info">Saldo actual</span>
+                  <br> <span class="font-bold">&nbsp; &nbsp; &nbsp;
+                    {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
+                </p>
+                <p class="font-16"> <span class="font-16 label label-default">Saldo en sistema</span>
+                  <br> <span class="font-bold">&nbsp; &nbsp; &nbsp;
+                    {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos)}}
+                  </span>
+                </p>
+              </div>
+              <div class="col-sm-12 col-md-4 align-left">
+                <p class="font-18">Saldo solicitado egresos: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_solicitado_egresos)}}</span></p>
+                <p class="font-18">Saldo en transito egresos: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_transito_egresos)}}</span></p>
+                <p class="font-18">Saldo conciliado egresos: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_conciliado_egresos)}}</span></p>
               </div>
             </div>
           </div>
 
           <div role="tabpanel" class="tab-pane fade" id="conciliacion">
             {% if ultima_conciliacion is not none %}
+
+            <div class="row">
+              <div class="col-12">
+                <span data-id="{{ultima_conciliacion.id}}" style="float: right; margin-right: 30px;" class="btn btn-warning open-recalcular">Recalcular conciliación</span>
+              </div>
+            </div>
+
+            <div class="row mycontainer">
+              <div class="col-sm-12 col-md-4">
+                <p class="font-18">Fecha: <span class="font-bold">{{ultima_conciliacion.fecha}}</span></p>
+                <p class="font-16"> <span class="font-16 label label-success">Saldo Real</span>
+                  <br> <span class="font-bold"> {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario)}}</span>
+                </p>
+              </div>
+
+              <div class="col-sm-12 col-md-4">
+                <p class="font-18">
+                  {% if ultima_conciliacion.egreso_id %}
+                  <a class="btn btn-xs btn-info waves-effect"
+                    href="/egresos/perfil_pago/{{ultima_conciliacion.egreso_id}}" data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle"> Ajuste
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% elif ultima_conciliacion.ingreso_id %}
+                  <a class="btn btn-xs btn-info waves-effect"
+                    href="/ingresos/perfil_pago_ingreso/{{ultima_conciliacion.ingreso_id}}" data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle"> Ajuste
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% else %}
+                  Sin Ajuste
+                  {% endif %}
+                </p>
+                <p class="font-16"> <span class="font-16 label label-default">Saldo Sistema</span>
+                  <br> <span class="font-bold">{{"${:,.2f}".format(ultima_conciliacion.saldo_sistema)}}</span>
+                </p>
+              </div>
+
+              <div class="col-sm-12 col-md-4 align-left">
+                <p class="font-18">Status: <span class="font-bold">{{ultima_conciliacion.status}}</span></p>
+                <p class="font-16"> <span class="font-16 label label-danger">Diferencia</span>
+                  <br> <span class="font-bold">
+                    {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario - ultima_conciliacion.saldo_sistema)}}</span>
+                </p>
+              </div>
+            </div>
             {% endif %}
 
           </div>
 
           <div role="tabpanel" class="tab-pane fade" id="cheques">
-              <p class="font-18">Último cheque: <span class="font-bold">{{cuenta.numero_cheque}}</span></p>            
+            <p class="font-18">Último cheque: <span class="font-bold">{{cuenta.numero_cheque}}</span></p>
           </div>
         </div>
 
@@ -121,7 +182,7 @@
                 {% for pago in cuenta.pagos %}
                 <tr>
                   <td>
-                      {% if pago.status == 'por_conciliar' %}
+                    {% if pago.status == 'por_conciliar' %}
                     <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
                     {% endif %}
                   </td>
@@ -192,90 +253,90 @@
           </h2>
         </div>
         <div class="body">
-          <div class="table-responsive">
-              <thead>
-                <tr>
-                  <th><input name="select_all" value="1" class="select-all conciliar-table" type="checkbox" /></th>
-                  <th>ID</th>
-                  <th>Fecha</th>
-                  <th>Forma</th>
-                  <th>Cuenta</th>
-                  <th>Referencia</th>
-                  <th>Monto</th>
-                  <th>Status</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th></th>
-                  <th>ID</th>
-                  <th>Fecha</th>
-                  <th>Forma</th>
-                  <th>Cuenta</th>
-                  <th>Referencia</th>
-                  <th>Monto</th>
-                  <th>Status</th>
-                  <th>Acciones</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                {% for pago in cuenta.pagos_ingresos %}
-                <tr>
-                  <td>
-                    {% if pago.status == 'por_conciliar' %}
-                    <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
-                    {% endif %}
-                  </td>
-                  <td>{{pago.id}}</td>
-                  <td>{{pago.fecha_pago}}</td>
-                  <td>{{pago.forma_pago}}</td>
-                  <td>{{pago.cuenta}}</td>
-                  <td>{{pago.referencia_pago}}</td>
-                  <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
-                  <td>
-                    {% if pago.status == 'solicitado' %}
-                    <span class="badge bg-blue">Solicitado</span>
-                    {% endif %}
-                    {% if pago.status == 'conciliado' %}
-                    <span class="badge bg-green">Liquidado</span>
-                    {% endif %}
-                    {% if pago.status == 'por_conciliar' %}
-                    <span class="badge bg-orange">Por conciliar</span>
-                    {% endif %}
-                    {% if pago.status == 'cancelado' %}
-                    <span class="badge bg-red">Cancelado</span>
-                    {% endif %}
-                  </td>
-                  <td>
-                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
-                      data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                    {% if pago.status == 'solicitado' %}
-                    <a class="btn btn-xs btn-success waves-effect open-generar-pago"
-                      data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
-                      <i class="material-icons" data-toggle="tooltip" data-placement="top"
-                        title="Generar pago">payment</i>
-                    </a>
-                    <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
-                      data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
-                      <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
-                    </a>
-                    {% endif %}
-                    {% if pago.status == 'por_conciliar' %}
-                    <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
-                      data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
-                        class="material-icons">assignment_turned_in</i>
-                    </a>
-                    {% endif %}
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <thead>
+              <tr>
+                <th><input name="select_all" value="1" class="select-all conciliar-table" type="checkbox" /></th>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Forma</th>
+                <th>Cuenta</th>
+                <th>Referencia</th>
+                <th>Monto</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Forma</th>
+                <th>Cuenta</th>
+                <th>Referencia</th>
+                <th>Monto</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for pago in cuenta.pagos_ingresos %}
+              <tr>
+                <td>
+                  {% if pago.status == 'por_conciliar' %}
+                  <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                  {% endif %}
+                </td>
+                <td>{{pago.id}}</td>
+                <td>{{pago.fecha_pago}}</td>
+                <td>{{pago.forma_pago}}</td>
+                <td>{{pago.cuenta}}</td>
+                <td>{{pago.referencia_pago}}</td>
+                <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
+                <td>
+                  {% if pago.status == 'solicitado' %}
+                  <span class="badge bg-blue">Solicitado</span>
+                  {% endif %}
+                  {% if pago.status == 'conciliado' %}
+                  <span class="badge bg-green">Liquidado</span>
+                  {% endif %}
+                  {% if pago.status == 'por_conciliar' %}
+                  <span class="badge bg-orange">Por conciliar</span>
+                  {% endif %}
+                  {% if pago.status == 'cancelado' %}
+                  <span class="badge bg-red">Cancelado</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% if pago.status == 'solicitado' %}
+                  <a class="btn btn-xs btn-success waves-effect open-generar-pago"
+                    data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                    <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                      title="Generar pago">payment</i>
+                  </a>
+                  <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
+                    data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
+                    <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
+                  </a>
+                  {% endif %}
+                  {% if pago.status == 'por_conciliar' %}
+                  <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
+                    data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                    <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
+                      class="material-icons">assignment_turned_in</i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          </td>
         </div>
       </div>
     </div>
@@ -324,22 +385,24 @@
                   <td>{{conciliacion.fecha}}</td>
                   <td>{{"${:,.2f}".format(conciliacion.saldo_usuario)}}</td>
                   <td>{{"${:,.2f}".format(conciliacion.saldo_sistema)}}</td>
-                  <td>{{"${:,.2f}".format(conciliacion.saldo_usuario - conciliacion.saldo_sistema)}} <td>
-                      {% if conciliacion.egreso_id %}
-                      <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago/{{conciliacion.egreso_id}}"
-                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                        <i class="material-icons">visibility</i>
-                      </a>
-                      {% elif conciliacion.ingreso_id %}
-                      <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_pago_ingreso/{{conciliacion.ingreso_id}}"
-                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                        <i class="material-icons">visibility</i>
-                      </a>
-                      {% else %}
-                      Sin Ajuste
-                      {% endif %}
+                  <td>{{"${:,.2f}".format(conciliacion.saldo_usuario - conciliacion.saldo_sistema)}}
+                  <td>
+                    {% if conciliacion.egreso_id %}
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_pago/{{conciliacion.egreso_id}}"
+                      data-toggle="tooltip" data-placement="top" title="Ver detalle"> Ajuste
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    {% elif conciliacion.ingreso_id %}
+                    <a class="btn btn-xs btn-info waves-effect"
+                      href="/ingresos/perfil_pago_ingreso/{{conciliacion.ingreso_id}}" data-toggle="tooltip"
+                      data-placement="top" title="Ver detalle"> Ajuste
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    {% else %}
+                    Sin Ajuste
+                    {% endif %}
                   </td>
-                  <td> <span class="badge bg-red">Incompleto</span></td>
+                  <td> <span class="badge bg-red">{{conciliacion.status}}</span></td>
                   <td></td>
                 </tr>
                 {% endfor %}
@@ -351,6 +414,7 @@
     </div>
   </div>
   {% include "modal_conciliar_movimiento.html" %}
+  {% include "modal_recalcular_conciliacion.html" %}
 
   {% endblock content %}
 
@@ -372,48 +436,114 @@
   </script>
   <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
   </script>
-
-  <script>
-     //Jquery table
-     var table = $('.js-basic-example').DataTable({
-        'order': [1, 'asc'],
-        "columnDefs": [{
-          "targets": 0,
-          "orderable": false
-        }]
+  <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
+    <script >
+      //recalcular conciliacion
+      $(".open-recalcular").on("click", function () {
+        const html =
+          `<input type="hidden" name="conciliacion_id" value="${$(this).data('id')}">
+        <hr>`
+        let element = document.querySelector(".here-rc");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_recalcular_conciliacion').modal('show');
       });
 
-       // "Select all" control
-       $('.select-all').on('click', function () {
-        // Check/uncheck all checkboxes in the table
-        var rows = table.rows({
-          'search': 'applied'
-        }).nodes();
-        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-      });
-
-
-      $("#open-conciliar-multiple").on("click", function () {
-        let pagos = []
-        // Iterate over all checkboxes in the table
-        $('.conciliar-table').each(function () {
-
-          // If checkbox is checked
-          if (this.checked) {
-            pagos.push($(this).val())
+    // hacemos el form sumbit de concilair cuenta con ajax
+    $("#form-rc").submit(function () {
+      $.ajax({
+        url: "/conciliaciones/recalcular_conciliacion",
+        data: $("#form-rc").serialize(),
+        type: "POST",
+        dataType: 'json',
+        success: function (data) {
+          //Si la respuesta es exitosa checamos si la conciliacion es correcta (1) o no (2)
+          $('#modal_recalcular_conciliacion').modal('hide');
+          if (data.res == 1) {
+            swal({
+              title: 'La Conciliación es correcta',
+              text: "El saldo en sistema y el saldo a conciliar son iguales",
+              type: "success"
+            });
+          } else if (data.res == 2) {
+            //Si no es correcta preguntamos si desear crear el ajuste automatico
+            swal({
+              title: "Conciliación no correcta?",
+              text: 'El saldo en sistema $' + data.saldo_sistema + ' y el saldo a conciliar $' + data
+                .saldo_usuario + ' son distintos',
+              type: "warning",
+              showCancelButton: true,
+              cancelButtonText: "Dejar conciliacion abierta",
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Ajustar!",
+              closeOnConfirm: false
+            }, function () {
+              //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
+              $.ajax({
+                url: '/conciliaciones/ajustar_conciliacion/' + data.conciliacion,
+                success: function (data) {
+                  if (data == "exito") {
+                    swal("Ajustado!", "El ajuste fue correcto.", "success");
+                    setTimeout(function () {
+                      location.reload();
+                    }, 2000);
+                  } else {
+                    swal("Ocurrio un error!", "Por favor crea el ajuste manualmente.", "error");
+                  }
+                }
+              })
+            });
           }
-        })
-        $.get({
-          url: '/egresos/get_data_conciliar_multiple',
-          data: {
-            pagos: pagos
-          },
-          success: function (data) {
-            let element = document.querySelector(".here-conciliar");
-            element.innerHTML = "";
-            data.forEach(pago => {
-              const html =
-                `<div class="row" style="margin-bottom:20px;">
+        },
+        error: function (e) {
+          $('#modal_recalcular_conciliacion').modal('hide');
+          swal("Ocurrio un error!", JSON.stringify(e), "error");
+          console.log(JSON.stringify(e));
+        }
+      });
+      return false;
+    });
+
+    //Jquery table
+    var table = $('.js-basic-example').DataTable({
+      'order': [1, 'asc'],
+      "columnDefs": [{
+        "targets": 0,
+        "orderable": false
+      }]
+    });
+
+    // "Select all" control
+    $('.select-all').on('click', function () {
+      // Check/uncheck all checkboxes in the table
+      var rows = table.rows({
+        'search': 'applied'
+      }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+
+    $("#open-conciliar-multiple").on("click", function () {
+      let pagos = []
+      // Iterate over all checkboxes in the table
+      $('.conciliar-table').each(function () {
+
+        // If checkbox is checked
+        if (this.checked) {
+          pagos.push($(this).val())
+        }
+      })
+      $.get({
+        url: '/egresos/get_data_conciliar_multiple',
+        data: {
+          pagos: pagos
+        },
+        success: function (data) {
+          let element = document.querySelector(".here-conciliar");
+          element.innerHTML = "";
+          data.forEach(pago => {
+            const html =
+              `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${pago.beneficiario}</span></p>
                             </div>
@@ -432,14 +562,13 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
                 <hr>`
-              element.insertAdjacentHTML('beforeend', html);
-              $('#modal_conciliar_movimiento').modal('show');
+            element.insertAdjacentHTML('beforeend', html);
+            $('#modal_conciliar_movimiento').modal('show');
 
-            });
+          });
 
-          }
-        });
+        }
       });
-
+    });
   </script>
   {% endblock javascripts %}

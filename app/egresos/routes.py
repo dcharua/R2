@@ -321,6 +321,8 @@ def generar_pago():
                 pago = Pagos.query.get(data["pago_id"])
                 pago.referencia_pago = data["referencia_pago"]
                 pago.fecha_pago = data["fecha_pago"]
+                if pago.forma_pago.nombre.lower() == "cheque":
+                        pago.cuenta.numero_cheque += 1
                 for egreso in pago.egresos:
                         ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
                         egreso.monto_pagado += ep.monto
