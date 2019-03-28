@@ -33,21 +33,26 @@ def captura_ingresos():
                            monto_total = monto_total, comentario = data["comentario"],pagado = False,      
                            status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0)                                                                                
         
-            
+        print('AQUIIII Linea 36 routes/ingresos')
         print(data)  
             
         if ('pagado' in data):
-            monto_pagado = float(data["monto_pagado"])
+            
             
             if ('conciliado_check' in data):
-                status_ingreso = 'conciliado'
-                status_pago = 'conciliado'            
+                            
+                monto_pagado,monto_por_conciliar,pagado = float(data["monto_pagado"]), 0, True
+                if monto_pagado == monto_total: status_ingreso = 'conciliado'
+                else: status_ingreso = 'parcial'
+                status_pago = 'conciliado'
                 
-            else:
-                if monto_pagado == monto_total: status_ingreso = 'por_conciliar'
-                else: status_ingreso = 'por_conciliar'
+            else:                
                 status_pago = 'por_conciliar'
-
+                monto_pagado,monto_por_conciliar,pagado = 0,float(data["monto_pagado"]),False
+                if monto_por_conciliar == monto_total: status_ingreso = 'por_conciliar'
+                else: status_ingreso = 'parcial'
+               
+            
 
             ingreso = Ingresos(cliente_id = data["cliente"],
                            tipo_ingreso_id = data["tipo_ingreso"],
@@ -56,30 +61,20 @@ def captura_ingresos():
                            numero_documento = data["numero_documento"],
                            empresa_id = data["empresa"],
                            referencia = data["referencia"],
-                           monto_total = monto_total, comentario = data["comentario"],pagado = True,      
-                           status = status_ingreso, monto_pagado = monto_pagado, monto_solicitado = 0, monto_por_conciliar = monto_total - monto_pagado)
+                           monto_total = monto_total, comentario = data["comentario"],pagado = pagado,      
+                           status = status_ingreso, monto_pagado = monto_pagado, monto_solicitado = 0, monto_por_conciliar = monto_por_conciliar)
                
             
-            print('Linea 63')
-            try:
-                pago_ingreso = Pagos_Ingresos(status = status_pago, cliente_id = data["cliente"], 
-                                  monto_total = monto_pagado, cuenta_id = data["cuenta_id"], 
-                                  fecha_pago = data["fecha_pago"], fecha_conciliacion = data["fecha_pago"],
-                                  comentario = data["comentario_pago"],
-                                  forma_pago_id = data["forma_pago"],referencia_pago = data["referencia_pago"],
-                                  referencia_conciliacion = data["referencia_conciliacion"]
-                                  )
-            except:
-                print('linea 73')
-                pago_ingreso = Pagos_Ingresos(status = 'conciliado', cliente_id = (data["cliente"]), 
+            pago_ingreso = Pagos_Ingresos(status = status_pago, cliente_id = data["cliente"], 
                                   monto_total = monto_pagado, cuenta_id = int(data["cuenta_id"]), 
-                                  fecha_pago = data["fecha_pago"],
+                                  fecha_pago = data["fecha_pago"], 
                                   comentario = data["comentario_pago"],
-                                  forma_pago_id = int(data["forma_pago"])
+                                  forma_pago_id = data["forma_pago"],
+                                  referencia_pago = data["referencia_pago"],#
+                                  fecha_conciliacion = data["fecha_pago"],
+                                  referencia_conciliacion = data["referencia"],
+                                  \
                                   )
-      
-
-            print('Linea 90')
 
             ep = IngresosHasPagos(ingreso = ingreso, pago = pago_ingreso, monto = monto_total)    
         
