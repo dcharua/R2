@@ -21,12 +21,12 @@
           <!-- Tab panes -->
           <div role="tabpanel" class="tab-pane fade in active" id="datos">
             <div class="row mycontainer">
-              <div class="col-sm-12 col-md-6">
+              <div class="col-sm-12 col-md-8">
                 <p class="font-18">Nombre: <span class="font-bold">{{cuenta.nombre}}</span></p>
                 <p class="font-18">Banco: <span class="font-bold">{{cuenta.banco}}</span></p>
                 <p class="font-18">Número: <span class="font-bold">{{cuenta.numero}}</span></p>
               </div>
-              <div class="col-sm-12 col-md-6 align-left">
+              <div class="col-sm-12 col-md-4 text-left">
                 <p class="font-18">Empresa: <span class="font-bold">{{cuenta.empresa.nombre}}</span></p>
                 <p class="font-18">Saldo actual: <span class="font-bold">{{"${:,.2f}".format(cuenta.saldo)}}</span></p>
               </div>
@@ -50,16 +50,16 @@
                 <p class="font-18">Saldo conciliado ingresos: <span
                     class="font-bold">{{"${:,.2f}".format(saldo_conciliado_ingresos)}}</span></p>
               </div>
-              <div class="col-sm-12 col-md-4">
+              <div class="col-sm-12 col-md-4 text-center" >
                 <p class="font-16"> <span class="font-16 label label-success">Saldo disponible</span>
-                  <br> <span class="font-bold">&nbsp; &nbsp; &nbsp; {{"${:,.2f}".format(cuenta.saldo)}}</span>
+                  <br> <span class="font-bold">{{"${:,.2f}".format(cuenta.saldo)}}</span>
                 </p>
-                <p class="font-16"> <span class="font-16 label label-info">Saldo actual</span>
-                  <br> <span class="font-bold">&nbsp; &nbsp; &nbsp;
+                <p class="font-16"> <span class="font-16 label label-info">Saldo actual </span>
+                  <br> <span class="font-bold">
                     {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
                 </p>
                 <p class="font-16"> <span class="font-16 label label-default">Saldo en sistema</span>
-                  <br> <span class="font-bold">&nbsp; &nbsp; &nbsp;
+                  <br> <span class="font-bold">
                     {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos)}}
                   </span>
                 </p>
@@ -78,60 +78,130 @@
           <div role="tabpanel" class="tab-pane fade" id="conciliacion">
             {% if ultima_conciliacion is not none %}
 
-            <div class="row">
+            <div class="row mycontainer">
               <div class="col-12">
-                <span data-id="{{ultima_conciliacion.id}}" style="float: right; margin-right: 30px;" class="btn btn-warning open-recalcular">Recalcular conciliación</span>
+                  
+                <span data-id="{{ultima_conciliacion.id}}" data-saldo="{{ultima_conciliacion.saldo_usuario}}" data-comentario="{{ultima_conciliacion.comentario}}" style="float: right; margin-right: 30px;"
+                  class="btn btn-warning open-recalcular">Recalcular conciliación</span>
               </div>
             </div>
 
             <div class="row mycontainer">
               <div class="col-sm-12 col-md-4">
-                <p class="font-18">Fecha: <span class="font-bold">{{ultima_conciliacion.fecha}}</span></p>
-                <p class="font-16"> <span class="font-16 label label-success">Saldo Real</span>
-                  <br> <span class="font-bold"> {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario)}}</span>
-                </p>
+                <div class="info-box hover-expand-effect">
+                    <div class="icon bg-blue">
+                        <i class="material-icons">access_time</i>
+                    </div>
+                    <div class="content">
+                        <div class="text">Fecha</div>
+                        <div class="number">{{ultima_conciliacion.fecha}}</div>
+                    </div>
+                </div>
               </div>
 
-              <div class="col-sm-12 col-md-4">
-                <p class="font-18">
-                  {% if ultima_conciliacion.egreso_id %}
-                  <a class="btn btn-xs btn-info waves-effect"
-                    href="/egresos/perfil_pago/{{ultima_conciliacion.egreso_id}}" data-toggle="tooltip"
-                    data-placement="top" title="Ver detalle"> Ajuste
-                    <i class="material-icons">visibility</i>
-                  </a>
-                  {% elif ultima_conciliacion.ingreso_id %}
-                  <a class="btn btn-xs btn-info waves-effect"
-                    href="/ingresos/perfil_pago_ingreso/{{ultima_conciliacion.ingreso_id}}" data-toggle="tooltip"
-                    data-placement="top" title="Ver detalle"> Ajuste
-                    <i class="material-icons">visibility</i>
-                  </a>
-                  {% else %}
-                  Sin Ajuste
-                  {% endif %}
-                </p>
-                <p class="font-16"> <span class="font-16 label label-default">Saldo Sistema</span>
-                  <br> <span class="font-bold">{{"${:,.2f}".format(ultima_conciliacion.saldo_sistema)}}</span>
-                </p>
+              <div class="col-sm-12 col-md-4 text-center">
+                  <p class="font-16"> <span class="font-16 label label-success">Saldo real</span>
+                    <br> <span class="font-bold"> {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario)}}</span>
+                  </p>
+                  <p class="font-16"> <span class="font-16 label label-info">Saldo sistema </span>
+                    <br> <span class="font-bold">
+                      {{"${:,.2f}".format(ultima_conciliacion.saldo_sistema)}}</span>
+                  </p>
+                  <p class="font-16"> <span class="font-16 label label-default">Diferencia</span>
+                    <br> <span class="font-bold">
+                        {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario - ultima_conciliacion.saldo_sistema)}}
+                    </span>
+                  </p> 
               </div>
 
               <div class="col-sm-12 col-md-4 align-left">
-                <p class="font-18">Status: <span class="font-bold">{{ultima_conciliacion.status}}</span></p>
-                <p class="font-16"> <span class="font-16 label label-danger">Diferencia</span>
-                  <br> <span class="font-bold">
-                    {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario - ultima_conciliacion.saldo_sistema)}}</span>
-                </p>
+                  {% if ultima_conciliacion.status == 'correcta' %}
+                  <div class="info-box hover-expand-effect">
+                      <div class="icon bg-green">
+                          <i class="material-icons">thumb_up</i>
+                      </div>
+                      <div class="content">
+                          <div class="text">Status</div>
+                          <div class="number">Correcta</div>
+                      </div>
+                  </div>
+                  {% elif ultima_conciliacion.status == 'con_ajuste' %}
+                  <div class="info-box hover-expand-effect" style="margin-bottom:0;">
+                      <div class="icon bg-red">
+                          <i class="material-icons">thumb_down</i>
+                      </div>
+                      <div class="content">
+                          <div class="text">Status</div>
+                          <div class="number">Ajustada </div>
+                          
+                      </div>
+                  </div>
+                  {% elif ultima_conciliacion.status == 'por_revisar' %}
+                  <div class="info-box hover-expand-effect">
+                      <div class="icon bg-yellow">
+                          <i class="material-icons">thumbs_up_down</i>
+                      </div>
+                      <div class="content">
+                          <div class="text">Status</div>
+                          <div class="number">Revisar</div>
+                      </div>
+                  </div>
+                  {% endif %}
+
+                  <span class="font-18" >
+                      {% if ultima_conciliacion.egreso_id %}
+                      <a class="btn btn-xs bg-red waves-effect" style="width:100%;"
+                        href="/egresos/perfil_pago/{{ultima_conciliacion.egreso_id}}" data-toggle="tooltip"
+                        data-placement="top" title="Ver detalle"> Ajuste
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      {% elif ultima_conciliacion.ingreso_id %}
+                      <a class="btn btn-xs bg-red waves-effect" style="width:100%;"
+                        href="/ingresos/perfil_pago_ingreso/{{ultima_conciliacion.ingreso_id}}" data-toggle="tooltip"
+                        data-placement="top" title="Ver detalle"> Ajuste
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      {% endif %}
+                    </span>
               </div>
             </div>
+
+            <div class="row mycontainer">
+                <div class="col-sm-12">
+                  <div class="border-box">
+                    <p class="font-18 font-bold">Comentarios</p>
+                    <p class="font-18">{{ultima_conciliacion.comentario}} </p>
+                  </div>
+                </div>
+              </div>
             {% endif %}
-
           </div>
-
           <div role="tabpanel" class="tab-pane fade" id="cheques">
-            <p class="font-18">Último cheque: <span class="font-bold">{{cuenta.numero_cheque}}</span></p>
+
+            <div class="row mycontainer">
+              <div class="col-12">
+                <span style="float: right; margin-right: 30px;" data-toggle="modal" data-target="#numero_cheque"
+                  class="btn btn-success">Editar número de cheque</span>
+              </div>
+            </div>
+
+            <div class="row mycontainer">
+                <div class="col-sm-12 col-md-4">
+            <div class="info-box-4 hover-zoom-effect">
+                <div class="icon">
+                    <i class="material-icons col-blue">account_balance</i>
+                </div>
+                <div class="content">
+                    <div class="text">Último cheque</div>
+                    <div class="number">{{cuenta.numero_cheque}}</div>
+                </div>
+            </div> 
+
           </div>
         </div>
 
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -363,7 +433,6 @@
                   <th>Diferencia </th>
                   <th>Ajuste</th>
                   <th>Status</th>
-                  <th>Acciones</th>
                 </tr>
               </thead>
               <tfoot>
@@ -375,7 +444,6 @@
                   <th>Diferencia </th>
                   <th>Ajuste</th>
                   <th>Status</th>
-                  <th>Acciones</th>
                 </tr>
               </tfoot>
               <tbody>
@@ -402,8 +470,15 @@
                     Sin Ajuste
                     {% endif %}
                   </td>
-                  <td> <span class="badge bg-red">{{conciliacion.status}}</span></td>
-                  <td></td>
+                  <td>
+                      {% if conciliacion.status == 'correcta' %}
+                       <span class="badge bg-green">Correcta</span>
+                      {% elif conciliacion.status == 'con_ajuste' %}
+                       <span class="badge bg-red">Ajustada</span>
+                      {% elif conciliacion.status == 'por_revisar' %}
+                       <span class="badge bg-yellow">Revisar</span>
+                      {% endif %}
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -415,6 +490,36 @@
   </div>
   {% include "modal_conciliar_movimiento.html" %}
   {% include "modal_recalcular_conciliacion.html" %}
+  {% include "modal_generar_pago.html" %}
+  <!-- Modal numero de cheque -->
+  <div class="modal fade" id="numero_cheque" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <form class="form-horizontal form-label-left" id="user_inputs" method="POST"
+          action="{{ url_for('conciliacion_blueprint.cambiar_numero_cheque', cuenta_id=cuenta.id) }}">
+          <div class="modal-header">
+            <h3 class="modal-title" id="largeModalLabel"> Editar número de cheque</h3>
+          </div>
+          <div class="modal-body">
+            <div class="row" style="margin-bottom:20px !important">
+              <div class="col-sm-12">
+                <label for="number"> Numero</label>
+                <input type='number' class="form-control" name="number" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Cambiar</button>
+            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+              <i class="material-icons">close</i>
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
 
   {% endblock content %}
 
@@ -437,17 +542,19 @@
   <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
   </script>
   <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
-    <script >
-      //recalcular conciliacion
-      $(".open-recalcular").on("click", function () {
-        const html =
-          `<input type="hidden" name="conciliacion_id" value="${$(this).data('id')}">
+  <script>
+    //recalcular conciliacion
+    $(".open-recalcular").on("click", function () {
+      const html =
+        `<input type="hidden" name="conciliacion_id" value="${$(this).data('id')}">
         <hr>`
-        let element = document.querySelector(".here-rc");
-        element.innerHTML = "";
-        element.insertAdjacentHTML('beforeend', html);
-        $('#modal_recalcular_conciliacion').modal('show');
-      });
+      $('#saldo-input').val($(this).data('saldo'));
+      $('#comentario-input').val($(this).data('comentario'));
+      let element = document.querySelector(".here-rc");
+      element.innerHTML = "";
+      element.insertAdjacentHTML('beforeend', html);
+      $('#modal_recalcular_conciliacion').modal('show');
+    });
 
     // hacemos el form sumbit de concilair cuenta con ajax
     $("#form-rc").submit(function () {
@@ -503,6 +610,7 @@
       });
       return false;
     });
+
 
     //Jquery table
     var table = $('.js-basic-example').DataTable({
@@ -570,5 +678,105 @@
         }
       });
     });
+
+    //Modal generar pago
+    $(".open-generar-pago").on("click", function () {
+      $.ajax({
+        url: $(this).attr("data-url"),
+        success: function (data) {
+          const html =
+            `<div class="row" style="margin-bottom:10px;">
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
+                                </div>
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Monto a total: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-bottom:10px;">
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
+                                </div>
+                                <div class="col-sm-12 col-md-6 ">
+                                    <p class="font-18">Forma de pago: <span class="font-bold">${data.forma_pago}</span></p>
+                                </div>
+                            </div>
+                    <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                    <hr>
+                    `
+          let element = document.querySelector(".generar_here");
+          element.innerHTML = "";
+          element.insertAdjacentHTML('beforeend', html);
+
+          if (data.forma_pago.toLowerCase() == 'cheque') {
+            $('#referencia_pago').val(data.numero_cheque);
+            let element = document.querySelector(".alert-here");
+            element.innerHTML = "";
+            const ref =
+              `<div class="alert alert-warning alert-dismissible" style="margin-bottom:0" role="alert">
+                                Revisar que el folio del cheque sea correcto
+                            </div>`
+            element.insertAdjacentHTML('beforeend', ref);
+          }
+
+          if (data.forma_pago.toLowerCase() == 'transferencia') {
+            let element = document.querySelector(".alert-here");
+            element.innerHTML = "";
+            const ref =
+              `<div class="alert alert-info alert-dismissible" style="margin-bottom:0" role="alert">
+                                Revisar que la cuenta del beneficiario sea ${data.cuenta_beneficiario}
+                            </div>`
+            element.insertAdjacentHTML('beforeend', ref);
+          }
+          $('#modal_generar_pago').modal('show');
+        }
+      });
+    });
+
+
+    // Conciliado check for modal generar pago
+    $("#conciliado_check").change(function () {
+      if (this.checked) {
+        $("#referencia_conciliacion").fadeIn()
+      } else {
+        $("#referencia_conciliacion").fadeOut()
+      }
+    });
+
+     //Modal Conciliar
+     $(".open-conciliar").on("click", function () {
+        $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Referencia de pago : <span class="font-bold">${data.referencia}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <hr>`
+                let element = document.querySelector(".here-conciliar");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#modal_conciliar_movimiento').modal('show');
+            }
+        });
+    });
+
   </script>
   {% endblock javascripts %}

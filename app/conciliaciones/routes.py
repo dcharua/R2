@@ -102,9 +102,9 @@ def conciliar_cuenta():
         conciliacion = Conciliaciones(cuenta_id=data['cuenta_id'], fecha=now, saldo_usuario=data["saldo"], 
         saldo_sistema=saldo_sistema, comentario=data["comentario"], status=status)
         if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
-            conciliacion.status = 'cerrada'
+            conciliacion.status = 'correcta'
         else:
-            conciliacion.status = 'abierta'
+            conciliacion.status = 'por_revisar'
         db.session.add(conciliacion)
         db.session.commit()   
         if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
@@ -171,10 +171,11 @@ def recalcular_conciliacion():
         
         conciliacion.saldo_usuario = data["saldo"]
         conciliacion.saldo_sistema = saldo_sistema
+        conciliacion.comentario = data["comentario"]
         if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
-            conciliacion.status = 'cerrada'
+            conciliacion.status = 'correcta'
         else:
-            conciliacion.status = 'abierta'
+            conciliacion.status = 'por_revisar'
         db.session.add(conciliacion)
         db.session.commit()   
         if float(conciliacion.saldo_usuario) == float(conciliacion.saldo_sistema):
@@ -182,3 +183,14 @@ def recalcular_conciliacion():
         else:
             return jsonify({'res':2, 'conciliacion':conciliacion.id ,'saldo_sistema': float(conciliacion.saldo_sistema), 'saldo_usuario': float(conciliacion.saldo_usuario)})
     return jsonify("error")
+
+@blueprint.route('/cambiar_numero_cheque/<int:cuenta_id>', methods=['GET', 'POST'])
+@login_required
+def cambiar_numero_cheque(cuenta_id):
+    if request.form:
+        cuenta = Cuentas.query.get(cuenta_id)
+        data = request.form
+        cuenta.numero_cheque = data["number"]
+        db.session.commit() 
+        return redirect("/conciliaciones/perfil_cuenta/" + str(cuenta_id))    
+        

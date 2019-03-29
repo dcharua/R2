@@ -1,6 +1,6 @@
 <!-- Modal pagos -->
 <div class="modal fade" id="modal_recalcular_conciliacion" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <center>
@@ -15,16 +15,16 @@
                 <div class="modal-body">
                     <div class="input-group">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6 ">
+                            <div class="col-md-12 ">
                                 <label for="saldo">Saldo a conciliar</label>
-                                <input class="form-control" type="text" data-validation="number"
+                                <input class="form-control" id="saldo-input" type="text" data-validation="number"
                                     data-validation-allowing="float" name="saldo">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <label style="margin-top: 7px;" for="comentario">Comentario:</label>
-                                <textarea class="form-control" style="width:100%" id="comentario"
+                                <textarea class="form-control" id="comentario-input" style="width:100%" id="comentario"
                                     name="comentario"></textarea>
                             </div>
                         </div>
