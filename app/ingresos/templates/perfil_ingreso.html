@@ -118,7 +118,7 @@
 
                 <tbody>
                   {% for pago in ingreso.pagos_ingresos %}
-                  {% if pago.status != 'conciliado' %}
+                  {% if (pago.status != 'conciliado' and pago.status != 'cancelado')  %}
                   <tr>
                     <td>{{pago.id}}</td>
                     <td>{{pago.forma_pago}}</td>
@@ -198,7 +198,7 @@
                     
                 <tbody>
                   {% for pago in ingreso.pagos_ingresos %}
-                  {% if pago.status == 'conciliado' %}
+                  {% if pago.status == 'conciliado' or pago.status == 'cancelado' %}
                   <tr>
 
                     <td>{{pago.id}}</td>
@@ -209,16 +209,13 @@
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                     <td> {% if pago.status == 'conciliado' %}
                       <span class="badge bg-green">Liquidado</span>
-                      {% endif %}
-                      {% if pago.status == 'por_conciliar' %}
-                      <span class="badge bg-orange">Por conciliar</span>
-                      {% endif %}
+                      {% endif %}  
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-orange">Cancelado</span>
+                      <span class="badge bg-red">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
-                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago/{{pago.id}}' data-toggle="tooltip"
+                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-toggle="tooltip"
                         data-placement="top" title="Ver detalle">
                         <i class="material-icons">visibility</i>
                       </a>

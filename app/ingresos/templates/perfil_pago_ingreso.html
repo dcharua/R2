@@ -7,30 +7,63 @@
     <!-- INFO CARD -->
     <div class="card">
       <div class="header bg-black">
-        <h2 class="font-24">Pago</h2>
+        <h2 class="font-24">Pago Ingreso</h2>
+        <div class="select-btn-group">
+
+          {% if pago.status == 'por_conciliar'%}
+          <span class=" btn bg-deep-purple open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id=pago.id) }}">Conciliar</span>
+          {% endif %}
+          {% if pago.status == 'conciliado' %}
+          <span id="desconciliar-pago" class=" btn bg-purple open-desconciliar" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.desconciliar_pago_ingreso', pago_id=pago.id) }}">Desconciliar
+            pago</span>
+          {% endif %}
+          {% if pago.status != 'solicitado' and pago.status != 'cancelado' %}
+          <span id="open-conciliar-multiple" class="btn bg-red cancel-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.cancelar_pago_ingreso', pago_id=pago.id) }}">Cancelar
+            pago</span>
+          {% endif %}
+          {% if pago.status == 'solicitado' and pago.status != 'cancelado' %}
+          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
+            pago</span>
+          {% endif %}
+          </div>
       </div>
 
       <div class="body">
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-6">
-            <p class="font-18">Id: <span class="font-bold">15615156</span></p>
-            <p class="font-18">Cliente: <span class="font-bold">Tom Brady</span></p>
-            <p class="font-18">Referencia: <span class="font-bold">15615156</span></p>
-            <p class="font-18">Forma de pago: <span class="font-bold">Efectivo</span></p>
-            <p class="font-18">Monto total: <span class="font-bold">$32,152</span></p>
+            <p class="font-18">Id: <span class="font-bold">{{pago.id}}</span></p>
+            <p class="font-18">Cliente: <span class="font-bold">{{pago.cliente}}</span></p>
+            <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
+            <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
+            <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
           </div>
-          <div class="col-sm-12 col-md-6 align-right">
-            <p class="font-18">Status: <span class="badge bg-red">Incompleto</span></p>
-            <p class="font-18">Empresa: <span class="font-bold">Shoes 4 life</span></p>
-            <p class="font-18">Fecha de pago: <span class="font-bold">22 dic 2018</span></p>
-            <p class="font-18">Cuenta de banco: <span class="font-bold">Bancomer</span></p>
+          <div class="col-sm-12 col-md-6 align-left">
+
+            <p class="font-18">Status:
+              {% if pago.status == 'conciliado' %}
+              <span class="badge bg-green">Liquidado</span>
+              {% endif %}
+              {% if pago.status == 'por_conciliar' %}
+              <span class="badge bg-orange">Por conciliar</span>
+              {% endif %}
+              {% if pago.status == 'solicitado' %}
+              <span class="badge bg-blue">Solicitado</span>
+              {% endif %}
+              {% if pago.status == 'cancelado' %}
+              <span class="badge bg-red">Cancelado</span>
+              {% endif %}
+            </p>
+            <p class="font-18">Empresa: <span class="font-bold">{{pago.cuenta.empresa}}</span></p>
+            <p class="font-18">Fecha de pago: <span class="font-bold">{{pago.fecha_pago}}</span></p>
+            <p class="font-18">Fecha de conciliacion: <span class="font-bold">{{pago.fecha_conciliacion}}</span></p>
+            <p class="font-18">Cuenta de banco: <span class="font-bold">{{pago.cuenta}}</span></p>
           </div>
         </div>
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">Lorem ipsum ldoreniducn ounc iub h </p>
+              <p class="font-18">{{pago.comentario}} </p>
             </div>
           </div>
         </div>
@@ -38,10 +71,11 @@
     </div>
 
 
-    <!-- DETALLES TABLE -->
+    
+<!-- DETALLES TABLE -->
     <div class="card">
-      <div class="header">
-        <h2>Conceptos de pago</h2>
+      <div class="header bg-black">
+        <h2>Cuentas o Documentos pagados</h2>
       </div>
       <div class="body">
         <div class="table-responsive">
@@ -49,41 +83,70 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Tipo de ingreso</th>
-                <th># de documento</th>
+                <th>Cliente</th>
+                <th># Documento</th>
                 <th>Monto</th>
+                <th>Status</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tfoot>
               <tr>
                 <th>ID</th>
-                <th>Tipo de ingreso</th>
-                <th># de documento</th>
+                <th>Cliente</th>
+                <th># Documento</th>
                 <th>Monto</th>
+                <th>Status</th>
                 <th>Acciones</th>
               </tr>
             </tfoot>
+
             <tbody>
+              {% for ingreso in pago.ingresos %}
               <tr>
-                <td>9</td>
-                <td>Venta</td>
-                <td>9743ndo</td>
-                <td>$12,155</td>
+                <td>{{ingreso.id}}</td>
+                <td>{{ingreso.cliente}}</td>
+                <td>{{ingreso.numero_documento}}</td>
+                <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
                 <td>
-                  <a class="btn btn-small btn-info waves-effect" href="/ingresos/perfil_ingresos" data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                  {% if ingreso.status == 'pendiente'%}
+                  <span class="badge bg-blue">Pendiente</span>
+                  {% endif %}
+                  {% if ingreso.status == 'solicitado'%}
+                  <span class="badge bg-green">Solicitado</span>
+                  {% endif %}
+                  {% if ingreso.status == 'parcial'%}
+                  <span class="badge bg-orange">Parcial</span>
+                  {% endif %}
+                  {% if ingreso.status == 'liquidado'%}
+                  <span class="badge bg-green">Liquidado</span>
+                  {% endif %}
+                  {% if ingreso.status == 'cancelado'%}
+                  <span class="badge bg-red">Cancelado</span>
+                  {% endif %}
+                  {% if ingreso.status == 'por_conciliar'%}
+                  <span class="badge bg-orange">Por conciliar</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_ingreso/{{ingreso.id}}" data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
-                  <a class="btn btn-small btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
+                  <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
                     <i class="material-icons">delete</i>
-                  </a>
+                  </a> -->
                 </td>
               </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
     </div>
+
+    {% include "modal_conciliar_movimiento_ingreso.html" %}
+   {% include "modal_generar_pago.html" %}
 
 
     {% endblock content %}
@@ -100,7 +163,7 @@
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
     <script>
       $('.js-basic-example').DataTable({
         dom: 'Bfrtip',
@@ -108,6 +171,123 @@
         buttons: [
           'copy', 'csv', 'excel', 'pdf', 'print'
         ]
+      });
+
+      //Borrar pago con sweer alert
+      $('.delete-pago').on('click', function () {
+        var element = this;
+        swal({
+          title: "Estas seguro?",
+          text: "Se borrara el registro de esta solicitud de pago!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, borrar!",
+          closeOnConfirm: false
+        }, function () {
+          $.ajax({
+            url: $(element).attr("data-url"),
+            success: function (data) {
+              if (data) {
+                swal("Borrado!", "El pago ha sido eliminado.", "success");
+                setTimeout(function () {
+                  location.replace('/egresos/cuentas_por_pagar');
+                }, 2000);
+              }
+            }
+          })
+
+        });
+      });
+
+      //cancelar pago con sweer alert
+      $('.cancel-pago').on('click', function () {
+        var element = this;
+        swal({
+          title: "Estas seguro?",
+          text: "Se cancelara el pago y se restara de sus documentos asociados!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, borrar!",
+          closeOnConfirm: false
+        }, function () {
+          $.ajax({
+            url: $(element).attr("data-url"),
+            success: function (data) {
+              if (data) {
+                swal("Borrado!", "El pago ha sido cancelado.", "success");
+                setTimeout(function () {
+                  location.reload();
+                }, 2000);
+              }
+            }
+          })
+
+        });
+      });
+
+
+
+     
+    //Modal Conciliar
+    $(".open-conciliar").on("click", function () {
+        $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">$ ${data.monto_total}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <hr>`
+                let element = document.querySelector(".here");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#modal_conciliar_movimiento_ingreso').modal('show');
+            }
+        });
+    });
+
+
+       //cancelar pago con sweer alert
+       $('.open-desconciliar').on('click', function () {
+        var element = this;
+        swal({
+          title: "Estas seguro?",
+          text: "Se desconciliará el pago",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Si, desconciliar!",
+          closeOnConfirm: false
+        }, function () {
+          console.log(element)
+          $.ajax({
+            url: $(element).attr("data-url"),
+            success: function (data) {
+              if (data) {
+                swal("Borrado!", "El pago ha sido desconciliado.", "success");
+                setTimeout(function () {
+                  location.reload();
+                }, 2000);
+              }
+            }
+          })
+
+        });
       });
     </script>
     {% endblock javascripts %}
