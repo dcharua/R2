@@ -96,3 +96,10 @@ def otros():
     formas_pago = FormasPago.query.all()
     tipo_ingresos = Tipo_Ingreso.query.all()
     return render_template("otros.html", tipo_ingresos = tipo_ingresos, categorias=categorias, conceptos=conceptos, empresas=empresas, formas_pago=formas_pago)
+
+@blueprint.route('/directorio_contactos', methods=['GET', 'POST'])
+@login_required
+def directorio_contactos():
+    beneficiarios = Beneficiarios.query.all()
+    clientes = Clientes.query.all()
+    return render_template("directorio_contactos.html", beneficiarios = beneficiarios, clientes=clientes)
