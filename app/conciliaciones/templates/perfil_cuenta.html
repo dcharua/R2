@@ -572,6 +572,7 @@
               text: "El saldo en sistema y el saldo a conciliar son iguales",
               type: "success"
             });
+            setTimeout(function () {location.reload();}, 2000);
           } else if (data.res == 2) {
             //Si no es correcta preguntamos si desear crear el ajuste automatico
             swal({

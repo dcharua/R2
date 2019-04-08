@@ -1,0 +1,100 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header bg-black">
+              <h2>
+                Directorio de contactos
+              </h2>
+            </div>
+            
+            <div class="body">
+      
+              <div class="table-responsive">
+      
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0" width="100%">
+      
+                        <thead>
+                                <tr>
+                                <th>Empresa</th>
+                                  <th>Nombre</th>
+                                  <th>Correo</th>
+                                  <th>Teléfono</th>
+                                  <th>Extensión</th>
+                                  <th>Puesto</th>
+                                </tr>
+                              </thead>
+                          
+                              <tbody>
+                          {% for beneficiario in beneficiarios %}
+                                {% for contacto in beneficiario.contacto %}
+                                <tr>
+                                <td>{{beneficiario.nombre}}</td>
+                                  <td>{{contacto.nombre}}</td>
+                                  <td>{{contacto.correo}}</td>
+                                  <td>{{contacto.telefono}}</td>
+                                  <td>{{contacto.extension}}</td>
+                                  <td>{{contacto.puesto}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endfor %}
+
+                                {% for cliente in clientes %}
+                                {% for contacto in cliente.contacto %}
+                                <tr>
+                                <td>{{cliente.nombre}}</td>
+                                  <td>{{contacto.nombre}}</td>
+                                  <td>{{contacto.correo}}</td>
+                                  <td>{{contacto.telefono}}</td>
+                                  <td>{{contacto.extension}}</td>
+                                  <td>{{contacto.puesto}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endfor %}
+                              </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+{{ super() }}
+
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+
+<script>
+
+ //Jquery table
+  var table = $('.js-basic-example').DataTable({
+
+          dom: 'Bfrtip',
+          responsive: true,
+          "order": [[ 1, 'desc' ], [ 2, 'asc' ]],
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ],
+          "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+        } ]
+      });
+</script>
+        {% endblock javascripts %}
