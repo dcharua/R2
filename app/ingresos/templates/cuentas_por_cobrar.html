@@ -523,5 +523,13 @@
     }).nodes();
     $('input[type="checkbox"]', rows).prop('checked', this.checked);
   });
+                
+$("#conciliado_check").change(function () {
+    if (this.checked) {
+      $("#referencia_conciliacion").prop('disabled', false);
+    } else {
+      $("#referencia_conciliacion").prop('disabled', true);
+    }
+  });
 </script>
 {% endblock javascripts %}

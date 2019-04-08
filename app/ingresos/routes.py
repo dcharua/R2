@@ -19,7 +19,7 @@ def captura_ingresos():
     
     if request.form:
         data = request.form
-        montos = list(map(int, data.getlist("monto")))
+        montos = list(map(float, data.getlist("monto")))
         monto_total = float(sum(montos))
 
         
@@ -258,26 +258,46 @@ def mandar_cobrar():
         print(data)
         ingreso = Ingresos.query.get(data["ingreso_id"])
         
-        if ('parcial' in data):
+        if ('conciliado_check' in data):
+            status_pago = 'conciliado'
+    
+            if ('parcial' in data):
                 monto_total_pago = float(data["monto_parcial"])
-        else:
+                ingreso.status = 'parcial'
+            else:
                 monto_total_pago = float(ingreso.monto_total - ingreso.monto_pagado - ingreso.monto_por_conciliar)
+                ingreso.status = 'conciliado'
+                            
+            ingreso.monto_pagado = float(ingreso.monto_pagado) + monto_total_pago 
+            ingreso.setStatus()
+            status_pago = 'conciliado'
+            
+        else:
+            
+            if ('parcial' in data):
+                monto_total_pago = float(data["monto_parcial"])
+                ingreso.status = 'parcial'
+            else:
+                monto_total_pago = float(ingreso.monto_total - ingreso.monto_pagado - ingreso.monto_por_conciliar)
+                ingreso.status = 'por_conciliar'
+            
+            status_pago = 'por_conciliar'
+            ingreso.monto_por_conciliar = float(ingreso.monto_por_conciliar) + monto_total_pago
+            ingreso.setStatus()
+           
+        if 'referencia_conciliacion' in data: referencia_conciliacion = data["referencia_conciliacion"]
+        else: referencia_conciliacion = ''
                 
-        pago = Pagos_Ingresos(status = 'por_conciliar', cliente = ingreso.cliente, 
+        pago = Pagos_Ingresos(status = status_pago , cliente = ingreso.cliente, 
                               monto_total = monto_total_pago, cuenta_id = data["cuenta_id"], 
-                              forma_pago_id = data["forma_pago_id"],referencia_pago = data["ingreso_id"])
+                              forma_pago_id = data["forma_pago_id"],referencia_pago = data["ingreso_id"],
+                              referencia_conciliacion = referencia_conciliacion)
       
         ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
 
                 
-        ingreso.monto_por_conciliar = float(ingreso.monto_por_conciliar) + monto_total_pago  
+        
 
-        
-        if ingreso.monto_total == float(ingreso.monto_pagado) + float(ingreso.monto_por_conciliar):            
-                ingreso.status = 'por_conciliar'
-                
-        else: ingreso.status = 'parcial'
-        
         db.session.add(ep)
         db.session.add(pago)
         db.session.commit()
