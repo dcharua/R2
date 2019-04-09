@@ -47,7 +47,19 @@ def agregar_beneficiario():
         db.session.commit()   
         return redirect("/administracion/beneficiarios")
 
-@blueprint.route('/agregar_categoria_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
+@blueprint.route('/agregar_categoria_cliente/<int:cliente_id>', methods=['GET', 'POST'])
+@login_required
+def agregar_categoria_cliente(cliente_id):
+    if request.form:
+        data = request.form
+        cliente = Clientes.query.get(cliente_id) 
+        for i in range(len(data.getlist("categoria"))):
+                categoria = Categorias.query.get(data.getlist("categoria")[i])
+                cliente.categorias.append(categoria)
+        db.session.commit()   
+    return redirect('/administracion/perfil_de_cliente/'+str(cliente_id))
+
+@blueprint.route('/agregar_categoria_cliente/<int:cliente_id>', methods=['GET', 'POST'])
 @login_required
 def agregar_categoria_beneficiario(beneficiario_id):
     if request.form:
@@ -59,7 +71,6 @@ def agregar_categoria_beneficiario(beneficiario_id):
         db.session.commit()   
     return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))
 
-
 @blueprint.route('/clientes', methods=['GET', 'POST'])
 @login_required
 def clientes():
@@ -68,10 +79,14 @@ def clientes():
 
 @blueprint.route('/perfil_de_cliente/<int:cliente_id>', methods=['GET', 'POST'])
 def perfil_de_cliente(cliente_id):
+
     cliente = Clientes.query.get(cliente_id)
     contactos_cliente = ContactoCliente.query.filter(ContactoCliente.cliente_id == cliente_id).all()
-
-    return render_template("perfil_de_cliente.html", cliente = cliente, contactos_cliente = contactos_cliente)   
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    categorias = Categorias.query.all()
+   
+    return render_template("perfil_de_cliente_2.html", cliente = cliente,contactos_cliente=contactos_cliente,formas_pago = formas_pago,cuentas = cuentas)#, contactos_cliente = contactos_cliente)   
 
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required

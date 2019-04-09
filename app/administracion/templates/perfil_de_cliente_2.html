@@ -3,29 +3,36 @@
 {% block content %}
 <div class="row">
   <div class="col-sm-12">
-
-
-    <div class="row">
-        <div class="col-sm-12">
-      <!--
-          <!-- INFO CARD -->
-          <div class="card">
-            <div class="header bg-black">
-              <h2 class="font-24">Datos Cliente</h2>
-            </div>
       
-            <div class="body">
-              <div class="row mycontainer">
-                <div class="col-sm-12 col-md-6">
-                  <p class="font-18">Cliente: <span class="font-bold">{{cliente.nombre}}</span></p>
-                  <p class="font-18">RFC: <span class="font-bold">{{cliente.RFC}}</span></p>
-                  <p class="font-18">Direccion: <span class="font-bold">{{cliente.direccion}}</span></p>                  
-                  <p class="font-18">Razón social: <span class="font-bold">{{cliente.razon_social}}</span></p>
-                  
-                </div>
-                <div class="col-sm-12 col-md-6 align-left">
-                  <p class="font-18">Saldo : $ <span class="font-bold">{{cliente.saldo}}</span></p>
-                  <p class="font-18">Status:
+            <!-- INFO CARD -->
+        <div class="card">
+          <div class="header bg-black">
+            <h2 class="font-24">{{cliente.nombre}}</h2>
+          </div>
+
+          <div class="body">
+            <ul class="nav nav-tabs tab-nav-right" role="tablist">
+              <li role="presentation" class="active"><a href="#datos" data-toggle="tab">Datos generales</a></li>
+              <li role="presentation"><a href="#contactos" data-toggle="tab">Contactos</a></li>
+              <li role="presentation"><a href="#categorias" data-toggle="tab">Categorías</a></li>
+              <li role="presentation"><a href="#comentarios" data-toggle="tab">Comentarios</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="datos">
+                <div class="row mycontainer">
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18">Beneficiario: <span class="font-bold">{{cliente.nombre}}</span></p>
+                    <p class="font-18">RFC: <span class="font-bold">{{cliente.RFC}}</span></p>
+                    <p class="font-18">Direccion: <span class="font-bold">{{cliente.direccion}}</span></p>
+                    <p class="font-18">Razón social: <span class="font-bold">{{cliente.razon_social}}</span></p>
+
+
+                  </div>
+                  <div class="col-sm-12 col-md-6 align-left">
+
+                    <p class="font-18">Status:
                       {% if cliente.status == 'pendiente'%}
                       <span class="badge bg-blue">Pendiente</span>
                       {% endif %}
@@ -44,20 +51,78 @@
                       {% if cliente.status == 'por_conciliar'%}
                       <span class="badge bg-orange">Por conciliar</span>
                       {% endif %}
-                  </p>
-                  <p class="font-18">Banco: <span class="font-bold">{{cliente.banco}}</span></p>
-                  <p class="font-18">Cuenta: <span class="font-bold">{{cliente.cuenta_banco}}</span></p>
+                    </p>
+                    <p class="font-18">Banco: <span class="font-bold">{{cliente.banco}}</span></p>
+                    <p class="font-18">Cuenta: <span class="font-bold">{{cliente.cuenta_banco}}</span></p>
+                  </div>
                 </div>
+              </div>
+
+              <div role="tabpanel" class="tab-pane fade" id="contactos">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Correo</th>
+                      <th>Teléfono</th>
+                      <th>Extensión</th>
+                      <th>Puesto</th>
+                      <th>Editar</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for contacto in cliente.contacto %}
+                    <tr>
+                      <td>{{contacto.nombre}}</td>
+                      <td>{{contacto.correo}}</td>
+                      <td>{{contacto.telefono}}</td>
+                      <td>{{contacto.extension}}</td>
+                      <td>{{contacto.puesto}}</td>
+
+                      <td>
+                        <a class="btn btn-xs btn-info waves-effect" href="/" data-toggle="tooltip" data-placement="top"
+                          title="Editar Contacto">
+                          <i class="material-icons">visibility</i>
+                        </a>
+                      </td>
+
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              <div role="tabpanel" class="tab-pane fade" id="categorias">
+                <span data-toggle="modal" data-target="#modal_agregar_categoria_beneficiario" class="btn btn-success f-right">Asignar
+                  categoría</span>
+                <ul>
+                  {%for categoria in cliente.categorias%}
+                  <li> <b>{{categoria}} </b>
+                    <ul>
+                      {%for concepto in categoria.conceptos%}
+                      <li>{{concepto}}</li>
+                      {% endfor %}
+                    </ul>
+
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="comentarios">
+                <p>{{cliente.comentarios }}</p>
               </div>
             </div>
           </div>
+        </div>
 
 
-   Basic Examples 
-        <div class="row clearfix">
+    <!-- PAGOS -->
+    
+    <div class="row clearfix">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
-              <div class="header ">
+              <div class="header bg-black">
                 <h2>
                   Documentos Enviados
                 </h2>
@@ -114,7 +179,7 @@
                         <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
                         <td>{{ingreso.numero_documento}}</td>
                         <td>
-                          {% if ingreso.status == 'liquidado'%}
+                          {% if ingreso.status == 'conciliado'%}
                           <span class="badge bg-green">Liquidado</span>
                           {% endif %}
                           {% if ingreso.status == 'cancelado'%}
@@ -139,7 +204,7 @@
                             <i class="material-icons">visibility</i>
                           </a>
                           {% if ingreso.status == 'pendiente' or ingreso.status == 'parcial' %}
-                          <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar" data-toggle="modal"
+                          <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-cobrar" data-toggle="modal"
                             data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}">
                             <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
                           </a>
@@ -158,159 +223,135 @@
             </div>
           </div>
         </div>
-        #END# Basic Examples -->
 
 
 
     <!-- PAGOS TABLE -->
     <div class="card">
-        <div class="header">
-          <h2>Ingresos Recibidos</h2>
-        </div>
-        <div class="body">
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Fecha</th>
-                  <th>Forma</th>
-                  <th>Cuenta</th>
-                  <th>Referencia</th>
-                  <th>Monto</th>
-                  <th>Status</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>ID</th>
-                  <th>Fecha</th>
-                  <th>Forma</th>
-                  <th>Cuenta</th>
-                  <th>Referencia</th>
-                  <th>Monto</th>
-                  <th>Status</th>
-                  <th>Acciones</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                <tr>
-                  <td>15</td>
-                  <td>15/01/19</td>
-                  <td>Cheque</td>
-                  <td>Bancomer 1</td>
-                  <td>CH000123</td>
-                  <td>$300,000.00</td>
-                  <td><span class="badge bg-green">Liquidado</span></td>
-                  <td>
-                    <a class="btn btn-xs btn-info waves-effect" href="egresos/perfil_pago" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="header bg-black">
+            <h2>Pagos de Cliente</h2>
+            <div class="select-btn-group">
+              <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
+            </div>
           </div>
-        </div>
-      </div>
-
-  
-    <!-- CONTACTOS TABLE 
-    <div class="card">
-        <div class="header">
-          <h2>Contactos</h2>
-        </div>
-        <div class="body">
-          <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-              <thead>
+          <div class="body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <thead>
                   <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Teléfono</th>
-                    <th>Extensión</th>
-                    <th>Puesto</th>
-                    <th>Accion</th>
+                    <th><input name="select_all2" value="1" class="select-all table-check" type="checkbox" /></th>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Forma</th>
+                    <th>Cuenta</th>
+                    <th>Referencia</th>
+                    <th>Monto</th>
+                    <th>Status</th>
+                    <th>Acciones</th>
                   </tr>
-              </thead>
-
-              <tbody>
-                  {% for contacto in contactos_cliente %}
+                </thead>
+                <tfoot>
                   <tr>
-                      <td>{{contacto.nombre}}</td>
-                      <td>{{contacto.correo}}</td>
-                      <td>{{contacto.telefono}}</td>
-                      <td>{{contacto.extension}}</td>
-                      <td>{{contacto.puesto}}</td>
-                      
-                      <td>
-                        <a class="btn btn-xs btn-info waves-effect" href="/" data-toggle="tooltip" data-placement="top" title="Editar Contacto">
-                          <i class="material-icons">visibility</i>
-                        </a>
-                      </td>
-
+                    <th></th>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Forma</th>
+                    <th>Cuenta</th>
+                    <th>Referencia</th>
+                    <th>Monto</th>
+                    <th>Status</th>
+                    <th>Acciones</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  {% for pago in cliente.pagos_ingresos %}
+                  <tr>
+                    <td>
+                      {% if pago.status == 'por_conciliar' %}
+                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                      {% endif %}
+                    </td>
+                    <td>{{pago.id}}</td>
+                    <td>{{pago.fecha_pago}}</td>
+                    <td>{{pago.forma_pago}}</td>
+                    <td>{{pago.cuenta}}</td>
+                    <td>{{pago.referencia_pago}}</td>
+                    <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
+                    <td>
+                      {% if pago.status == 'solicitado' %}
+                      <span class="badge bg-blue">Solicitado</span>
+                      {% endif %}
+                      {% if pago.status == 'conciliado' %}
+                      <span class="badge bg-green">Liquidado</span>
+                      {% endif %}
+                      {% if pago.status == 'por_conciliar' %}
+                      <span class="badge bg-orange">Por conciliar</span>
+                      {% endif %}
+                      {% if pago.status == 'cancelado' %}
+                      <span class="badge bg-red">Cancelado</span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-toggle="tooltip"
+                        data-placement="top" title="Ver detalle">
+                        <i class="material-icons">visibility</i>
+                      </a>
+                      {% if pago.status == 'solicitado' %}
+                      <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('ingresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                        <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Generar pago">payment</i>
+                      </a>
+                      <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
+                      </a>
+                      {% endif %}
+                      {% if pago.status == 'por_conciliar' %}
+                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id=pago.id) }}">
+                        <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
+                      </a>
+                      {% endif %}
+                    </td>
                   </tr>
                   {% endfor %}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-    
-      <div class="row">
-          <div class="col-sm-12 col-md-8">
-                <div class="card">
-                    <div class="header">
-                        <h2>Categorías y conceptos asociados</h2>
-                    </div>
-                    <div class="body">
-                        
-                    </div>
-                </div>
 
-          </div>
-          <div class="col-sm-12 col-md-4">
-            <div class="card">
-                <div class="header">
-                    <h2>Cuentas asociadas</h2>
-                </div>
-                <div class="body">
-                    
-                </div>
-            </div>
--->
-          </div>
-      </div>
 
-        <!--
-        {% include "modal_pagar.html" %}
         {% include "modal_pagar_multiple.html" %}
         {% include "modal_reprogramar_fecha.html" %}
         {% include "modal_reprogramar_fecha_multiple.html" %}
-        {% include "modal_conciliar_movimiento.html" %}
-        {% include "modal_generar_pago.html" %}
-         {% include "modal_agregar_categoria_cliente.html" %}  -->
-        {% endblock content %}
-
-        {% block javascripts %}
-        {{ super() }}
-        <!-- Jquery DataTable Plugin Js -->
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
-        <script>
+        {% include "modal_conciliar_movimiento_ingreso.html" %}
         
-        <!--
-          //reprogramar un ingreso
+        {% include "modal_generar_pago.html" %}
+        {% include "modal_agregar_categoria_cliente.html" %}
+           
+        {% include "modal_conciliar_movimiento_ingreso.html" %}
+        {% include "modal_generar_pago.html" %}
+        {% include "modal_cobrar_cuentas_por_cobrar.html" %}
+        
+
+
+{% endblock content %}
+
+{% block javascripts %}
+    {{ super() }}
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
+    
+    <script> 
+    //reprogramar un ingreso
           $("#open-reprogramar").on("click", function () {
             const html =
               `  <input type="hidden" id="ingreso_id" name="ingreso_id" value="${$(this).attr("data-id")}">`
@@ -345,7 +386,7 @@
           });
 
           //solcitar pagar un ingreso
-          $(".open-pagar").on("click", function () {
+          $(".open-cobrar").on("click", function () {
             $.ajax({
               url: $(this).attr("data-url"),
               success: function (data) {
@@ -364,7 +405,7 @@
                                 <p class="font-18">Monto pendiente:  <span class="font-bold">$ ${data.monto_total}</span></p>
                               </div>
                             </div>
-                            <input type="hidden" id="iigreso_id" name="ingreso_id" value="${data.ingreso_id}">
+                            <input type="hidden" id="ingreso_id" name="ingreso_id" value="${data.ingreso_id}">
                             <hr>`
                 let element = document.querySelector(".here");
                 element.innerHTML = "";
@@ -593,39 +634,38 @@
 
 
 
-          //Modal Conciliar
+         //Modal Conciliar
           $(".open-conciliar").on("click", function () {
-            $.ajax({
-              url: $(this).attr("data-url"),
-              success: function (data) {
-                const html =
-                  `<div class="row" style="margin-bottom:20px;">
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Referencia de pago : <span class="font-bold">${data.referencia}</span></p>
-                            </div>
-                        </div>
-                <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
-                <hr>`
-                let element = document.querySelector(".here-conciliar");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                $('.selectpicker').selectpicker('refresh');
-                $('#modal_conciliar_movimiento').modal('show');
-              }
-            });
-          });
+                $.ajax({
+                    url: $(this).attr("data-url"),
+                    success: function (data) {
+                        const html =
+                            `<div class="row" style="margin-bottom:20px;">
+                                    <div class="col-sm-12 col-md-6 ">
+                                        <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 ">
+                                        <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                                    </div>
+                                </div>
+        
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 ">
+                                        <p class="font-18">Empresa: <span class="font-bold">${data.empresa}</span></p>
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 ">
+                                        <p class="font-18">Numero de Documento : <span class="font-bold">${data.num_documento}</span></p>
+                                    </div>
+                                </div>
+                        <input type="hidden" id="ingreso_id" name="ingreso_id" value="${data.ingreso_id}">
+                        <hr>`
+                        let element = document.querySelector(".here-conciliar");
+                        element.innerHTML = "";
+                        element.insertAdjacentHTML('beforeend', html);
+                        $('#modal_conciliar_movimiento_ingreso').modal('show');
+                    }
+                });
+    });
 
           //Modal Conciliar multiple
 
@@ -727,7 +767,6 @@
 
             });
           });
-                    -->
-        </script>
-      {% endblock javascripts %}
+    </script>
+{% endblock javascripts %}
   

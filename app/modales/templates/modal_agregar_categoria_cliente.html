@@ -1,0 +1,33 @@
+<!-- Modal pagos -->
+<div class="modal fade" id="modal_agregar_categoria_cliente" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('administracion_blueprint.agregar_categoria_cliente',  cliente_id=cliente.id) }}">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="largeModalLabel"> Asignar Categoría</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12">
+                            <label for="nombre"> Categoría </label>
+                            <select class="selectpicker" multiple data-live-search="true" name="categoria" title="Seleccione una Categoría..."
+                            data-width="100%">
+
+                            {% for categoria in categorias %}
+                            <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Agregar</button>
+                    <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
