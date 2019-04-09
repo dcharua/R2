@@ -51,6 +51,7 @@ def captura_ingresos():
                 monto_pagado,monto_por_conciliar,pagado = 0,float(data["monto_pagado"]),False
                 if monto_por_conciliar == monto_total: status_ingreso = 'por_conciliar'
                 else: status_ingreso = 'pendiente'
+                
                
             
 
@@ -66,7 +67,7 @@ def captura_ingresos():
                
             
             pago_ingreso = Pagos_Ingresos(status = status_pago, cliente_id = data["cliente"], 
-                                  monto_total = monto_por_conciliar, cuenta_id = int(data["cuenta_id"]), 
+                                  monto_total = float(data["monto_pagado"]), cuenta_id = int(data["cuenta_id"]), 
                                   fecha_pago = data["fecha_pago"], 
                                   comentario = data["comentario_pago"],
                                   forma_pago_id = data["forma_pago"],
@@ -75,7 +76,7 @@ def captura_ingresos():
                                   referencia_conciliacion = data["referencia"],
                                   )
 
-            ep = IngresosHasPagos(ingreso = ingreso, pago = pago_ingreso, monto = monto_por_conciliar)    
+            ep = IngresosHasPagos(ingreso = ingreso, pago = pago_ingreso, monto = float(data["monto_pagado"]))    
         
 
             db.session.add(ep)
@@ -262,11 +263,9 @@ def mandar_cobrar():
             status_pago = 'conciliado'
     
             if ('parcial' in data):
-                monto_total_pago = float(data["monto_parcial"])
-                ingreso.status = 'parcial'
+                monto_total_pago = float(data["monto_parcial"]) if data["monto_parcial"] != '' else 0
             else:
                 monto_total_pago = float(ingreso.monto_total - ingreso.monto_pagado - ingreso.monto_por_conciliar)
-                ingreso.status = 'conciliado'
                             
             ingreso.monto_pagado = float(ingreso.monto_pagado) + monto_total_pago 
             ingreso.setStatus()
@@ -276,10 +275,8 @@ def mandar_cobrar():
             
             if ('parcial' in data):
                 monto_total_pago = float(data["monto_parcial"])
-                ingreso.status = 'parcial'
             else:
                 monto_total_pago = float(ingreso.monto_total - ingreso.monto_pagado - ingreso.monto_por_conciliar)
-                ingreso.status = 'por_conciliar'
             
             status_pago = 'por_conciliar'
             ingreso.monto_por_conciliar = float(ingreso.monto_por_conciliar) + monto_total_pago
@@ -387,18 +384,19 @@ def conciliar_pago_ingreso():
 @blueprint.route("/desconciliar_pago_ingreso/<int:pago_id>",  methods=['GET', 'POST'])
 def desconciliar_pago_ingreso(pago_id):
         pago = Pagos_Ingresos.query.get(pago_id)
-        pago.status = 'por_conciliar';
+        pago.status = 'por_conciliar'
         pago.referencia_conciliacion = None
         pago.fecha_pago = None
-        for ingreso in pago.ingresos:
-                ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id).first()
-                ingreso.monto_por_conciliar += ep.monto
-                ingreso.monto_pagado -= ep.monto
         db.session.commit()
-        ### NO FUNCIONA
+        
         for ingreso in pago.ingresos:
-                ingreso.setStatus()  
+            ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id).first()
+            ingreso.monto_por_conciliar += pago.monto_total
+            ingreso.monto_pagado -= pago.monto_total
+            ingreso.setStatus() 
+               
         db.session.commit()
+        
         return  redirect("/ingresos/cuentas_por_cobrar")       
 
     
