@@ -59,7 +59,8 @@ def agregar_categoria_cliente(cliente_id):
         db.session.commit()   
     return redirect('/administracion/perfil_de_cliente/'+str(cliente_id))
 
-@blueprint.route('/agregar_categoria_cliente/<int:cliente_id>', methods=['GET', 'POST'])
+
+@blueprint.route('/agregar_categoria_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
 @login_required
 def agregar_categoria_beneficiario(beneficiario_id):
     if request.form:

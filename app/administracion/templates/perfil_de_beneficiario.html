@@ -636,7 +636,7 @@
                 const html =
                     `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
+                                <p class="font-18">Beneficiario: <span class="font-bold">${data.cbeneficiario}</span></p>
                             </div>
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Monto a conciliar: <span class="font-bold">$ ${data.monto_total}</span></p>
@@ -648,9 +648,13 @@
                                 <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
                             </div>
                         </div>
+                        
+                        <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Referencia de pago : <span class="font-bold">${data.referencia}</span></p>
+                        </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <hr>`
-                let element = document.querySelector(".here");
+                let element = document.querySelector(".here-conciliar");
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
                 $('.selectpicker').selectpicker('refresh');
