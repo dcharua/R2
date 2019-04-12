@@ -585,21 +585,24 @@
               confirmButtonColor: "#DD6B55",
               confirmButtonText: "Ajustar!",
               closeOnConfirm: false
-            }, function () {
+            }, function (res) {
+              
               //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
-              $.ajax({
-                url: '/conciliaciones/ajustar_conciliacion/' + data.conciliacion,
-                success: function (data) {
-                  if (data == "exito") {
-                    swal("Ajustado!", "El ajuste fue correcto.", "success");
-                    setTimeout(function () {
-                      location.reload();
-                    }, 2000);
-                  } else {
-                    swal("Ocurrio un error!", "Por favor crea el ajuste manualmente.", "error");
+              if (res){
+                  $.ajax({
+                  url: '/conciliaciones/ajustar_conciliacion/' + data.conciliacion,
+                  success: function (data) {
+                    if (data == "exito") {
+                      swal("Ajustado!", "El ajuste fue correcto.", "success");
+                      setTimeout(function () {location.reload();}, 2000);
+                    } else {
+                      swal("Ocurrio un error!", "Por favor crea el ajuste manualmente.", "error");
+                    }
                   }
-                }
-              })
+                })
+              } else {
+                setTimeout(function () {location.reload();}, 2000);
+              }
             });
           }
         },

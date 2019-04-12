@@ -27,7 +27,10 @@
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-8">
             <b>
-              <p class="font-18">Beneficiario: <span class="font-bold">{{egreso.beneficiario}}</span></p>
+              <p class="font-18">Beneficiario: <span class="font-bold"> 
+                <a class="btn btn-xs btn-info waves-effect" href='/administracion/perfil_de_beneficiario/{{egreso.beneficiario.id}}' data-toggle="tooltip"
+                data-placement="top" title="Ver beneficiario">
+             {{egreso.beneficiario}}</a></span> </p>
             </b>
             <p class="font-18">Id: <span class="font-bold">{{egreso.id}}</span></p>
             <p class="font-18"># de documento: <span class="font-bold">{{egreso.numero_documento}}</span></p>

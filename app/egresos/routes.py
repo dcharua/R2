@@ -5,6 +5,8 @@ from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
 from datetime import date
+from decimal import Decimal
+
 
 @blueprint.route('/<template>')
 @login_required
@@ -20,9 +22,7 @@ def capturar_egreso():
     if request.form:
         data = request.form
         montos = list(map(float, data.getlist("monto")))
-        print(montos)
         monto_total = sum(montos)
-        print(monto_total)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"], 
         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
         monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"], 
@@ -63,7 +63,6 @@ def capturar_egreso():
             db.session.add(ep)
         else:
             db.session.add(egreso)
-        print(egreso.status)
         db.session.commit()
         return redirect("/egresos/cuentas_por_pagar")
         
@@ -198,7 +197,6 @@ def cancelar_pago(pago_id):
 def get_data_pagar(egreso_id):
         egreso = Egresos.query.get(egreso_id)
         monto_pendiente = egreso.monto_total - egreso.monto_solicitado - egreso.monto_pagado
-        print('egreso: ',egreso)
         return jsonify(egreso_id = egreso.id, beneficiario = egreso.beneficiario.nombre, monto_total=str(monto_pendiente), numero_documento= egreso.numero_documento)
 
 
@@ -216,7 +214,7 @@ def mandar_pagar():
                 pago = Pagos(status='solicitado', beneficiario=egreso.beneficiario, monto_total=monto_total, cuenta_id=data["cuenta_id"], forma_pago_id=data["forma_pago_id"])
               
                 ep = EgresosHasPagos(egreso = egreso, pago = pago, monto = monto_total)    
-                egreso.monto_solicitado += int(pago.monto_total)
+                egreso.monto_solicitado += Decimal(pago.monto_total)
 
                 if egreso.monto_total == egreso.monto_solicitado + egreso.monto_pagado:
                         egreso.status = 'solicitado'
@@ -344,6 +342,50 @@ def generar_pago():
                 return  redirect("/egresos/pagos_realizados")
 
 
+#Generar multiples pagos data for modal
+@blueprint.route('/generar_pagos_multiple', methods=['GET', 'POST'])
+@login_required
+def generar_pagos_multiple():
+        if request.form:
+                data = request.form
+                pagos = (data.getlist('pago_id'))
+                for pago_id in pagos:
+                        pago = Pagos.query.get(pago_id)
+                        pago.referencia_pago = data["referencia_pago"]
+                        pago.fecha_pago = data["fecha_pago"]
+                        if pago.forma_pago.nombre.lower() == "cheque":
+                                pago.cuenta.numero_cheque += 1
+                        for egreso in pago.egresos:
+                                ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
+                                egreso.monto_pagado += ep.monto
+                                egreso.monto_solicitado -= ep.monto
+                                if egreso.monto_pagado == egreso.monto_total:
+                                        egreso.pagado = True
+                                if ('conciliado_check' in data):
+                                        pago.status = 'conciliado';
+                                        pago.referencia_conciliacion = data["referencia_conciliacion"]
+                                        if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
+                                                egreso.status = 'liquidado'
+                                else:
+                                        egreso.monto_por_conciliar += ep.monto
+                                        pago.status = 'por_conciliar'
+                                        if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
+                                                egreso.status = 'por_conciliar'
+
+                db.session.commit()
+                return  redirect("/egresos/pagos_realizados")
+# Generar pago multiple form sumbit
+@blueprint.route('/get_data_generar_pagos_multiple', methods=['GET', 'POST'])
+@login_required
+def get_data_generar_pagos_multiple():
+        list = []
+        pagos = request.args.getlist('pagos[]')
+        for pago in pagos:
+            p =  Pagos.query.get(pago)
+            list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'forma_pago': p.forma_pago.nombre, 'cuenta': p.cuenta.nombre})
+        return jsonify(list)
+
+
 #reprogramar_fecha
 @blueprint.route('/reprogramar_fecha', methods=['GET', 'POST'])
 @login_required
@@ -401,7 +443,7 @@ def editar_detalle(egreso_id):
         if request.form:
                 data = request.form
                 detalle = DetallesEgreso.query.get(data["id"])
-                detalle. centro_negocios_id=data["centro_negocios"] 
+                detalle.centro_negocios_id=data["centro_negocios"] 
                 detalle.proveedor_id=data["proveedor"]
                 detalle.categoria_id=data["categoria"]
                 detalle.concepto_id=data["concepto"]

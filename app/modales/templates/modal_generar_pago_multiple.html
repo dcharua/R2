@@ -1,0 +1,63 @@
+<div class="modal fade" id="modal_generar_pago_multiple" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="alert-here"></div>
+  
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="largeModalLabel">Generar pago</h4>
+        </div>
+        <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('egresos_blueprint.generar_pagos_multiple') }}">
+          <div class="modal-body">
+            <div class="generar_multiple_here"></div>
+  
+            <div class="input-group">
+              <div class="row" style="margin-bottom:10px">
+                <div class="col-sm-12 col-md-6">
+                  <label class="grey-font" for="referencia_pago">Referencia de pago</label>
+                  <input type="text" class="form-control" id="referencia_pago" name="referencia_pago" class="filled-in" />
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                  <label> Fecha de pago </label>
+                  <div class='input-group date mydatepicker' data-provide="datepicker">
+                    <input type='text' name="fecha_pago" class="form-control" />
+                    <span class="input-group-addon">
+                      <i class="material-icons mydate">date_range</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+  
+            <div class="input-group">
+              <div class="row">
+                <div class="col-sm-12 col-md-6 ">
+                  <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
+                  <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                  <input placeholder="Referencia de conciliacion" class="form-control" style="display:none" type="text"
+                    id="referencia_conciliacion" name="referencia_conciliacion">
+                </div>
+              </div>
+            </div>
+  
+            <div class="input-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="comentario">Comentario</label>
+                  <textarea name="comentario" id="comentario" style="width:100%"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-link waves-effect ">Enviar</button>
+            <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+              <i class="material-icons">close</i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

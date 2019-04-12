@@ -13,22 +13,25 @@
         <h2>
           Cuentas por pagar
         </h2>
-        
+
         <div class="select-btn-group">
-          <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal" data-target="#modal_solicitar_multiple">Pagar</span>
-          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar fecha</span>
+          <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal"
+            data-target="#modal_solicitar_multiple">Pagar</span>
+          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar
+            fecha</span>
         </div>
       </div>
-      
+
       <div class="body">
 
         <div class="table-responsive">
 
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0" width="100%">
+          <table class="table table-bordered table-striped table-hover pagar_table dataTable" cellspacing="0"
+            width="100%">
 
             <thead>
               <tr>
-                <th><input name="select_all" value="1" class="table-check select-all" type="checkbox"  /></th>
+                <th><input name="select_all" value="1" class="table-check select-all" type="checkbox" /></th>
                 <th>ID</th>
                 <th># documento</th>
                 <th>Beneficiario</th>
@@ -52,15 +55,15 @@
                 <th>Acciones</th>
               </tr>
             </tfoot>
-            
+
             <tbody>
               {% for egreso in egresos_pendientes %}
               <tr>
                 <td>
-                    {% if egreso.status != 'solicitado' %}
-                      <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
-                    {% endif %}
-                  </td>
+                  {% if egreso.status != 'solicitado' %}
+                  <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                  {% endif %}
+                </td>
                 <td>{{egreso.id}}</td>
                 <td>{{egreso.numero_documento}}</td>
                 <td>{{egreso.beneficiario}}</td>
@@ -79,18 +82,21 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip"
-                    data-placement="top" title="Ver detalle">
+                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
+                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
                   {% if egreso.status != 'solicitado' %}
-                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar"  data-toggle="modal"
+                  <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar" data-toggle="modal"
                     data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
-                    <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
+                    <i data-toggle="tooltip" data-placement="top" title="Solicitar pago"
+                      class="material-icons">payment</i>
                   </a>
                   {% endif %}
-                  <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha" data-id="{{egreso.id}}">
-                    <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
+                  <a class="btn btn-xs btn-warning waves-effect open-reprogramar" data-toggle="modal"
+                    data-target="#modal_reprogramar_fecha" data-id="{{egreso.id}}">
+                    <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago"
+                      class="material-icons">update</i>
                   </a>
                 </td>
               </tr>
@@ -120,65 +126,65 @@
 
         <div class="table-responsive">
 
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
-              width="100%">
+          <table class="table table-bordered table-striped table-hover conciliar_table dataTable" cellspacing="0"
+            width="100%">
 
-              <thead>
-                <tr>
-                  <th><input name="select_all" value="1" class="select-all" type="checkbox" /></th>
-                  <th>ID</th>
-                  <th># documento</th>
-                  <th>Beneficiario</th>
-                  <th>Fecha <br> programada</th>
-                  <th>Fecha de <br> vencimiento</th>
-                  <th>Monto Total</th>
-                  <th>Status</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th></th>
-                  <th>ID</th>
-                  <th># documento</th>
-                  <th>Beneficiario</th>
-                  <th>Fecha <br> programada</th>
-                  <th>Fecha de <br> vencimiento</th>
-                  <th>Monto Total</th>
-                  <th>Status</th>
-                  <th>Acciones</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                {% for egreso in egresos_pagados %}
-                <tr>
-                  <td><input name="select_all" value="1" class="select-all" type="checkbox" /></td>
-                  <td>{{egreso.id}}</td>
-                  <td>{{egreso.numero_documento}}</td>
-                  <td>{{egreso.beneficiario}}</td>
-                  <td>{{egreso.fecha_programada_pago}}</td>
-                  <td>{{egreso.fecha_vencimiento}}</td>
-                  <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                  <td> 
-                    {% if egreso.status == 'liquidado'%}
-                    <span class="badge bg-green">Liquidado</span>
-                    {% endif %}
-                    {% if egreso.status == 'cancelado'%}
-                    <span class="badge bg-red">Cancelado</span>
-                    {% endif %}
-                    {% if egreso.status == 'por_conciliar'%}
-                    <span class="badge bg-orange">Por conciliar</span>
-                    {% endif %}</td>
-                  <td>
-                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}' data-toggle="tooltip"
-                      data-placement="top" title="Ver detalle">
-                      <i class="material-icons">visibility</i>
-                    </a>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            <thead>
+              <tr>
+                <th><input name="select_all" value="1" class="select-all" type="checkbox" /></th>
+                <th>ID</th>
+                <th># documento</th>
+                <th>Beneficiario</th>
+                <th>Fecha <br> programada</th>
+                <th>Fecha de <br> vencimiento</th>
+                <th>Monto Total</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th># documento</th>
+                <th>Beneficiario</th>
+                <th>Fecha <br> programada</th>
+                <th>Fecha de <br> vencimiento</th>
+                <th>Monto Total</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for egreso in egresos_pagados %}
+              <tr>
+                <td><input name="select_all" value="1" class="select-all" type="checkbox" /></td>
+                <td>{{egreso.id}}</td>
+                <td>{{egreso.numero_documento}}</td>
+                <td>{{egreso.beneficiario}}</td>
+                <td>{{egreso.fecha_programada_pago}}</td>
+                <td>{{egreso.fecha_vencimiento}}</td>
+                <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
+                <td>
+                  {% if egreso.status == 'liquidado'%}
+                  <span class="badge bg-green">Liquidado</span>
+                  {% endif %}
+                  {% if egreso.status == 'cancelado'%}
+                  <span class="badge bg-red">Cancelado</span>
+                  {% endif %}
+                  {% if egreso.status == 'por_conciliar'%}
+                  <span class="badge bg-orange">Por conciliar</span>
+                  {% endif %}</td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_egreso/{{egreso.id}}'
+                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -200,14 +206,19 @@
 {{ super() }}
 <!-- Jquery DataTable Plugin Js -->
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}">
+</script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
 <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
+</script>
 
 <script>
   //reprogramar un egreso
@@ -248,7 +259,7 @@
     $.ajax({
       url: $(this).attr("data-url"),
       success: function (data) {
-  
+
         const html =
           `<div class="row mar-b-10" >
                     <div class="col-sm-12 col-md-6 ">
@@ -383,7 +394,7 @@
     $('#modal_pagar_multiple').modal('show');
   });
 
- 
+
 
   //monto parcial checkbox
   $("#parcial").change(function () {
@@ -398,23 +409,54 @@
 
   //Jquery table
 
-  var table = $('.js-basic-example').DataTable({
-          dom: 'Bfrtip',
-          responsive: true,
-          "order": [[ 1, 'desc' ], [ 2, 'asc' ]],
-          buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-          ],
-          "columnDefs": [ {
-        "targets": 0,
-        "orderable": false
-        } ]
-      });
+  var pagar_table = $('pagar_table').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    "order": [
+      [1, 'desc'],
+      [2, 'asc']
+    ],
+    buttons: [
+      'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+    "columnDefs": [{
+      "targets": 0,
+      "orderable": false
+    }]
+  });
 
   // "Select all" control
-  $('.select-all').on('click', function () {
+  $('.select-all-t1').on('click', function () {
     // Check/uncheck all checkboxes in the table
-    var rows = table.rows({
+    var rows = pagar_table.rows({
+      'search': 'applied'
+    }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+  });
+
+
+
+  var conciliar_table = $('conciliar_table').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    "order": [
+      [1, 'desc'],
+      [2, 'asc']
+    ],
+    buttons: [
+      'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+    "columnDefs": [{
+      "targets": 0,
+      "orderable": false
+    }]
+  });
+
+
+  // "Select all" control
+  $('.select-all-t2').on('click', function () {
+    // Check/uncheck all checkboxes in the table
+    var rows = conciliar_table.rows({
       'search': 'applied'
     }).nodes();
     $('input[type="checkbox"]', rows).prop('checked', this.checked);

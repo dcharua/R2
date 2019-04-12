@@ -13,7 +13,13 @@
             <div class="body">
                 <ul>
                     {%for empresa in empresas%}
-                    <li>{{empresa}}</li>
+                    <li>{{empresa}} 
+                        <span style="float: right;">  
+                            <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Empresa" data-id="{{empresa.id}}" data-value="{{empresa}}" >
+                                <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
+                            </a>
+                        </span>
+                    </li>
                     {% endfor %}
                 </ul>
 
@@ -30,7 +36,13 @@
             <div class="body">
                 <ul>
                     {%for forma_pago in formas_pago%}
-                    <li>{{forma_pago}}</li>
+                    <li>{{forma_pago}} 
+                        <span style="float: right;">  
+                            <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Forma de pago" data-id="{{forma_pago.id}}" data-value="{{forma_pago}}" >
+                                <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
+                            </a>
+                        </span>
+                    </li>
                     {% endfor %}
                 </ul>
             </div>
@@ -49,7 +61,13 @@
             <div class="body">
                 <ul>
                     {%for tipo_ingreso in tipo_ingresos%}
-                    <li>{{tipo_ingreso}}</li>
+                    <li>{{tipo_ingreso}} 
+                        <span style="float: right;">  
+                            <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Tipo de ingreso" data-id="{{tipo_ingreso.id}}" data-value="{{tipo_ingreso}}" >
+                                <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
+                            </a>
+                        </span>
+                    </li>
                     {% endfor %}
                 </ul>
                 
@@ -70,12 +88,17 @@
                 <ul>
                     {%for categoria in categorias%}
                         <li> <b>{{categoria}} </b>
+                            <span style="float: right;">  
+                                    <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Categoria" data-id="{{categoria.id}}" data-value="{{categoria}}" >
+                                        <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
+                                    </a>
+                                </span>
                             <ul>
                                 {%for concepto in categoria.conceptos%}
                                     <li>{{concepto}}</li>
                                 {% endfor %}
                             </ul>
-
+                            
                         </li>
                     {% endfor %}
                 </ul>
@@ -83,6 +106,7 @@
         </div>
     </div>
 </div>
+{% include "modal_editar_multiple.html" %}
 {% include "modal_agregar_categoria.html" %}
 {% include "modal_agregar_centro.html" %}
 {% include "modal_agregar_concepto.html" %}
@@ -92,6 +116,33 @@
 
 {% endblock content %}
 
+{% block stylesheets %} 
+{{ super() }}
+<style>
+   .body li{
+        padding: 10px 0;
+    }
+</style>
+{% endblock %}
+
 {% block javascripts %}
 {{ super() }}
+<script>
+    $(".open-editar").on("click", function () {
+        let element = document.querySelector(".editar-multiple-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="nombre"> ${ $(this).attr("data-type")} </label>
+                        <input type='text' class="form-control" name="value" value="${ $(this).attr("data-value")}"/>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_multiple').modal('show');
+        
+      });
+</script>
 {% endblock javascripts %}
