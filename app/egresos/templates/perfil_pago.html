@@ -10,25 +10,30 @@
         <h2 class="font-24">Pago</h2>
         <div class="select-btn-group">
           {% if pago.status == 'solicitado' %}
-          <span class="btn btn-primary open-generar-pago" data-toggle="modal" data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
+          <span class="btn btn-primary open-generar-pago" data-toggle="modal"
+            data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
             pago</span>
           {% endif %}
           {% if pago.forma_pago.nombre.lower() == 'cheque' %}
           <span class="btn btn-info" data-toggle="modal"> Imprimir cheque</span>
           {% endif %}
           {% if pago.status == 'por_conciliar'%}
-          <span class=" btn bg-deep-purple open-conciliar" data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">Conciliar</span>
+          <span class=" btn bg-deep-purple open-conciliar"
+            data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">Conciliar</span>
           {% endif %}
           {% if pago.status == 'conciliado' %}
-          <span id="desconciliar-pago" class=" btn bg-purple open-desconciliar" data-type="confirm" data-url="{{ url_for('egresos_blueprint.desconciliar_pago', pago_id=pago.id) }}">Desconciliar
+          <span id="desconciliar-pago" class=" btn bg-purple open-desconciliar" data-type="confirm"
+            data-url="{{ url_for('egresos_blueprint.desconciliar_pago', pago_id=pago.id) }}">Desconciliar
             pago</span>
           {% endif %}
           {% if pago.status != 'solicitado' and pago.status != 'cancelado' %}
-          <span id="open-conciliar-multiple" class="btn bg-red cancel-pago" data-type="confirm" data-url="{{ url_for('egresos_blueprint.cancelar_pago', pago_id=pago.id) }}">Cancelar
+          <span id="open-conciliar-multiple" class="btn bg-red cancel-pago" data-type="confirm"
+            data-url="{{ url_for('egresos_blueprint.cancelar_pago', pago_id=pago.id) }}">Cancelar
             pago</span>
           {% endif %}
           {% if pago.status == 'solicitado' and pago.status != 'cancelado' %}
-          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
+          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm"
+            data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
             pago</span>
           {% endif %}
         </div>
@@ -39,7 +44,12 @@
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-6">
             <p class="font-18">Id: <span class="font-bold">{{pago.id}}</span></p>
-            <p class="font-18">Beneficiario: <span class="font-bold">{{pago.beneficiario}}</span></p>
+            <p class="font-18">Beneficiario: 
+              <span class="font-bold"><a class="btn btn-xs btn-info waves-effect"
+                  href='/administracion/perfil_de_beneficiario/{{pago.beneficiario.id}}' data-toggle="tooltip"
+                  data-placement="top" title="Ver beneficiario">
+                  {{pago.beneficiario}}</a></span>
+            </p>
             <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
             <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
             <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
@@ -135,8 +145,8 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}" data-toggle="tooltip"
-                    data-placement="top" title="Ver detalle">
+                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
+                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
                   <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
@@ -160,14 +170,22 @@
     {{ super() }}
     <!-- Jquery DataTable Plugin Js -->
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+    <script
+      src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}">
+    </script>
+    <script
+      src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}">
+    </script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}">
+    </script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}">
+    </script>
     <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}">
+    </script>
+    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
+    </script>
     <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
     <script>
       $('.js-basic-example').DataTable({
@@ -325,8 +343,8 @@
       });
 
 
-       //cancelar pago con sweer alert
-       $('.open-desconciliar').on('click', function () {
+      //cancelar pago con sweer alert
+      $('.open-desconciliar').on('click', function () {
         var element = this;
         swal({
           title: "Estas seguro?",

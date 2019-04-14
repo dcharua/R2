@@ -70,7 +70,7 @@ def agregar_categoria_beneficiario(beneficiario_id):
         for i in range(len(data.getlist("categoria"))):
                 categoria = Categorias.query.get(data.getlist("categoria")[i])
                 beneficiario.categorias.append(categoria)
-        db.session.commit()   
+        db.session.commit()    
     return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))
 
 @blueprint.route('/clientes', methods=['GET', 'POST'])
@@ -122,3 +122,23 @@ def directorio_contactos():
     beneficiarios = Beneficiarios.query.all()
     clientes = Clientes.query.all()
     return render_template("directorio_contactos.html", beneficiarios = beneficiarios, clientes=clientes)
+
+@blueprint.route('/editar_multiple', methods=['GET', 'POST'])
+@login_required
+def editar_multiple():
+    if request.form:
+        data = request.form
+        if (data["type"] == "Empresa"):
+            obj = Empresas.query.get(data["id"])
+            obj.nombre = data["value"]
+        elif (data["type"] == "Forma de pago"):
+            obj = FormasPago.query.get(data["id"])
+            obj.nombre = data["value"]
+        elif (data["type"] == "Categoria"):
+            obj = Categorias.query.get(data["id"])
+            obj.nombre = data["value"]
+        elif (data["type"] == "Tipo de ingreso"):
+            obj = Tipo_Ingreso.query.get(data["id"])
+            obj.tipo = data["value"]
+        db.session.commit()  
+    return redirect("/administracion/otros")

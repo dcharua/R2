@@ -23,13 +23,10 @@ def agregar_cliente():
         cliente = Clientes(nombre = data["nombre"], RFC = data["RFC"], 
             direccion = data["direccion"], razon_social = data["razon_social"],
             cuenta_banco = data["cuenta_banco"], saldo = 0, status = 'liquidado', comentarios = data["comentarios"],banco = data["banco"]) 
-        
-        print(data)
         for i in range(len(data.getlist("nombre_contacto"))):         
             contacto = ContactoCliente(nombre=data.getlist("nombre_contacto")[i], correo = data.getlist("correo_contacto")[i],
             telefono = data.getlist("telefono_contacto")[i], extension = data.getlist("extension_contacto")[i], puesto=data.getlist("puesto_contacto")[i])
             cliente.contacto.append(contacto)
-            print(contacto)
         db.session.add(cliente)
         db.session.commit()   
         return redirect("/administracion/clientes")
@@ -98,9 +95,7 @@ def agregar_forma_pago():
 def agregar_tipo_ingreso():
     if request.form:
         data = request.form
-
         tipo_ingreso = Tipo_Ingreso(tipo = data["tipo"]) 
-
         db.session.add(tipo_ingreso)
         db.session.commit()   
         return redirect("/administracion/otros")     
