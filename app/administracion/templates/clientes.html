@@ -21,7 +21,9 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Banco</th> 
-                                <th>Saldo</th>
+                                <th>Saldo Pendiente</th>
+                                <th>Saldo en Transito</th>
+                                <th>Saldo en Cobrado</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -32,7 +34,9 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Banco</th> 
-                                <th>Saldo</th>
+                                <th>Saldo Pendiente</th>
+                                <th>Saldo en Transito</th>
+                                <th>Saldo en Cobrado</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -44,7 +48,9 @@
                                   <td>{{cliente.id}}</td>
                                   <td>{{cliente.nombre}}</td>
                                   <td>{{cliente.banco}}</td>
-                                  <td>{{cliente.saldo}}</td>
+                                  <td>{{cliente.saldo_pendiente}}</td>
+                                  <td>{{cliente.saldo_por_conciliar}}</td>
+                                  <td>{{cliente.saldo_cobrado}}</td>
                                   <td>
                                       {% if cliente.status == 'pendiente'%}
                                       <span class="badge bg-blue">Pendiente</span>

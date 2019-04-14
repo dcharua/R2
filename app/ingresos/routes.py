@@ -14,6 +14,32 @@ def route_template(template):
 
 
 
+def calcular_saldo_cliente(cliente_id):
+    
+    cliente = Clientes.query.get(cliente_id)
+    print('Cliente = ',cliente)
+    ingresos = cliente.ingresos
+    saldo_pendiente = 0
+    saldo_por_conciliar = 0
+    saldo_cobrado = 0
+    
+    for ingreso in ingresos:        
+        monto_total,monto_pagado,monto_por_conciliar = float(ingreso.monto_total),float(ingreso.monto_pagado),float(ingreso.monto_por_conciliar)
+        saldo_pendiente += (monto_total - monto_pagado - monto_por_conciliar)
+        saldo_por_conciliar +=  monto_por_conciliar
+        saldo_cobrado +=  monto_pagado
+    
+    cliente.saldo_cobrado = saldo_cobrado
+    cliente.saldo_por_conciliar = saldo_por_conciliar
+    cliente.saldo_pendiente = saldo_pendiente
+    
+    if saldo_pendiente > 0: cliente.status = 'pendiente'
+    elif saldo_por_conciliar > 0 and saldo_pendiente == 0: cliente.status = 'por_conciliar'
+    else: cliente.status = 'conciliado'
+    
+    db.session.add(cliente)  
+    db.session.commit()
+
 @blueprint.route('/capturar_ingreso', methods=['GET', 'POST'])
 def captura_ingresos():
     
@@ -34,9 +60,9 @@ def captura_ingresos():
                            monto_total = monto_total, comentario = data["comentario"],pagado = False,      
                            status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0)                                                                                
         
-        print('AQUIIII Linea 36 routes/ingresos')
-        print(data)  
-            
+        
+           
+        
         if ('pagado' in data):
             
             
@@ -53,8 +79,6 @@ def captura_ingresos():
                 if monto_por_conciliar == monto_total: status_ingreso = 'por_conciliar'
                 else: status_ingreso = 'pendiente'
                 
-               
-            
 
             ingreso = Ingresos(cliente_id = data["cliente"],
                            tipo_ingreso_id = data["tipo_ingreso"],
@@ -93,10 +117,14 @@ def captura_ingresos():
                                       descripcion=data.getlist("descripcion")[i])
             ingreso.detalles.append(detalle)
         
+        
+        
+            
         print('Linea 90')
         db.session.add(ingreso)  
         print('Linea 92')
         db.session.commit()
+        calcular_saldo_cliente(data["cliente"])
         
         return redirect("/ingresos/cuentas_por_cobrar")
     
@@ -206,10 +234,9 @@ def borrar_pago(pago_id):
     for ingreso in pago.ingresos:
         ep = IngresosHasPagos.query.filter_by(ingreso_id  = ingreso.id ,pago_id = pago.id ).first()
         ingreso.monto_solicitado -= ep.monto
-        if ingreso.monto_pagado > 0:
-            ingreso.status = 'parcial'
-        else:
-            ingreso.status = 'pendiente'    
+        ingreso.setStatus()
+        calcular_saldo_cliente(ingreso.cliente_id)
+        
     db.session.delete(ep)
     db.session.delete(pago)
     db.session.commit()
@@ -236,6 +263,8 @@ def cancelar_pago_ingreso(pago_id):
     
     for ingreso in pago.ingresos:
         ingreso.setStatus()
+        calcular_saldo_cliente(ingreso.cliente_id)
+        
     db.session.commit()
     
     return  jsonify("deleted")
@@ -298,7 +327,7 @@ def mandar_cobrar():
         ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
 
                 
-        
+        calcular_saldo_cliente(ingreso.cliente_id)
 
         db.session.add(ep)
         db.session.add(pago)
@@ -381,7 +410,7 @@ def conciliar_pago_ingreso():
                 ingreso.monto_por_conciliar -= ep.monto
                 ingreso.monto_pagado += ep.monto
                 ingreso.setStatus()
-                
+                calcular_saldo_cliente(ingreso.cliente_id)
                 db.session.commit()
             return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
         
@@ -399,7 +428,7 @@ def desconciliar_pago_ingreso(pago_id):
             ingreso.monto_por_conciliar += pago.monto_total
             ingreso.monto_pagado -= pago.monto_total
             ingreso.setStatus() 
-               
+            calcular_saldo_cliente(ingreso.cliente)
         db.session.commit()
         
         return  redirect("/ingresos/cuentas_por_cobrar")       
@@ -434,6 +463,7 @@ def conciliar_ingreso():
                 ingreso.monto_pagado += ep.monto
      
             ingreso.setStatus()
+            calcular_saldo_cliente(ingreso.cliente)
             db.session.commit()
             return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))   
 
@@ -462,35 +492,6 @@ def get_data_generar_pago_ingreso(pago_id):
                        cuenta_cliente=pago.cliente.cuenta_banco)     
  
        
-# Generar pago form sumbit
-@blueprint.route('/generar_pago_ingreso', methods=['GET', 'POST'])
-@login_required
-def generar_pago_ingreso():
-        if request.form:
-                data = request.form
-                pago = Pagos_Ingresos.query.get(data["pago_id"])
-                pago.referencia_pago = data["referencia_pago"]
-                #print('fecha de pago = ',data["referencia_pago"])
-                pago.fecha_pago = data["fecha_pago"]
-                for ingreso in pago.ingresos:
-                        ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id ).first()
-                        ingreso.monto_pagado += ep.monto
-                        ingreso.monto_solicitado -= ep.monto
-                        if ingreso.monto_pagado == ingreso.monto_total:
-                                ingreso.pagado = True
-                        if ('conciliado_check' in data):
-                                pago.status = 'conciliado';
-                                pago.referencia_conciliacion = data["referencia_conciliacion"]
-                                if ingreso.status != 'parcial' and ingreso.monto_pagado == ingreso.monto_total:
-                                        ingreso.status = 'liquidado'
-                        else:
-                                ingreso.monto_por_conciliar += ep.monto
-                                pago.status = 'por_conciliar'
-                                if ingreso.status != 'parcial' and ingreso.monto_pagado == ingreso.monto_total:
-                                        ingreso.status = 'por_conciliar'
-
-                db.session.commit()
-                return  redirect("/ingresos/pagos_recibidos")
 
 
 #reprogramar_fecha

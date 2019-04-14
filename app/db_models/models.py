@@ -12,10 +12,10 @@ beneficiario_has_categorias = Table('beneficiario_has_categorias', db.Model.meta
     Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
 )
 
-#cliente_has_categorias = Table('cliente_has_categorias', db.Model.metadata,
-#    Column('cliente_id', Integer, ForeignKey('clientes.id'), primary_key=True),
-#    Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
-#)
+cliente_has_categorias = Table('cliente_has_categorias', db.Model.metadata,
+    Column('cliente_id', Integer, ForeignKey('clientes.id'), primary_key=True),
+    Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
+)
 #Tables in alpha order
 
 class Beneficiarios(db.Model):
@@ -59,7 +59,7 @@ class Categorias(db.Model):
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
     beneficiarios = relationship("Beneficiarios", secondary=beneficiario_has_categorias)
-   # clientes = relationship("Beneficiarios", secondary=cliente_has_categorias)
+    clientes = relationship("Clientes", secondary=cliente_has_categorias)
     
     def __repr__(self):
         return self.nombre        
@@ -96,7 +96,9 @@ class Clientes(db.Model):
     direccion = Column(String(50))
     razon_social = Column(String(50))
     cuenta_banco = Column(String(50))
-    saldo = Column(Numeric(10, 2))
+    saldo_pendiente = Column(Numeric(20, 2))
+    saldo_por_conciliar = Column(Numeric(20, 2))
+    saldo_cobrado = Column(Numeric(20, 2))
     status = Column(String(50))
     comentarios = Column(String(50))
     banco = Column(String(50))
@@ -106,7 +108,7 @@ class Clientes(db.Model):
     ingresos = relationship("Ingresos")
     detalles_ingresos = relationship("DetallesIngreso")
     pagos_ingresos = relationship("Pagos_Ingresos")
-    #categorias = relationship("Categorias", secondary=cliente_has_categorias)
+    categorias = relationship("Categorias", secondary=cliente_has_categorias)
     
     def __repr__(self):
         return self.nombre
@@ -371,13 +373,13 @@ class Ingresos(db.Model):
         if (self.monto_pagado == 0):
             self.status = 'pendiente'
             
-        elif ((self.monto_pagado > 0) and (self.monto_pagado < self.monto_total)):
+        if ((self.monto_pagado > 0) and (self.monto_pagado < self.monto_total)):
             self.status = 'parcial'
             
-            if(float(self.monto_pagado) + float(self.monto_por_conciliar) == float(self.monto_total)):
+        if(float(self.monto_pagado) + float(self.monto_por_conciliar) == float(self.monto_total)):
                 self.status = 'por_conciliar'
 
-        elif (self.monto_pagado == self.monto_total):
+        if (self.monto_pagado == self.monto_total):
              self.status = 'conciliado'
             
 

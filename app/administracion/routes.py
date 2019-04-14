@@ -79,6 +79,23 @@ def clientes():
     clientes = Clientes.query.all()
     return render_template("clientes.html", clientes = clientes)   
 
+@blueprint.route('/agregar_cliente', methods=['GET', 'POST'])
+@login_required
+def agregar_cliente():
+    if request.form:
+        data = request.form
+        cliente = Clientes(nombre = data["nombre"], RFC = data["RFC"], 
+            direccion = data["direccion"], razon_social = data["razon_social"],
+            cuenta_banco = data["cuenta_banco"], saldo_pendiente = 0, saldo_por_conciliar = 0,saldo_cobrado = 0,
+            status = 'conciliado', comentarios = data["comentarios"],banco = data["banco"]) 
+        for i in range(len(data.getlist("nombre_contacto"))):         
+            contacto = ContactoCliente(nombre=data.getlist("nombre_contacto")[i], correo = data.getlist("correo_contacto")[i],
+            telefono = data.getlist("telefono_contacto")[i], extension = data.getlist("extension_contacto")[i], puesto=data.getlist("puesto_contacto")[i])
+            cliente.contacto.append(contacto)
+        db.session.add(cliente)
+        db.session.commit()   
+        return redirect("/administracion/clientes")
+
 @blueprint.route('/perfil_de_cliente/<int:cliente_id>', methods=['GET', 'POST'])
 def perfil_de_cliente(cliente_id):
 
