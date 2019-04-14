@@ -12,6 +12,10 @@ beneficiario_has_categorias = Table('beneficiario_has_categorias', db.Model.meta
     Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
 )
 
+#cliente_has_categorias = Table('cliente_has_categorias', db.Model.metadata,
+#    Column('cliente_id', Integer, ForeignKey('clientes.id'), primary_key=True),
+#    Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
+#)
 #Tables in alpha order
 
 class Beneficiarios(db.Model):
@@ -44,6 +48,7 @@ class Beneficiarios(db.Model):
         print(id)
         return Beneficiarios.query.get(id)
 
+
 class Categorias(db.Model):
     __tablename__ = 'categorias'
     __table_args__ = {'extend_existing': True}
@@ -54,6 +59,8 @@ class Categorias(db.Model):
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
     beneficiarios = relationship("Beneficiarios", secondary=beneficiario_has_categorias)
+   # clientes = relationship("Beneficiarios", secondary=cliente_has_categorias)
+    
     def __repr__(self):
         return self.nombre        
 
@@ -99,6 +106,7 @@ class Clientes(db.Model):
     ingresos = relationship("Ingresos")
     detalles_ingresos = relationship("DetallesIngreso")
     pagos_ingresos = relationship("Pagos_Ingresos")
+    #categorias = relationship("Categorias", secondary=cliente_has_categorias)
     
     def __repr__(self):
         return self.nombre
@@ -360,14 +368,13 @@ class Ingresos(db.Model):
             pagos_ingresos = ingreso.query.join(Ingresos.pagos_ingresos).filter_by(id = self.id) 
         monto_pagos = 0
 
-
         if (self.monto_pagado == 0):
             self.status = 'pendiente'
             
         elif ((self.monto_pagado > 0) and (self.monto_pagado < self.monto_total)):
             self.status = 'parcial'
             
-            if(self.monto_pagado == self.monto_total):
+            if(float(self.monto_pagado) + float(self.monto_por_conciliar) == float(self.monto_total)):
                 self.status = 'por_conciliar'
 
         elif (self.monto_pagado == self.monto_total):
@@ -413,7 +420,6 @@ class Pagos_Ingresos(db.Model):
     cliente = relationship("Clientes", back_populates="pagos_ingresos")
     
     ingresos = relationship("Ingresos", secondary='ingresos_has_pagos')
-
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id) 

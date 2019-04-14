@@ -10,7 +10,7 @@
         <h2 class="font-24">Detalle de Ingreso</h2>
 
         <div class="select-btn-group">
-          <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar ingreso</span>
+          <span id="cancelar-pago" class="btn bg-red delete-ingreso" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar ingreso</span>
         </div>
 
         </div>
@@ -300,9 +300,12 @@
     </div>
 
     {% include "modal_conciliar_movimiento_ingreso.html" %}
+    {% include "modal_reprogramar_fecha.html" %}
+    {% include "modal_conciliar_ingreso.html" %}
+    {% include "modal_reprogramar_fecha_multiple.html" %}
     {% include "modal_generar_pago.html" %}
     {% include "modal_cobrar_cuentas_por_cobrar.html" %}
-    
+    {% include "modal_pagar_multiple.html" %}
     {% include "modal_agregar_detalle_ingresos.html" %}
     {% include "modal_editar_detalle.html" %}
     
@@ -324,14 +327,7 @@
 
     <script>
       
-    //monto parcial checkbox
-    $("#parcial").change(function () {
-      if (this.checked) {
-        $("#monto_parcial").fadeIn();
-      } else {
-        $("#monto_parcial").fadeOut();
-      }
-    });
+
 
     //solcitar pagar un ingreso
     $(".open-cobrar").on("click", function () {
@@ -363,15 +359,6 @@
       });
 
 
-    // Conciliado check for modal generar pago
-    $("#conciliado_check").change(function () {
-        if (this.checked) {
-            $("#referencia_conciliacion").fadeIn()
-        } else {
-            $("#referencia_conciliacion").fadeOut()
-        }
-    });
-
 
 
     //Modal Conciliar
@@ -385,7 +372,7 @@
                                 <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
                             </div>
                             <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Monto a conciliar: <span class="font-bold">$ ${data.monto_total}</span></p>
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
                             </div>
                         </div>
 
@@ -406,7 +393,6 @@
     });
 
     //Modal Conciliar multiple
-
     $("#open-conciliar-multiple").on("click", function () {
         let pagos = []
         // Iterate over all checkboxes in the table
@@ -456,26 +442,10 @@
         });
     });
 
-    //Jquery table
-    var table = $('.js-basic-example').DataTable({
-        'order': [1, 'asc'],
-        "columnDefs": [ {
-        "targets": 0,
-        "orderable": false
-        } ]
-    });
 
-    // "Select all" control
-    $('.select-all').on('click', function () {
-        // Check/uncheck all checkboxes in the table
-        var rows = table.rows({
-            'search': 'applied'
-        }).nodes();
-        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-    });
                 
     //cancelar pago con sweer alert
-    $('.cancel-egreso').on('click', function () {
+    $('.cancel-ingreso').on('click', function () {
         var element = this;
         swal({
           title: "Estas seguro?",
@@ -505,78 +475,55 @@
 
  
 
-                 
-      $('.editar-detalle').on('click', function () {
-        console.log('in')
-        $.ajax({
-          url: $(this).attr("data-url"),
-          success: function (data) {
-            const html =`
-            <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
-                <input type="hidden" id="id" name="id" value="${data.id}">  
-            <div class="row" style="margin-bottom:20px !important">
-                            <div class="col-sm-12 col-md-6">
-                                    <label for="centro_negocios"> Centro de negocios </label><br>
-                                    <select class="selectpicker"  data-live-search="true" 
-                                    name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
-                                    {% for centro in centros_negocio %}
-                                    <option value="{{centro.id}}"> {{ centro.nombre }} </option>
-                                    {% endfor %}
-                                  </select>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                    <label for="cliente"> Cliente </label><br>
-                                    <select class="selectpicker"  data-live-search="true" 
-                                    name="cliente" title="Seleccione un Cliente..."
-                                     data-width="100%">
-                                     {% for cliente in clientes %}
-                                     <option value="{{cliente.id}}"> {{cliente.nombre }} </option>
-                                     {% endfor %}
-                                   </select>
-                                
-                            </div>
-                        </div>
-                        <div class="row" style="margin-bottom:20px !important">
-                            <div class="col-sm-12 col-md-6">
-                                <label for="categoria"> Categoría </label>
-                                <select class="selectpicker" data-live-search="true" 
-                                  name="categoria" title="Seleccione una Categoria..."
-                                  data-width="100%">
-                                  {% for categoria in categorias %}
-                                  <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
-                                  {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <label for="concepto"> Concepto</label>
-                                <select class="selectpicker"  
-                                data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
-                                {% for concepto in conceptos %}
-                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
-                                {% endfor %}
-                              </select>
-                            </div>
-                        </div>
-                    
-                        <div class="row" style="margin-bottom:20px !important">
-                            <div class="col-sm-12 col-md-6">
-                                <label for="monto">Monto</label>
-                                <input type='number' class="form-control" name="montoh" value="${data.monto}"  disabled />
-                                <input type='hidden' class="form-control" name="monto" value="${data.monto}"  />
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                    <label for="numero_control"># de control</label>
-                                    <input type='text' class="form-control" name="numero_control" value="${data.numero_control}" />
-                                </div>
-                        </div>
-    
-                        <div class="row" style="margin-bottom:20px !important">
-                                <div class="col-sm-12">
-                                    <label for="arrendadora"> Detalle </label>
-                                    <textarea name="comentario" id="comentario" style="width:100%" > ${data.descripcion}</textarea>
-                                 </div>
-                        </div>
-                         </div>
+    //Jquery table
+    var table = $('.js-basic-example').DataTable({
+        'order': [1, 'asc'],
+        "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+        } ]
+    });
+
+
+          
+    //monto parcial checkbox
+    $("#parcial").change(function () {
+      if (this.checked) {
+        $("#monto_parcial").fadeIn();
+      } else {
+        $("#monto_parcial").fadeOut();
+      }
+    });
+      
+    // Conciliado check for modal generar pago          
+    $("#conciliado_check").change(function () {
+    if (this.checked) {
+      $("#referencia_conciliacion").prop('disabled', false);
+    } else {
+      $("#referencia_conciliacion").prop('disabled', true);
+    }
+    }); 
+                
+
+
+  // "Select all" control
+  $('.select-all').on('click', function () {
+    // Check/uncheck all checkboxes in the table
+    var rows = table.rows({
+      'search': 'applied'
+    }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+  });
+                
+            
+   //Modal Editar Detalles de Ingreso                 
+  $('.editar-detalle').on('click', function () {
+    $.ajax({
+      url: $(this).attr("data-url"),
+      success: function (data) {
+        const html =
+          `<form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
+ 
         
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Editar Detalle</button>
@@ -585,13 +532,14 @@
                         </button>
                     </div>
                 </form>`
-            let element = document.querySelector(".detalle-here");
-            element.innerHTML = "";
-            element.insertAdjacentHTML('beforeend', html);
-            $('.selectpicker').selectpicker('refresh');
-            $('#modal_editar_detalle').modal('show');
-          }
-        });
-      });
+        let element = document.querySelector(".detalle-here");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        $('.selectpicker').selectpicker('refresh');
+        $('#modal_editar_detalle').modal('show');
+      }
+    });
+  });                        
+
       </script>
       {% endblock javascripts %}

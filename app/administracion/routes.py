@@ -53,6 +53,7 @@ def agregar_categoria_cliente(cliente_id):
     if request.form:
         data = request.form
         cliente = Clientes.query.get(cliente_id) 
+       
         for i in range(len(data.getlist("categoria"))):
                 categoria = Categorias.query.get(data.getlist("categoria")[i])
                 cliente.categorias.append(categoria)
@@ -87,7 +88,9 @@ def perfil_de_cliente(cliente_id):
     cuentas = Cuentas.query.all()
     categorias = Categorias.query.all()
    
-    return render_template("perfil_de_cliente_2.html", cliente = cliente,contactos_cliente=contactos_cliente,formas_pago = formas_pago,cuentas = cuentas)#, contactos_cliente = contactos_cliente)   
+    return render_template("perfil_de_cliente.html", cliente = cliente,
+                           contactos_cliente=contactos_cliente,formas_pago = formas_pago,
+                           cuentas = cuentas,categorias = categorias)#, contactos_cliente = contactos_cliente)   
 
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required

@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, flash, jsonify
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
+from datetime import datetime
 from app.db_models.models import *
 
 
@@ -220,7 +221,7 @@ def borrar_pago(pago_id):
 def cancelar_pago_ingreso(pago_id):
     
     pago = Pagos_Ingresos.query.get(pago_id)
-    print('pago = ',pago)
+    
     for ingreso in pago.ingresos:
         ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id ).first()
         if pago.status == 'conciliado':
@@ -232,9 +233,11 @@ def cancelar_pago_ingreso(pago_id):
         
     pago.status = 'cancelado'
     db.session.commit()
+    
     for ingreso in pago.ingresos:
         ingreso.setStatus()
     db.session.commit()
+    
     return  jsonify("deleted")
 
 
@@ -270,6 +273,7 @@ def mandar_cobrar():
             ingreso.monto_pagado = float(ingreso.monto_pagado) + monto_total_pago 
             ingreso.setStatus()
             status_pago = 'conciliado'
+            fecha_conciliacion = datetime.now()
             
         else:
             
@@ -281,13 +285,14 @@ def mandar_cobrar():
             status_pago = 'por_conciliar'
             ingreso.monto_por_conciliar = float(ingreso.monto_por_conciliar) + monto_total_pago
             ingreso.setStatus()
-           
+            fecha_conciliacion = None
         if 'referencia_conciliacion' in data: referencia_conciliacion = data["referencia_conciliacion"]
         else: referencia_conciliacion = ''
                 
-        pago = Pagos_Ingresos(status = status_pago , cliente = ingreso.cliente, 
-                              monto_total = monto_total_pago, cuenta_id = data["cuenta_id"], 
-                              forma_pago_id = data["forma_pago_id"],referencia_pago = data["ingreso_id"],
+        pago = Pagos_Ingresos(status = status_pago , cliente = ingreso.cliente, fecha_pago = datetime.now(),
+                              fecha_conciliacion = fecha_conciliacion, monto_total = monto_total_pago, 
+                              cuenta_id = data["cuenta_id"], forma_pago_id = data["forma_pago_id"],
+                              referencia_pago = data["ingreso_id"],
                               referencia_conciliacion = referencia_conciliacion)
       
         ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
@@ -367,7 +372,7 @@ def conciliar_pago_ingreso():
                 pago = Pagos_Ingresos.query.get(pago_id)
                 pago.status = 'conciliado';
                 pago.referencia_conciliacion = data["referencia"]
-                pago.fecha_pago = data["fecha"]
+                pago.fecha_conciliacion = data["fecha"]
                 pago.comentario = data["comentario"]
                                 
                 ep = IngresosHasPagos.query.filter_by(pago_id = pago.id ).first()
@@ -377,7 +382,7 @@ def conciliar_pago_ingreso():
                 ingreso.monto_pagado += ep.monto
                 ingreso.setStatus()
                 
-            db.session.commit()
+                db.session.commit()
             return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
         
 #Desconciliar Pago
@@ -386,7 +391,7 @@ def desconciliar_pago_ingreso(pago_id):
         pago = Pagos_Ingresos.query.get(pago_id)
         pago.status = 'por_conciliar'
         pago.referencia_conciliacion = None
-        pago.fecha_pago = None
+        pago.fecha_conciliacion = None
         db.session.commit()
         
         for ingreso in pago.ingresos:
@@ -465,6 +470,7 @@ def generar_pago_ingreso():
                 data = request.form
                 pago = Pagos_Ingresos.query.get(data["pago_id"])
                 pago.referencia_pago = data["referencia_pago"]
+                #print('fecha de pago = ',data["referencia_pago"])
                 pago.fecha_pago = data["fecha_pago"]
                 for ingreso in pago.ingresos:
                         ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id ).first()
@@ -560,6 +566,16 @@ def agregar_detalle(ingreso_id):
 @login_required
 def get_data_editar_detalle(detalle_id):
         detalle = DetallesIngreso.query.get(detalle_id)
+        print('ID = ',detalle.id)
+        print('centro_negocios=',detalle.centro_negocios_id)
+        print('cliente=',detalle.cliente_id)
+        print('monto=',str(detalle.monto))
+        print('categoria =',detalle.categoria_id)
+        print('concepto=',detalle.concepto_id)
+        print('numero_control=',detalle.numero_control)
+        print('descripcion=',detalle.descripcion)
+        
+        
         return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, 
                        cliente=detalle.cliente_id,  monto=str(detalle.monto), 
                        categoria = detalle.categoria_id , concepto=detalle.concepto_id, 
