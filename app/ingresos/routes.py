@@ -339,14 +339,18 @@ def mandar_cobrar():
 # Solicitar multiples pagos data for modal 
 @blueprint.route('/get_data_pagar_multiple', methods=['GET', 'POST'])
 @login_required
-def get_data_pagar_multiple():
-        list = []
-        ingresos = request.args.getlist('ingresos[]')
-        for egreso in egresos:
-                e = Ingresos.query.get(egreso)
-                monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
-                list.append({'igreso_id': e.id, 'cliente': e.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
-        return jsonify(list)
+def get_data_cobrar_multiple():
+    
+    print(' En get_data_cobrar_multiple')
+    list = []
+    ingresos = request.args.getlist('ingresos[]')
+    print(ingresos)
+    for ingreso in ingresos:
+            e = Ingresos.query.get(ingreso)
+            monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
+            list.append({'ingreso_id': e.id, 'cliente': e.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
+    return jsonify(list)
+
 
 
 #Solicitar pago from sumbit
@@ -355,17 +359,18 @@ def get_data_pagar_multiple():
 def mandar_cobrar_multiple():
         if request.form:
                 data = request.form
-                for i in range(int(data["cantidad"])):
-                        pago = Pagos_Ingresos(status='solicitado', monto_total=data["monto_total_%d" % i], cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
-                        for ingreso in data.getlist("ingreso_%d" % i):
-                                e = Ingresos.query.get(ingreso)
-                                e.status = 'solicitado'
-                                e.monto_solicitado +=  e.monto_total - e.monto_pagado
-                                pago.cliente = e.cliente
-                                ep = IngresosHasPagos(ingreso=e, pago=pago, monto=e.monto_solicitado)
-                                db.session.add(ep)
-                                db.session.commit()
-                return  redirect("/ingresos/pagos_recibidos")   
+                print(data)
+#                for i in range(int(data["cantidad"])):
+#                        pago = Pagos_Ingresos(status='solicitado', monto_total=data["monto_total_%d" % i], cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
+#                        for ingreso in data.getlist("ingreso_%d" % i):
+#                                e = Ingresos.query.get(ingreso)
+#                                e.status = 'solicitado'
+#                                e.monto_solicitado +=  e.monto_total - e.monto_pagado
+#                                pago.cliente = e.cliente
+#                                ep = IngresosHasPagos(ingreso=e, pago=pago, monto=e.monto_solicitado)
+#                                db.session.add(ep)
+#                                db.session.commit()
+                return  redirect("/ingresos/cuentas_por_cobrar")   
 
 
 
