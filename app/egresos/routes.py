@@ -103,6 +103,7 @@ def cuentas_por_pagar():
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
+    print(egreso.detalles[0].monto)
     centros_negocio= CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
     categorias = Categorias.query.all()
@@ -347,30 +348,35 @@ def generar_pago():
 @login_required
 def generar_pagos_multiple():
         if request.form:
+                cheque_counter = 0
                 data = request.form
                 pagos = (data.getlist('pago_id'))
                 for pago_id in pagos:
                         pago = Pagos.query.get(pago_id)
-                        pago.referencia_pago = data["referencia_pago"]
-                        pago.fecha_pago = data["fecha_pago"]
-                        if pago.forma_pago.nombre.lower() == "cheque":
+                        if pago.forma_pago.nombre.lower() == 'cheque':
+                                pago.referencia_pago = data.getlist('numero_cheque')[cheque_counter]
+                                cheque_counter += 1
                                 pago.cuenta.numero_cheque += 1
+                                pago.fecha_pago = data["fecha_pago_cheque"]
+                                pago.comentario = data["comentario_cheque"]
+                        elif pago.forma_pago.nombre.lower() == 'transferencia': 
+                                pago.referencia_pago = data["referencia_pago_transferencia"]
+                                pago.fecha_pago = data["fecha_pago_transferencia"]
+                                pago.comentario = data["comentario_transferencia"]
+                        else:
+                                pago.referencia_pago = data["referencia_pago_efectivo"]
+                                pago.fecha_pago = data["_efectivo"]
+                                pago.comentario = data["comentario_efectivo"]
                         for egreso in pago.egresos:
                                 ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id , pago_id =pago.id ).first()
                                 egreso.monto_pagado += ep.monto
                                 egreso.monto_solicitado -= ep.monto
                                 if egreso.monto_pagado == egreso.monto_total:
                                         egreso.pagado = True
-                                if ('conciliado_check' in data):
-                                        pago.status = 'conciliado';
-                                        pago.referencia_conciliacion = data["referencia_conciliacion"]
-                                        if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
-                                                egreso.status = 'liquidado'
-                                else:
-                                        egreso.monto_por_conciliar += ep.monto
-                                        pago.status = 'por_conciliar'
-                                        if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
-                                                egreso.status = 'por_conciliar'
+                                egreso.monto_por_conciliar += ep.monto
+                                pago.status = 'por_conciliar'
+                                if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
+                                        egreso.status = 'por_conciliar'
 
                 db.session.commit()
                 return  redirect("/egresos/pagos_realizados")
@@ -382,7 +388,7 @@ def get_data_generar_pagos_multiple():
         pagos = request.args.getlist('pagos[]')
         for pago in pagos:
             p =  Pagos.query.get(pago)
-            list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'forma_pago': p.forma_pago.nombre, 'cuenta': p.cuenta.nombre})
+            list.append({'pago_id': p.id, 'beneficiario': p.beneficiario.nombre, 'monto_total': str(p.monto_total), 'forma_pago': p.forma_pago.nombre, 'cuenta': p.cuenta.nombre, 'cuenta_id': str(p.cuenta.id), 'numero_cheque': str(p.cuenta.numero_cheque)})
         return jsonify(list)
 
 

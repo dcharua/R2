@@ -1,25 +1,39 @@
 <div class="modal fade" id="modal_generar_pago_multiple" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="alert-here"></div>
-  
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="largeModalLabel">Generar pago</h4>
-        </div>
-        <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('egresos_blueprint.generar_pagos_multiple') }}">
-          <div class="modal-body">
-            <div class="generar_multiple_here"></div>
-  
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="alert-here"></div>
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="largeModalLabel">Generar pago</h4>
+      </div>
+      <form class="form-horizontal form-label-left" id="user_inputs" method="POST"
+        action="{{ url_for('egresos_blueprint.generar_pagos_multiple') }}">
+        <div class="modal-body">
+          <div id="hide_cheque">
+            <h4>Tabla de cheques</h4>
+            <div class="table-responsive">
+              <table class="table table-modal table-modal-1 table-bordered table-striped table-hover  dataTable">
+                <thead>
+                  <tr>
+                    <th>Beneficiario</th>
+                    <th>Monto</th>
+                    <th>Cuenta</th>
+                    <th>Número de cheque</th>
+                  </tr>
+                </thead>
+
+                <tbody id="cheque_table">
+
+                </tbody>
+              </table>
+            </div>
+
             <div class="input-group">
               <div class="row" style="margin-bottom:10px">
-                <div class="col-sm-12 col-md-6">
-                  <label class="grey-font" for="referencia_pago">Referencia de pago</label>
-                  <input type="text" class="form-control" id="referencia_pago" name="referencia_pago" class="filled-in" />
-                </div>
                 <div class="col-sm-12 col-md-6 ">
-                  <label> Fecha de pago </label>
+                  <label> Fecha de pagos </label>
                   <div class='input-group date mydatepicker' data-provide="datepicker">
-                    <input type='text' name="fecha_pago" class="form-control" />
+                    <input type='text' name="fecha_pago_cheque" class="form-control" />
                     <span class="input-group-addon">
                       <i class="material-icons mydate">date_range</i>
                     </span>
@@ -27,29 +41,157 @@
                 </div>
               </div>
             </div>
-  
-  
+
+<!-- 
             <div class="input-group">
               <div class="row">
                 <div class="col-sm-12 col-md-6 ">
-                  <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
-                  <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
+                  <input type="checkbox" id="conciliado_check_cheque" name="_cheque" class="filled-in" />
+                  <label class="grey-font" for="conciliado_check_cheque">Movimiento conciliado</label>
                 </div>
                 <div class="col-sm-12 col-md-6 ">
                   <input placeholder="Referencia de conciliacion" class="form-control" style="display:none" type="text"
-                    id="referencia_conciliacion" name="referencia_conciliacion">
+                    id="referencia_conciliacion" name="referencia_conciliacion_cheque">
                 </div>
               </div>
-            </div>
-  
+            </div> -->
+
             <div class="input-group">
               <div class="row">
                 <div class="col-sm-12">
-                  <label for="comentario">Comentario</label>
-                  <textarea name="comentario" id="comentario" style="width:100%"></textarea>
+                  <label for="comentario_cheque">Comentario de pagos</label>
+                  <textarea name="comentario_cheque" id="comentario" style="width:100%"></textarea>
                 </div>
               </div>
             </div>
+            <hr>
+          </div>
+
+          <div id="hide_transferencia">
+            <h4>Tabla de Transferencias</h4>
+            <div class="table-responsive">
+              <table class="table table-modal table-modal-2 table-bordered table-striped table-hover dataTable">
+                <thead>
+                  <tr>
+                    <th>Beneficiario</th>
+                    <th>Monto</th>
+                    <th>Cuenta</th>
+                  </tr>
+                </thead>
+
+                <tbody id="transferencia_table">
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="input-group">
+              <div class="row" style="margin-bottom:10px">
+                <div class="col-sm-12 col-md-6">
+                  <label class="grey-font" for="referencia_pago_transferencia">Referencia de pagos</label>
+                  <input type="text" class="form-control" id="referencia_pago_transferencia"
+                    name="referencia_pago_transferencia" class="filled-in" />
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                  <label> Fecha de pagos </label>
+                  <div class='input-group date mydatepicker' data-provide="datepicker">
+                    <input type='text' name="fecha_pago_transferencia" class="form-control" />
+                    <span class="input-group-addon">
+                      <i class="material-icons mydate">date_range</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="input-group">
+              <div class="row">
+                <div class="col-sm-12 col-md-6 ">
+                  <input type="checkbox" id="conciliado_check_transferencia" name="conciliado_check_transferencia"
+                    class="filled-in" />
+                  <label class="grey-font" for="conciliado_check_transferencia">Movimiento conciliado</label>
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                  <input placeholder="Referencia de conciliacion" class="form-control" style="display:none" type="text"
+                    id="referencia_conciliacion_transferencia" name="referencia_conciliacion_transferencia">
+                </div>
+              </div>
+            </div> -->
+
+            <div class="input-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="comentario">Comentario de pagos</label>
+                  <textarea name="comentario_transferencia" id="comentario_transferencia" style="width:100%"></textarea>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div id="hide_efectivo">
+            <h4>Tabla de otros métodos de pago</h4>
+            <div class="table-responsive">
+              <table class="table table-modal table-modal-3 table-bordered table-striped table-hover dataTable">
+                <thead>
+                  <tr>
+                    <th>Beneficiario</th>
+                    <th>Monto</th>
+                    <th>Cuenta</th>
+                  </tr>
+                </thead>
+
+                <tbody id="efectivo_table">
+
+                </tbody>
+              </table>
+            </div>
+            <div class="input-group">
+              <div class="row" style="margin-bottom:10px">
+                <div class="col-sm-12 col-md-6">
+                  <label class="grey-font" for="referencia_pago_efectivo">Referencia de pagos</label>
+                  <input type="text" class="form-control" id="referencia_pago_efectivo" name="referencia_pago_efectivo"
+                    class="filled-in" />
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                  <label> Fecha de pagos </label>
+                  <div class='input-group date mydatepicker' data-provide="datepicker">
+                    <input type='text' name="_efectivo" class="form-control" />
+                    <span class="input-group-addon">
+                      <i class="material-icons mydate">date_range</i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- <div class="input-group">
+              <div class="row">
+                <div class="col-sm-12 col-md-6 ">
+                  <input type="checkbox" id="conciliado_check_efectivo" name="conciliado_check_efectivo"
+                    class="filled-in" />
+                  <label class="grey-font" for="conciliado_check_efectivo">Movimiento conciliado</label>
+                </div>
+                <div class="col-sm-12 col-md-6 ">
+                  <input placeholder="Referencia de conciliacion" class="form-control" style="display:none" type="text"
+                    id="referencia_conciliacion_efectivo" name="referencia_conciliacion_efectivo">
+                </div>
+              </div>
+            </div> -->
+
+            <div class="input-group">
+              <div class="row">
+                <div class="col-sm-12">
+                  <label for="comentario_efectivo">Comentario de pagos</label>
+                  <textarea name="comentario_efectivo" id="comentario_efectivo" style="width:100%"></textarea>
+                </div>
+              </div>
+            </div>
+            <hr>
+
+
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-link waves-effect ">Enviar</button>
@@ -57,7 +199,7 @@
               <i class="material-icons">close</i>
             </button>
           </div>
-        </form>
-      </div>
+      </form>
     </div>
   </div>
+</div>
