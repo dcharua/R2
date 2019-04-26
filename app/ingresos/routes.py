@@ -528,29 +528,19 @@ def reprogramar_fecha_multiple():
 def ingresos_tiendas():
     #import df_to_table as df_to_table
     
-    formaPago = list(['Banamex','Santander','BBVA'])
-    vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-    proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
-    categoria = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-    concepto= list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-   
-    
-    user_inputs = dict(request.form)
-    print(user_inputs)
-    
-    #a = df_to_table.df_to_table(list(1))
-    #print(a)
+    ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').all()
+    ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').all()
+    ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    return render_template("ingresos_tiendas.html", 
+                        ingresos_recibidos = ingresos_recibidos,
+                        ingresos_pendientes = ingresos_pendientes, 
+                        formas_pago = formas_pago, 
+                        cuentas=cuentas)
 
-    return render_template("ingresos_tiendas.html",
-                           navbar_data_capture = 'active',
-                           title = "aaaRegistro de ingresos",
-                           formaPago = formaPago,
-                           vendor = vendor,
-                           proveedor = proveedor,
-                           categoria = categoria,
-                           concepto = concepto,
-                           velocity_max = 1)
     
+
     
 @blueprint.route('/agregar_detalle<int:ingreso_id>', methods=['GET', 'POST'])
 @login_required
