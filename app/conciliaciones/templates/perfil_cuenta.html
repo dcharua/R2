@@ -51,12 +51,12 @@
                     class="font-bold">{{"${:,.2f}".format(saldo_conciliado_ingresos)}}</span></p>
               </div>
               <div class="col-sm-12 col-md-4 text-center" >
-                <p class="font-16"> <span class="font-16 label label-success">Saldo disponible</span>
+                <p class="font-16"> <span class="font-16 label label-info">Saldo actual</span>
                   <br> <span class="font-bold">{{"${:,.2f}".format(cuenta.saldo)}}</span>
                 </p>
-                <p class="font-16"> <span class="font-16 label label-info">Saldo actual </span>
+                <p class="font-16"> <span class="font-16 label label-success">Saldo disponible</span>
                   <br> <span class="font-bold">
-                    {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
+                      {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
                 </p>
                 <p class="font-16"> <span class="font-16 label label-default">Saldo en sistema</span>
                   <br> <span class="font-bold">

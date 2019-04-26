@@ -175,7 +175,7 @@
                           <select class="selectpicker" id="cuenta_banco" 
                             data-live-search="true" name="cuenta_banco" title="Seleccione una cuenta de banco..." data-width="100%"  data-validation="required" >
                             {% for cuenta in cuentas_banco %}
-                            <option value="{{cuenta.id}}"> {{ cuenta.banco }} / {{cuenta.numero}} </option>
+                            <option value="{{cuenta.id}}"> {{ cuenta.nombre }}  </option>
                             {% endfor %}
                           </select>
                         </div>

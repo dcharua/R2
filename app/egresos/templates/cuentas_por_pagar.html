@@ -31,7 +31,7 @@
 
             <thead>
               <tr>
-                <th><input name="select_all" value="1" class="table-check select-all" type="checkbox" /></th>
+                <th><input name="select-all" value="1" class="table-check select-all-t1" type="checkbox" /></th>
                 <th>ID</th>
                 <th># documento</th>
                 <th>Beneficiario</th>
@@ -61,7 +61,7 @@
               <tr>
                 <td>
                   {% if egreso.status != 'solicitado' %}
-                  <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                  <input name="select_all-t1" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
                   {% endif %}
                 </td>
                 <td>{{egreso.id}}</td>
@@ -131,7 +131,7 @@
 
             <thead>
               <tr>
-                <th><input name="select_all" value="1" class="select-all" type="checkbox" /></th>
+                <th><input name="select_all" value="1" class="select-all-t2" type="checkbox" /></th>
                 <th>ID</th>
                 <th># documento</th>
                 <th>Beneficiario</th>
@@ -222,7 +222,7 @@
 
 <script>
   //reprogramar un egreso
-  $("#open-reprogramar").on("click", function () {
+  $(".open-reprogramar").on("click", function () {
     const html = `  <input type="hidden" id="egreso_id" name="egreso_id" value="${$(this).attr("data-id")}">`
     let element = document.querySelector(".egreso_id_here");
     element.innerHTML = "";
@@ -409,7 +409,7 @@
 
   //Jquery table
 
-  var pagar_table = $('pagar_table').DataTable({
+  var pagar_table = $('.pagar_table').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     "order": [
@@ -425,6 +425,8 @@
     }]
   });
 
+
+
   // "Select all" control
   $('.select-all-t1').on('click', function () {
     // Check/uncheck all checkboxes in the table
@@ -436,7 +438,7 @@
 
 
 
-  var conciliar_table = $('conciliar_table').DataTable({
+  var conciliar_table = $('.conciliar_table').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     "order": [

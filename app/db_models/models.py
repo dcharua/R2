@@ -176,7 +176,7 @@ class ContactoCliente(db.Model):
 class Cuentas(db.Model):
     __tablename__ = 'cuentas'
     __table_args__ = {'extend_existing': True}
-
+    
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     nombre = Column(String(50))
     banco = Column(String(50))
@@ -192,7 +192,7 @@ class Cuentas(db.Model):
     pagos_ingresos = relationship("Pagos_Ingresos")
 
     def __repr__(self):
-        return self.banco + ' / ' + self.numero       
+        return self.nombre       
 
 
 class DetallesEgreso(db.Model):
@@ -208,7 +208,7 @@ class DetallesEgreso(db.Model):
     categoria = relationship("Categorias", back_populates="detalles_egresos")
     concepto_id = Column(Integer, ForeignKey('conceptos.id'))
     concepto = relationship("Conceptos", back_populates="detalles_egresos")
-    monto = Column(Numeric(asdecimal=True))
+    monto = Column(Numeric(10, 2))
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
     egreso_id = Column(Integer, ForeignKey('egresos.id'))
