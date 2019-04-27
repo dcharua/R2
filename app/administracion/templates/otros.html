@@ -87,7 +87,7 @@
             <div class="body">
                 <ul>
                     {%for categoria in categorias%}
-                        <li> <b>{{categoria}} </b>
+                        <li> <b>{{categoria.nombre}} </b>
                             <span style="float: right;">  
                                     <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Categoria" data-id="{{categoria.id}}" data-value="{{categoria}}" >
                                         <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
@@ -95,7 +95,11 @@
                                 </span>
                             <ul>
                                 {%for concepto in categoria.conceptos%}
-                                    <li>{{concepto}}</li>
+                                   
+                                    <a class="btn btn-xs btn-info waves-effect open-editar"  data-toggle="tooltip" data-placement="top" title="Editar" 
+                                    data-type="Concepto" data-id="{{concepto.id}}" data-value="{{concepto}}"  data-categoria-id="{{categoria.id}}">
+                                        <li>{{concepto}}</li>
+                                    </a>
                                 {% endfor %}
                             </ul>
                             
@@ -141,8 +145,27 @@
                     <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
                 </div>`
         element.insertAdjacentHTML('beforeend', html);
+        if ($(this).attr("data-categoria-id")){
+            console.log($(this).attr("data-categoria-id")) 
+            const html2 = 
+            `<div class="row" style="margin-bottom:20px !important">
+                <div class="col-sm-12">
+                    <label for="categoria-id"> Categoría</label>
+                    <select class="selectpicker" data-live-search="true" 
+                        name="categoria-id" title="Seleccione una Categoría..."
+                        data-width="100%"  data-validation="required" >
+                        {% for categoria in categorias %}
+                        <option value="{{categoria.id}}"> {{categoria.nombre }} </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>`
+            element.insertAdjacentHTML('beforeend', html2);
+            $('.selectpicker').selectpicker('refresh');
+            $('.selectpicker').selectpicker('val', $(this).attr("data-categoria-id"));
+        }
         $('#modal_editar_multiple').modal('show');
-        
+      
       });
 </script>
 {% endblock javascripts %}

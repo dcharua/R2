@@ -76,8 +76,9 @@
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
+              <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Egreso"  data-id="{{egreso.id}}" data-value="{{egreso.comentario}}">Editar</span>
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">{{egreso.comentario}} </p>
+              <p class="font-18" style="white-space:pre;">{{egreso.comentario}} </p>
             </div>
           </div>
         </div>
@@ -293,12 +294,12 @@
         </div>
       </div>
     </div>
+    {% include "modal_editar_comentario.html" %}
     {% include "modal_pagar.html" %}
     {% include "modal_conciliar_movimiento.html" %}
     {% include "modal_generar_pago.html" %}
     {% include "modal_agregar_detalle.html" %}
     {% include "modal_editar_detalle.html" %}
-
 
     {% endblock content %}
 
@@ -657,6 +658,24 @@
             $('#modal_editar_detalle').modal('show');
           }
         });
+      });
+
+
+      $(".open-editar-comentario").on("click", function () {
+        let element = document.querySelector(".editar-comentario-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="comentario"> Comentario</label>
+                        <textarea class="form-control" type="text" name="comentario">${ $(this).attr("data-value")}</textarea>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_comentario').modal('show');
       });
     </script>
     {% endblock javascripts %}

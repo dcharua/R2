@@ -157,5 +157,26 @@ def editar_multiple():
         elif (data["type"] == "Tipo de ingreso"):
             obj = Tipo_Ingreso.query.get(data["id"])
             obj.tipo = data["value"]
+        elif (data["type"] == "Concepto"):
+            obj = Conceptos.query.get(data["id"])
+            obj.nombre = data["value"]
+            obj.categoria_id = data["categoria-id"]
         db.session.commit()  
     return redirect("/administracion/otros")
+
+@blueprint.route('/editar_comentario', methods=['GET', 'POST'])
+@login_required
+def editar_comentario():
+    if request.form:
+        data = request.form
+        if (data["type"] == "Egreso"):
+            obj = Egresos.query.get(data["id"])
+        elif (data["type"] == "Forma de pago"):
+            obj = FormasPago.query.get(data["id"])
+        elif (data["type"] == "Tipo de ingreso"):
+            obj = Tipo_Ingreso.query.get(data["id"])
+        elif (data["type"] == "Concepto"):
+            obj = Conceptos.query.get(data["id"])
+        obj.comentario = data["comentario"]
+        db.session.commit()  
+    return redirect(data["url"])
