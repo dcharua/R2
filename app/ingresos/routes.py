@@ -339,14 +339,18 @@ def mandar_cobrar():
 # Solicitar multiples pagos data for modal 
 @blueprint.route('/get_data_pagar_multiple', methods=['GET', 'POST'])
 @login_required
-def get_data_pagar_multiple():
-        list = []
-        ingresos = request.args.getlist('ingresos[]')
-        for egreso in egresos:
-                e = Ingresos.query.get(egreso)
-                monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
-                list.append({'igreso_id': e.id, 'cliente': e.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
-        return jsonify(list)
+def get_data_cobrar_multiple():
+    
+    print(' En get_data_cobrar_multiple')
+    list = []
+    ingresos = request.args.getlist('ingresos[]')
+    print(ingresos)
+    for ingreso in ingresos:
+            e = Ingresos.query.get(ingreso)
+            monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
+            list.append({'ingreso_id': e.id, 'cliente': e.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
+    return jsonify(list)
+
 
 
 #Solicitar pago from sumbit
@@ -355,17 +359,18 @@ def get_data_pagar_multiple():
 def mandar_cobrar_multiple():
         if request.form:
                 data = request.form
-                for i in range(int(data["cantidad"])):
-                        pago = Pagos_Ingresos(status='solicitado', monto_total=data["monto_total_%d" % i], cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
-                        for ingreso in data.getlist("ingreso_%d" % i):
-                                e = Ingresos.query.get(ingreso)
-                                e.status = 'solicitado'
-                                e.monto_solicitado +=  e.monto_total - e.monto_pagado
-                                pago.cliente = e.cliente
-                                ep = IngresosHasPagos(ingreso=e, pago=pago, monto=e.monto_solicitado)
-                                db.session.add(ep)
-                                db.session.commit()
-                return  redirect("/ingresos/pagos_recibidos")   
+                print(data)
+#                for i in range(int(data["cantidad"])):
+#                        pago = Pagos_Ingresos(status='solicitado', monto_total=data["monto_total_%d" % i], cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
+#                        for ingreso in data.getlist("ingreso_%d" % i):
+#                                e = Ingresos.query.get(ingreso)
+#                                e.status = 'solicitado'
+#                                e.monto_solicitado +=  e.monto_total - e.monto_pagado
+#                                pago.cliente = e.cliente
+#                                ep = IngresosHasPagos(ingreso=e, pago=pago, monto=e.monto_solicitado)
+#                                db.session.add(ep)
+#                                db.session.commit()
+                return  redirect("/ingresos/cuentas_por_cobrar")   
 
 
 
@@ -523,29 +528,19 @@ def reprogramar_fecha_multiple():
 def ingresos_tiendas():
     #import df_to_table as df_to_table
     
-    formaPago = list(['Banamex','Santander','BBVA'])
-    vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-    proveedor = list(['sub_categoria_1','sub_categoria_2','sub_categoria_3','sub_categoria_4','sub_categoria_5'])
-    categoria = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-    concepto= list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])
-   
-    
-    user_inputs = dict(request.form)
-    print(user_inputs)
-    
-    #a = df_to_table.df_to_table(list(1))
-    #print(a)
+    ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').all()
+    ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').all()
+    ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    return render_template("ingresos_tiendas.html", 
+                        ingresos_recibidos = ingresos_recibidos,
+                        ingresos_pendientes = ingresos_pendientes, 
+                        formas_pago = formas_pago, 
+                        cuentas=cuentas)
 
-    return render_template("ingresos_tiendas.html",
-                           navbar_data_capture = 'active',
-                           title = "aaaRegistro de ingresos",
-                           formaPago = formaPago,
-                           vendor = vendor,
-                           proveedor = proveedor,
-                           categoria = categoria,
-                           concepto = concepto,
-                           velocity_max = 1)
     
+
     
 @blueprint.route('/agregar_detalle<int:ingreso_id>', methods=['GET', 'POST'])
 @login_required

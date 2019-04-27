@@ -290,6 +290,7 @@
                   <a class="btn btn-xs btn-info waves-effect editar-detalle"  data-url="{{ url_for('ingresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
                     <i  data-toggle="tooltip"    data-placement="top" title="Editar" class="material-icons">edit</i>
                   </a>
+
                 </th>
               </tr>
               {% endfor %}
@@ -308,6 +309,7 @@
     {% include "modal_pagar_multiple.html" %}
     {% include "modal_agregar_detalle_ingresos.html" %}
     {% include "modal_editar_detalle.html" %}
+    {% include "modal_test.html" %}
     
     {% endblock content %}
 

@@ -18,7 +18,8 @@
         </h2>
 
         <div class="select-btn-group">
-          <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal" data-target="#modal_solicitar_multiple">Cobrar</span>
+           <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal"
+            data-target="#modal_solicitar_multiple">Pagar</span>
           <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar fecha</span>
         </div>
       </div>
@@ -189,7 +190,7 @@
 
 
 {% include "modal_cobrar_cuentas_por_cobrar.html" %}
-{% include "modal_pagar_multiple.html" %}
+{% include "modal_pagar_ingresos_multiple.html" %}
 {% include "modal_reprogramar_fecha.html" %}
 {% include "modal_reprogramar_fecha_multiple.html" %}
 {% include "modal_conciliar_movimiento_ingreso.html" %}
@@ -290,7 +291,7 @@
       }
     })
     $.get({
-      url: '/ingresos/get_data_pagar_multiple',
+      url: '/ingresos/get_data_cobrar_multiple',
       data: {
         ingresos: ingresos
       },
@@ -384,7 +385,7 @@
       }
     });
     //show modal  
-    $('#modal_pagar_multiple').modal('show');
+    $('#modal_pagar_ingresos_multiple').modal('show');
   });
 
  
