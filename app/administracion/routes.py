@@ -171,12 +171,18 @@ def editar_comentario():
         data = request.form
         if (data["type"] == "Egreso"):
             obj = Egresos.query.get(data["id"])
-        elif (data["type"] == "Forma de pago"):
-            obj = FormasPago.query.get(data["id"])
-        elif (data["type"] == "Tipo de ingreso"):
-            obj = Tipo_Ingreso.query.get(data["id"])
-        elif (data["type"] == "Concepto"):
-            obj = Conceptos.query.get(data["id"])
-        obj.comentario = data["comentario"]
+            obj.comentario = data["comentario"]
+        elif (data["type"] == "Pago"):
+            obj = Pagos.query.get(data["id"])
+            obj.comentario = data["comentario"]
+        elif (data["type"] == "Cuenta"):
+            obj = Cuentas.query.get(data["id"])
+            obj.comentario = data["comentario"]
+        elif (data["type"] == "Beneficiario"):
+            obj = Beneficiarios.query.get(data["id"])
+            obj.comentarios = data["comentario"]
+        elif (data["type"] == "Cliente"):
+            obj = Clientes.query.get(data["id"])
+            obj.comentarios = data["comentario"]
         db.session.commit()  
     return redirect(data["url"])

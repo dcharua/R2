@@ -23,10 +23,10 @@
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable ">
+                    <table class="table table-bordered table-striped table-hover tabla-pendientes dataTable ">
                         <thead>
                             <tr>
-                                <th><input name="select_all" value="1" class="select-all table-check" type="checkbox" />
+                                <th><input name="select_all" value="1" class="select-all1 table-check" type="checkbox" />
                                 </th>
                                 <th>ID</th>
                                 <th>Beneficiario</th>
@@ -102,10 +102,10 @@
             </div>
             <div class="body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <table class="table table-bordered table-striped table-hover tabla-realizados dataTable">
                         <thead>
                             <tr>
-                                <th><input name="select_all" value="1" class="select-all table-check" type="checkbox" />
+                                <th><input name="select_all" value="1" class="select-all2 table-check" type="checkbox" />
                                 </th>
                                 <th>ID</th>
                                 <th>Beneficiario</th>
@@ -455,7 +455,31 @@
     });
 
     //Jquery table
-    var table = $('.js-basic-example').DataTable({
+    var table1 = $('.tabla-pendientes').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        "order": [
+            [1, 'desc'],
+            [2, 'asc']
+        ],
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columnDefs": [{
+            "targets": 0,
+            "orderable": false
+        }]
+    });
+    // "Select all" control
+    $('.select-all1').on('click', function () {
+        // Check/uncheck all checkboxes in the table
+        var rows = table1.rows({
+            'search': 'applied'
+        }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    var table2 = $('.tabla-realizados').DataTable({
         dom: 'Bfrtip',
         responsive: true,
         "order": [
@@ -471,17 +495,20 @@
         }]
     });
 
-
-
-
-    // "Select all" control
-    $('.select-all').on('click', function () {
+        // "Select all" control
+        $('.select-all2').on('click', function () {
         // Check/uncheck all checkboxes in the table
-        var rows = table.rows({
+        var rows = table2.rows({
             'search': 'applied'
         }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
+
+
+
+
+
+
 
 
 

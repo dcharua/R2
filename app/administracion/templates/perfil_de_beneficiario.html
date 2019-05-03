@@ -114,7 +114,15 @@
                 </ul>
               </div>
               <div role="tabpanel" class="tab-pane fade" id="comentarios">
-                <p>{{beneficiario.comentarios }}</p>
+                <div class="row mycontainer">
+                  <div class="col-sm-12">
+                    <div class="border-box">
+                      <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Beneficiario"  data-id="{{beneficiario.id}}" data-value="{{beneficiario.comentarios}}">Editar</span>
+                      <p class="font-18 font-bold">Comentarios</p>
+                      <p class="font-18" style="white-space:pre;">{{beneficiario.comentarios}} </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -329,6 +337,7 @@
         {% include "modal_conciliar_movimiento.html" %}
         {% include "modal_generar_pago.html" %}
         {% include "modal_agregar_categoria_beneficiario.html" %}
+        {% include "modal_editar_comentario.html" %}
         {% endblock content %}
 
         {% block javascripts %}
@@ -763,5 +772,23 @@
 
             });
           });
+
+
+    $(".open-editar-comentario").on("click", function () {
+        let element = document.querySelector(".editar-comentario-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="comentario"> Comentario</label>
+                        <textarea class="form-control" type="text" name="comentario">${ $(this).attr("data-value")}</textarea>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_comentario').modal('show');
+      });
         </script>
         {% endblock javascripts %}

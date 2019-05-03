@@ -79,8 +79,9 @@
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
+              <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Pago"  data-id="{{pago.id}}" data-value="{{pago.comentario}}">Editar</span>
               <p class="font-18 font-bold">Comentarios</p>
-              <p class="font-18">{{pago.comentario}} </p>
+              <p class="font-18" style="white-space:pre;">{{pago.comentario}} </p>
             </div>
           </div>
         </div>
@@ -160,7 +161,7 @@
         </div>
       </div>
     </div>
-
+    {% include "modal_editar_comentario.html" %}
     {% include "modal_generar_pago.html" %}
     {% include "modal_conciliar_movimiento.html" %}
 
@@ -369,6 +370,23 @@
           })
 
         });
+      });
+
+      $(".open-editar-comentario").on("click", function () {
+        let element = document.querySelector(".editar-comentario-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="comentario"> Comentario</label>
+                        <textarea class="form-control" type="text" name="comentario">${ $(this).attr("data-value")}</textarea>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_comentario').modal('show');
       });
     </script>
     {% endblock javascripts %}
