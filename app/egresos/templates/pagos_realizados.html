@@ -193,6 +193,7 @@
 <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
 <script>
+    $(".mydatepicker").datepicker("setDate", new Date());
     //Modal generar pago
     $(".open-generar-pago").on("click", function () {
         $.ajax({

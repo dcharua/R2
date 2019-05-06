@@ -675,6 +675,7 @@
                             </div>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 <hr>`
             element.insertAdjacentHTML('beforeend', html);
             $('#modal_conciliar_movimiento').modal('show');
@@ -709,6 +710,7 @@
                                 </div>
                             </div>
                     <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                     <hr>
                     `
           let element = document.querySelector(".generar_here");
@@ -774,6 +776,7 @@
                             </div>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 <hr>`
                 let element = document.querySelector(".here-conciliar");
                 element.innerHTML = "";

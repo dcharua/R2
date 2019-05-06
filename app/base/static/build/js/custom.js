@@ -1,7 +1,15 @@
 
 
- $(document).ready(function () {
-	 //Jquary validation form
+ const money = new Intl.NumberFormat('en-US', {
+	style: 'currency',
+	currency: 'USD',
+	minimumFractionDigits: 2
+  })
+
+
+//tooltip
+$(function () {
+     //Jquary validation form
 	$.validate({
 		lang: 'es',
 		validateOnBlur : true,
@@ -13,24 +21,12 @@
 	$('.mydatepicker').datepicker({
 		format: "yyyy/mm/dd",
 		autoclose: true,
-		 orientation: 'auto top'
-	});
+        orientation: 'auto top'
+    })
+
 	//autosize for textarea
 	autosize($('textarea'));
 
-	  
- });
-
-
- const money = new Intl.NumberFormat('en-US', {
-	style: 'currency',
-	currency: 'USD',
-	minimumFractionDigits: 2
-  })
-
-
-//tooltip
-$(function () {
 	//Tooltip
 	$('[data-toggle="tooltip"]').tooltip({
 		container: 'body'
@@ -38,4 +34,4 @@ $(function () {
 
 	//Popover
 	$('[data-toggle="popover"]').popover();
-	})
+})

@@ -152,7 +152,7 @@
 
                     <thead>
                       <tr>
-                        <th><input name="select_all" value="1" id="example-select-all" type="checkbox" class="table-check " /></th>
+                        <th><input name="select_all" value="1" id="example-select-all" type="checkbox" class="table-check" /></th>
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
@@ -247,10 +247,10 @@
           </div>
           <div class="body">
             <div class="table-responsive">
-              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <table class="table table-bordered table-striped table-hover js-basic-example2 dataTable">
                 <thead>
                   <tr>
-                    <th><input name="select_all2" value="1" class="select-all table-check" type="checkbox" /></th>
+                    <th><input name="select_all2" value="1" class="select-all2 table-check" type="checkbox" /></th>
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Forma</th>
@@ -409,6 +409,7 @@
                               </div>
                             </div>
                             <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
+                            <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                             <hr>`
                 let element = document.querySelector(".here");
                 element.innerHTML = "";
@@ -522,6 +523,7 @@
                 document.querySelector(".monto-here").insertAdjacentHTML('beforeend',
                   `<p class="font-18 right">Monto total a pagar: <span class="font-bold">${money.format(monto_total)}</span></p>
                     <input type="hidden" id="cantidad" name="cantidad" value=${counter}>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                     `
                 );
               }
@@ -562,7 +564,7 @@
           });
 
           // "Select all" control
-          $('.select-all').on('click', function () {
+          $('.table-check').on('click', function () {
             // Check/uncheck all checkboxes in the table
             var rows = table.rows({
               'search': 'applied'
@@ -595,6 +597,7 @@
                                 </div>
                             </div>
                     <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                     <hr>
                     `
                 let element = document.querySelector(".generar_here");
@@ -662,6 +665,7 @@
                                 <p class="font-18">Referencia de pago : <span class="font-bold">${data.referencia}</span></p>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 <hr>`
                 let element = document.querySelector(".here-conciliar");
                 element.innerHTML = "";
@@ -713,6 +717,7 @@
                             </div>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 <hr>`
                   element.insertAdjacentHTML('beforeend', html);
                   $('#modal_conciliar_movimiento').modal('show');
