@@ -4,17 +4,17 @@
         <div class="modal-content">
             <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('modales_blueprint.agregar_concepto') }}">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="largeModalLabel"> Agregar Concepto</h3>
+                    <h3 class="modal-title" id="largeModalLabel"> Agregar Cuenta de Menor</h3>
                 </div>
                 <div class="modal-body">
                     <div class="row" style="margin-bottom:20px !important">
                         <div class="col-sm-12 col-md-6">
-                            <label for="nombre"> Concepto </label>
+                            <label for="nombre"> Cuenta de Menor </label>
                             <input type='text' class="form-control" name="nombre" />
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <label for="categoria">Categoría </label>
-                            <select class="selectpicker" data-live-search="true" name="categoria" title="Seleccione una Categoría..."
+                            <label for="categoria">Cuenta de Mayor </label>
+                            <select class="selectpicker" data-live-search="true" name="categoria" title="Seleccione una Cuenta Mayor..."
                                 data-width="100%">
 
                                 {% for categoria in categorias %}

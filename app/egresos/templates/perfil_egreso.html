@@ -39,6 +39,7 @@
                 <p class="font-18">Fecha programada de pago: <span
                         class="font-bold">{{egreso.fecha_programada_pago}}</span></p>
                 <p class="font-18">Empresa: <span class="font-bold">{{egreso.empresa}}</span></p>
+                <p class="font-18">Referencia/Orden de Compra: <span class="font-bold">{{egreso.referencia}}</span></p>
             </div>
             <div class="col-sm-12 col-md-4 align-left">
                 <b>
@@ -268,8 +269,8 @@
                     <tr>
                         <th>Proveedor</th>
                         <th>Centro de Negocios</th>
-                        <th>Categoría</th>
-                        <th>Concepto</th>
+                        <th>Cuenta de Mayor</th>
+                        <th>Cuenta de Menor</th>
                         <th>Monto</th>
                         <th>Descripcíon</th>
                         <th># control</th>
@@ -280,8 +281,8 @@
                     <tr>
                         <th>Proveedor</th>
                         <th>Centro de Negocios</th>
-                        <th>Categoría</th>
-                        <th>Concepto</th>
+                        <th>Cuenta de Mayor</th>
+                        <th>Cuenta de Menor</th>
                         <th>Monto</th>
                         <th>Descripcíon</th>
                         <th># control</th>
@@ -634,9 +635,9 @@
                         </div>
                         <div class="row" style="margin-bottom:20px !important">
                             <div class="col-sm-12 col-md-6">
-                                <label for="categoria"> Categoría </label>
+                                <label for="categoria"> Cuenta de Mayor </label>
                                 <select class="selectpicker" data-live-search="true" 
-                                  name="categoria" title="Seleccione una Categoria..."
+                                  name="categoria" title="Seleccione una Cuenta de Mayor..."
                                   data-width="100%">
                                   {% for categoria in categorias %}
                                   <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
@@ -644,9 +645,9 @@
                                 </select>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <label for="concepto"> Concepto</label>
+                                <label for="concepto"> Cuenta de Menor</label>
                                 <select class="selectpicker"  
-                                data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                                data-live-search="true" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="100%">
                                 {% for concepto in conceptos %}
                                 <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                                 {% endfor %}

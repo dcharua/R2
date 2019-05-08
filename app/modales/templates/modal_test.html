@@ -32,9 +32,9 @@
                     </div>
                     <div class="row" style="margin-bottom:20px !important">
                         <div class="col-sm-12 col-md-6">
-                            <label for="categoria"> Categoría </label>
+                            <label for="categoria"> Cuenta de Mayor </label>
                             <select class="selectpicker" data-live-search="true" 
-                              name="categoria" title="Seleccione una Categoria..."
+                              name="categoria" title="Seleccione una Cuenta de Mayor..."
                               data-width="100%">
                               {% for categoria in categorias %}
                               <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
@@ -42,9 +42,9 @@
                             </select>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <label for="concepto"> Concepto</label>
+                            <label for="concepto"> Cuenta de Menor</label>
                             <select class="selectpicker"  
-                            data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="100%">
+                            data-live-search="true" name="concepto" title="Seleccione un Cuenta de Menor..." data-width="100%">
                             {% for concepto in conceptos %}
                             <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                             {% endfor %}

@@ -103,8 +103,8 @@
                         <tr>
                           <th>Centro de Negocio</th>
                           <th>Proveedor</th>
-                          <th>Categoría</th>
-                          <th>Concepto</th>
+                          <th>Cuenta de Mayor</th>
+                          <th>Cuenta de Menor</th>
                           <th>Monto</th>
                           <th># de Control</th>
                           <th>Descripción</th>
@@ -129,7 +129,7 @@
                           <td>
 
                             <select class="selectpicker" data-live-search="true" 
-                              name="categoria" title="Seleccione una Categoría..."
+                              name="categoria" title="Seleccione una Cuenta de Mayor..."
                               data-width="80%" data-validation="required" >
                               {% for categoria in categorias %}
                               <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
@@ -137,7 +137,7 @@
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker"  data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%" data-validation="required" >
+                            <select class="selectpicker"  data-live-search="true" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="80%" data-validation="required" >
                               {% for concepto in conceptos %}
                               <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                               {% endfor %}

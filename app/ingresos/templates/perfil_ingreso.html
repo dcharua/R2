@@ -256,8 +256,8 @@
               <tr>
                 <th>Cliente</th>
                 <th>Centro de Negocios</th>
-                <th>Categoría</th>
-                <th>Concepto</th>
+                <th>Cuenta de Mayor</th>
+                <th>Cuenta de Menor</th>
                 <th>Monto</th>
                 <th>Descripcíon</th>
                 <th># control</th>
@@ -268,8 +268,8 @@
               <tr>
                 <th>Cliente</th>
                 <th>Centro de Negocios</th>
-                <th>Categoría</th>
-                <th>Concepto</th>
+                <th>Cuenta de Mayor</th>
+                <th>Cuenta de Menor</th>
                 <th>Monto</th>
                 <th>Descripcíon</th>
                 <th># control</th>
@@ -287,7 +287,8 @@
                 <td>{{detalle.descripcion}}</td>
                 <td>{{detalle.numero_control}}</td>
                 <th>
-                  <a class="btn btn-xs btn-info waves-effect editar-detalle"  data-url="{{ url_for('ingresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
+                  <a class="btn btn-xs btn-info waves-effect editar-detalle"  
+                    data-url="{{ url_for('ingresos_blueprint.get_data_editar_detalle', detalle_id=detalle.id) }}">
                     <i  data-toggle="tooltip"    data-placement="top" title="Editar" class="material-icons">edit</i>
                   </a>
 
