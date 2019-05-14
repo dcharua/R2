@@ -220,7 +220,7 @@ def mandar_pagar():
                         egreso.status = 'parcial'
                 db.session.add(ep)
                 db.session.commit()
-                if data["url"]:
+                if ('url' in data):
                     return redirect(data["url"])
                 else:
                     return redirect("/egresos/pagos_realizados")
@@ -252,12 +252,13 @@ def mandar_pagar_multiple():
                         for egreso in data.getlist("egreso_%d" % i):
                                 e = Egresos.query.get(egreso)
                                 e.status = 'solicitado'
-                                e.monto_solicitado += e.monto_total - e.monto_pagado
+                                monto = e.monto_total - e.monto_pagado - e.monto_solicitado
+                                e.monto_solicitado += monto
                                 pago.beneficiario = e.beneficiario
-                                ep = EgresosHasPagos(egreso=e, pago=pago, monto=e.monto_solicitado)
+                                ep = EgresosHasPagos(egreso=e, pago=pago, monto=monto)
                                 db.session.add(ep)
                                 db.session.commit()
-                if data["url"]:
+                if ('url' in data):
                     return redirect(data["url"])
                 else:
                     return redirect("/egresos/pagos_realizados")
@@ -292,7 +293,7 @@ def conciliar_movimento():
                                 if egreso.monto_total == egreso.monto_pagado and egreso.monto_por_conciliar == 0:
                                         egreso.status = 'liquidado'
                 db.session.commit()
-                if data["url"]:
+                if ('url' in data):
                     return redirect(data["url"])
                 else:
                     return redirect("/egresos/pagos_realizados")
@@ -350,7 +351,7 @@ def generar_pago():
                                         egreso.status = 'por_conciliar'
 
                 db.session.commit()
-                if data["url"]:
+                if ('url' in data):
                     return redirect(data["url"])
                 else:
                     return redirect("/egresos/pagos_realizados")
@@ -483,7 +484,7 @@ def desconciliar_pago(pago_id):
         pago = Pagos.query.get(pago_id)
         pago.status = 'por_conciliar'
         pago.referencia_conciliacion = None
-        pago.fecha_pago = None
+        pago.fecha_conciliacion = None
         for egreso in pago.egresos:
                 ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id, pago_id=pago.id).first()
                 egreso.monto_por_conciliar += ep.monto
