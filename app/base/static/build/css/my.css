@@ -140,3 +140,26 @@ div.form-error strong, div.form-error ul li {
   left: 0 !important;
   opacity: 1 !important;
 }
+
+.bg-pendiente{
+  background-color: #9E9E9E!important
+}
+.bg-solicitado{
+  background-color: #2196F3!important
+  
+}
+.bg-liquidado{
+  background-color: #4CAF50!important
+  
+}
+.bg-por-conciliar{
+  background-color: #9C27B0!important
+  
+}
+.bg-parcial{
+  background-color: #FFC107!important
+}
+
+.bg-cancelado{
+  background-color: #F44336!important
+}

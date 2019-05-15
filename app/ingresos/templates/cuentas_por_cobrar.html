@@ -71,13 +71,13 @@
                     
                     <td>
                       {% if ingreso.status == 'pendiente'%}
-                      <span class="badge bg-blue">Pendiente</span>
+                      <span class="badge bg-pendiente">Pendiente</span>
                       {% endif %}
                       {% if ingreso.status == 'por_conciliar'%}
-                      <span class="badge bg-orange">Por Conciliar</span>
+                      <span class="badge bg-por-conciliar">Por Conciliar</span>
                       {% endif %}
                       {% if ingreso.status == 'parcial'%}
-                      <span class="badge bg-orange">Parcial</span>
+                      <span class="badge bg-parcial">Parcial</span>
                       {% endif %}
                     </td>
                     
@@ -168,7 +168,7 @@
                   <td>{{ingreso.fecha_vencimiento}}</td>
                   <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
                   <td>{{ingreso.numero_documento}}</td>
-                  <td> <span class="badge bg-green">Liquidado</span></td>
+                  <td> <span class="badge bg-liquidado">Liquidado</span></td>
                   
                   <td>
                       <a class="btn btn-xs btn-info waves-effect" href="/ingresos/perfil_ingreso/{{ingreso.id}}" data-toggle="tooltip"
