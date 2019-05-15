@@ -496,6 +496,22 @@ def desconciliar_pago(pago_id):
         return redirect("/egresos/pagos_realizados")
 
 
+#Borrar Ep
+@blueprint.route("/borrarEP/<int:egreso_id>/<int:pago_id>", methods=['GET', 'POST'])
+def borrarEP(egreso_id, pago_id):
+        print(pago_id)
+        egreso = Egresos.query.get(egreso_id)
+        pago = Pagos.query.get(pago_id)
+        ep = EgresosHasPagos.query.filter_by(egreso_id=egreso_id, pago_id=pago_id).first()
+        egreso.monto_solicitado -= ep.monto
+        pago.monto_total -= ep.monto
+        db.session.delete(ep)
+        egreso.setStatus()
+        db.session.commit()
+        return redirect("/egresos/perfil_pago/" + str(pago_id))
+
+
+
 def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
 
     cv = canvas.Canvas("sample_PDF2")

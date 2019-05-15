@@ -150,6 +150,13 @@
                     data-toggle="tooltip" data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
+                  {% if pago.egresos |length > 1 %}
+                    <a class="btn btn-xs btn-danger waves-effect" href="/egresos/borrarEP/{{egreso.id}}/{{pago.id}}"
+                    data-toggle="tooltip" data-placement="top" title="Borrar pago del documento">
+                    <i class="material-icons">delete</i>
+                  {% endif %}
+                </a>
+                  
                   <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
                     <i class="material-icons">delete</i>
                   </a> -->
