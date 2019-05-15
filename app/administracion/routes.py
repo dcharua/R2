@@ -21,11 +21,45 @@ def beneficiarios():
 
 @blueprint.route('/perfil_de_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
 def perfil_de_beneficiario(beneficiario_id):
+    documentos_recibidos = 0
+    documentos_liquidados = 0
+    documentos_cancelados = 0
+    documentos_pendientes = 0
+    documentos_solicitados = 0
+    documentos_parciales = 0
+    saldo_pendiente = 0
+    saldo_solicitado = 0
+    saldo_transito = 0
+    saldo_pagado = 0
+    saldo_total = 0
     beneficiario = Beneficiarios.query.get(beneficiario_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     categorias = Categorias.query.all()
-    return render_template("perfil_de_beneficiario.html", beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias)   
+    for egreso in beneficiario.egresos:
+      documentos_recibidos += 1
+      if egreso.status != 'cancelado':
+        saldo_total += egreso.monto_total
+        saldo_pagado += egreso.monto_pagado
+        saldo_transito += egreso.monto_por_conciliar
+        saldo_solicitado += egreso.monto_solicitado
+        saldo_pendiente += egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado
+      if egreso.status == 'liquidado':
+        documentos_liquidados += 1
+      elif egreso.status == 'cancelado':
+        documentos_liquidados += 1
+      elif egreso.status == 'pendiente':
+        documentos_pendientes += 1
+      elif egreso.status == 'solicitado':
+        documentos_solicitados += 1
+      elif egreso.status == 'parcial':
+        documentos_parciales += 1
+      
+
+    return render_template("perfil_de_beneficiario.html", beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
+  documentos_recibidos = documentos_recibidos, documentos_liquidados = documentos_liquidados, documentos_cancelados = documentos_cancelados, documentos_pendientes = documentos_pendientes, 
+  documentos_solicitados = documentos_solicitados, documentos_parciales = documentos_parciales, saldo_total = saldo_total, 
+  saldo_pendiente = saldo_pendiente, saldo_solicitado = saldo_solicitado, saldo_transito = saldo_transito, saldo_pagado = saldo_pagado)   
 
 
 @blueprint.route('/agregar_beneficiario', methods=['GET', 'POST'])

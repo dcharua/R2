@@ -17,6 +17,7 @@
           <div class="body">
             <ul class="nav nav-tabs tab-nav-right" role="tablist">
               <li role="presentation" class="active"><a href="#datos" data-toggle="tab">Datos generales</a></li>
+              <li role="presentation"><a href="#saldos" data-toggle="tab">Saldos</a></li>
               <li role="presentation"><a href="#contactos" data-toggle="tab">Contactos</a></li>
               <li role="presentation"><a href="#categorias" data-toggle="tab">Categorías</a></li>
               <li role="presentation"><a href="#comentarios" data-toggle="tab">Comentarios</a></li>
@@ -58,6 +59,37 @@
                     </p>
                     <p class="font-18">Banco: <span class="font-bold">{{beneficiario.banco}}</span></p>
                     <p class="font-18">Cuenta: <span class="font-bold">{{beneficiario.cuenta_banco}}</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div role="tabpanel" class="tab-pane fade" id="saldos">
+                <div class="row mycontainer">
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18">Documentos recibidos: <span
+                        class="font-bold">{{documentos_recibidos}}</span></p>
+                    <p class="font-18">Docuemtos liquidados: <span
+                        class="font-bold">{{documentos_liquidados}}</span></p>
+                    <p class="font-18">Docuemtos cancelados: <span
+                      class="font-bold">{{documentos_cancelados}}</span></p>
+                    <p class="font-18">Docuemtos pendientes: <span
+                      class="font-bold">{{documentos_pendientes}}</span></p>
+                      <p class="font-18">Docuemtos solicitados: <span
+                        class="font-bold">{{documentos_solicitados}}</span></p>
+                        <p class="font-18">Docuemtos parciales: <span
+                          class="font-bold">{{documentos_parciales}}</span></p>
+                  </div>
+                  <div class="col-sm-12 col-md-6 align-left">
+                      <p class="font-18">Saldo Total: <span
+                        class="font-bold">{{"${:,.2f}".format(saldo_total)}}</span></p>
+                    <p class="font-18">Saldo pendiente: <span
+                        class="font-bold">{{"${:,.2f}".format(saldo_pendiente)}}</span></p>
+                    <p class="font-18">Saldo en solicitado: <span
+                        class="font-bold">{{"${:,.2f}".format(saldo_solicitado)}}</span></p>
+                    <p class="font-18">Saldo en tránsito: <span
+                        class="font-bold">{{"${:,.2f}".format(saldo_transito)}}</span></p>
+                    <p class="font-18">Saldo pagado: <span
+                      class="font-bold">{{"${:,.2f}".format(saldo_pagado)}}</span></p>
                   </div>
                 </div>
               </div>
