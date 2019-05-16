@@ -46,9 +46,6 @@ def configure_logs(app):
 
 def create_app(config):
     
-    print('a = ',2)
-    print("mysql+pymysql://{}s:{}@{}s/{}s".format(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME')))
-    
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
     app.config.from_mapping(

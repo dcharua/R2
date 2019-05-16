@@ -232,6 +232,7 @@ def mandar_pagar():
 def get_data_pagar_multiple():
         list = []
         egresos = request.args.getlist('egresos[]')
+        print(egresos)
         for egreso in egresos:
                 e = Egresos.query.get(egreso)
                 monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
@@ -425,6 +426,7 @@ def reprogramar_fecha():
 @login_required
 def reprogramar_fecha_multiple():
         egresos = request.args.getlist('egresos[]')
+        print(egresos)
         fecha = request.args.get('fecha')
         for egreso in egresos:
                 egreso = Egresos.query.get(egreso)
