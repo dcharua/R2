@@ -29,10 +29,10 @@
 
         <div class="table-responsive">
 
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0" width="100%">
+          <table class="table table-bordered table-striped table-hover pagar_table dataTable" cellspacing="0" width="100%">
               <thead>
                   <tr>
-                    <th><input name="select_all" value="1" class="table-check select-all" type="checkbox"  /></th>
+                    <th><input name="select_all" value="1" class="table-check select-all-t1" type="checkbox"  /></th>
                     <th>ID</th>
                     <th>Cliente</th>
                     <th>Fecha programada</th>
@@ -61,7 +61,11 @@
                   <tbody>
                       {% for ingreso in ingresos_pendientes %}
                   <tr>
-                    <td><input name="select_all" value="{{ingreso.id}}" type="checkbox" class="table-check pendientes-table" /></td>
+                    <td>
+                      {% if ingreso.status != 'solicitado' %}
+                        <input name="select_all-t1" value="{{ingreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                       {% endif %}
+                    </td>
                     <td>{{ingreso.id}}</td>
                     <td>{{ingreso.cliente}}</td>
                     <td>{{ingreso.fecha_programada_pago}}</td>
@@ -498,34 +502,39 @@
 
   //Jquery table
 
-  $('.js-basic-example').DataTable({
-          dom: 'Bfrtip',
-          responsive: true,
-          "order": [[ 1, 'desc' ], [ 2, 'asc' ]],
-          buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-          ],
-          "columnDefs": [ {
+ //Jquery table
+
+  var pagar_table = $('.pagar_table').DataTable({
+      dom: 'Bfrtip',
+      responsive: true,
+      "order": [
+        [1, 'desc'],
+        [2, 'asc']
+      ],
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+      "columnDefs": [{
         "targets": 0,
         "orderable": false
-        } ]
-      });
+      }]
+    });
 
-  // "Select all" control
-  $('.select-all').on('click', function () {
-    // Check/uncheck all checkboxes in the table
-    var rows = table.rows({
-      'search': 'applied'
-    }).nodes();
-    $('input[type="checkbox"]', rows).prop('checked', this.checked);
-  });
-                
-$("#conciliado_check").change(function () {
-    if (this.checked) {
-      $("#referencia_conciliacion").prop('disabled', false);
-    } else {
-      $("#referencia_conciliacion").prop('disabled', true);
-    }
-  });
+    // "Select all" control
+    $('.select-all-t1').on('click', function () {
+      // Check/uncheck all checkboxes in the table
+      var rows = pagar_table.rows({
+        'search': 'applied'
+      }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+                  
+    $("#conciliado_check").change(function () {
+        if (this.checked) {
+          $("#referencia_conciliacion").prop('disabled', false);
+        } else {
+          $("#referencia_conciliacion").prop('disabled', true);
+        }
+      });
 </script>
 {% endblock javascripts %}
