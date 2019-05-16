@@ -339,7 +339,7 @@ def mandar_cobrar():
 # Solicitar multiples pagos data for modal 
 @blueprint.route('/get_data_pagar_multiple', methods=['GET', 'POST'])
 @login_required
-def get_data_cobrar_multiple():
+def get_data_pagar_multiple():
     
     print(' En get_data_cobrar_multiple')
     list = []
@@ -347,7 +347,7 @@ def get_data_cobrar_multiple():
     print(ingresos)
     for ingreso in ingresos:
             e = Ingresos.query.get(ingreso)
-            monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
+            monto_pendiente = e.monto_total - e.monto_por_conciliar - e.monto_pagado
             list.append({'ingreso_id': e.id, 'cliente': e.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
     return jsonify(list)
 
@@ -360,16 +360,19 @@ def mandar_cobrar_multiple():
         if request.form:
                 data = request.form
                 print(data)
-#                for i in range(int(data["cantidad"])):
-#                        pago = Pagos_Ingresos(status='solicitado', monto_total=data["monto_total_%d" % i], cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
-#                        for ingreso in data.getlist("ingreso_%d" % i):
-#                                e = Ingresos.query.get(ingreso)
-#                                e.status = 'solicitado'
-#                                e.monto_solicitado +=  e.monto_total - e.monto_pagado
-#                                pago.cliente = e.cliente
-#                                ep = IngresosHasPagos(ingreso=e, pago=pago, monto=e.monto_solicitado)
-#                                db.session.add(ep)
-#                                db.session.commit()
+                for i in range(int(data["cantidad"])):
+                    print(i)
+                    pago = Pagos_Ingresos(status='por_conciliar', monto_total=data["monto_total_%d" % i], 
+                                            cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
+                    for ingreso in data.getlist("ingreso_%d" % i):
+                            ing = Ingresos.query.get(ingreso)
+                            monto_total_pago = float(ing.monto_total - ing.monto_pagado - ing.monto_por_conciliar)
+                            ing.monto_por_conciliar = float(monto_total_pago)
+                            ing.setStatus()
+                            pago.cliente = ing.cliente
+                            ep = IngresosHasPagos(ingreso = ing, pago = pago, monto = monto_total_pago)
+                            db.session.add(ep)
+                            db.session.commit()
                 return  redirect("/ingresos/cuentas_por_cobrar")   
 
 
@@ -516,6 +519,7 @@ def reprogramar_fecha():
 @login_required
 def reprogramar_fecha_multiple():      
         ingresos = request.args.getlist('ingresos[]')
+        print(ingresos)
         fecha = request.args.get('fecha')
         for ingreso in ingresos:
                 egreso = Ingresos.query.get(ingreso)
