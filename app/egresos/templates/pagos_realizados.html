@@ -191,11 +191,6 @@
 <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
 <script>
-  console.log(new Date().toISOString().split('T')[0])
-  $(".mydatepicker").datepicker({
-    format: "yyyy/mm/dd",
-  });
-
   //Modal generar pago
   $(".open-generar-pago").on("click", function () {
     $.ajax({

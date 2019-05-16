@@ -507,11 +507,13 @@ def get_data_generar_pago_ingreso(pago_id):
 @login_required
 def reprogramar_fecha():
         if request.form:
-                data = request.form
-                ingreso = Ingresos.query.get(data["ingreso_id"])
-                ingreso.fecha_programada_pago = data["fecha"]
-                db.session.commit()
-                return redirect("/ingresos/cuentas_por_cobar")
+            data = request.form
+            print(data)
+            ingreso = Ingresos.query.get(data["ingreso_id"])
+            print(ingreso)
+            ingreso.fecha_programada_pago = data["fecha"]
+            db.session.commit()
+            return redirect("/ingresos/cuentas_por_cobrar")
 
 
 #reprogramar fecha multiple
@@ -525,13 +527,11 @@ def reprogramar_fecha_multiple():
                 egreso = Ingresos.query.get(ingreso)
                 egreso.fecha_programada_pago=fecha
         db.session.commit()
-        return redirect("/ingresos/cuentas_por_cobar")
+        return redirect("/ingresos/cuentas_por_cobrar")
 
 
 @blueprint.route('/ingresos_tiendas', methods=['GET', 'POST'])
 def ingresos_tiendas():
-    #import df_to_table as df_to_table
-    
     ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').all()
     ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').all()
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
@@ -550,17 +550,18 @@ def ingresos_tiendas():
 @login_required
 def agregar_detalle(ingreso_id):
         if request.form:
-                ingreso = Ingresos.query.get(ingreso_id)
-                data = request.form
-                detalle = DetallesIngreso(centro_negocios_id=data["centro_negocios"], cliente_id=data["cliente"], categoria_id=data["categoria"], 
-                concepto_id=data["concepto"], monto=data["monto"],  numero_control=data["numero_control"], descripcion=data["comentario"])
-                ingreso.detalles.append(detalle)
-                ingreso.monto_total += int(detalle.monto);
-                #Checar el status y que hacer con pago negativo
-                ingreso.setStatus()
-                db.session.commit()
-                return redirect("/ingresos/perfil_ingreso/"+str(ingreso_id))
+            ingreso = Ingresos.query.get(ingreso_id)
+            data = request.form
+            detalle = DetallesIngreso(centro_negocios_id=data["centro_negocios"], cliente_id=data["cliente"], categoria_id=data["categoria"], 
+            concepto_id=data["concepto"], monto=data["monto"],  numero_control=data["numero_control"], descripcion=data["comentario"])
+            ingreso.detalles.append(detalle)
+            ingreso.monto_total += int(detalle.monto);
+            #Checar el status y que hacer con pago negativo
+            ingreso.setStatus()
+            db.session.commit()
+            return redirect("/ingresos/perfil_ingreso/"+str(ingreso_id))
     
+
 #Ge data for editar detalle de Ingreso
 @blueprint.route('/get_data_editar_detalle<int:detalle_id>', methods=['GET', 'POST'])
 @login_required

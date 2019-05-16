@@ -11,7 +11,7 @@
             <div class="row mar-b-10">
               <div class="col-sm-12 col-md-6 ">
                 <label for="beneficiario"> Cuenta origen </label><br>
-                <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_origen"
+                <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_origen" data-validation="required"
                   title="Seleccione una Cuenta.." data-width="100%">
                   {% for cuenta in cuentas %}
                   <option value="{{cuenta.id}}"> {{ cuenta }} </option>
@@ -20,7 +20,7 @@
               </div>
               <div class="col-sm-12 col-md-6 ">
                 <label for="beneficiario"> Cuenta destino</label><br>
-                <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_destino"
+                <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_destino" data-validation="required"
                   title="Seleccione una Cuenta.." data-width="100%">
                   {% for cuenta in cuentas %}
                   <option value="{{cuenta.id}}"> {{ cuenta }} </option>
@@ -32,7 +32,7 @@
             <div class="row mar-b-10">
               <div class="col-sm-12 col-md-6 ">
                 <label for="cliente"> Forma de pago origen </label><br>
-                <select class="selectpicker" id="forma_pago_origen" data-live-search="true" name="forma_pago_origen"
+                <select class="selectpicker" id="forma_pago_origen" data-live-search="true" name="forma_pago_origen" data-validation="required"
                   title="Seleccione una Forma de Pago..." data-width="100%">
                   {% for forma in formas_pago %}
                   <option value="{{forma.id}}"> {{ forma }} </option>
@@ -42,7 +42,7 @@
 
               <div class="col-sm-12 col-md-6 ">
                 <label for="cliente"> Forma de pago destino</label><br>
-                <select class="selectpicker" id="forma_pago_destino" data-live-search="true" name="forma_pago_destino"
+                <select class="selectpicker" id="forma_pago_destino" data-live-search="true" name="forma_pago_destino" data-validation="required"
                   title="Seleccione una Forma de Pago..." data-width="100%">
                   {% for forma in formas_pago %}
                   <option value="{{forma.id}}"> {{ forma }} </option>
