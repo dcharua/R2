@@ -44,7 +44,12 @@ def agregar_centro():
 def agregar_concepto():
     if request.form:
         data = request.form
-        concepto = Conceptos(nombre=data["nombre"], categoria_id=data["categoria"]) 
+        print(data)
+        if (data["categoria"]):
+                categoria=data["categoria"]
+        if (data["categoria2"]):
+                categoria=data["categoria2"]
+        concepto = Conceptos(nombre=data["nombre"], categoria_id=categoria) 
         db.session.add(concepto)
         db.session.commit()   
         return redirect("/administracion/otros")      
