@@ -41,16 +41,16 @@
 
             <p class="font-18">Status:
               {% if pago.status == 'conciliado' %}
-              <span class="badge bg-green">Liquidado</span>
+              <span class="badge bg-liquidado">Liquidado</span>
               {% endif %}
               {% if pago.status == 'por_conciliar' %}
-              <span class="badge bg-orange">Por conciliar</span>
+              <span class="badge bg-por-conciliar">Por conciliar</span>
               {% endif %}
               {% if pago.status == 'solicitado' %}
-              <span class="badge bg-blue">Solicitado</span>
+              <span class="badge bg-solicitado">Solicitado</span>
               {% endif %}
               {% if pago.status == 'cancelado' %}
-              <span class="badge bg-red">Cancelado</span>
+              <span class="badge bg-cancelado">Cancelado</span>
               {% endif %}
             </p>
             <p class="font-18">Empresa: <span class="font-bold">{{pago.cuenta.empresa}}</span></p>
@@ -110,22 +110,22 @@
                 <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
                 <td>
                   {% if ingreso.status == 'pendiente'%}
-                  <span class="badge bg-blue">Pendiente</span>
+                  <span class="badge bg-pendiente">Pendiente</span>
                   {% endif %}
                   {% if ingreso.status == 'solicitado'%}
-                  <span class="badge bg-green">Solicitado</span>
+                  <span class="badge bg-solicitado">Solicitado</span>
                   {% endif %}
                   {% if ingreso.status == 'parcial'%}
-                  <span class="badge bg-orange">Parcial</span>
+                  <span class="badge bg-parcial">Parcial</span>
                   {% endif %}
                   {% if ingreso.status == 'liquidado'%}
-                  <span class="badge bg-green">Liquidado</span>
+                  <span class="badge bg-liquidado">Liquidado</span>
                   {% endif %}
                   {% if ingreso.status == 'cancelado'%}
-                  <span class="badge bg-red">Cancelado</span>
+                  <span class="badge bg-cancelado">Cancelado</span>
                   {% endif %}
                   {% if ingreso.status == 'por_conciliar'%}
-                  <span class="badge bg-orange">Por conciliar</span>
+                  <span class="badge bg-por-conciliar">Por conciliar</span>
                   {% endif %}
                 </td>
                 <td>

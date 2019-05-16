@@ -33,22 +33,22 @@
             <b>
               <p class="font-18">Status: 
                   {% if ingreso.status == 'pendiente'%}
-                  <span class="badge bg-blue">Pendiente</span>
+                  <span class="badge bg-pendiente">Pendiente</span>
                   {% endif %}
                   {% if ingreso.status == 'solicitado'%}
-                  <span class="badge bg-green">Solicitado</span>
+                  <span class="badge bg-solicitado">Solicitado</span>
                   {% endif %}
                   {% if ingreso.status == 'parcial'%}
-                  <span class="badge bg-orange">Parcial</span>
+                  <span class="badge bg-parcial">Parcial</span>
                   {% endif %}
                   {% if ingreso.status == 'conciliado'%}
-                  <span class="badge bg-green">Conciliado</span>
+                  <span class="badge bg-liquidado">Conciliado</span>
                   {% endif %}
                   {% if ingreso.status == 'cancelado'%}
-                  <span class="badge bg-red">Cancelado</span>
+                  <span class="badge bg-cancelado">Cancelado</span>
                   {% endif %}
                   {% if ingreso.status == 'por_conciliar'%}
-                  <span class="badge bg-orange">Por conciliar</span>
+                  <span class="badge bg-por-conciliar">Por conciliar</span>
                   {% endif %}
               </p>
             </b>
@@ -126,13 +126,13 @@
                     <td>{{pago.descripcion}}</td>
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                     <td> {% if pago.status == 'conciliado' %}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}
                       {% if pago.status == 'por_conciliar' %}
-                      <span class="badge bg-orange">Por conciliar</span>
+                      <span class="badge bg-por-conciliar">Por conciliar</span>
                       {% endif %}
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-orange">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
@@ -208,10 +208,10 @@
                     <td>{{pago.descripcion}}</td>
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                     <td> {% if pago.status == 'conciliado' %}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}  
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-red">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
