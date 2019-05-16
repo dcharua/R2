@@ -13,7 +13,8 @@
       </div>
       <div class="body">
         <div class="row clearfix">
-          <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('egresos_blueprint.capturar_egreso') }}">
+          <form class="form-horizontal form-label-left" id="user_inputs" method="POST"
+            action="{{ url_for('egresos_blueprint.capturar_egreso') }}">
             <div class="col-sm-12 text-left">
 
               <div class="input-group">
@@ -21,34 +22,32 @@
                   <div class="col-sm-12 col-md-6">
                     <label for="beneficiario"> Beneficiario </label><br>
                     <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required"
-                      data-live-search="true" title="Seleccione un Beneficiario..."
-                      data-width="100%">
+                      data-live-search="true" title="Seleccione un Beneficiario..." data-width="100%">
                       {% for beneficiario in beneficiarios %}
                       <option value="{{beneficiario.id}}"> {{ beneficiario.nombre }} </option>
                       {% endfor %}
                     </select>
                   </div>
-                  
-                    <div class="col-sm-12 col-md-6 ">
-                      <label for="beneficiario"> Empresa </label><br>
-                      <select class="selectpicker" id="empresa" name="empresa" data-validation="required"
-                        data-live-search="true" title="Seleccione una Empresa..."
-                        data-width="100%">
-                        {% for empresa in empresas %}
-                        <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    
+
+                  <div class="col-sm-12 col-md-6 ">
+                    <label for="beneficiario"> Empresa </label><br>
+                    <select class="selectpicker" id="empresa" name="empresa" data-validation="required"
+                      data-live-search="true" title="Seleccione una Empresa..." data-width="100%">
+                      {% for empresa in empresas %}
+                      <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
+                      {% endfor %}
+                    </select>
                   </div>
+
                 </div>
+              </div>
 
               <div class="input-group ">
                 <div class="row">
                   <div class="col-sm-12 col-md-6 ">
                     <label> Fecha de Vencimiento </label>
                     <div class='date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" name="fecha_vencimiento" autocomplete="off"  data-validation="date" data-validation-format="yyyy/mm/dd"/>
+                      <input type='text' class="form-control" name="fecha_vencimiento" autocomplete="off" required />
                       <span class="input-group-addon">
                         <i class="material-icons mydate">date_range</i>
                       </span>
@@ -67,173 +66,186 @@
                 </div>
               </div>
 
-                <div class="input-group">
-                  <div class="row">
-                    <div class="col-sm-12 col-md-6 ">
-                      <label for="ref"># de Documento</label>
-                      <input class="form-control" type="text" id="ref" name="numero_documento" data-validation="required">
-                    </div>
-                    <div class="col-sm-12 col-md-6 ">
-                      <label for="referencia">Referencia/ Orden de compra </label>
-                      <input class="form-control" type="text" id="referencia" name="referencia">
-                    </div>
+              <div class="input-group">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6 ">
+                    <label for="ref"># de Documento</label>
+                    <input class="form-control" type="text" id="ref" name="numero_documento" data-validation="required">
+                  </div>
+                  <div class="col-sm-12 col-md-6 ">
+                    <label for="referencia">Referencia/ Orden de compra </label>
+                    <input class="form-control" type="text" id="referencia" name="referencia">
                   </div>
                 </div>
+              </div>
 
 
-                <div class="caracteristicas">
+              <div class="caracteristicas">
 
 
-                  <div style="padding:10px;" class="header">
-                    <h2>Detalles de egreso</h2>
-                    <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
-                      data-toggle="tooltip" data-placement="top" title="Remover concepto de pago" >
-                      <i class="material-icons">remove</i>
-                    </button>
+                <div style="padding:10px;" class="header">
+                  <h2>Detalles de egreso</h2>
+                  <button id="delete-row" type="button"
+                    class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
+                    data-toggle="tooltip" data-placement="top" title="Remover concepto de pago">
+                    <i class="material-icons">remove</i>
+                  </button>
 
-                    <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
-                      data-toggle="tooltip" data-placement="top" title="Agregar concepto de pago">
-                      <i class="material-icons">add</i>
-                    </button>
-                  </div>
-                  
-                  <div style="padding:10px;" class="body" id="clone">
-                    <table id="table" style="table-layout: fixed;" class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Centro de Negocio</th>
-                          <th>Proveedor</th>
-                          <th>Cuenta de Mayor</th>
-                          <th>Cuenta de Menor</th>
-                          <th>Monto</th>
-                          <th># de Control</th>
-                          <th>Descripción</th>
-                        </tr>
-                      </thead>
-                      <tbody class="here">
-                        <tr>
-                          <td>
-                            <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%" data-validation="required">
-                              {% for centro in centros_negocios %}
-                              <option value="{{centro.id}}"> {{ centro.nombre }} </option>
-                              {% endfor %}
-                            </select>
-                          </td>
-                          <td>
-                            <select class="selectpicker"  data-live-search="true" name="proveedor" title="Seleccione un Proveedor..." data-width="80%" data-validation="required">
-                              {% for provedor in proveedores %}
-                              <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
-                              {% endfor %}
-                            </select>
-                          </td>
-                          <td>
+                  <button id="add-row" type="button"
+                    class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float" data-toggle="tooltip"
+                    data-placement="top" title="Agregar concepto de pago">
+                    <i class="material-icons">add</i>
+                  </button>
+                </div>
 
-                            <select class="selectpicker" data-live-search="true" 
-                              name="categoria" title="Seleccione una Cuenta de Mayor..."
-                              data-width="80%" data-validation="required" >
-                              {% for categoria in categorias %}
-                              <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
-                              {% endfor %}
-                            </select>
-                          </td>
-                          <td>
-                            <select class="selectpicker"  data-live-search="true" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="80%" data-validation="required" >
+                <div style="padding:10px;" class="body" id="clone">
+                  <table id="table" style="table-layout: fixed;" class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>Centro de Negocio</th>
+                        <th>Proveedor</th>
+                        <th>Cuenta de Mayor</th>
+                        <th>Cuenta de Menor</th>
+                        <th>Monto</th>
+                        <th># de Control</th>
+                        <th>Descripción</th>
+                      </tr>
+                    </thead>
+                    <tbody class="here">
+                      <tr>
+                        <td>
+                          <select class="selectpicker" name="centro_negocios"
+                            title="Seleccione un Centro de Negocios..." data-width="80%" data-validation="required">
+                            {% for centro in centros_negocios %}
+                            <option value="{{centro.id}}"> {{ centro.nombre }} </option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                        <td>
+                          <select class="selectpicker proveedor" data-live-search="true" name="proveedor"
+                            title="Seleccione un Proveedor..." data-width="80%" data-validation="required"
+                            id="proveedor0" (onchange)="setCategoria()">
+                            {% for provedor in proveedores %}
+                            <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                        <td >
+
+                          <select class="selectpicker categoria" id="categoria0" data-live-search="true" name="categoria"
+                            title="Seleccione una Cuenta de Mayor..." data-width="80%" data-validation="required" id="categoria0">
+                            {% for categoria in categorias %}
+                            <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                            {% endfor %}
+                          </select>
+                        </td>
+                        <td>
+                          <select class="selectpicker" data-live-search="true" name="concepto"
+                            title="Seleccione una Cuenta de Menor..." data-width="80%" data-validation="required"
+                            id="concepto0">
                               {% for concepto in conceptos %}
-                              <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                               {% endfor %}
-                            </select>
-                          </td>
-                          <td>
-                            <input class="form-control" type="text"  name="monto" data-validation="number" data-validation-allowing="float">
-                          </td>
-                          <td>
-                            <input class="form-control" type="text"  name="numero_control">
-                          </td>
+                          </select>
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" name="monto" data-validation="number"
+                            data-validation-allowing="float">
+                        </td>
+                        <td>
+                          <input class="form-control" type="text" name="numero_control">
+                        </td>
 
-                          <td><input class="form-control" type="text" id="descripcion" name="descripcion" style="width:100%"></td>
-                        </tr>
-                      </tbody>
-                    </table> 
+                        <td><input class="form-control" type="text" id="descripcion" name="descripcion"
+                            style="width:100%"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="input-group ">
+                  <label for="comentario">Comentario del Egreso</label>
+                  <textarea class="form-control" type="text" id="comentario" name="comentario"
+                    placeholder=""></textarea>
+                </div>
+
+                <div class="switch" style="margin-top: 10px">
+                  <h2 class="subtitle">Pagado</h2>
+                  <label style="margin-top: 10px"><input id="pagado" name="pagado" type="checkbox"><span
+                      class="lever"></span></label>
+                </div>
+
+                <div id="pagado-form">
+                  <hr>
+                  <div class="input-group">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 ">
+                        <label for="beneficiario"> Cuenta de banco </label><br>
+                        <select class="selectpicker" id="cuenta_banco" data-live-search="true" name="cuenta_banco"
+                          title="Seleccione una cuenta de banco..." data-width="100%" data-validation="required">
+                          {% for cuenta in cuentas_banco %}
+                          <option value="{{cuenta.id}}"> {{ cuenta.nombre }} </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-sm-12 col-md-6 ">
+                        <label> Fecha de pago </label>
+                        <div class='input-group date mydatepicker' data-provide="datepicker">
+                          <input autocomplete="off" type='text' class="form-control set-today" name="fecha_pago"
+                            autocomplete="off" data-validation="date" data-validation-format="yyyy/mm/dd" />
+                          <span class="input-group-addon">
+                            <i class="material-icons mydate">date_range</i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 ">
+                        <label for="beneficiario"> Forma de pago </label><br>
+                        <select class="selectpicker" id="concepto" data-live-search="true" name="forma_pago"
+                          title="Seleccione una forma de pago..." data-width="100%" data-validation="required">
+                          {% for forma in formas_pago %}
+                          <option value="{{forma.id}}"> {{ forma.nombre }} </option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-sm-12 col-md-6 nomargin">
+                        <label> Referencia de pago </label>
+                        <input class="form-control" type="text" id="referencia_pago" name="referencia_pago"
+                          data-validation="required">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-group">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 ">
+                        <label style="margin-top: 7px;" for="fname">Monto</label>
+                        <input class="form-control" type="text" id="monto_pagado" name="monto_pagado"
+                          data-validation="number" data-validation-allowing="float,negative">
+                      </div>
+                      <div class="col-sm-12 col-md-6 ">
+                        <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
+                        <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
+                        <input disabled placeholder="Referencia" class="form-control" type="text"
+                          id="referencia_conciliacion" name="referencia_conciliacion">
+                      </div>
+                    </div>
                   </div>
 
                   <div class="input-group ">
-                    <label for="comentario">Comentario del Egreso</label>
-                    <textarea class="form-control" type="text" id="comentario" name="comentario" placeholder=""></textarea>
-                  </div>
-
-                  <div class="switch" style="margin-top: 10px">
-                    <h2 class="subtitle">Pagado</h2>
-                    <label style="margin-top: 10px"><input id="pagado" name ="pagado" type="checkbox"><span class="lever"></span></label>
-                  </div>
-
-                  <div id="pagado-form">
-                    <hr>
-                    <div class="input-group">
-                      <div class="row">
-                        <div class="col-sm-12 col-md-6 ">
-                          <label for="beneficiario"> Cuenta de banco </label><br>
-                          <select class="selectpicker" id="cuenta_banco" 
-                            data-live-search="true" name="cuenta_banco" title="Seleccione una cuenta de banco..." data-width="100%"  data-validation="required" >
-                            {% for cuenta in cuentas_banco %}
-                            <option value="{{cuenta.id}}"> {{ cuenta.nombre }}  </option>
-                            {% endfor %}
-                          </select>
-                        </div>
-                        <div class="col-sm-12 col-md-6 ">
-                          <label> Fecha de pago </label>
-                          <div class='input-group date mydatepicker' data-provide="datepicker">
-                            <input autocomplete="off" type='text' class="form-control" name="fecha_pago" autocomplete="off"  data-validation="date" data-validation-format="yyyy/mm/dd" />
-                            <span class="input-group-addon">
-                              <i class="material-icons mydate">date_range</i>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="input-group">
-                      <div class="row">
-                        <div class="col-sm-12 col-md-6 ">
-                          <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" id="concepto" 
-                            data-live-search="true" name="forma_pago" title="Seleccione una forma de pago..." data-width="100%"  data-validation="required" >
-                            {% for forma in formas_pago %}
-                            <option value="{{forma.id}}"> {{ forma.nombre }} </option>
-                            {% endfor %}
-                          </select>
-                        </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
-                          <label> Referencia de pago </label>
-                          <input class="form-control" type="text" id="referencia_pago" name="referencia_pago"  data-validation="required" >
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="input-group">
-                      <div class="row">
-                        <div class="col-sm-12 col-md-6 ">
-                          <label style="margin-top: 7px;" for="fname">Monto</label>
-                          <input class="form-control" type="text" id="monto_pagado" name="monto_pagado" data-validation="number"  data-validation-allowing="float,negative">
-                        </div>
-                        <div class="col-sm-12 col-md-6 ">
-                          <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
-                          <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
-                          <input disabled placeholder="Referencia" class="form-control" type="text" id="referencia_conciliacion"
-                            name="referencia_conciliacion">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="input-group ">
-                      <label for="comentarios">Comentario del Pago</label>
-                      <textarea class="form-control" type="text" id="comentario_pago" name="comentario_pago"></textarea>
-                    </div>
-                  </div>
-
-                  <div class="input-group" style="margin-top:20px;">
-                    <button class="btn btn-primary" style="float: right;">Registrar Egreso</button>
+                    <label for="comentarios">Comentario del Pago</label>
+                    <textarea class="form-control" type="text" id="comentario_pago" name="comentario_pago"></textarea>
                   </div>
                 </div>
+
+                <div class="input-group" style="margin-top:20px;">
+                  <button class="btn btn-primary" style="float: right;">Registrar Egreso</button>
+                </div>
+              </div>
 
           </form>
         </div>
@@ -247,11 +259,12 @@
 {% block javascripts %} {{ super()}}
 <script>
   $(document).ready(function () {
-    var counter=0;
+    var counter = 1;
 
 
     $("#add-row").click(function () {
-        const html = `
+
+      const html = `
                         <tr>
                           <td>
                             <select class="selectpicker" 
@@ -262,16 +275,16 @@
                             </select>
                           </td>
                           <td>
-                            <select class="selectpicker"  data-live-search="true" 
+                            <select class="selectpicker proveedor"  data-live-search="true" 
                              name="proveedor" title="Seleccione un Proveedor..."
-                              data-width="80%"  data-validation="required" >
+                              data-width="80%"  data-validation="required" id="proveedor${counter}">
                               {% for provedor in proveedores %}
                               <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
                               {% endfor %}
                             </select>
                           </td>
-                          <td>
-                            <select class="selectpicker" data-live-search="true" 
+                          <td >
+                            <select class="selectpicker categoria" id="categoria${counter}" data-live-search="true" 
                               name="categoria" title="Seleccione una Categoria..."
                               data-width="80%"  data-validation="required" >
                               {% for categoria in categorias %}
@@ -281,9 +294,9 @@
                           </td>
                           <td>
                             <select class="selectpicker"  
-                              data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%"  data-validation="required" >
+                              data-live-search="true" name="concepto" title="Seleccione un Concepto..." data-width="80%"  data-validation="required" id="concepto${counter}" >
                               {% for concepto in conceptos %}
-                              <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                               {% endfor %}
                             </select>
                           </td>
@@ -296,18 +309,20 @@
 
                           <td><input  class="form-control" type="text" id="descripcion" name="descripcion" style="width:100%"></td>
                         </tr>`
-        let element = document.querySelector(".here");
-        element.insertAdjacentHTML('beforeend', html);
+      let element = document.querySelector(".here");
+      element.insertAdjacentHTML('beforeend', html);
 
-        $('.selectpicker').selectpicker('refresh');
-      
-
+      $('.selectpicker').selectpicker('refresh');
+      counter++;
+      initChangers();
     });
 
     $("#delete-row").click(function () {
       if ($('#table tr:last').index() != 0)
         $('#table tr:last').remove();
     });
+
+    initChangers();
   });
 
   $("#pagado").change(function () {
@@ -326,5 +341,71 @@
     }
   });
 
+
+  // FUCTIONS FOR AUTOCOMPLETE
+  $('#beneficiario').change(function () {
+    $("#proveedor0").val($(this).val());
+    $("#proveedor0").selectpicker('refresh');
+    let id = "#categoria0" 
+    let element = document.querySelector(id);
+    $.ajax({
+      url: '/egresos/get_beneficiario_categorias/' + this.value,
+      success: function (data) {
+        console.log(data)
+        element.innerHTML = "";
+        data.forEach(c => {
+          const html = `<option value="${c.categoria_id}"> ${c.nombre} </option>`
+          element.insertAdjacentHTML('beforeend', html);
+        });
+        $(id).selectpicker('refresh');
+      }
+    });
+  })
+  
+  function initChangers(){
+    $('.proveedor').on('change', function () {
+    let id = "#categoria" + $(this).attr('id').slice(-1);
+    let element = document.querySelector(id);
+    $.ajax({
+      url: '/egresos/get_beneficiario_categorias/' + this.value,
+      success: function (data) {
+        element.innerHTML = "";
+        console.log(data.length)
+        if(data.length > 0){
+          data.forEach(c => {
+            const html = `<option value="${c.id}"> ${c.nombre} </option>`
+            element.insertAdjacentHTML('beforeend', html);
+          });
+        } else {
+          const html = `{% for categoria in categorias %}
+                          <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                        {% endfor %}`
+          element.insertAdjacentHTML('beforeend', html);
+        }
+       
+        $(id).selectpicker('refresh');
+      }
+    });
+  });
+
+
+  $('.categoria').on('change', function () {
+    let id = "#concepto" + $(this).attr('id').slice(-1);
+    let element = document.querySelector(id);
+    $.ajax({
+      url: '/egresos/get_concepto_categoria/' + this.value,
+      success: function (data) {
+        console.log(data)
+        element.innerHTML = "";
+        data.forEach(c => {
+          const html = `<option value="${c.id}"> ${c.nombre} </option>`
+          element.insertAdjacentHTML('beforeend', html);
+        });
+        $(id).selectpicker('refresh');
+      }
+    });
+  });
+}
+ 
 </script>
 {% endblock javascripts %}

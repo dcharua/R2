@@ -362,14 +362,8 @@
                     </tfoot>
                     <tbody>
                       {% for egreso in beneficiario.egresos %}
-                      {% if egreso.status == 'solicitado'  %}
+                      {% if egreso.status == 'liquidado' or egreso.status == 'cancelado' or egreso.status == 'por_conciliar'%}
                       <tr>
-                        <td>
-                          {% if egreso.status == 'liquidado' or egreso.status == 'por_conciliar' or egreso.status == 'cancelado' %}
-                          <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
-                          {% endif %}
-
-                        </td>
                         <td>{{egreso.id}}</td>
                         <td>{{egreso.fecha_programada_pago}}</td>
                         <td>{{egreso.fecha_vencimiento}}</td>
