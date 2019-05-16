@@ -44,7 +44,6 @@ def agregar_centro():
 def agregar_concepto():
     if request.form:
         data = request.form
-        print(data)
         if (data["categoria"]):
                 categoria=data["categoria"]
         if (data["categoria2"]):

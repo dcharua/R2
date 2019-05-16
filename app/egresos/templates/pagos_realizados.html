@@ -10,161 +10,159 @@
 <!-- #END# Basic Examples -->
 
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header bg-black">
-                <h2>
-                    Pagos Pendientes
-                </h2>
-                <div class="select-btn-group">
-                    <span class="btn btn-primary" id='open-generar-pago-multiple' color="red">Generar pagos</span>
-                </div>
-
-            </div>
-            <div class="body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover tabla-pendientes dataTable ">
-                        <thead>
-                            <tr>
-                                <th><input name="select_all" value="1" class="select-all1 table-check" type="checkbox" />
-                                </th>
-                                <th>ID</th>
-                                <th>Beneficiario</th>
-                                <th>Cuenta</th>
-                                <th>Forma de pago</th>
-                                <th>Monto</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th>Beneficiario</th>
-                                <th>Cuenta</th>
-                                <th>Forma de pago</th>
-                                <th>Monto</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                            {% for pago in pagos %}
-                            <tr>
-                                <td> <input name="select_all" value="{{pago.id}}" type="checkbox"
-                                        class="table-check pagar-table" /></td>
-                                <td>{{pago.id}}</td>
-                                <td>{{pago.beneficiario}}</td>
-                                <td>{{pago.cuenta.nombre}}</td>
-                                <td>{{pago.forma_pago}}</td>
-                                <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
-                                <td><span class="badge bg-solicitado">Solicitado</span> </td>
-                                <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
-                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                    </a>
-                                    <a class="btn btn-xs btn-success waves-effect open-generar-pago"
-                                        data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
-                                        <i class="material-icons" data-toggle="tooltip" data-placement="top"
-                                            title="Generar pago">payment</i>
-                                    </a>
-                                    <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
-                                        data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
-                                        <i data-toggle="tooltip" data-placement="top" title="Borrar"
-                                            class="material-icons">delete</i>
-                                    </a>
-
-
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header bg-black">
+        <h2>
+          Pagos Pendientes
+        </h2>
+        <div class="select-btn-group">
+          <span class="btn btn-primary" id='open-generar-pago-multiple' color="red">Generar pagos</span>
         </div>
+
+      </div>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover tabla-pendientes dataTable ">
+            <thead>
+              <tr>
+                <th><input name="select_all" value="1" class="select-all1 table-check" type="checkbox" />
+                </th>
+                <th>ID</th>
+                <th>Beneficiario</th>
+                <th>Cuenta</th>
+                <th>Forma de pago</th>
+                <th>Monto</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Beneficiario</th>
+                <th>Cuenta</th>
+                <th>Forma de pago</th>
+                <th>Monto</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for pago in pagos %}
+              <tr>
+                <td> <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check pagar-table" />
+                </td>
+                <td>{{pago.id}}</td>
+                <td>{{pago.beneficiario}}</td>
+                <td>{{pago.cuenta.nombre}}</td>
+                <td>{{pago.forma_pago}}</td>
+                <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
+                <td><span class="badge bg-solicitado">Solicitado</span> </td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  <a class="btn btn-xs btn-success waves-effect open-generar-pago"
+                    data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
+                    <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                      title="Generar pago">payment</i>
+                  </a>
+                  <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
+                    data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
+                    <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
+                  </a>
+
+
+                </td>
+              </tr>
+              {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 <!-- PAGOS COMPLETADOS TABLE -->
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-            <div class="header bg-black">
-                <h2>
-                    Pagos Realizados
-                </h2>
-                <div class="select-btn-group">
-                    <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
-                </div>
-            </div>
-            <div class="body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover tabla-realizados dataTable">
-                        <thead>
-                            <tr>
-                                <th><input name="select_all" value="1" class="select-all2 table-check" type="checkbox" />
-                                </th>
-                                <th>ID</th>
-                                <th>Beneficiario</th>
-                                <th>Fecha de pago</th>
-                                <th>Cuenta</th>
-                                <th>Monto</th>
-                                <th>Referencia</th>
-                                <th>Status</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for pago in pagos_realizados %}
-                            <tr>
-                                <td>
-                                    {% if pago.status == 'por_conciliar' %}
-                                    <input name="select_all" value="{{pago.id}}" type="checkbox"
-                                        class="table-check conciliar-table" />
-                                    {% endif %}
-                                </td>
-                                <td>{{pago.id}}</td>
-                                <td>{{pago.beneficiario}}</td>
-                                <td>{{pago.fecha_pago}}</td>
-                                <td>{{pago.cuenta.nombre}}</td>
-                                <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
-                                <td>{{pago.referencia_pago}}</td>
-                                <td>
-                                    {% if pago.status == 'conciliado' %}
-                                    <span class="badge bg-liquidado">Liquidado</span>
-                                    {% endif %}
-                                    {% if pago.status == 'por_conciliar' %}
-                                    <span class="badge bg-por-conciliar">Por conciliar</span>
-                                    {% endif %}
-                                    {% if pago.status == 'cancelado' %}
-                                    <span class="badge bg-cancelado">Cancelado</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
-                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                    </a>
-                                    {% if pago.status == 'por_conciliar' %}
-                                    <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
-                                        data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                                        <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
-                                            class="material-icons">assignment_turned_in</i>
-                                    </a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header bg-black">
+        <h2>
+          Pagos Realizados
+        </h2>
+        <div class="select-btn-group">
+          <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
         </div>
+      </div>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover tabla-realizados dataTable">
+            <thead>
+              <tr>
+                <th><input name="select_all" value="1" class="select-all2 table-check" type="checkbox" />
+                </th>
+                <th>ID</th>
+                <th>Beneficiario</th>
+                <th>Fecha de pago</th>
+                <th>Cuenta</th>
+                <th>Monto</th>
+                <th>Referencia</th>
+                <th>Status</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for pago in pagos_realizados %}
+              <tr>
+                <td>
+                  {% if pago.status == 'por_conciliar' %}
+                  <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                  {% endif %}
+                </td>
+                <td>{{pago.id}}</td>
+                <td>{{pago.beneficiario}}</td>
+                <td>{{pago.fecha_pago}}</td>
+                <td>{{pago.cuenta.nombre}}</td>
+                <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
+                <td>{{pago.referencia_pago}}</td>
+                <td>
+                  {% if pago.status == 'conciliado' %}
+                  <span class="badge bg-liquidado">Liquidado</span>
+                  {% endif %}
+                  {% if pago.status == 'por_conciliar' %}
+                  <span class="badge bg-por-conciliar">Por conciliar</span>
+                  {% endif %}
+                  {% if pago.status == 'cancelado' %}
+                  <span class="badge bg-cancelado">Cancelado</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_pago/{{pago.id}}'
+                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% if pago.status == 'por_conciliar' %}
+                  <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
+                    data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
+                    <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
+                      class="material-icons">assignment_turned_in</i>
+                  </a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 
@@ -193,17 +191,16 @@
 <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
 <script>
-    $(".mydatepicker").datepicker("setDate", new Date());
-    //Modal generar pago
-    $(".open-generar-pago").on("click", function () {
-        $.ajax({
-            url: $(this).attr("data-url"),
-            success: function (data) {
-                let alert = document.querySelector(".alert-here");
-                alert.innerHTML = "";
-                $('#referencia_pago').val('');
-                const html =
-                    `<div class="row" style="margin-bottom:10px;">
+  //Modal generar pago
+  $(".open-generar-pago").on("click", function () {
+    $.ajax({
+      url: $(this).attr("data-url"),
+      success: function (data) {
+        let alert = document.querySelector(".alert-here");
+        alert.innerHTML = "";
+        $('#referencia_pago').val('');
+        const html =
+          `<div class="row" style="margin-bottom:10px;">
                                 <div class="col-sm-12 col-md-6 ">
                                     <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
                                 </div>
@@ -223,80 +220,80 @@
                     <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                     <hr>
                     `
-                let element = document.querySelector(".generar_here");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
+        let element = document.querySelector(".generar_here");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
 
-                if (data.forma_pago.toLowerCase() == 'cheque') {
-                    $('#referencia_pago').val(data.numero_cheque);
-                    const ref =
-                        `<div class="alert alert-warning alert-dismissible" style="margin-bottom:0" role="alert">
+        if (data.forma_pago.toLowerCase() == 'cheque') {
+          $('#referencia_pago').val(data.numero_cheque);
+          const ref =
+            `<div class="alert alert-warning alert-dismissible" style="margin-bottom:0" role="alert">
                                 Revisar que el folio del cheque sea correcto
                             </div>`
-                    alert.insertAdjacentHTML('beforeend', ref);
-                }
+          alert.insertAdjacentHTML('beforeend', ref);
+        }
 
-                if (data.forma_pago.toLowerCase() == 'transferencia') {
-                    const ref =
-                        `<div class="alert alert-info alert-dismissible" style="margin-bottom:0" role="alert">
+        if (data.forma_pago.toLowerCase() == 'transferencia') {
+          const ref =
+            `<div class="alert alert-info alert-dismissible" style="margin-bottom:0" role="alert">
                                 Revisar que la cuenta del beneficiario sea ${data.cuenta_beneficiario}
                             </div>`
-                    alert.insertAdjacentHTML('beforeend', ref);
-                }
-                $('#modal_generar_pago').modal('show');
-            }
-        });
+          alert.insertAdjacentHTML('beforeend', ref);
+        }
+        $('#modal_generar_pago').modal('show');
+      }
     });
+  });
 
-    //Solicitar Multiple get modal info
-    $('#open-generar-pago-multiple').on("click", function () {
-        let pagos = []
-        // Iterate over all checkboxes in the table
-        $('.pagar-table').each(function () {
+  //Solicitar Multiple get modal info
+  $('#open-generar-pago-multiple').on("click", function () {
+    let pagos = []
+    // Iterate over all checkboxes in the table
+    $('.pagar-table').each(function () {
 
-            // If checkbox is checked
-            if (this.checked) {
-                pagos.push($(this).val())
-            }
-        })
-        $.get({
-            url: '/egresos/get_data_generar_pagos_multiple',
-            data: {
-                pagos: pagos
-            },
-            success: function (data) {
-               
-    // $('#equictntbl').dataTable().fnDestroy();
-                $('.table-modal-1').dataTable().fnDestroy();
-                $('.table-modal-2').dataTable().fnDestroy();
-                $('.table-modal-3').dataTable().fnDestroy();
+      // If checkbox is checked
+      if (this.checked) {
+        pagos.push($(this).val())
+      }
+    })
+    $.get({
+      url: '/egresos/get_data_generar_pagos_multiple',
+      data: {
+        pagos: pagos
+      },
+      success: function (data) {
 
-                var c = false;
-                var t = false;
-                var e = false;
-                var error = false;
-                var numero_cuenta = ''
-                var cheque_counter = 1;
-                let cheque = document.querySelector("#cheque_table");
-                let transferencia = document.querySelector("#transferencia_table");
-                let efectivo = document.querySelector("#efectivo_table");
-                $('#hide_cheque').show();
-                $('#hide_transferencia').show();
-                $('#hide_efectivo').show();
-                cheque.innerHTML = "";
-                transferencia.innerHTML = "";
-                efectivo.innerHTML = "";
-                data.forEach(pago => {
-                    var html =
-                        `<tr>
+        // $('#equictntbl').dataTable().fnDestroy();
+        $('.table-modal-1').dataTable().fnDestroy();
+        $('.table-modal-2').dataTable().fnDestroy();
+        $('.table-modal-3').dataTable().fnDestroy();
+
+        var c = false;
+        var t = false;
+        var e = false;
+        var error = false;
+        var numero_cuenta = ''
+        var cheque_counter = 1;
+        let cheque = document.querySelector("#cheque_table");
+        let transferencia = document.querySelector("#transferencia_table");
+        let efectivo = document.querySelector("#efectivo_table");
+        $('#hide_cheque').show();
+        $('#hide_transferencia').show();
+        $('#hide_efectivo').show();
+        cheque.innerHTML = "";
+        transferencia.innerHTML = "";
+        efectivo.innerHTML = "";
+        data.forEach(pago => {
+          var html =
+            `<tr>
                             <td>${pago.beneficiario}</td>
                             <td>${money.format(pago.monto_total)}</td>
                             <td>${pago.cuenta}</td>
                             <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
                         <tr>`
-                    if (pago.forma_pago.toLowerCase() == 'cheque') {
-                        var html =
-                        `<tr>
+          if (pago.forma_pago.toLowerCase() == 'cheque') {
+            var html =
+              `<tr>
                             <td>${pago.beneficiario}</td>
                             <td>${money.format(pago.monto_total)}</td>
                             <td>${pago.cuenta}</td>
@@ -304,79 +301,79 @@
                             <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
                             <input type="hidden" id="numero_cheque" name="numero_cheque" value="${parseInt(pago.numero_cheque) + cheque_counter++}">
                         <tr>`
-                        if (numero_cuenta){
-                            if(numero_cuenta != pago.cuenta_id){
-                                error = true;
-                                swal({
-                                    title: "Error!",
-                                    text: "Existen dos cheques de distintas cuentas",
-                                    type: "error",
-                                });
-                            }
-                        } else {
-                            numero_cuenta = pago.cuenta_id
-                            let num = parseInt(pago.numero_cheque, 10) + 1
-                            $('#referencia_pago_cheque').val(num);
-                        }
-                        cheque.insertAdjacentHTML('beforeend', html);
-                        cheque.removeChild(cheque.lastChild);
-                        c = true;
-                    } else if (pago.forma_pago.toLowerCase() == 'transferencia') {
-                        transferencia.insertAdjacentHTML('beforeend', html);
-                        transferencia.removeChild(transferencia.lastChild);
-                        t = true;
-                    } else {
-                        e = true;
-                        efectivo.insertAdjacentHTML('beforeend', html);
-                        efectivo.removeChild(efectivo.lastChild);
-                    }
-
-
+            if (numero_cuenta) {
+              if (numero_cuenta != pago.cuenta_id) {
+                error = true;
+                swal({
+                  title: "Error!",
+                  text: "Existen dos cheques de distintas cuentas",
+                  type: "error",
                 });
-                if (!error){
-                    $('#modal_generar_pago_multiple').modal('show');
-                    if (!c) $('#hide_cheque').hide();
-                    if (!t) $('#hide_transferencia').hide();
-                    if (!e) $('#hide_efectivo').hide();
-                }
+              }
+            } else {
+              numero_cuenta = pago.cuenta_id
+              let num = parseInt(pago.numero_cheque, 10) + 1
+              $('#referencia_pago_cheque').val(num);
             }
+            cheque.insertAdjacentHTML('beforeend', html);
+            cheque.removeChild(cheque.lastChild);
+            c = true;
+          } else if (pago.forma_pago.toLowerCase() == 'transferencia') {
+            transferencia.insertAdjacentHTML('beforeend', html);
+            transferencia.removeChild(transferencia.lastChild);
+            t = true;
+          } else {
+            e = true;
+            efectivo.insertAdjacentHTML('beforeend', html);
+            efectivo.removeChild(efectivo.lastChild);
+          }
+
+
         });
-        //show modal  
-        $('#modal_pagar_multiple').modal('show');
-        window.setTimeout(() => {
-            $('.table-modal').DataTable({
-                dom: 'Bfrtip',
-                responsive: false,
-                paging: false,
-                searching: false,
-                destroy: true,
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
-            });
-        }, 100)
-    });
-
-
-
-    // Conciliado check for modal generar pago
-    $("#conciliado_check").change(function () {
-        if (this.checked) {
-            $("#referencia_conciliacion").fadeIn()
-        } else {
-            $("#referencia_conciliacion").fadeOut()
+        if (!error) {
+          $('#modal_generar_pago_multiple').modal('show');
+          if (!c) $('#hide_cheque').hide();
+          if (!t) $('#hide_transferencia').hide();
+          if (!e) $('#hide_efectivo').hide();
         }
+      }
     });
+    //show modal  
+    $('#modal_pagar_multiple').modal('show');
+    window.setTimeout(() => {
+      $('.table-modal').DataTable({
+        dom: 'Bfrtip',
+        responsive: false,
+        paging: false,
+        searching: false,
+        destroy: true,
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+      });
+    }, 100)
+  });
 
 
 
-    //Modal Conciliar
-    $(".open-conciliar").on("click", function () {
-        $.ajax({
-            url: $(this).attr("data-url"),
-            success: function (data) {
-                const html =
-                    `<div class="row" style="margin-bottom:20px;">
+  // Conciliado check for modal generar pago
+  $("#conciliado_check").change(function () {
+    if (this.checked) {
+      $("#referencia_conciliacion").fadeIn()
+    } else {
+      $("#referencia_conciliacion").fadeOut()
+    }
+  });
+
+
+
+  //Modal Conciliar
+  $(".open-conciliar").on("click", function () {
+    $.ajax({
+      url: $(this).attr("data-url"),
+      success: function (data) {
+        const html =
+          `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
                             </div>
@@ -395,39 +392,39 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <hr>`
-                let element = document.querySelector(".here-conciliar");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                $('.selectpicker').selectpicker('refresh');
-                $('#modal_conciliar_movimiento').modal('show');
-            }
-        });
+        let element = document.querySelector(".here-conciliar");
+        element.innerHTML = "";
+        element.insertAdjacentHTML('beforeend', html);
+        $('.selectpicker').selectpicker('refresh');
+        $('#modal_conciliar_movimiento').modal('show');
+      }
     });
+  });
 
-    //Modal Conciliar multiple
+  //Modal Conciliar multiple
 
-    $("#open-conciliar-multiple").on("click", function () {
-        let pagos = []
-        // Iterate over all checkboxes in the table
-        $('.conciliar-table').each(function () {
+  $("#open-conciliar-multiple").on("click", function () {
+    let pagos = []
+    // Iterate over all checkboxes in the table
+    $('.conciliar-table').each(function () {
 
-            // If checkbox is checked
-            if (this.checked) {
-                pagos.push($(this).val())
-            }
-        })
+      // If checkbox is checked
+      if (this.checked) {
+        pagos.push($(this).val())
+      }
+    })
 
-        $.get({
-            url: '/egresos/get_data_conciliar_multiple',
-            data: {
-                pagos: pagos
-            },
-            success: function (data) {
-                let element = document.querySelector(".here-conciliar");
-                element.innerHTML = "";
-                data.forEach(pago => {
-                    const html =
-                        `<div class="row" style="margin-bottom:20px;">
+    $.get({
+      url: '/egresos/get_data_conciliar_multiple',
+      data: {
+        pagos: pagos
+      },
+      success: function (data) {
+        let element = document.querySelector(".here-conciliar");
+        element.innerHTML = "";
+        data.forEach(pago => {
+          const html =
+            `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${pago.beneficiario}</span></p>
                             </div>
@@ -446,103 +443,101 @@
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
                 <hr>`
-                    element.insertAdjacentHTML('beforeend', html);
-                    $('#modal_conciliar_movimiento').modal('show');
-
-                });
-
-            }
-        });
-    });
-
-    //Jquery table
-    var table1 = $('.tabla-pendientes').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        "order": [
-            [1, 'desc'],
-            [2, 'asc']
-        ],
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        "columnDefs": [{
-            "targets": 0,
-            "orderable": false
-        }]
-    });
-    // "Select all" control
-    $('.select-all1').on('click', function () {
-        // Check/uncheck all checkboxes in the table
-        var rows = table1.rows({
-            'search': 'applied'
-        }).nodes();
-        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-    });
-
-    var table2 = $('.tabla-realizados').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        "order": [
-            [1, 'desc'],
-            [2, 'asc']
-        ],
-        buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-        ],
-        "columnDefs": [{
-            "targets": 0,
-            "orderable": false
-        }]
-    });
-
-        // "Select all" control
-        $('.select-all2').on('click', function () {
-        // Check/uncheck all checkboxes in the table
-        var rows = table2.rows({
-            'search': 'applied'
-        }).nodes();
-        $('input[type="checkbox"]', rows).prop('checked', this.checked);
-    });
-
-
-
-
-
-
-
-
-
-    //Borrar pago con sweer alert
-    $('.delete-pago').on('click', function () {
-        var element = this;
-        swal({
-            title: "Estas seguro?",
-            text: "Se borrara el registro de esta solicitud de pago!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Si, borrar!",
-            closeOnConfirm: false
-        }, function () {
-            console.log(element)
-            $.ajax({
-                url: $(element).attr("data-url"),
-                success: function (data) {
-                    if (data) {
-                        swal("Borrado!", "El pago ha sido eliminado.", "success");
-                        setTimeout(function () {
-                            location.reload();
-                        }, 2000);
-
-
-                    }
-                }
-            })
+          element.insertAdjacentHTML('beforeend', html);
+          $('#modal_conciliar_movimiento').modal('show');
 
         });
-    });
 
-   
+      }
+    });
+  });
+
+  //Jquery table
+  var table1 = $('.tabla-pendientes').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    "order": [
+      [1, 'desc'],
+      [2, 'asc']
+    ],
+    buttons: [
+      'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+    "columnDefs": [{
+      "targets": 0,
+      "orderable": false
+    }]
+  });
+  // "Select all" control
+  $('.select-all1').on('click', function () {
+    // Check/uncheck all checkboxes in the table
+    var rows = table1.rows({
+      'search': 'applied'
+    }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+  });
+
+  var table2 = $('.tabla-realizados').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    "order": [
+      [1, 'desc'],
+      [2, 'asc']
+    ],
+    buttons: [
+      'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+    "columnDefs": [{
+      "targets": 0,
+      "orderable": false
+    }]
+  });
+
+  // "Select all" control
+  $('.select-all2').on('click', function () {
+    // Check/uncheck all checkboxes in the table
+    var rows = table2.rows({
+      'search': 'applied'
+    }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+  });
+
+
+
+
+
+
+
+
+
+  //Borrar pago con sweer alert
+  $('.delete-pago').on('click', function () {
+    var element = this;
+    swal({
+      title: "Estas seguro?",
+      text: "Se borrara el registro de esta solicitud de pago!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, borrar!",
+      closeOnConfirm: false
+    }, function () {
+      console.log(element)
+      $.ajax({
+        url: $(element).attr("data-url"),
+        success: function (data) {
+          if (data) {
+            swal("Borrado!", "El pago ha sido eliminado.", "success");
+            setTimeout(function () {
+              location.reload();
+            }, 2000);
+
+
+          }
+        }
+      })
+
+    });
+  });
 </script>
 {% endblock javascripts %}

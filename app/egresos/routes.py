@@ -513,6 +513,24 @@ def borrarEP(egreso_id, pago_id):
         return redirect("/egresos/perfil_pago/" + str(pago_id))
 
 
+@blueprint.route('/get_beneficiario_categorias/<int:beneficiario_id>', methods=['GET', 'POST'])
+def get_beneficiario_categorias(beneficiario_id):
+  list = []
+  categorias = Categorias.query.filter(Categorias.beneficiarios.any(id=beneficiario_id)).all()
+  for categoria in categorias:
+    list.append({'id': categoria.id, 'nombre': categoria.nombre})
+  return jsonify(list)
+
+@blueprint.route('/get_concepto_categoria/<int:categoria_id>', methods=['GET', 'POST'])
+def get_concepto_categoria(categoria_id):
+  list = []
+  conceptos = Conceptos.query.filter_by(categoria_id=categoria_id).all()
+  print(conceptos)
+  for concepto in conceptos:
+    list.append({'id': concepto.id, 'nombre': concepto.nombre})
+  return jsonify(list)
+
+
 
 def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
 

@@ -12,7 +12,7 @@
                         <div class="col-sm-12 col-md-6">
                                 <label for="beneficiario"> Centro de negocios </label><br>
                                 <select class="selectpicker"  data-live-search="true" 
-                                name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
+                                name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%" data-validation="required">
                                 {% for centro in centros_negocio %}
                                 <option value="{{centro.id}}"> {{ centro.nombre }} </option>
                                 {% endfor %}
@@ -22,7 +22,7 @@
                                 <label for="proveedor"> Proveedor </label><br>
                                 <select class="selectpicker"  data-live-search="true" 
                                 name="proveedor" title="Seleccione un Proveedor..."
-                                 data-width="100%">
+                                 data-width="100%" data-validation="required">
                                  {% for provedor in proveedores %}
                                  <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
                                  {% endfor %}
@@ -35,7 +35,7 @@
                             <label for="categoria"> Cuenta de Mayor </label>
                             <select class="selectpicker" data-live-search="true" 
                               name="categoria" title="Seleccione una Cuenta de Mayor..."
-                              data-width="100%">
+                              data-width="100%" data-validation="required">
                               {% for categoria in categorias %}
                               <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
                               {% endfor %}
@@ -44,7 +44,7 @@
                         <div class="col-sm-12 col-md-6">
                             <label for="concepto"> Cuenta de Menor</label>
                             <select class="selectpicker"  
-                            data-live-search="true" name="concepto" title="Seleccione un Cuenta de Menor..." data-width="100%">
+                            data-live-search="true" name="concepto" title="Seleccione un Cuenta de Menor..." data-width="100%" data-validation="required">
                             {% for concepto in conceptos %}
                             <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                             {% endfor %}
@@ -55,7 +55,7 @@
                     <div class="row" style="margin-bottom:20px !important">
                         <div class="col-sm-12 col-md-6">
                             <label for="monto">Monto</label>
-                            <input type='number' class="form-control" name="monto" />
+                            <input type='text' class="form-control" name="monto" data-validation="number" data-validation-allowing="float" />
                         </div>
                         <div class="col-sm-12 col-md-6">
                                 <label for="numero_control"># de control</label>

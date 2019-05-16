@@ -1,11 +1,14 @@
-
-
+// Money Format
  const money = new Intl.NumberFormat('en-US', {
 	style: 'currency',
 	currency: 'USD',
 	minimumFractionDigits: 2
   })
 
+  //Today date
+  $( document ).ready(function() {
+    $('.set-today').val(new Date().toISOString().split('T')[0]) 
+});
 
 //tooltip
 $(function () {
@@ -33,5 +36,8 @@ $(function () {
 	});
 
 	//Popover
-	$('[data-toggle="popover"]').popover();
+  $('[data-toggle="popover"]').popover();
+  
 })
+
+
