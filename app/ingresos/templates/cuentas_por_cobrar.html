@@ -20,7 +20,7 @@
         <div class="select-btn-group">
            <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal"
             data-target="#modal_solicitar_multiple">Pagar</span>
-          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar fecha</span>
+          <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple_ingreso">Reprogramar fecha</span>
         </div>
       </div>
       
@@ -103,7 +103,7 @@
                       </a>
                       {% endif %}
                       
-                      <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha" data-id="{{ingreso.id}}">
+                      <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha_ingreso" data-id="{{ingreso.id}}">
                         <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                       </a>
                     </td>
@@ -195,8 +195,8 @@
 
 {% include "modal_cobrar_cuentas_por_cobrar.html" %}
 {% include "modal_pagar_ingresos_multiple.html" %}
-{% include "modal_reprogramar_fecha.html" %}
-{% include "modal_reprogramar_fecha_multiple.html" %}
+{% include "modal_reprogramar_fecha_ingreso.html" %}
+{% include "modal_reprogramar_fecha_multiple_ingreso.html" %}
 {% include "modal_conciliar_movimiento_ingreso.html" %}
 {% include "modal_conciliar_ingreso.html" %}
 
@@ -219,7 +219,7 @@
 
 <script>
   //reprogramar un ingreso
-  $("#open-reprogramar").on("click", function () {
+  $(".open-reprogramar").on("click", function () {
     const html = `  <input type="hidden" id="ingreso_id" name="ingreso_id" value="${$(this).attr("data-id")}">`
     let element = document.querySelector(".ingreso_id_here");
     element.innerHTML = "";
