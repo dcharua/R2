@@ -76,15 +76,16 @@
 
 
 
-    <!-- Ingresos por Cobrar TABLE -->
+    <!-- Pagos de Ingresos por Conciliar -->
 
     <div class="row clearfix">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="header bg-black">
-            <h2> Pagos de Ingresos por Coinciliar </h2>
+            <h2> Pagos de Ingresos Pendientes</h2>
             <div class="select-btn-group">
-              <span id="generar-pago" class="btn bg-green open-cobrar" data-toggle="modal" data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
+              <span id="generar-pago" class="btn js-modal-buttons bg-green open-cobrar" data-toggle="modal" 
+                     data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
                  Generar Pago</span>
             </div>
       
@@ -317,20 +318,18 @@
     {% block javascripts %}
     {{ super() }}
     <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
-    <script>
-      
-
+  <script>
 
     //solcitar pagar un ingreso
     $(".open-cobrar").on("click", function () {
@@ -393,7 +392,7 @@
                 $('#modal_conciliar_movimiento_ingreso').modal('show');
             }
         });
-    });
+      });
 
     //Modal Conciliar multiple
     $("#open-conciliar-multiple").on("click", function () {
@@ -479,12 +478,20 @@
  
 
     //Jquery table
-    var table = $('.js-basic-example').DataTable({
-        'order': [1, 'asc'],
-        "columnDefs": [ {
+    var pagar_table = $('.pagar_table').DataTable({
+      dom: 'Bfrtip',
+      responsive: true,
+      "order": [
+        [1, 'desc'],
+        [2, 'asc']
+      ],
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf', 'print'
+      ],
+      "columnDefs": [{
         "targets": 0,
         "orderable": false
-        } ]
+      }]
     });
 
 
@@ -496,53 +503,52 @@
       } else {
         $("#monto_parcial").fadeOut();
       }
+    });                
+
+
+    // "Select all" control
+    $('.select-all').on('click', function () {
+      // Check/uncheck all checkboxes in the table
+      var rows = table.rows({
+        'search': 'applied'
+      }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
     });
-      
-    // Conciliado check for modal generar pago          
-    $("#conciliado_check").change(function () {
-    if (this.checked) {
-      $("#referencia_conciliacion").prop('disabled', false);
-    } else {
-      $("#referencia_conciliacion").prop('disabled', true);
-    }
-    }); 
-                
-
-
-  // "Select all" control
-  $('.select-all').on('click', function () {
-    // Check/uncheck all checkboxes in the table
-    var rows = table.rows({
-      'search': 'applied'
-    }).nodes();
-    $('input[type="checkbox"]', rows).prop('checked', this.checked);
-  });
                 
             
-   //Modal Editar Detalles de Ingreso                 
-  $('.editar-detalle').on('click', function () {
-    $.ajax({
-      url: $(this).attr("data-url"),
-      success: function (data) {
-        const html =
-          `<form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
- 
-        
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Editar Detalle</button>
-                        <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-                            <i class="material-icons">close</i>
-                        </button>
-                    </div>
-                </form>`
-        let element = document.querySelector(".detalle-here");
-        element.innerHTML = "";
-        element.insertAdjacentHTML('beforeend', html);
-        $('.selectpicker').selectpicker('refresh');
-        $('#modal_editar_detalle').modal('show');
-      }
-    });
-  });                        
+    //Modal Editar Detalles de Ingreso                 
+    $('.editar-detalle').on('click', function () {
+      $.ajax({
+        url: $(this).attr("data-url"),
+        success: function (data) {
+          const html =
+            `<form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
+  
+          
+                      <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary">Editar Detalle</button>
+                          <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                              <i class="material-icons">close</i>
+                          </button>
+                      </div>
+                  </form>`
+          let element = document.querySelector(".detalle-here");
+          element.innerHTML = "";
+          element.insertAdjacentHTML('beforeend', html);
+          $('.selectpicker').selectpicker('refresh');
+          $('#modal_editar_detalle').modal('show');
+        }
+      });
+    });     
+    
+    // Conciliado check for modal generar pago          
+    $("#conciliado_check").change(function () {
+        if (this.checked) {
+          $("#referencia_conciliacion").prop('disabled', false);
+        } else {
+          $("#referencia_conciliacion").prop('disabled', true);
+        }
+      });
 
-      </script>
-      {% endblock javascripts %}
+  </script>
+  {% endblock javascripts %}
