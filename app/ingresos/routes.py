@@ -524,8 +524,8 @@ def reprogramar_fecha_multiple():
         print(ingresos)
         fecha = request.args.get('fecha')
         for ingreso in ingresos:
-                egreso = Ingresos.query.get(ingreso)
-                egreso.fecha_programada_pago=fecha
+            ingreso = Ingresos.query.get(ingreso)
+            ingreso.fecha_programada_pago=fecha
         db.session.commit()
         return redirect("/ingresos/cuentas_por_cobrar")
 
@@ -566,18 +566,19 @@ def agregar_detalle(ingreso_id):
 @blueprint.route('/get_data_editar_detalle<int:detalle_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_editar_detalle(detalle_id):
-        detalle = DetallesIngreso.query.get(detalle_id)
-        print('ID = ',detalle.id)
-        print('centro_negocios=',detalle.centro_negocios_id)
-        print('cliente=',detalle.cliente_id)
-        print('monto=',str(detalle.monto))
-        print('categoria =',detalle.categoria_id)
-        print('concepto=',detalle.concepto_id)
-        print('numero_control=',detalle.numero_control)
-        print('descripcion=',detalle.descripcion)
-        
-        
-        return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, 
+
+    detalle = DetallesIngreso.query.get(detalle_id)
+    print('ID = ',detalle.id)
+    print('centro_negocios=',detalle.centro_negocios_id)
+    print('cliente=',detalle.cliente_id)
+    print('monto=',str(detalle.monto))
+    print('categoria =',detalle.categoria_id)
+    print('concepto=',detalle.concepto_id)
+    print('numero_control=',detalle.numero_control)
+    print('descripcion=',detalle.descripcion)
+    
+    
+    return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, 
                        cliente=detalle.cliente_id,  monto=str(detalle.monto), 
                        categoria = detalle.categoria_id , concepto=detalle.concepto_id, 
                        numero_control=detalle.numero_control, descripcion = detalle.descripcion)

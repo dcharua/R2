@@ -72,89 +72,88 @@
         </div>
       </div>
     </div>
+  </div>
 
 
 
 
-    <!-- Pagos de Ingresos por Conciliar -->
+  <!-- Pagos de Ingresos por Conciliar -->
 
-    <div class="row clearfix">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card">
-          <div class="header bg-black">
-            <h2> Pagos de Ingresos Pendientes</h2>
-            <div class="select-btn-group">
-              <span id="generar-pago" class="btn js-modal-buttons bg-green open-cobrar" data-toggle="modal" 
-                     data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
-                 Generar Pago</span>
-            </div>
-      
-          </div>
-          <div class="body">
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Forma</th>
-                        <th>Cuenta</th>
-                        <th>Descripcion</th>
-                        <th>Monto</th>
-                        <th>Status</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Forma</th>
-                        <th>Cuenta</th>
-                        <th>Descripcion</th>
-                        <th>Monto</th>
-                        <th>Status</th>
-                        <th>Acciones</th>
-                    </tr>
-                </tfoot>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="card">
+      <div class="header bg-black">
+        <h2> Pagos de Ingresos Pendientes</h2>
+        <div class="select-btn-group">
+          <span id="generar-pago" class="btn js-modal-buttons bg-green open-cobrar" data-toggle="modal" 
+                data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
+            Generar Pago</span>
+        </div>
+  
+      </div>
+      <div class="body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Forma</th>
+                    <th>Cuenta</th>
+                    <th>Descripcion</th>
+                    <th>Monto</th>
+                    <th>Status</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Forma</th>
+                    <th>Cuenta</th>
+                    <th>Descripcion</th>
+                    <th>Monto</th>
+                    <th>Status</th>
+                    <th>Acciones</th>
+                </tr>
+            </tfoot>
 
-                <tbody>
-                  {% for pago in ingreso.pagos_ingresos %}
-                  {% if (pago.status != 'conciliado' and pago.status != 'cancelado')  %}
-                  <tr>
-                    <td>{{pago.id}}</td>
-                    <td>{{pago.forma_pago}}</td>
-                    <td>{{pago.cuenta.nombre}}</td>
-                    <td>{{pago.descripcion}}</td>
-                    <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
-                    <td> {% if pago.status == 'conciliado' %}
-                      <span class="badge bg-liquidado">Liquidado</span>
-                      {% endif %}
-                      {% if pago.status == 'por_conciliar' %}
-                      <span class="badge bg-por-conciliar">Por conciliar</span>
-                      {% endif %}
-                      {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-cancelado">Cancelado</span>
-                      {% endif %}
-                    </td>
-                    <td>
-                      <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-toggle="tooltip"
-                        data-placement="top" title="Ver detalle">
-                        <i class="material-icons">visibility</i>
-                      </a>
-                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id = pago.id) }}">
-                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
-                      </a>
-                    </td>
-                  </tr>
+            <tbody>
+              {% for pago in ingreso.pagos_ingresos %}
+              {% if (pago.status != 'conciliado' and pago.status != 'cancelado')  %}
+              <tr>
+                <td>{{pago.id}}</td>
+                <td>{{pago.forma_pago}}</td>
+                <td>{{pago.cuenta.nombre}}</td>
+                <td>{{pago.descripcion}}</td>
+                <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
+                <td> {% if pago.status == 'conciliado' %}
+                  <span class="badge bg-liquidado">Liquidado</span>
                   {% endif %}
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                  {% if pago.status == 'por_conciliar' %}
+                  <span class="badge bg-por-conciliar">Por conciliar</span>
+                  {% endif %}
+                  {% if pago.status == 'cancelado' %}
+                  <span class="badge bg-cancelado">Cancelado</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle">
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id = pago.id) }}">
+                  <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
+                  </a>
+                </td>
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
+   
     
  
     
@@ -301,22 +300,24 @@
         </div>
       </div>
     </div>
+  </div>
 
-    {% include "modal_conciliar_movimiento_ingreso.html" %}
-    {% include "modal_reprogramar_fecha.html" %}
-    {% include "modal_conciliar_ingreso.html" %}
-    {% include "modal_reprogramar_fecha_multiple.html" %}
-    {% include "modal_generar_pago.html" %}
-    {% include "modal_cobrar_cuentas_por_cobrar.html" %}
-    {% include "modal_pagar_multiple.html" %}
-    {% include "modal_agregar_detalle_ingresos.html" %}
-    {% include "modal_editar_detalle.html" %}
-    {% include "modal_test.html" %}
-    
-    {% endblock content %}
+  {% include "modal_conciliar_movimiento_ingreso.html" %}
+  {% include "modal_reprogramar_fecha.html" %}
+  {% include "modal_conciliar_ingreso.html" %}
+  {% include "modal_reprogramar_fecha_multiple.html" %}
+  {% include "modal_cobrar_cuentas_por_cobrar.html" %}
+  {% include "modal_pagar_multiple.html" %}
+  {% include "modal_agregar_detalle_ingresos.html" %}
+  {% include "modal_editar_detalle_ingreso.html" %}
+  {% include "modal_test.html" %}
+  
+  {% endblock content %}
 
-    {% block javascripts %}
-    {{ super() }}
+  {% block javascripts %}
+  {{ super() }}
+
+
     <!-- Jquery DataTable Plugin Js -->
   <script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
   <script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}"></script>
@@ -518,28 +519,93 @@
             
     //Modal Editar Detalles de Ingreso                 
     $('.editar-detalle').on('click', function () {
-      $.ajax({
-        url: $(this).attr("data-url"),
-        success: function (data) {
-          const html =
-            `<form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
-  
-          
-                      <div class="modal-footer">
-                          <button type="submit" class="btn btn-primary">Editar Detalle</button>
-                          <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
-                              <i class="material-icons">close</i>
-                          </button>
-                      </div>
-                  </form>`
-          let element = document.querySelector(".detalle-here");
-          element.innerHTML = "";
-          element.insertAdjacentHTML('beforeend', html);
-          $('.selectpicker').selectpicker('refresh');
-          $('#modal_editar_detalle').modal('show');
-        }
-      });
-    });     
+        console.log('in')
+        $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `
+            <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_detalle', ingreso_id=ingreso.id) }}">
+                <input type="hidden" id="id" name="id" value="${data.id}">  
+            <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="beneficiario"> Centro de negocios </label><br>
+                                    <select class="selectpicker"  data-live-search="true" 
+                                    name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
+                                    {% for centro in centros_negocio %}
+                                    <option value="{{centro.id}}"> {{ centro.nombre }} </option>
+                                    {% endfor %}
+                                  </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="cliente"> Cliente </label><br>
+                                    <select class="selectpicker"  data-live-search="true" 
+                                    name="cliente" title="Seleccione un Cliente..."
+                                     data-width="100%">
+                                     {% for cliente in clientes %}
+                                     <option value="{{cliente.id}}"> {{cliente.nombre }} </option>
+                                     {% endfor %}
+                                   </select>
+                                
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="categoria"> Cuenta de Mayor </label>
+                                <select class="selectpicker" data-live-search="true" 
+                                  name="categoria" title="Seleccione una Cuenta de Mayor..."
+                                  data-width="100%">
+                                  {% for categoria in categorias %}
+                                  <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                                  {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <label for="concepto"> Cuenta de Menor</label>
+                                <select class="selectpicker"  
+                                data-live-search="true" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="100%">
+                                {% for concepto in conceptos %}
+                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="monto">Monto</label>
+                                <input type='number' class="form-control" name="montoh" value="${data.monto}"  disabled />
+                                <input type='hidden' class="form-control" name="monto" value="${data.monto}"  />
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="numero_control"># de control</label>
+                                    <input type='text' class="form-control" name="numero_control" value="${data.numero_control}" />
+                                </div>
+                        </div>
+    
+                        <div class="row" style="margin-bottom:20px !important">
+                                <div class="col-sm-12">
+                                    <label for="arrendadora"> Detallea </label>
+                                    <textarea name="comentario" id="comentario" style="width:100%" > ${data.descripcion}</textarea>
+                                 </div>
+                        </div>
+                         </div>
+        
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Editar Detalle</button>
+                        <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+                </form>`
+                let element = document.querySelector(".detalle-here2");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#modal_editar_detalle_ingreso').modal('show');
+            }
+        });
+    });   
     
     // Conciliado check for modal generar pago          
     $("#conciliado_check").change(function () {
