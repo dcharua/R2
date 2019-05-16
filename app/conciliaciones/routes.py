@@ -6,6 +6,7 @@ from app import db, login_manager
 from app.db_models.models import *
 from datetime import date
 
+
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
@@ -17,6 +18,7 @@ def capturar_conciliacion():
     now = date.today()
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
+    formas_pago = FormasPago.query.all()
     for cuenta in cuentas:
         cuenta.saldo_conciliado_egresos = 0
         cuenta.saldo_conciliado_ingresos = 0
@@ -39,7 +41,7 @@ def capturar_conciliacion():
         cuenta.ultima_conciliacion = None
         if (cuenta.conciliaciones):
                 cuenta.ultima_conciliacion = cuenta.conciliaciones[-1]
-    return render_template("capturar_conciliacion.html", hoy=now, cuentas=cuentas, empresas=empresas)   
+    return render_template("capturar_conciliacion.html", hoy=now, cuentas=cuentas, empresas=empresas, formas_pago=formas_pago)   
 
 @blueprint.route('/agregar_cuenta', methods=['GET', 'POST'])
 @login_required
@@ -194,3 +196,16 @@ def cambiar_numero_cheque(cuenta_id):
         db.session.commit() 
         return redirect("/conciliaciones/perfil_cuenta/" + str(cuenta_id))    
         
+
+@blueprint.route('/transferir', methods=['GET', 'POST'])
+def transferir():
+  if request.form:
+        data = request.form
+        p_egreso = Pagos(referencia_pago=data["referencia"], fecha_pago=date.today(),
+        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_origen"], beneficiario_id=1, forma_pago_id=data["forma_pago_origen"])
+        p_ingreso = Pagos_Ingresos(referencia_pago=data["referencia"], fecha_pago=date.today(),
+        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_destino"], cliente_id=1, forma_pago_id=data["forma_pago_destino"])
+        db.session.add(p_egreso)
+        db.session.add(p_ingreso)
+        db.session.commit() 
+        return redirect("/conciliaciones/capturar_conciliacion")  

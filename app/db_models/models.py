@@ -55,6 +55,7 @@ class Categorias(db.Model):
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
     nombre = Column(String(50))
+    tipo = Column(String(10))
     conceptos = relationship("Conceptos")
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")

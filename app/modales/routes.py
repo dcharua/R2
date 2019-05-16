@@ -18,10 +18,10 @@ def route_template(template):
 
 @blueprint.route('/agregar_categoria', methods=['GET', 'POST'])
 @login_required
-def agregar_categoria():    
+def agregar_categoria():
     if request.form:
         data = request.form
-        categoria = Categorias(nombre=data["nombre"]) 
+        categoria = Categorias(nombre=data["nombre"], tipo=data["tipo"]) 
         db.session.add(categoria)
         db.session.commit()   
         return redirect("/administracion/otros")     

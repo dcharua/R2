@@ -39,22 +39,22 @@
 
                     <p class="font-18">Status:
                       {% if beneficiario.status == 'pendiente'%}
-                      <span class="badge bg-blue">Pendiente</span>
+                      <span class="badge bg-pendiente">Pendiente</span>
                       {% endif %}
                       {% if beneficiario.status == 'solicitado'%}
-                      <span class="badge bg-green">Solicitado</span>
+                      <span class="badge bg-solicitado">Solicitado</span>
                       {% endif %}
                       {% if beneficiario.status == 'parcial'%}
-                      <span class="badge bg-orange">Parcial</span>
+                      <span class="badge bg-parcial">Parcial</span>
                       {% endif %}
                       {% if beneficiario.status == 'liquidado'%}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}
                       {% if beneficiario.status == 'cancelado'%}
-                      <span class="badge bg-red">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                       {% if beneficiario.status == 'por_conciliar'%}
-                      <span class="badge bg-orange">Por conciliar</span>
+                      <span class="badge bg-por-conciliar">Por conciliar</span>
                       {% endif %}
                     </p>
                     <p class="font-18">Banco: <span class="font-bold">{{beneficiario.banco}}</span></p>
@@ -161,13 +161,13 @@
         </div>
 
 
-        <!-- Basic Examples -->
+        <!-- Egresos Pendientes y parciales -->
         <div class="row clearfix">
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
-              <div class="header ">
+              <div class="header bg-pendiente ">
                 <h2>
-                  Documentos recibidos
+                    Documentos por Pagar 
                 </h2>
                 <div class="select-btn-group">
                   <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal" data-target="#modal_solicitar_multiple">Pagar</span>
@@ -209,12 +209,10 @@
                     </tfoot>
                     <tbody>
                       {% for egreso in beneficiario.egresos %}
+                      {% if egreso.status == 'pendiente' or egreso.status == 'parcial' %}
                       <tr>
                         <td>
-                          {% if egreso.status == 'pendiente' or egreso.status == 'parcial' %}
                           <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
-                          {% endif %}
-
                         </td>
                         <td>{{egreso.id}}</td>
                         <td>{{egreso.fecha_programada_pago}}</td>
@@ -222,23 +220,11 @@
                         <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                         <td>{{egreso.numero_documento}}</td>
                         <td>
-                          {% if egreso.status == 'liquidado'%}
-                          <span class="badge bg-green">Liquidado</span>
-                          {% endif %}
-                          {% if egreso.status == 'cancelado'%}
-                          <span class="badge bg-red">Cancelado</span>
-                          {% endif %}
-                          {% if egreso.status == 'por_conciliar'%}
-                          <span class="badge bg-orange">Por conciliar</span>
-                          {% endif %}
                           {% if egreso.status == 'pendiente'%}
-                          <span class="badge bg-blue">Pendiente</span>
-                          {% endif %}
-                          {% if egreso.status == 'solicitado'%}
-                          <span class="badge bg-green">Solicitado</span>
+                          <span class="badge bg-pendiente">Pendiente</span>
                           {% endif %}
                           {% if egreso.status == 'parcial'%}
-                          <span class="badge bg-orange">Parcial</span>
+                          <span class="badge bg-parcial">Parcial</span>
                           {% endif %}
                         </td>
                         <td>
@@ -258,6 +244,7 @@
                           {% endif %}
                         </td>
                       </tr>
+                      {% endif %}
                       {% endfor %}
                     </tbody>
                   </table>
@@ -266,6 +253,157 @@
             </div>
           </div>
         </div>
+
+
+        <!-- Egresos Solicitados -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="card">
+                <div class="header bg-solicitado">
+                  <h2>
+                      Documentos con Pago Programado
+                  </h2>
+                </div>
+                <div class="body">
+  
+                  <div class="table-responsive">
+  
+                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
+                      width="100%">
+  
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Fecha programada</th>
+                          <th>Fecha de vencimiento</th>
+                          <th>Monto</th>
+                          <th># de documento</th>
+                          <th>Status</th>
+                          <th style="width: 132px;">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>ID</th>
+                          <th>Fecha programada</th>
+                          <th>Fecha de vencimiento</th>
+                          <th>Monto</th>
+                          <th># de documento</th>
+                          <th>Status</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        {% for egreso in beneficiario.egresos %}
+                        {% if egreso.status == 'solicitado'  %}
+                        <tr>
+                          <td>{{egreso.id}}</td>
+                          <td>{{egreso.fecha_programada_pago}}</td>
+                          <td>{{egreso.fecha_vencimiento}}</td>
+                          <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
+                          <td>{{egreso.numero_documento}}</td>
+                          <td>
+                            <span class="badge bg-solicitado">Solicitado</span>
+                          </td>
+                          <td>
+                            <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
+                              data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                              <i class="material-icons">visibility</i>
+                            </a>
+                          </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Egresos Pagados -->
+        <div class="row clearfix">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+              <div class="header bg-liquidado ">
+                <h2>
+                    Documentos Pagados
+                </h2>
+              </div>
+              <div class="body">
+
+                <div class="table-responsive">
+
+                  <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
+                    width="100%">
+
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Fecha programada</th>
+                        <th>Fecha de vencimiento</th>
+                        <th>Monto</th>
+                        <th># de documento</th>
+                        <th>Status</th>
+                        <th style="width: 132px;">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>ID</th>
+                        <th>Fecha programada</th>
+                        <th>Fecha de vencimiento</th>
+                        <th>Monto</th>
+                        <th># de documento</th>
+                        <th>Status</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      {% for egreso in beneficiario.egresos %}
+                      {% if egreso.status == 'solicitado'  %}
+                      <tr>
+                        <td>
+                          {% if egreso.status == 'liquidado' or egreso.status == 'por_conciliar' or egreso.status == 'cancelado' %}
+                          <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                          {% endif %}
+
+                        </td>
+                        <td>{{egreso.id}}</td>
+                        <td>{{egreso.fecha_programada_pago}}</td>
+                        <td>{{egreso.fecha_vencimiento}}</td>
+                        <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
+                        <td>{{egreso.numero_documento}}</td>
+                        <td>
+                          {% if egreso.status == 'liquidado'%}
+                          <span class="badge bg-liquidado ">Liquidado</span>
+                          {% endif %}
+                          {% if egreso.status == 'cancelado'%}
+                          <span class="badge bg-cancelado">Cancelado</span>
+                          {% endif %}
+                          {% if egreso.status == 'por_conciliar'%}
+                          <span class="badge bg-por-conciliar">Por conciliar</span>
+                          {% endif %}
+                        </td>
+                        <td>
+                          <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
+                            data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                            <i class="material-icons">visibility</i>
+                          </a>
+                        </td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         <!-- #END# Basic Examples -->
 
 
@@ -360,6 +498,8 @@
             </div>
           </div>
         </div>
+
+        
 
 
         {% include "modal_pagar.html" %}

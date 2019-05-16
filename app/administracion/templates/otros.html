@@ -85,27 +85,62 @@
                 <h2>Cuentas Mayores y Menores</h2>
             </div>
             <div class="body">
-                <ul>
-                    {%for categoria in categorias%}
-                        <li> <b>{{categoria.nombre}} </b>
-                            <span style="float: right;">  
-                                    <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Categoria" data-id="{{categoria.id}}" data-value="{{categoria}}" >
-                                        <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
-                                    </a>
-                                </span>
-                            <ul>
-                                {%for concepto in categoria.conceptos%}
-                                   
-                                    <a class="btn btn-xs btn-info waves-effect open-editar"  data-toggle="tooltip" data-placement="top" title="Editar" 
-                                    data-type="Concepto" data-id="{{concepto.id}}" data-value="{{concepto}}"  data-categoria-id="{{categoria.id}}">
-                                        <li style="padding:0;">{{concepto}}</li>
-                                    </a>
-                                {% endfor %}
-                            </ul>
-                            
-                        </li>
-                    {% endfor %}
-                </ul>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <h5>Egresos </h5>
+                        <ul>
+                            {%for categoria in categorias%}
+                              {% if categoria.tipo == "egreso" %}
+                                <li> <b>{{categoria.nombre}} </b>
+                                    <span style="float: right;">  
+                                            <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Categoria" data-id="{{categoria.id}}" data-value="{{categoria}}" >
+                                                <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
+                                            </a>
+                                        </span>
+                                    <ul>
+                                        {%for concepto in categoria.conceptos%}
+                                           
+                                            <a class="btn btn-xs btn-info waves-effect open-editar"  data-toggle="tooltip" data-placement="top" title="Editar" 
+                                            data-type="Concepto" data-id="{{concepto.id}}" data-value="{{concepto}}"  data-categoria-id="{{categoria.id}}">
+                                                <li style="padding:0;">{{concepto}}</li>
+                                            </a>
+                                        {% endfor %}
+                                    </ul>
+                                    
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <h5>Ingresos </h5>
+                          <ul>
+                              {%for categoria in categorias%}
+                              {%if categoria.tipo == "ingreso" %}
+                                  <li> <b>{{categoria.nombre}} </b>
+                                      <span style="float: right;">  
+                                              <a class="btn btn-xs btn-info waves-effect open-editar" data-type="Categoria" data-id="{{categoria.id}}" data-value="{{categoria}}" >
+                                                  <i data-toggle="tooltip" data-placement="top" title="Editar" class="material-icons">edit</i>
+                                              </a>
+                                          </span>
+                                      <ul>
+                                          {%for concepto in categoria.conceptos%}
+                                             
+                                              <a class="btn btn-xs btn-info waves-effect open-editar"  data-toggle="tooltip" data-placement="top" title="Editar" 
+                                              data-type="Concepto" data-id="{{concepto.id}}" data-value="{{concepto}}"  data-categoria-id="{{categoria.id}}">
+                                                  <li style="padding:0;">{{concepto}}</li>
+                                              </a>
+                                          {% endfor %}
+                                      </ul>
+                                      
+                                  </li>
+                                  {% endif %}
+                              {% endfor %}
+                          </ul>
+                      </div>
+                  </div>
+
+               
             </div>
         </div>
     </div>
@@ -167,5 +202,15 @@
         $('#modal_editar_multiple').modal('show');
       
       });
+
+      $('#select-tipo').change(function(){
+        if ($(this).val() == "egreso"){
+          $('#select-egreso').fadeIn()
+          $('#select-ingreso').hide()
+        } else{
+          $('#select-ingreso').fadeIn()
+          $('#select-egreso').hide()
+        };
+      })
 </script>
 {% endblock javascripts %}

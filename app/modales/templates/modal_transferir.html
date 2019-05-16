@@ -1,0 +1,84 @@
+<div class="modal fade" id="modal_transferir" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="largeModalLabel">Solicitud de documentos a pagar</h4>
+      </div>
+      <form class="form-horizontal form-label-left" id="mandar_pagar_form" method="POST"
+        action="{{ url_for('conciliacion_blueprint.transferir') }}">
+        <div class="modal-body">
+          <div class="input-group">
+            <div class="row mar-b-10">
+              <div class="col-sm-12 col-md-6 ">
+                <label for="beneficiario"> Cuenta origen </label><br>
+                <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_origen"
+                  title="Seleccione una Cuenta.." data-width="100%">
+                  {% for cuenta in cuentas %}
+                  <option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-sm-12 col-md-6 ">
+                <label for="beneficiario"> Cuenta destino</label><br>
+                <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_destino"
+                  title="Seleccione una Cuenta.." data-width="100%">
+                  {% for cuenta in cuentas %}
+                  <option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="row mar-b-10">
+              <div class="col-sm-12 col-md-6 ">
+                <label for="cliente"> Forma de pago origen </label><br>
+                <select class="selectpicker" id="forma_pago_origen" data-live-search="true" name="forma_pago_origen"
+                  title="Seleccione una Forma de Pago..." data-width="100%">
+                  {% for forma in formas_pago %}
+                  <option value="{{forma.id}}"> {{ forma }} </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="col-sm-12 col-md-6 ">
+                <label for="cliente"> Forma de pago destino</label><br>
+                <select class="selectpicker" id="forma_pago_destino" data-live-search="true" name="forma_pago_destino"
+                  title="Seleccione una Forma de Pago..." data-width="100%">
+                  {% for forma in formas_pago %}
+                  <option value="{{forma.id}}"> {{ forma }} </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <hr>
+            <div class="row mar-b-10">
+              <div class="col-sm-12 col-md-6 ">
+                <label for="monto"> Monto</label><br>
+                <input placeholder="Monto " class="form-control" type="text" data-validation="number"
+                  data-validation-allowing="float" id="monto" name="monto">
+              </div>
+              <div class="col-sm-12 col-md-6 ">
+                <label for="referencia"> Referencia</label><br>
+                <input placeholder="Referencia " class="form-control" type="text" id="referencia" name="referencia">
+              </div>
+            </div>
+
+            <div class="row mar-b-10">
+              <div class="col-sm-12">
+                <label for="comentario">Comentario</label>
+                <textarea name="comentario" id="comentario" style="width:100%"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-link waves-effect ">Enviar</button>
+          <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+            <i class="material-icons">close</i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

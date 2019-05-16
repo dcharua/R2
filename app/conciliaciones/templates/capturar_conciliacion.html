@@ -11,6 +11,8 @@
             <div class="select-btn-group">
                 <span data-toggle="modal" data-target="#modal_agregar_cuenta" class="btn btn-warning">Agregar
                     Cuenta</span>
+
+                <span data-toggle="modal" data-target="#modal_transferir" class="btn bg-teal">Transferencia entre cuentas</span>
             </div>
         </div>
         <div class="body">
@@ -90,9 +92,11 @@
 </div>
 </div>
 <!-- #END# Basic Examples -->
+{% include "modal_transferir.html" %}
 {% include "modal_agregar_cuenta.html" %}
 {% include "modal_recalcular_conciliacion.html" %}
 {% include "modal_conciliar_cuenta.html" %}
+
 {% endblock content %}
 
 {% block javascripts %}
