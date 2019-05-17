@@ -34,16 +34,16 @@
 
                     <p class="font-18">Status:
                       {% if cliente.status == 'pendiente'%}
-                      <span class="badge bg-orange">Pendiente</span>
+                      <span class="badge bg-pendiente">Pendiente</span>
                       {% endif %}
                       {% if cliente.status == 'conciliado'%}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}
                       {% if cliente.status == 'cancelado'%}
-                      <span class="badge bg-red">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                       {% if cliente.status == 'por_conciliar'%}
-                      <span class="badge bg-blue">Por conciliar</span>
+                      <span class="badge bg-por-conciliar">Por conciliar</span>
                       {% endif %}
                     </p>
                     <p class="font-18">Banco: <span class="font-bold">{{cliente.banco}}</span></p>
@@ -205,22 +205,22 @@
                         <td>{{ingreso.numero_documento}}</td>
                         <td>
                           {% if ingreso.status == 'conciliado'%}
-                          <span class="badge bg-green">Liquidado</span>
+                          <span class="badge bg-liquidado">Liquidado</span>
                           {% endif %}
                           {% if ingreso.status == 'cancelado'%}
-                          <span class="badge bg-red">Cancelado</span>
+                          <span class="badge bg-cancelado">Cancelado</span>
                           {% endif %}
                           {% if ingreso.status == 'por_conciliar'%}
-                          <span class="badge bg-orange">Por conciliar</span>
+                          <span class="badge bg-por-conciliar">Por conciliar</span>
                           {% endif %}
                           {% if ingreso.status == 'pendiente'%}
-                          <span class="badge bg-blue">Pendiente</span>
+                          <span class="badge bg-pendiente">Pendiente</span>
                           {% endif %}
                           {% if ingreso.status == 'solicitado'%}
-                          <span class="badge bg-green">Solicitado</span>
+                          <span class="badge bg-solicitado">Solicitado</span>
                           {% endif %}
                           {% if ingreso.status == 'parcial'%}
-                          <span class="badge bg-orange">Parcial</span>
+                          <span class="badge bg-parcial">Parcial</span>
                           {% endif %}
                         </td>
                         <td>
@@ -304,16 +304,16 @@
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
                     <td>
                       {% if pago.status == 'solicitado' %}
-                      <span class="badge bg-blue">Solicitado</span>
+                      <span class="badge bg-solicitado">Solicitado</span>
                       {% endif %}
                       {% if pago.status == 'conciliado' %}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}
                       {% if pago.status == 'por_conciliar' %}
-                      <span class="badge bg-orange">Por conciliar</span>
+                      <span class="badge bg-por-conciliar">Por conciliar</span>
                       {% endif %}
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-red">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
