@@ -287,7 +287,7 @@ def conciliar_movimento():
                         pago.status = 'conciliado'
                         pago.referencia_conciliacion = data["referencia"]
                         pago.fecha_conciliacion = data["fecha"]
-                        pago.comentario += data["comentario"]
+                        pago.comentario = str(pago.comentario) + data["comentario"]
                         for egreso in pago.egresos:
                                 ep = EgresosHasPagos.query.filter_by(
                                     egreso_id=egreso.id, pago_id=pago.id).first()
