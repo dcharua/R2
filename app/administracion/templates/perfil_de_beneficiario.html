@@ -454,16 +454,16 @@
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
                     <td>
                       {% if pago.status == 'solicitado' %}
-                      <span class="badge bg-blue">Solicitado</span>
+                      <span class="badge bg-solicitado">Solicitado</span>
                       {% endif %}
                       {% if pago.status == 'conciliado' %}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}
                       {% if pago.status == 'por_conciliar' %}
-                      <span class="badge bg-orange">Por conciliar</span>
+                      <span class="badge bg-por-conciliar">Por conciliar</span>
                       {% endif %}
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-red">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
