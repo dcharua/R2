@@ -437,7 +437,7 @@ def desconciliar_pago_ingreso(pago_id):
             ingreso.monto_por_conciliar += pago.monto_total
             ingreso.monto_pagado -= pago.monto_total
             ingreso.setStatus() 
-            calcular_saldo_cliente(ingreso.cliente)
+            calcular_saldo_cliente(ingreso.cliente_id)
         db.session.commit()
         
         return  redirect("/ingresos/cuentas_por_cobrar")       
