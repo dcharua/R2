@@ -195,6 +195,7 @@ def editar_ingreso(ingreso_id):
 #Egresos Delete
 @blueprint.route("/borrar_ingreso/<int:ingreso_id>",  methods=['GET', 'POST'])
 def borrar_ingreso(ingreso_id):
+    print('En Borrar Ingreso!')
     ingreso = Ingresos.query.get(ingreso_id)
     db.session.delete(ingreso)
     db.session.commit()
@@ -577,7 +578,7 @@ def get_data_editar_detalle(detalle_id):
     print('numero_control=',detalle.numero_control)
     print('descripcion=',detalle.descripcion)
     
-    
+
     return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, 
                        cliente=detalle.cliente_id,  monto=str(detalle.monto), 
                        categoria = detalle.categoria_id , concepto=detalle.concepto_id, 
