@@ -1,5 +1,5 @@
 from app.administracion import blueprint
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, jsonify
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
@@ -21,17 +21,7 @@ def beneficiarios():
 
 @blueprint.route('/perfil_de_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
 def perfil_de_beneficiario(beneficiario_id):
-    documentos_recibidos = 0
-    documentos_liquidados = 0
-    documentos_cancelados = 0
-    documentos_pendientes = 0
-    documentos_solicitados = 0
-    documentos_parciales = 0
-    saldo_pendiente = 0
-    saldo_solicitado = 0
-    saldo_transito = 0
-    saldo_pagado = 0
-    saldo_total = 0
+    documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_solicitados, documentos_parciales, saldo_pendiente, saldo_solicitado, saldo_transito, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0,0,0
     beneficiario = Beneficiarios.query.get(beneficiario_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
@@ -77,6 +67,38 @@ def agregar_beneficiario():
         for i in range(len(data.getlist("categoria"))):
                 categoria = Categorias.query.get(data.getlist("categoria")[i])
                 beneficiario.categorias.append(categoria)          
+        db.session.add(beneficiario)
+        db.session.commit()   
+        return redirect("/administracion/beneficiarios")
+
+@blueprint.route('/get_data_editar_beneficiario/<beneficiario_id>', methods=['GET', 'POST'])
+@login_required
+def get_data_editar_beneficiario(beneficiario_id):
+  contactos = []
+  b = Beneficiarios.query.get(beneficiario_id)
+  for c in b.contacto:
+    contactos.append({'nombre':c.nombre,	'correo' : c.correo, 	'telefono': c.telefono, 'extension':c.extension, 'puesto' : c.puesto})
+  return jsonify(id=b.id, nombre=b.nombre, RFC=b.RFC, direccion= b.direccion,  razon_social=b.razon_social, cuenta_banco=b.cuenta_banco,
+  banco=b.banco, contacto=contactos) 
+
+@blueprint.route('/editar_beneficiario', methods=['GET', 'POST'])
+@login_required
+def editar_beneficiario():
+    if request.form:
+        data = request.form
+        beneficiario = Beneficiarios.query.get(data["id"]) 
+        beneficiario.nombre=data["nombre"]
+        beneficiario.RFC=data["RFC"] 
+        beneficiario.direccion=data["direccion"]
+        beneficiario.razon_social=data["razon_social"]
+        beneficiario.cuenta_banco=data["cuenta_banco"] 
+        beneficiario.banco=data["banco"]
+        for i in range(len(data.getlist("nombre_contacto"))):
+            beneficiario.contacto[i].nombre = data.getlist("nombre_contacto")[i]
+            beneficiario.contacto[i].correo=data.getlist("correo_contacto")[i]
+            beneficiario.contacto[i].telefono=data.getlist("telefono_contacto")[i]
+            beneficiario.contacto[i].extension=data.getlist("extension_contacto")[i]
+            beneficiario.contacto[i].puesto=data.getlist("puesto_contacto")[i]
         db.session.add(beneficiario)
         db.session.commit()   
         return redirect("/administracion/beneficiarios")
@@ -220,3 +242,12 @@ def editar_comentario():
             obj.comentarios = data["comentario"]
         db.session.commit()  
     return redirect(data["url"])
+
+@blueprint.route('/borrar_categoria-beneficiario/<categoria_id>/<beneficiario_id>', methods=['GET', 'POST'])
+@login_required
+def borrar_categoria_beneficiario(categoria_id, beneficiario_id):
+  beneficiario = Beneficiarios.query.get(beneficiario_id)
+  categoria = Categorias.query.get(categoria_id)
+  beneficiario.categorias.remove(categoria)      
+  db.session.commit()  
+  return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))

@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('administracion_blueprint.agregar_beneficiario') }}">
-
+  
                 <div class="modal-header">
                     <h3 class="modal-title" id="largeModalLabel"> Agregar Beneficiario</h3>
                 </div>
@@ -16,9 +16,9 @@
                             </div>
                         </div>
                     </div>
-
-
-
+  
+  
+  
                     <h4>Datos Generales</h4>
                     <hr class="mar-t-0">
                     <div class="row" style="margin-bottom:20px !important">
@@ -31,17 +31,17 @@
                             <input type='text' class="form-control" name="RFC" />
                         </div>
                     </div>
-
+  
                     <div class="row" style="margin-bottom:20px !important">
                         <div class="col-sm-12">
                             <label for="direccion">Dirección </label>
                             <input type='text' class="form-control" name="direccion" />
                         </div>
                     </div>
-
+  
                     <h4>Datos Bancarios</h4>
                     <hr class="mar-t-0">
-
+  
                     <div class="row" style="margin-bottom:20px !important">
                         <div class="col-sm-12 col-md-6">
                             <label for="cuenta_banco"> Cuenta de Banco </label>
@@ -52,21 +52,21 @@
                             <input type='text' class="form-control" name="banco" />
                         </div>
                     </div>
-
+  
                     <div style="padding:10px;" class="header">
                         <h4>Contactos del Beneficiario</h4>
                         <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
                             data-toggle="tooltip" data-placement="top" title="Remover Contacto">
                             <i class="material-icons">remove</i>
                         </button>
-
+  
                         <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
                             data-toggle="tooltip" data-placement="top" title="Agregar Contacto Nuevo">
                             <i class="material-icons">add</i>
                         </button>
                     </div>
                     <div style="padding:10px;" class="body" id="clone">
-
+  
                         <table id="table" style="table-layout: fixed;" class="table table-striped">
                             <thead>
                                 <tr>
@@ -98,11 +98,11 @@
                             </tbody>
                         </table>
                     </div>
-
+  
                     <h4>Categorías asociadas</h4>
                     <select class="selectpicker" multiple data-live-search="true" name="categoria" title="Seleccione las Categorías..."
                         data-width="100%">
-
+  
                         {% for categoria in categorias %}
                         <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
                         {% endfor %}
@@ -116,12 +116,12 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
+  
+  
+  
+  
                 </div>
-
+  
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Agregar Beneficiario</button>
                     <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
@@ -129,31 +129,32 @@
                     </button>
                 </div>
             </form>
-
+  
         </div>
     </div>
-</div>
-<script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
-
-<script>
+  </div>
+  <script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
+  
+  <script>
     $(document).ready(function () {
-
+  
         var counter = 0;
-
-
+  
+  
         $("#add-row").click(function () {
-            console.log("in")
             var $tableBody = $('#table').find("tbody"),
                 $trLast = $tableBody.find("tr:last"),
                 $trNew = $trLast.clone();
             $trLast.after($trNew);
         });
-
+  
         $("#delete-row").click(function () {
             if ($('#table tr:last').index() != 0)
                 $('#table tr:last').remove();
         });
         document.getElementById("delete-row").click();
-
+  
     });
-</script>
+  </script>
+  
+  

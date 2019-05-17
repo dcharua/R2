@@ -24,10 +24,11 @@ def capturar_egreso():
         montos = list(map(float, data.getlist("monto")))
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],
-                         fecha_programada_pago=data["fecha_programada_pago"], numero_documento=data["numero_documento"],
+                         numero_documento=data["numero_documento"],
                          monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
                          empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente')
-
+        if (data["fecha_programada_pago"] != ""):
+          egreso.fecha_programada_pago = data["fecha_programada_pago"]
         for i in range(len(data.getlist("monto"))):
             detalle = DetallesEgreso(centro_negocios_id=data.getlist("centro_negocios")[i], proveedor_id=data.getlist("proveedor")[i],
                                      categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist(
@@ -286,7 +287,7 @@ def conciliar_movimento():
                         pago.status = 'conciliado'
                         pago.referencia_conciliacion = data["referencia"]
                         pago.fecha_conciliacion = data["fecha"]
-                        pago.comentario = data["comentario"]
+                        pago.comentario += data["comentario"]
                         for egreso in pago.egresos:
                                 ep = EgresosHasPagos.query.filter_by(
                                     egreso_id=egreso.id, pago_id=pago.id).first()

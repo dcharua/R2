@@ -202,9 +202,9 @@ def transferir():
   if request.form:
         data = request.form
         p_egreso = Pagos(referencia_pago=data["referencia"], fecha_pago=date.today(),
-        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_origen"], beneficiario_id=1, forma_pago_id=data["forma_pago_origen"])
+        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_origen"], beneficiario_id=1, forma_pago_id=data["forma_pago_origen"], comentario=data["comentario"])
         p_ingreso = Pagos_Ingresos(referencia_pago=data["referencia"], fecha_pago=date.today(),
-        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_destino"], cliente_id=1, forma_pago_id=data["forma_pago_destino"])
+        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_destino"], cliente_id=1, forma_pago_id=data["forma_pago_destino"], comentario=data["comentario"])
         db.session.add(p_egreso)
         db.session.add(p_ingreso)
         db.session.commit() 

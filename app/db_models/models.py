@@ -43,10 +43,8 @@ class Beneficiarios(db.Model):
 
     def __repr__(self):
         return self.nombre 
-
-    def get_beneficiario_by_id(self, id):
-        print(id)
-        return Beneficiarios.query.get(id)
+    def as_dict(self):
+       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Categorias(db.Model):
