@@ -25,9 +25,12 @@ def calcular_saldo_cliente(cliente_id):
     
     for ingreso in ingresos:        
         monto_total,monto_pagado,monto_por_conciliar = float(ingreso.monto_total),float(ingreso.monto_pagado),float(ingreso.monto_por_conciliar)
+        if ingreso.status == 'cancelado':
+            monto_por_conciliar = 0
+            monto_total = monto_pagado
         saldo_pendiente += (monto_total - monto_pagado - monto_por_conciliar)
-        saldo_por_conciliar +=  monto_por_conciliar
-        saldo_cobrado +=  monto_pagado
+        saldo_por_conciliar += monto_por_conciliar
+        saldo_cobrado += monto_pagado
     
     cliente.saldo_cobrado = saldo_cobrado
     cliente.saldo_por_conciliar = saldo_por_conciliar
@@ -199,6 +202,7 @@ def borrar_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
     db.session.delete(ingreso)
     db.session.commit()
+    calcular_saldo_cliente(ingreso.cliente_id)
     return  jsonify("deleted")
 
 #Egresos Delete
@@ -207,6 +211,7 @@ def cancelar_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
     ingreso.status ='cancelado'
     db.session.commit()
+    calcular_saldo_cliente(ingreso.cliente_id)
     print(ingreso)
     return  jsonify("deleted")
 
@@ -279,7 +284,8 @@ def cancelar_pago_ingreso(pago_id):
 def get_data_pagar(ingreso_id):
         ingreso = Ingresos.query.get(ingreso_id)   
 
-        return jsonify(ingreso_id = ingreso.id, cliente = str(ingreso.cliente.nombre), monto_total = str(ingreso.monto_total), monto_pagado = str(ingreso.monto_pagado),numero_documento = ingreso.numero_documento)
+        return jsonify(ingreso_id = ingreso.id, cliente = str(ingreso.cliente.nombre), monto_total = str(ingreso.monto_total), 
+        monto_pagado = str(ingreso.monto_pagado),monto_por_conciliar = str(ingreso.monto_por_conciliar), numero_documento = ingreso.numero_documento)
 
 
 # Solcitar pago form submit
@@ -362,18 +368,20 @@ def mandar_cobrar_multiple():
                 data = request.form
                 print(data)
                 for i in range(int(data["cantidad"])):
-                    print(i)
-                    pago = Pagos_Ingresos(status='por_conciliar', monto_total=data["monto_total_%d" % i], 
-                                            cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
+                    pago = Pagos_Ingresos(status='por_conciliar', monto_total=data["monto_total_%d" % i], fecha_pago = datetime.now(),
+                                            cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i],
+                                            referencia_pago = 'multiples')
                     for ingreso in data.getlist("ingreso_%d" % i):
                             ing = Ingresos.query.get(ingreso)
                             monto_total_pago = float(ing.monto_total - ing.monto_pagado - ing.monto_por_conciliar)
-                            ing.monto_por_conciliar = float(monto_total_pago)
+                            ing.monto_por_conciliar += float(monto_total_pago)
                             ing.setStatus()
                             pago.cliente = ing.cliente
                             ep = IngresosHasPagos(ingreso = ing, pago = pago, monto = monto_total_pago)
                             db.session.add(ep)
                             db.session.commit()
+                            calcular_saldo_cliente(ingreso.cliente_id)
+
                 return  redirect("/ingresos/cuentas_por_cobrar")   
 
 
@@ -434,8 +442,8 @@ def desconciliar_pago_ingreso(pago_id):
         
         for ingreso in pago.ingresos:
             ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id).first()
-            ingreso.monto_por_conciliar += pago.monto_total
-            ingreso.monto_pagado -= pago.monto_total
+            ingreso.monto_por_conciliar += ep.monto
+            ingreso.monto_pagado -= ep.monto
             ingreso.setStatus() 
             calcular_saldo_cliente(ingreso.cliente_id)
         db.session.commit()
@@ -451,15 +459,10 @@ def conciliar_ingreso():
         
         if request.form:
             data = request.form
-            print(data)
             ingreso = Ingresos.query.get(data["ingreso_id"])
             pagos = ingreso.pagos_ingresos
 
-            print('AQUIII: ',ingreso.pagos_ingresos)
-            
-            
             for pago in pagos:
-                print(pago.id)
                 pago = Pagos_Ingresos.query.get(pago.id)
                 pago.status = 'conciliado';
                 pago.referencia_conciliacion = data["referencia"]
@@ -472,7 +475,7 @@ def conciliar_ingreso():
                 ingreso.monto_pagado += ep.monto
      
             ingreso.setStatus()
-            calcular_saldo_cliente(ingreso.cliente)
+            calcular_saldo_cliente(ingreso.cliente_id)
             db.session.commit()
             return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))   
 
@@ -560,6 +563,7 @@ def agregar_detalle(ingreso_id):
             #Checar el status y que hacer con pago negativo
             ingreso.setStatus()
             db.session.commit()
+            calcular_saldo_cliente(ingreso.cliente_id)
             return redirect("/ingresos/perfil_ingreso/"+str(ingreso_id))
     
 
