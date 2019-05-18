@@ -10,6 +10,10 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">{{cuenta.nombre}}</h2>
+        <div class="select-btn-group">
+          <span class="btn btn-info"  data-toggle="modal"
+            data-target="#modal_editar_cuenta">Editar</span>
+        </div>
       </div>
 
       <div class="body">
@@ -36,7 +40,8 @@
             <div class="row mycontainer">
               <div class="col-sm-12">
                 <div class="border-box">
-                  <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Cuenta"  data-id="{{cuenta.id}}" data-value="{{cuenta.comentario}}">Editar</span>
+                  <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Cuenta"
+                    data-id="{{cuenta.id}}" data-value="{{cuenta.comentario}}">Editar</span>
                   <p class="font-18 font-bold">Comentarios</p>
                   <p class="font-18" style="white-space:pre;">{{cuenta.comentario}} </p>
                 </div>
@@ -53,13 +58,13 @@
                 <p class="font-18">Saldo conciliado ingresos: <span
                     class="font-bold">{{"${:,.2f}".format(saldo_conciliado_ingresos)}}</span></p>
               </div>
-              <div class="col-sm-12 col-md-4 text-center" >
+              <div class="col-sm-12 col-md-4 text-center">
                 <p class="font-16"> <span class="font-16 label label-info">Saldo actual</span>
                   <br> <span class="font-bold">{{"${:,.2f}".format(cuenta.saldo)}}</span>
                 </p>
                 <p class="font-16"> <span class="font-16 label label-success">Saldo disponible</span>
                   <br> <span class="font-bold">
-                      {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
+                    {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
                 </p>
                 <p class="font-16"> <span class="font-16 label label-default">Saldo en sistema</span>
                   <br> <span class="font-bold">
@@ -83,8 +88,9 @@
 
             <div class="row mycontainer">
               <div class="col-12">
-                  
-                <span data-id="{{ultima_conciliacion.id}}" data-saldo="{{ultima_conciliacion.saldo_usuario}}" data-comentario="{{ultima_conciliacion.comentario}}" style="float: right; margin-right: 30px;"
+
+                <span data-id="{{ultima_conciliacion.id}}" data-saldo="{{ultima_conciliacion.saldo_usuario}}"
+                  data-comentario="{{ultima_conciliacion.comentario}}" style="float: right; margin-right: 30px;"
                   class="btn btn-warning open-recalcular">Recalcular conciliación</span>
               </div>
             </div>
@@ -92,91 +98,91 @@
             <div class="row mycontainer">
               <div class="col-sm-12 col-md-4">
                 <div class="info-box hover-expand-effect">
-                    <div class="icon bg-blue">
-                        <i class="material-icons">access_time</i>
-                    </div>
-                    <div class="content">
-                        <div class="text">Fecha</div>
-                        <div class="number">{{ultima_conciliacion.fecha}}</div>
-                    </div>
+                  <div class="icon bg-blue">
+                    <i class="material-icons">access_time</i>
+                  </div>
+                  <div class="content">
+                    <div class="text">Fecha</div>
+                    <div class="number">{{ultima_conciliacion.fecha}}</div>
+                  </div>
                 </div>
               </div>
 
               <div class="col-sm-12 col-md-4 text-center">
-                  <p class="font-16"> <span class="font-16 label label-success">Saldo real</span>
-                    <br> <span class="font-bold"> {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario)}}</span>
-                  </p>
-                  <p class="font-16"> <span class="font-16 label label-info">Saldo sistema </span>
-                    <br> <span class="font-bold">
-                      {{"${:,.2f}".format(ultima_conciliacion.saldo_sistema)}}</span>
-                  </p>
-                  <p class="font-16"> <span class="font-16 label label-default">Diferencia</span>
-                    <br> <span class="font-bold">
-                        {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario - ultima_conciliacion.saldo_sistema)}}
-                    </span>
-                  </p> 
+                <p class="font-16"> <span class="font-16 label label-success">Saldo real</span>
+                  <br> <span class="font-bold"> {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario)}}</span>
+                </p>
+                <p class="font-16"> <span class="font-16 label label-info">Saldo sistema </span>
+                  <br> <span class="font-bold">
+                    {{"${:,.2f}".format(ultima_conciliacion.saldo_sistema)}}</span>
+                </p>
+                <p class="font-16"> <span class="font-16 label label-default">Diferencia</span>
+                  <br> <span class="font-bold">
+                    {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario - ultima_conciliacion.saldo_sistema)}}
+                  </span>
+                </p>
               </div>
 
               <div class="col-sm-12 col-md-4 align-left">
-                  {% if ultima_conciliacion.status == 'correcta' %}
-                  <div class="info-box hover-expand-effect">
-                      <div class="icon bg-green">
-                          <i class="material-icons">thumb_up</i>
-                      </div>
-                      <div class="content">
-                          <div class="text">Status</div>
-                          <div class="number">Correcta</div>
-                      </div>
+                {% if ultima_conciliacion.status == 'correcta' %}
+                <div class="info-box hover-expand-effect">
+                  <div class="icon bg-green">
+                    <i class="material-icons">thumb_up</i>
                   </div>
-                  {% elif ultima_conciliacion.status == 'con_ajuste' %}
-                  <div class="info-box hover-expand-effect" style="margin-bottom:0;">
-                      <div class="icon bg-red">
-                          <i class="material-icons">thumb_down</i>
-                      </div>
-                      <div class="content">
-                          <div class="text">Status</div>
-                          <div class="number">Ajustada </div>
-                          
-                      </div>
+                  <div class="content">
+                    <div class="text">Status</div>
+                    <div class="number">Correcta</div>
                   </div>
-                  {% elif ultima_conciliacion.status == 'por_revisar' %}
-                  <div class="info-box hover-expand-effect">
-                      <div class="icon bg-yellow">
-                          <i class="material-icons">thumbs_up_down</i>
-                      </div>
-                      <div class="content">
-                          <div class="text">Status</div>
-                          <div class="number">Revisar</div>
-                      </div>
+                </div>
+                {% elif ultima_conciliacion.status == 'con_ajuste' %}
+                <div class="info-box hover-expand-effect" style="margin-bottom:0;">
+                  <div class="icon bg-red">
+                    <i class="material-icons">thumb_down</i>
                   </div>
-                  {% endif %}
+                  <div class="content">
+                    <div class="text">Status</div>
+                    <div class="number">Ajustada </div>
 
-                  <span class="font-18" >
-                      {% if ultima_conciliacion.egreso_id %}
-                      <a class="btn btn-xs bg-red waves-effect" style="width:100%;"
-                        href="/egresos/perfil_pago/{{ultima_conciliacion.egreso_id}}" data-toggle="tooltip"
-                        data-placement="top" title="Ver detalle"> Ajuste
-                        <i class="material-icons">visibility</i>
-                      </a>
-                      {% elif ultima_conciliacion.ingreso_id %}
-                      <a class="btn btn-xs bg-red waves-effect" style="width:100%;"
-                        href="/ingresos/perfil_pago_ingreso/{{ultima_conciliacion.ingreso_id}}" data-toggle="tooltip"
-                        data-placement="top" title="Ver detalle"> Ajuste
-                        <i class="material-icons">visibility</i>
-                      </a>
-                      {% endif %}
-                    </span>
+                  </div>
+                </div>
+                {% elif ultima_conciliacion.status == 'por_revisar' %}
+                <div class="info-box hover-expand-effect">
+                  <div class="icon bg-yellow">
+                    <i class="material-icons">thumbs_up_down</i>
+                  </div>
+                  <div class="content">
+                    <div class="text">Status</div>
+                    <div class="number">Revisar</div>
+                  </div>
+                </div>
+                {% endif %}
+
+                <span class="font-18">
+                  {% if ultima_conciliacion.egreso_id %}
+                  <a class="btn btn-xs bg-red waves-effect" style="width:100%;"
+                    href="/egresos/perfil_pago/{{ultima_conciliacion.egreso_id}}" data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle"> Ajuste
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% elif ultima_conciliacion.ingreso_id %}
+                  <a class="btn btn-xs bg-red waves-effect" style="width:100%;"
+                    href="/ingresos/perfil_pago_ingreso/{{ultima_conciliacion.ingreso_id}}" data-toggle="tooltip"
+                    data-placement="top" title="Ver detalle"> Ajuste
+                    <i class="material-icons">visibility</i>
+                  </a>
+                  {% endif %}
+                </span>
               </div>
             </div>
 
             <div class="row mycontainer">
-                <div class="col-sm-12">
-                  <div class="border-box">
-                    <p class="font-18 font-bold">Comentarios</p>
-                    <p class="font-18">{{ultima_conciliacion.comentario}} </p>
-                  </div>
+              <div class="col-sm-12">
+                <div class="border-box">
+                  <p class="font-18 font-bold">Comentarios</p>
+                  <p class="font-18">{{ultima_conciliacion.comentario}} </p>
                 </div>
               </div>
+            </div>
             {% endif %}
           </div>
           <div role="tabpanel" class="tab-pane fade" id="cheques">
@@ -189,19 +195,19 @@
             </div>
 
             <div class="row mycontainer">
-                <div class="col-sm-12 col-md-4">
-            <div class="info-box-4 hover-zoom-effect">
-                <div class="icon">
+              <div class="col-sm-12 col-md-4">
+                <div class="info-box-4 hover-zoom-effect">
+                  <div class="icon">
                     <i class="material-icons col-blue">account_balance</i>
-                </div>
-                <div class="content">
+                  </div>
+                  <div class="content">
                     <div class="text">Último cheque</div>
                     <div class="number">{{cuenta.numero_cheque}}</div>
+                  </div>
                 </div>
-            </div> 
 
-          </div>
-        </div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -474,13 +480,13 @@
                     {% endif %}
                   </td>
                   <td>
-                      {% if conciliacion.status == 'correcta' %}
-                       <span class="badge bg-green">Correcta</span>
-                      {% elif conciliacion.status == 'con_ajuste' %}
-                       <span class="badge bg-red">Ajustada</span>
-                      {% elif conciliacion.status == 'por_revisar' %}
-                       <span class="badge bg-yellow">Revisar</span>
-                      {% endif %}
+                    {% if conciliacion.status == 'correcta' %}
+                    <span class="badge bg-green">Correcta</span>
+                    {% elif conciliacion.status == 'con_ajuste' %}
+                    <span class="badge bg-red">Ajustada</span>
+                    {% elif conciliacion.status == 'por_revisar' %}
+                    <span class="badge bg-yellow">Revisar</span>
+                    {% endif %}
                   </td>
                 </tr>
                 {% endfor %}
@@ -495,11 +501,12 @@
   {% include "modal_recalcular_conciliacion.html" %}
   {% include "modal_generar_pago.html" %}
   {% include "modal_editar_comentario.html" %}
+  {% include "modal_editar_cuenta.html" %}
   <!-- Modal numero de cheque -->
   <div class="modal fade" id="numero_cheque" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
-        <form class="form-horizontal form-label-left" id="user_inputs" method="POST"
+        <form class="form-horizontal form-label-left" method="POST"
           action="{{ url_for('conciliacion_blueprint.cambiar_numero_cheque', cuenta_id=cuenta.id) }}">
           <div class="modal-header">
             <h3 class="modal-title" id="largeModalLabel"> Editar número de cheque</h3>
@@ -576,7 +583,9 @@
               text: "El saldo en sistema y el saldo a conciliar son iguales",
               type: "success"
             });
-            setTimeout(function () {location.reload();}, 2000);
+            setTimeout(function () {
+              location.reload();
+            }, 2000);
           } else if (data.res == 2) {
             //Si no es correcta preguntamos si desear crear el ajuste automatico
             swal({
@@ -590,22 +599,26 @@
               confirmButtonText: "Ajustar!",
               closeOnConfirm: false
             }, function (res) {
-              
+
               //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
-              if (res){
-                  $.ajax({
+              if (res) {
+                $.ajax({
                   url: '/conciliaciones/ajustar_conciliacion/' + data.conciliacion,
                   success: function (data) {
                     if (data == "exito") {
                       swal("Ajustado!", "El ajuste fue correcto.", "success");
-                      setTimeout(function () {location.reload();}, 2000);
+                      setTimeout(function () {
+                        location.reload();
+                      }, 2000);
                     } else {
                       swal("Ocurrio un error!", "Por favor crea el ajuste manualmente.", "error");
                     }
                   }
                 })
               } else {
-                setTimeout(function () {location.reload();}, 2000);
+                setTimeout(function () {
+                  location.reload();
+                }, 2000);
               }
             });
           }
@@ -754,13 +767,13 @@
       }
     });
 
-     //Modal Conciliar
-     $(".open-conciliar").on("click", function () {
-        $.ajax({
-            url: $(this).attr("data-url"),
-            success: function (data) {
-                const html =
-                    `<div class="row" style="margin-bottom:20px;">
+    //Modal Conciliar
+    $(".open-conciliar").on("click", function () {
+      $.ajax({
+        url: $(this).attr("data-url"),
+        success: function (data) {
+          const html =
+            `<div class="row" style="margin-bottom:20px;">
                             <div class="col-sm-12 col-md-6 ">
                                 <p class="font-18">Beneficiario: <span class="font-bold">${data.beneficiario}</span></p>
                             </div>
@@ -780,19 +793,19 @@
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
                 <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 <hr>`
-                let element = document.querySelector(".here-conciliar");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                $('.selectpicker').selectpicker('refresh');
-                $('#modal_conciliar_movimiento').modal('show');
-            }
-        });
+          let element = document.querySelector(".here-conciliar");
+          element.innerHTML = "";
+          element.insertAdjacentHTML('beforeend', html);
+          $('.selectpicker').selectpicker('refresh');
+          $('#modal_conciliar_movimiento').modal('show');
+        }
+      });
     });
 
     $(".open-editar-comentario").on("click", function () {
-        let element = document.querySelector(".editar-comentario-here");
-        element.innerHTML = "";
-        const html = `
+      let element = document.querySelector(".editar-comentario-here");
+      element.innerHTML = "";
+      const html = `
                 <div class="row" style="margin-bottom:20px !important">
                     <div class="col-sm-12">
                         <label for="comentario"> Comentario</label>
@@ -802,9 +815,8 @@
                     <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
                     <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 </div>`
-        element.insertAdjacentHTML('beforeend', html);
-        $('#modal_editar_comentario').modal('show');
-      });
-
+      element.insertAdjacentHTML('beforeend', html);
+      $('#modal_editar_comentario').modal('show');
+    });
   </script>
   {% endblock javascripts %}

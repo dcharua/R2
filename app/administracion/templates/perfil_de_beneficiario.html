@@ -133,9 +133,11 @@
                 <span data-toggle="modal" data-target="#modal_agregar_categoria_beneficiario" class="btn btn-success f-right">Asignar
                   categoría</span>
                 <ul>
-                  {%for categoria in beneficiario.categorias%}
-                  <li> <b>{{categoria}} </b>
-                    <ul>
+                  {%for categoria in beneficiario.categorias%} 
+                  
+                  <li > <b class="btn bg-red delete-categoria" data-toggle="tooltip" data-placement="top" title="Desasignar categoría"
+                    data-type="confirm" data-url="{{ url_for('administracion_blueprint.borrar_categoria_beneficiario', categoria_id=categoria.id, beneficiario_id=beneficiario.id) }}">{{categoria}} </b>
+                    <ul  >
                       {%for concepto in categoria.conceptos%}
                       <li>{{concepto}}</li>
                       {% endfor %}
@@ -454,16 +456,16 @@
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</taltd>
                     <td>
                       {% if pago.status == 'solicitado' %}
-                      <span class="badge bg-blue">Solicitado</span>
+                      <span class="badge bg-solicitado">Solicitado</span>
                       {% endif %}
                       {% if pago.status == 'conciliado' %}
-                      <span class="badge bg-green">Liquidado</span>
+                      <span class="badge bg-liquidado">Liquidado</span>
                       {% endif %}
                       {% if pago.status == 'por_conciliar' %}
-                      <span class="badge bg-orange">Por conciliar</span>
+                      <span class="badge bg-por-conciliar">Por conciliar</span>
                       {% endif %}
                       {% if pago.status == 'cancelado' %}
-                      <span class="badge bg-red">Cancelado</span>
+                      <span class="badge bg-cancelado">Cancelado</span>
                       {% endif %}
                     </td>
                     <td>
@@ -920,6 +922,36 @@
             swal({
               title: "Estas seguro?",
               text: "Se borrara el registro de esta solicitud de pago!",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Si, borrar!",
+              closeOnConfirm: false
+            }, function () {
+              console.log(element)
+              $.ajax({
+                url: $(element).attr("data-url"),
+                success: function (data) {
+                  if (data) {
+                    swal("Borrado!", "El pago ha sido eliminado.", "success");
+                    setTimeout(function () {
+                      location.reload();
+                    }, 2000);
+
+
+                  }
+                }
+              })
+
+            });
+          });
+
+
+          $('.delete-categoria').on('click', function () {
+            var element = this;
+            swal({
+              title: "Estas seguro?",
+              text: "Se va a desasignar la categoría del beneficiario!",
               type: "warning",
               showCancelButton: true,
               confirmButtonColor: "#DD6B55",

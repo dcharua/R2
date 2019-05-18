@@ -53,15 +53,29 @@ def agregar_cuenta():
         db.session.commit()   
         return redirect("/conciliaciones/capturar_conciliacion")    
 
+
+
+@blueprint.route('/editar_cuenta/<cuenta_id>', methods=['GET', 'POST'])
+@login_required
+def editar_cuenta(cuenta_id):
+    if request.form:
+        data = request.form
+        cuenta = Cuentas.query.get(cuenta_id) 
+        cuenta.nombre=data["nombre"]
+        cuenta.banco=data["banco"] 
+        cuenta.numero=data["numero"], 
+        cuenta.saldo_inicial=data["saldo"]
+        cuenta.empresa_id=data["empresa"]
+        cuenta.comentario=data["comentario"]
+        db.session.commit()   
+        return redirect("/conciliaciones/perfil_cuenta/"+str(cuenta_id))    
+
 @blueprint.route('/perfil_cuenta/<int:cuenta_id>', methods=['GET', 'POST'])
 @login_required
 def perfil_cuenta(cuenta_id):
     cuenta = Cuentas.query.get(cuenta_id)
-    saldo_conciliado_egresos = 0
-    saldo_conciliado_ingresos = 0
-    saldo_transito_egresos = 0
-    saldo_transito_ingresos = 0
-    saldo_solicitado_egresos = 0 
+    empresas = Empresas.query.all()
+    saldo_conciliado_egresos, saldo_conciliado_ingresos, saldo_transito_egresos, saldo_transito_ingresos, saldo_solicitado_egresos = 0,0,0,0,0
     for pago in cuenta.pagos:
         if pago.status == 'conciliado':
             saldo_conciliado_egresos += pago.monto_total
@@ -78,7 +92,7 @@ def perfil_cuenta(cuenta_id):
     ultima_conciliacion = None
     if (cuenta.conciliaciones):
         ultima_conciliacion = cuenta.conciliaciones[-1]
-    return render_template("perfil_cuenta.html", cuenta=cuenta,  saldo_conciliado_egresos=saldo_conciliado_egresos, saldo_conciliado_ingresos=saldo_conciliado_ingresos,  
+    return render_template("perfil_cuenta.html", cuenta=cuenta,  saldo_conciliado_egresos=saldo_conciliado_egresos, saldo_conciliado_ingresos=saldo_conciliado_ingresos, empresas = empresas,
     saldo_transito_egresos =  saldo_transito_egresos, saldo_transito_ingresos=saldo_transito_ingresos, saldo_solicitado_egresos = saldo_solicitado_egresos, ultima_conciliacion = ultima_conciliacion)
 
 
@@ -202,9 +216,9 @@ def transferir():
   if request.form:
         data = request.form
         p_egreso = Pagos(referencia_pago=data["referencia"], fecha_pago=date.today(),
-        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_origen"], beneficiario_id=1, forma_pago_id=data["forma_pago_origen"])
+        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_origen"], beneficiario_id=1, forma_pago_id=data["forma_pago_origen"], comentario=data["comentario"])
         p_ingreso = Pagos_Ingresos(referencia_pago=data["referencia"], fecha_pago=date.today(),
-        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_destino"], cliente_id=1, forma_pago_id=data["forma_pago_destino"])
+        status="conciliado", monto_total=data["monto"], cuenta_id=data["cuenta_destino"], cliente_id=1, forma_pago_id=data["forma_pago_destino"], comentario=data["comentario"])
         db.session.add(p_egreso)
         db.session.add(p_ingreso)
         db.session.commit() 

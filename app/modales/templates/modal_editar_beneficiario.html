@@ -1,0 +1,30 @@
+
+<!-- Modal pagos -->
+<div class="modal fade" id="modal_editar_beneficiario" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('administracion_blueprint.editar_beneficiario') }}">
+  
+                <div class="modal-header">
+                    <h3 class="modal-title" id="largeModalLabel"> Editar Beneficiario</h3>
+                </div>
+                <div class="modal-body">
+                  <div class="beneficiario-here"></div>
+                </div>
+  
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Editar Beneficiario</button>
+                    <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+            </form>
+  
+        </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='vendors/jquery/dist/jquery.min.js') }}"></script>
+  
+  <script>
+
+  </script>
