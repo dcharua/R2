@@ -21,6 +21,7 @@ def capturar_egreso():
 
     if request.form:
         data = request.form
+        print(data)
         montos = list(map(float, data.getlist("monto")))
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],

@@ -132,7 +132,7 @@
                         </td>
                         <td >
 
-                          <select class="selectpicker categoria" id="categoria0" data-live-search="true" name="categoria"
+                          <select class="selectpicker categoria" data-live-search="true" name="categoria"
                             title="Seleccione una Cuenta de Mayor..." data-width="80%" data-validation="required" id="categoria0">
                             {% for categoria in categorias %}
                             <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
@@ -351,10 +351,9 @@
     $.ajax({
       url: '/egresos/get_beneficiario_categorias/' + this.value,
       success: function (data) {
-        console.log(data)
         element.innerHTML = "";
         data.forEach(c => {
-          const html = `<option value="${c.categoria_id}"> ${c.nombre} </option>`
+          const html = `<option value="${c.id}"> ${c.nombre} </option>`
           element.insertAdjacentHTML('beforeend', html);
         });
         $(id).selectpicker('refresh');
