@@ -7,7 +7,7 @@
     <!-- INFO CARD -->
     <div class="card">
       <div class="header bg-black">
-        <h2 class="font-24">Detalle de Ingreso {{ingreso.pagos_ingresos |length}}</h2>
+        <h2 class="font-24">Detalle de Ingreso: {{ingreso.pagos_ingresos |length}}</h2>
 
         {% if ingreso.pagos_ingresos|length > 0 %}
         <div class="select-btn-group">
@@ -97,7 +97,7 @@
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <div class="header bg-black">
-        <h2> Pagos de Ingresos Pendientes</h2>
+        <h2> Pagos Pendientes</h2>
         <div class="select-btn-group">
           <span id="generar-pago" class="btn js-modal-buttons bg-green open-cobrar" data-toggle="modal" 
                 data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
@@ -179,7 +179,7 @@
         <div class="card">
           <div class="header bg-black">
             <h2>
-              Ingresos Completados
+              Pagos Completados
             </h2>
           </div>
           <div class="body">

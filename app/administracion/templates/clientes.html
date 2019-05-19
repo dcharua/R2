@@ -22,8 +22,8 @@
                                 <th>Nombre</th>
                                 <th>Banco</th> 
                                 <th>Saldo Pendiente</th>
-                                <th>Saldo en Transito</th>
-                                <th>Saldo en Cobrado</th>
+                                <th>Saldo por Conciliar</th>
+                                <th>Saldo Cobrado</th>
                                 <th>Status</th>
                                 <th>Acciones</th>
                               </tr>
@@ -76,6 +76,8 @@
                                     <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_cliente/{{cliente.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
                                     </a>
+                                    <a class="btn btn-xs btn-info waves-effect editar-cliente" data-url="/administracion/get_data_editar_cliente/{{cliente.id}}">
+                                        <i data-toggle="tooltip" data-placement="top" title="" class="material-icons" data-original-title="Editar">edit</i>
                                     </a>
                                   </td>
                               </tr>
@@ -90,6 +92,7 @@
   <!-- #END# Basic Examples -->
 
 {% include "modal_agregar_cliente.html" %}
+{% include "modal_editar_cliente.html" %}
 
 {% endblock content %}
 
@@ -114,5 +117,108 @@
          'copy', 'csv', 'excel', 'pdf', 'print'
      ]
   });
+
+
+  $(".editar-cliente").on("click", function () {
+            $.ajax({
+              url: $(this).attr("data-url"),
+              success: function (data) {
+                console.log(data)
+                const html =
+                  ` <div class="input-group" style="margin-bottom:20px !important">
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <h4 for="nombre"> Nombre </h4>
+                              <input type='text' class="form-control" name="nombre" value=${data.nombre} data-validation="required" />
+                          </div>
+                      </div>
+                  </div>
+
+
+
+                  <h4>Datos Generales</h4>
+                  <hr class="mar-t-0">
+                  <div class="row" style="margin-bottom:20px !important">
+                      <div class="col-sm-12 col-md-6">
+                          <label for="razon_social"> Razón Social </label>
+                          <input type='text' class="form-control" name="razon_social" value=${data.razon_social}  />
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <label for="RFC"> RFC </label>
+                          <input type='text' class="form-control" name="RFC" value=${data.RFC}   />
+                      </div>
+                  </div>
+
+                  <div class="row" style="margin-bottom:20px !important">
+                      <div class="col-sm-12">
+                          <label for="direccion">Dirección </label>
+                          <input type='text' class="form-control" value=${data.direccion}  name="direccion" />
+                      </div>
+                  </div>
+
+                  <h4>Datos Bancarios</h4>
+                  <hr class="mar-t-0">
+
+                  <div class="row" style="margin-bottom:20px !important">
+                      <div class="col-sm-12 col-md-6">
+                          <label for="cuenta_banco"> Cuenta de Banco </label>
+                          <input type='text' class="form-control"  value=${data.cuenta_banco} name="cuenta_banco" />
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <label for="banco"> Banco </label>
+                          <input type='text' class="form-control" value=${data.banco} name="banco" />
+                      </div>
+                  </div>
+
+                  <div style="padding:10px;" class="header">
+                      <h4>Contactos del Cliente</h4>
+                  </div>
+                  <div style="padding:10px;" class="body" id="clone">
+                  <div class="contactos-here"></div>
+                  </div>
+                <input type="hidden" id="id" name="id" value="${data.id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                <hr>`
+                let element = document.querySelector(".cliente-here");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                var head =`<table style="table-layout: fixed;" class="table table-striped">
+                          <thead>
+                              <tr>
+                                  <th>Nombre</th>
+                                  <th>Correo</th>
+                                  <th>Teléfono</th>
+                                  <th>Extensión</th>
+                                  <th>Puesto</th>
+                              </tr>
+                          </thead>
+                          <tbody>`
+                data.contacto.forEach(contacto => {
+                  let data =` <tr>
+                                  <td>
+                                      <input type="text" value="${contacto.nombre}" name="nombre_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input type="email" value="${contacto.correo}" name="correo_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input type="tel" value="${contacto.telefono}" name="telefono_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input type="number" value="${contacto.extension}" name="extension_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input class="form-control" value="${contacto.puesto}" type="text" name="puesto_contacto">
+                                  </td>
+                              </tr>`
+                              head +=data
+                });
+                const final = head + '</tbody></table>' 
+                let elemen = document.querySelector(".contactos-here");
+                  elemen.insertAdjacentHTML('beforeend', final);
+                $('#modal_editar_cliente').modal('show');
+              }
+            });
+          });
 </script>
 {% endblock javascripts %}

@@ -5,7 +5,7 @@ from bcrypt import checkpw
 from app import db, login_manager
 from datetime import datetime
 from app.db_models.models import *
-
+import decimal
 
 @blueprint.route('/<template>')
 @login_required
@@ -351,11 +351,10 @@ def get_data_pagar_multiple():
     print(' En get_data_cobrar_multiple')
     list = []
     ingresos = request.args.getlist('ingresos[]')
-    print(ingresos)
     for ingreso in ingresos:
-            e = Ingresos.query.get(ingreso)
-            monto_pendiente = e.monto_total - e.monto_por_conciliar - e.monto_pagado
-            list.append({'ingreso_id': e.id, 'cliente': e.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': e.numero_documento})
+            ing = Ingresos.query.get(ingreso)
+            monto_pendiente = ing.monto_total - ing.monto_por_conciliar - ing.monto_pagado
+            list.append({'ingreso_id': ing.id, 'cliente': ing.cliente.nombre, 'monto_total': str(monto_pendiente), 'numero_documento': ing.numero_documento})
     return jsonify(list)
 
 
@@ -368,19 +367,23 @@ def mandar_cobrar_multiple():
                 data = request.form
                 print(data)
                 for i in range(int(data["cantidad"])):
+                    
                     pago = Pagos_Ingresos(status='por_conciliar', monto_total=data["monto_total_%d" % i], fecha_pago = datetime.now(),
-                                            cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i],
-                                            referencia_pago = 'multiples')
+                                            cuenta_id=data["cuenta_id_%d" % i], forma_pago_id=data["forma_pago_id_%d" % i])
+
                     for ingreso in data.getlist("ingreso_%d" % i):
                             ing = Ingresos.query.get(ingreso)
                             monto_total_pago = float(ing.monto_total - ing.monto_pagado - ing.monto_por_conciliar)
-                            ing.monto_por_conciliar += float(monto_total_pago)
+                            ing.monto_por_conciliar += decimal.Decimal(monto_total_pago)
                             ing.setStatus()
-                            pago.cliente = ing.cliente
                             ep = IngresosHasPagos(ingreso = ing, pago = pago, monto = monto_total_pago)
+                            pago.cliente_id = ing.cliente_id
                             db.session.add(ep)
                             db.session.commit()
-                            calcular_saldo_cliente(ingreso.cliente_id)
+                            calcular_saldo_cliente(ing.cliente_id)
+                    
+                    
+                    
 
                 return  redirect("/ingresos/cuentas_por_cobrar")   
 
@@ -407,12 +410,13 @@ def get_data_conciliar(ingreso_id):
 @login_required
 def conciliar_pago_ingreso():
     
-        print('En conciliar_pago_ingreso!')
+        print('En conciliar_pago_ingresos!')
         
         if request.form:
             data = request.form
             print(data)
             pagos = (data.getlist('pago_id'))
+            print('PAGOS = ',pagos)
 
             for pago_id in pagos:
                 pago = Pagos_Ingresos.query.get(pago_id)
@@ -420,15 +424,29 @@ def conciliar_pago_ingreso():
                 pago.referencia_conciliacion = data["referencia"]
                 pago.fecha_conciliacion = data["fecha"]
                 pago.comentario = data["comentario"]
-                                
-                ep = IngresosHasPagos.query.filter_by(pago_id = pago.id ).first()
-                ingreso = Ingresos.query.get(ep.ingreso_id)
-                
-                ingreso.monto_por_conciliar -= ep.monto
-                ingreso.monto_pagado += ep.monto
-                ingreso.setStatus()
-                calcular_saldo_cliente(ingreso.cliente_id)
-                db.session.commit()
+
+                print('Pago ID = ',pago.id)            
+                ep = IngresosHasPagos.query.filter_by(pago_id = pago.id)
+                print(type(ep))
+                print(list(ep))
+
+                for p in list(ep):
+                    print('ingros_has_pago = ',p)
+                    print('-Id = ',p.ingreso_id)
+                    print('-Monto = ',p.monto)
+
+
+                    ingreso = Ingresos.query.get(p.ingreso_id)
+
+                    ingreso.monto_por_conciliar -= p.monto
+                    print('ingreso.monto_pagado = ',ingreso.monto_pagado)
+                    ingreso.monto_pagado += p.monto
+                    print('ingreso.monto_pagado = ',ingreso.monto_pagado)
+
+                    ingreso.setStatus()
+                    calcular_saldo_cliente(ingreso.cliente_id)
+                    db.session.commit()
+                    
             return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
         
 #Desconciliar Pago

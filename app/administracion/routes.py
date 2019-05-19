@@ -103,19 +103,6 @@ def editar_beneficiario():
         db.session.commit()   
         return redirect("/administracion/beneficiarios")
 
-@blueprint.route('/agregar_categoria_cliente/<int:cliente_id>', methods=['GET', 'POST'])
-@login_required
-def agregar_categoria_cliente(cliente_id):
-    if request.form:
-        data = request.form
-        cliente = Clientes.query.get(cliente_id) 
-       
-        for i in range(len(data.getlist("categoria"))):
-                categoria = Categorias.query.get(data.getlist("categoria")[i])
-                cliente.categorias.append(categoria)
-        db.session.commit()   
-    return redirect('/administracion/perfil_de_cliente/'+str(cliente_id))
-
 
 @blueprint.route('/agregar_categoria_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
 @login_required
@@ -155,15 +142,100 @@ def agregar_cliente():
 @blueprint.route('/perfil_de_cliente/<int:cliente_id>', methods=['GET', 'POST'])
 def perfil_de_cliente(cliente_id):
 
+    documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_parciales, saldo_pendiente, saldo_por_conciliar, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0
+
     cliente = Clientes.query.get(cliente_id)
     contactos_cliente = ContactoCliente.query.filter(ContactoCliente.cliente_id == cliente_id).all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     categorias = Categorias.query.all()
-   
+
+    for ingreso in cliente.ingresos:
+      documentos_recibidos += 1
+      if ingreso.status != 'cancelado':
+        saldo_total += ingreso.monto_total
+        saldo_pagado += ingreso.monto_pagado
+        saldo_por_conciliar += ingreso.monto_por_conciliar
+        saldo_pendiente += (ingreso.monto_total - ingreso.monto_pagado - ingreso.monto_por_conciliar)
+      if ingreso.status == 'liquidado':
+        documentos_liquidados += 1
+      elif ingreso.status == 'cancelado':
+        documentos_cancelados += 1
+      elif ingreso.status == 'pendiente':
+        documentos_pendientes += 1
+      elif ingreso.status == 'parcial':
+        documentos_parciales += 1
+      
+
     return render_template("perfil_de_cliente.html", cliente = cliente,
-                           contactos_cliente=contactos_cliente,formas_pago = formas_pago,
-                           cuentas = cuentas,categorias = categorias)#, contactos_cliente = contactos_cliente)   
+                           contactos_cliente=contactos_cliente, 
+                           formas_pago=formas_pago, 
+                           cuentas=cuentas, 
+                           categorias=categorias,
+                           documentos_recibidos = documentos_recibidos, 
+                           documentos_liquidados = documentos_liquidados, 
+                           documentos_cancelados = documentos_cancelados, 
+                           documentos_pendientes = documentos_pendientes, 
+                           documentos_parciales = documentos_parciales, 
+                           saldo_total = saldo_total, 
+                           saldo_pendiente = saldo_pendiente, 
+                           saldo_por_conciliar = saldo_por_conciliar, 
+                           saldo_pagado = saldo_pagado)   
+
+
+
+##########################
+
+@blueprint.route('/get_data_editar_cliente/<cliente_id>', methods=['GET', 'POST'])
+@login_required
+def get_data_editar_cliente(cliente_id):
+  contactos = []
+  b = Clientes.query.get(cliente_id)
+  for c in b.contacto:
+    contactos.append({'nombre':c.nombre,	'correo' : c.correo, 	'telefono': c.telefono, 'extension':c.extension, 'puesto' : c.puesto})
+  return jsonify(id=b.id, nombre=b.nombre, RFC=b.RFC, direccion= b.direccion,  razon_social=b.razon_social, cuenta_banco=b.cuenta_banco,
+  banco=b.banco, contacto=contactos) 
+
+@blueprint.route('/editar_cliente', methods=['GET', 'POST'])
+@login_required
+def editar_cliente():
+    if request.form:
+        data = request.form
+        print('Administaracion, linea 204 = ',data)
+        cliente = Clientes.query.get(data["id"]) 
+        cliente.nombre = data["nombre"]
+        print(data["nombre"])
+        print('RFC = ',data["RFC"])
+        cliente.RFC = data["RFC"] 
+        print(data["RFC"])
+        cliente.direccion = data["direccion"]
+        cliente.razon_social = data["razon_social"]
+        cliente.cuenta_banco = data["cuenta_banco"] 
+        cliente.banco = data["banco"]
+        for i in range(len(data.getlist("nombre_contacto"))):
+            cliente.contacto[i].nombre = data.getlist("nombre_contacto")[i]
+            cliente.contacto[i].correo = data.getlist("correo_contacto")[i]
+            cliente.contacto[i].telefono = data.getlist("telefono_contacto")[i]
+            cliente.contacto[i].extension = data.getlist("extension_contacto")[i]
+            cliente.contacto[i].puesto = data.getlist("puesto_contacto")[i]
+        db.session.add(cliente)
+        db.session.commit()   
+        return redirect("/administracion/clientes")
+
+@blueprint.route('/agregar_categoria_cliente/<int:cliente_id>', methods=['GET', 'POST'])
+@login_required
+def agregar_categoria_cliente(cliente_id):
+    if request.form:
+        data = request.form
+        cliente = Clientes.query.get(cliente_id) 
+        for i in range(len(data.getlist("categoria"))):
+                categoria = Categorias.query.get(data.getlist("categoria")[i])
+                cliente.categorias.append(categoria)
+        db.session.commit()    
+    return redirect('/administracion/perfil_de_cliente/'+str(cliente_id))
+##########################
+
+
 
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required

@@ -7,7 +7,7 @@
     <!-- INFO CARD -->
     <div class="card">
       <div class="header bg-black">
-        <h2 class="font-24">Pago Ingreso</h2>
+        <h2 class="font-24">Informacion de Pago </h2>
         <div class="select-btn-group">
 
           {% if pago.status == 'por_conciliar'%}
@@ -32,12 +32,13 @@
         <div class="row mycontainer">
           <div class="col-sm-12 col-md-6">
             <p class="font-18">Id: <span class="font-bold">{{pago.id}}</span></p>
-            <p class="font-18">Cliente: 
-              <span class="font-bold"><a class="btn btn-xs btn-info waves-effect"
-                  href='/administracion/perfil_de_cliente/{{pago.cliente.id}}' data-toggle="tooltip"
-                  data-placement="top" title="Ver Cliente">
-                  {{pago.cliente}}</a></span>
-            </p>
+            <b>
+              <p class="font-18">Cliente: <span class="font-bold">
+                      <a class="btn btn-xs btn-info waves-effect"
+                          href='/administracion/perfil_de_cliente/{{pago.cliente.id}}'
+                          data-toggle="tooltip" data-placement="top" title="Ver Cliente">
+                          {{pago.cliente}}</a></span> </p>
+            </b>
             <p class="font-18">Referencia: <span class="font-bold">{{pago.referencia_pago}}</span></p>
             <p class="font-18">Forma de pago: <span class="font-bold">{{pago.forma_pago}}</span></p>
             <p class="font-18">Monto total: <span class="font-bold">{{"${:,.2f}".format(pago.monto_total)}}</span></p>
@@ -123,7 +124,7 @@
                   {% if ingreso.status == 'parcial'%}
                   <span class="badge bg-parcial">Parcial</span>
                   {% endif %}
-                  {% if ingreso.status == 'liquidado'%}
+                  {% if ingreso.status == 'conciliado'%}
                   <span class="badge bg-liquidado">Liquidado</span>
                   {% endif %}
                   {% if ingreso.status == 'cancelado'%}
