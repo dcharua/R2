@@ -12,6 +12,9 @@
         <div class="card">
           <div class="header bg-black">
             <h2 class="font-24">{{beneficiario.nombre}}</h2>
+            <div class="select-btn-group">
+                <span class="btn btn-info editar-beneficiario" style="margin-right: 10px;" data-url="/administracion/get_data_editar_beneficiario/{{beneficiario.id}}">Editar</span>
+              </div>
           </div>
 
           <div class="body">
@@ -95,6 +98,7 @@
               </div>
 
               <div role="tabpanel" class="tab-pane fade" id="contactos">
+                  <span data-toggle="modal" data-target="#modal_agregar_contacto" class="btn btn-success f-right">Agregar</span>
                 <table class="table">
                   <thead>
                     <tr>
@@ -103,7 +107,7 @@
                       <th>Teléfono</th>
                       <th>Extensión</th>
                       <th>Puesto</th>
-                      <th>Editar</th>
+                      <th>Borrar</th>
                     </tr>
                   </thead>
 
@@ -117,9 +121,9 @@
                       <td>{{contacto.puesto}}</td>
 
                       <td>
-                        <a class="btn btn-xs btn-info waves-effect" href="/" data-toggle="tooltip" data-placement="top"
-                          title="Editar Contacto">
-                          <i class="material-icons">visibility</i>
+                        <a class="btn btn-xs btn-danger waves-effect delete-contacto" data-toggle="tooltip" data-placement="top"
+                          title="Borrar Contacto"  data-url="{{ url_for('administracion_blueprint.borrar_contacto', contacto_id=contacto.id) }}">
+                          <i class="material-icons">delete</i>
                         </a>
                       </td>
 
@@ -506,6 +510,8 @@
         {% include "modal_generar_pago.html" %}
         {% include "modal_agregar_categoria_beneficiario.html" %}
         {% include "modal_editar_comentario.html" %}
+        {% include "modal_agregar_contacto.html" %}
+        {% include "modal_editar_beneficiario.html" %}
         {% endblock content %}
 
         {% block javascripts %}
@@ -993,5 +999,137 @@
         element.insertAdjacentHTML('beforeend', html);
         $('#modal_editar_comentario').modal('show');
       });
+
+
+    //Borrar egreso con sweet alert
+    $('.delete-contacto').on('click', function () {
+        var element = this;
+        swal({
+            title: "Estas seguro?",
+            text: "Se borrara el contacto de este beneficiario!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+        }, function () {
+            $.ajax({
+                url: $(element).attr("data-url"),
+                success: function (data) {
+                    if (data) {
+                        swal("Borrado!", "El contacto ha sido eliminado.", "success");
+                        setTimeout(function () {
+                          location.reload();
+                        }, 2000);
+                    }
+                }
+            })
+
+        });
+    });
+
+
+  $(".editar-beneficiario").on("click", function () {
+            $.ajax({
+              url: $(this).attr("data-url"),
+              success: function (data) {
+                console.log(data)
+                const html =
+                  ` <div class="input-group" style="margin-bottom:20px !important">
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <h4 for="nombre"> Nombre </h4>
+                              <input type='text' class="form-control" name="nombre" value=${data.nombre} data-validation="required" />
+                          </div>
+                      </div>
+                  </div>
+
+
+
+                  <h4>Datos Generales</h4>
+                  <hr class="mar-t-0">
+                  <div class="row" style="margin-bottom:20px !important">
+                      <div class="col-sm-12 col-md-6">
+                          <label for="razon_social"> Razón Social </label>
+                          <input type='text' class="form-control" value=${data.razon_social} name="razon_social" />
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <label for="RFC"> RFC </label>
+                          <input type='text' class="form-control" value=${data.RFC}  name="RFC" />
+                      </div>
+                  </div>
+
+                  <div class="row" style="margin-bottom:20px !important">
+                      <div class="col-sm-12">
+                          <label for="direccion">Dirección </label>
+                          <input type='text' class="form-control" value=${data.direccion}  name="direccion" />
+                      </div>
+                  </div>
+
+                  <h4>Datos Bancarios</h4>
+                  <hr class="mar-t-0">
+
+                  <div class="row" style="margin-bottom:20px !important">
+                      <div class="col-sm-12 col-md-6">
+                          <label for="cuenta_banco"> Cuenta de Banco </label>
+                          <input type='text' class="form-control"  value=${data.cuenta_banco} name="cuenta_banco" />
+                      </div>
+                      <div class="col-sm-12 col-md-6">
+                          <label for="banco"> Banco </label>
+                          <input type='text' class="form-control" value=${data.banco} name="banco" />
+                      </div>
+                  </div>
+
+                  <div style="padding:10px;" class="header">
+                      <h4>Contactos del Beneficiario</h4>
+                  </div>
+                  <div style="padding:10px;" class="body" id="clone">
+                  <div class="contactos-here"></div>
+                  </div>
+                <input type="hidden" id="id" name="id" value="${data.id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                <hr>`
+                let element = document.querySelector(".beneficiario-here");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                var head =`<table style="table-layout: fixed;" class="table table-striped">
+                          <thead>
+                              <tr>
+                                  <th>Nombre</th>
+                                  <th>Correo</th>
+                                  <th>Teléfono</th>
+                                  <th>Extensión</th>
+                                  <th>Puesto</th>
+                              </tr>
+                          </thead>
+                          <tbody>`
+                data.contacto.forEach(contacto => {
+                  let data =` <tr>
+                                  <td>
+                                      <input type="text" value="${contacto.nombre}" name="nombre_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input type="email" value="${contacto.correo}" name="correo_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input type="tel" value="${contacto.telefono}" name="telefono_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input type="number" value="${contacto.extension}" name="extension_contacto" style="width:100%">
+                                  </td>
+                                  <td>
+                                      <input class="form-control" value="${contacto.puesto}" type="text" name="puesto_contacto">
+                                  </td>
+                              </tr>`
+                              head +=data
+                });
+                const final = head + '</tbody></table>' 
+                let elemen = document.querySelector(".contactos-here");
+                  elemen.insertAdjacentHTML('beforeend', final);
+                $('#modal_editar_beneficiario').modal('show');
+              }
+            });
+          });
+
         </script>
         {% endblock javascripts %}

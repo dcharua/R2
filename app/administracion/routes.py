@@ -101,7 +101,7 @@ def editar_beneficiario():
             beneficiario.contacto[i].puesto=data.getlist("puesto_contacto")[i]
         db.session.add(beneficiario)
         db.session.commit()   
-        return redirect("/administracion/beneficiarios")
+        return redirect(data["url"])
 
 
 @blueprint.route('/agregar_categoria_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
@@ -322,4 +322,29 @@ def borrar_categoria_beneficiario(categoria_id, beneficiario_id):
   categoria = Categorias.query.get(categoria_id)
   beneficiario.categorias.remove(categoria)      
   db.session.commit()  
+  return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))
+
+#CONTACTOS
+#BORRAR
+@blueprint.route('/borrar_contacto/<contacto_id>', methods=['GET', 'POST'])
+@login_required
+def borrar_contacto(contacto_id):
+  contacto = ContactoBeneficiario.query.get(contacto_id)
+  db.session.delete(contacto)
+  db.session.commit()
+  return jsonify('success') 
+
+#CONTACTOS
+#AGREGAR
+@blueprint.route('/agregar_contacto/<beneficiario_id>', methods=['GET', 'POST'])
+@login_required
+def agregar_contacto(beneficiario_id):
+  if request.form:
+    data = request.form
+    beneficiario = Beneficiarios.query.get(beneficiario_id)
+    contacto = ContactoBeneficiario(nombre=data["nombre_contacto"], correo=data["correo_contacto"],
+              telefono=data["telefono_contacto"], extension=data["extension_contacto"], puesto=data["puesto_contacto"])
+    beneficiario.contacto.append(contacto) 
+    db.session.add(contacto)
+    db.session.commit()
   return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))

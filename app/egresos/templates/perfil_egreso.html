@@ -5,20 +5,21 @@
 <div class="card">
     <div class="header bg-black">
         <h2 class="font-24">Detalle de Egreso</h2>
-        {% if egreso.pagos|length > 0 %}
         <div class="select-btn-group">
+        <span class="btn btn-info" data-toggle="modal" data-target="#modal_editar_egreso">Editar egreso</span>
+        {% if egreso.pagos|length > 0 %}
             <span class="btn bg-red cancel-egreso" data-type="confirm"
                 data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
-                egresos</span>
-        </div>
-        {% endif %}
-        {% if egreso.pagos|length == 0 %}
-        <div class="select-btn-group">
-            <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm"
+                egreso</span>
+                {% endif %}
+                {% if egreso.pagos|length == 0 %}
+                
+                <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm"
                 data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar
                 egreso</span>
-        </div>
-        {% endif %}
+                
+                {% endif %}
+            </div>
     </div>
 
 
@@ -313,13 +314,13 @@
         </div>
     </div>
 </div>
+{% include "modal_editar_egreso.html" %}
 {% include "modal_editar_comentario.html" %}
 {% include "modal_pagar.html" %}
 {% include "modal_conciliar_movimiento.html" %}
 {% include "modal_generar_pago.html" %}
 {% include "modal_agregar_detalle.html" %}
 {% include "modal_editar_detalle.html" %}
-
 {% endblock content %}
 
 {% block javascripts %}

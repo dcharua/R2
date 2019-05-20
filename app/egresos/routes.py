@@ -109,14 +109,27 @@ def perfil_egreso(egreso_id):
     categorias = Categorias.query.all()
     conceptos = Conceptos.query.all()
     cuentas = Cuentas.query.all()
+    empresas = Empresas.query.all()
     formas_pago = FormasPago.query.all()
-    return render_template("perfil_egreso.html", egreso=egreso, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
+    return render_template("perfil_egreso.html", egreso=egreso, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos Edit
 @blueprint.route('/editar_egreso/<int:egreso_id>"', methods=['GET', 'POST'])
 def editar_egreso(egreso_id):
-    return redirect("/")
+    if request.form:
+        data = request.form
+        egreso = Egresos.query.get(egreso_id)
+        egreso.beneficiario_id =  data["beneficiario"]
+        egreso.empresa_id =  data["empresa"]
+        egreso.fecha_programada_pago = data["fecha_programada_pago"]
+        egreso.fecha_vencimiento = data["fecha_vencimiento"]
+        egreso.referencia = data["referencia"]
+        egreso.numero_documento = data["numero_documento"]
+        egreso.comentario = data["comentario"]
+        db.session.commit()
+    return redirect("/egresos/perfil_egreso/" + str(egreso_id))
+
 
 
 #Egresos Delete
@@ -463,8 +476,6 @@ def get_data_editar_detalle(detalle_id):
                        categoria=detalle.categoria_id, concepto=detalle.concepto_id, numero_control=detalle.numero_control, descripcion=detalle.descripcion)
 
  #editar detalle de egreso
-
-
 @blueprint.route('/editar_detalle<int:egreso_id>', methods=['GET', 'POST'])
 @login_required
 def editar_detalle(egreso_id):

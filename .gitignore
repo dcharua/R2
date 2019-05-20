@@ -13,6 +13,7 @@ __pycache__/
 # venv
 env
 venv
+R2
 
 # other
 .DS_Store
