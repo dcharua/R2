@@ -420,7 +420,7 @@
               <table class="table table-bordered table-striped table-hover js-basic-example2 dataTable">
                 <thead>
                   <tr>
-                    <th><input name="select_all2" value="1" class="select-all2 table-check" type="checkbox" /></th>
+                    <th><input name="select_all" value="1" class="select-all table-check" type="checkbox" /></th>
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Forma</th>
@@ -912,7 +912,7 @@
           });
 
           // "Select all" control
-          $('.select-all2').on('click', function () {
+          $('.select-all').on('click', function () {
             // Check/uncheck all checkboxes in the table
             var rows = table2.rows({
               'search': 'applied'

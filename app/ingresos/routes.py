@@ -56,21 +56,17 @@ def captura_ingresos():
         ingreso = Ingresos(cliente_id = data["cliente"],
                            tipo_ingreso_id = data["tipo_ingreso"],
                            fecha_vencimiento = data["fecha_vencimiento"], 
-                           fecha_programada_pago = data["fecha_programada_pago"],
                            numero_documento = data["numero_documento"],
                            empresa_id = data["empresa"],
                            referencia = data["referencia"],
                            monto_total = monto_total, comentario = data["comentario"],pagado = False,      
-                           status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0)                                                                                
-        
-        
-           
-        
+                           status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0) 
+
+        if (data["fecha_programada_pago"] != ""):
+            egreso.fecha_programada_pago = data["fecha_programada_pago"]                                                                               
+
         if ('pagado' in data):
-            
-            
-            if ('conciliado_check' in data):
-                            
+            if ('conciliado_check' in data):                
                 monto_pagado,monto_por_conciliar,pagado = float(data["monto_pagado"]), 0, True
                 if monto_pagado == monto_total: status_ingreso = 'conciliado'
                 else: status_ingreso = 'parcial'
