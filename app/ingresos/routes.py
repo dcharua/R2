@@ -61,9 +61,8 @@ def captura_ingresos():
                            referencia = data["referencia"],
                            monto_total = monto_total, comentario = data["comentario"],pagado = False,      
                            status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0) 
-
         if (data["fecha_programada_pago"] != ""):
-            egreso.fecha_programada_pago = data["fecha_programada_pago"]                                                                               
+            ingreso.fecha_programada_pago = data["fecha_programada_pago"]                                                                             
 
         if ('pagado' in data):
             if ('conciliado_check' in data):                
@@ -82,12 +81,13 @@ def captura_ingresos():
             ingreso = Ingresos(cliente_id = data["cliente"],
                            tipo_ingreso_id = data["tipo_ingreso"],
                            fecha_vencimiento = data["fecha_vencimiento"], 
-                           fecha_programada_pago = data["fecha_programada_pago"],
                            numero_documento = data["numero_documento"],
                            empresa_id = data["empresa"],
                            referencia = data["referencia"],
                            monto_total = monto_total, comentario = data["comentario"],pagado = pagado,      
                            status = status_ingreso, monto_pagado = monto_pagado, monto_solicitado = 0, monto_por_conciliar = monto_por_conciliar)
+            if (data["fecha_programada_pago"] != ""):
+                ingreso.fecha_programada_pago = data["fecha_programada_pago"]  
                
             
             pago_ingreso = Pagos_Ingresos(status = status_pago, cliente_id = data["cliente"], 

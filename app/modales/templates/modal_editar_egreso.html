@@ -3,10 +3,11 @@
     <div class="modal-content">
       <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.editar_egreso', egreso_id=egreso.id) }}">
         <div class="modal-header">
-          <h3 class="modal-title" id="largeModalLabel">Editar Cuenta</h3>
+          <h3 class="modal-title" id="largeModalLabel">Editar Egreso</h3>
         </div>
         <div class="modal-body">
           <div class="row" style="margin-bottom:20px !important">
+            {% if egreso.status == 'pendiente' %}
             <div class="col-sm-12 col-md-6">
               <label for="beneficiario"> Beneficiario </label><br />
               <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required" data-live-search="true" title="Seleccione una Beneficiario..." data-width="100%" value="{{ egreso.beneficiario_id }}">
@@ -17,6 +18,7 @@
                 {% endfor %}
               </select>
             </div>
+            {% endif %}
             <div class="col-sm-12 col-md-6">
               <label for="empresa"> Empresa </label><br />
               <select class="selectpicker" id="empresa" name="empresa" data-validation="required" data-live-search="true" title="Seleccione una Empresa..." data-width="100%" value="{{ egreso.empresa_id }}">

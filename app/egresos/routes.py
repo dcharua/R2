@@ -120,7 +120,8 @@ def editar_egreso(egreso_id):
     if request.form:
         data = request.form
         egreso = Egresos.query.get(egreso_id)
-        egreso.beneficiario_id =  data["beneficiario"]
+        if "beneficiario" in data:
+            egreso.beneficiario_id =  data["beneficiario"]
         egreso.empresa_id =  data["empresa"]
         egreso.fecha_programada_pago = data["fecha_programada_pago"]
         egreso.fecha_vencimiento = data["fecha_vencimiento"]

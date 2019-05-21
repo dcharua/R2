@@ -50,22 +50,22 @@
                                   <td>{{cliente.saldo_cobrado}}</td>
                                   <td>
                                       {% if cliente.status == 'pendiente'%}
-                                      <span class="badge bg-blue">Pendiente</span>
+                                      <span class="badge bg-pendiente">Pendiente</span>
                                       {% endif %}
                                       {% if cliente.status == 'solicitado'%}
-                                      <span class="badge bg-green">Solicitado</span>
+                                      <span class="badge bg-solicitado">Solicitado</span>
                                       {% endif %}
                                       {% if cliente.status == 'parcial'%}
-                                      <span class="badge bg-orange">Parcial</span>
+                                      <span class="badge bg-parcial">Parcial</span>
                                       {% endif %}
                                       {% if cliente.status == 'liquidado'%}
-                                      <span class="badge bg-green">Liquidado</span>
+                                      <span class="badge bg-liquidado">Liquidado</span>
                                       {% endif %}
                                       {% if cliente.status == 'cancelado'%}
-                                      <span class="badge bg-red">Cancelado</span>
+                                      <span class="badge bg-cancelado">Cancelado</span>
                                       {% endif %}
                                       {% if cliente.status == 'por_conciliar'%}
-                                      <span class="badge bg-orange">Por conciliar</span>
+                                      <span class="badge bg-por-conciliar">Por conciliar</span>
                                       {% endif %}
                                   </td>
                                   

@@ -16,7 +16,7 @@
             <div class="col-sm-12 col-md-12">
                 <div class="input-group">
                     <label for="tipo_ingreso"> Tipo de Ingreso </label><br>
-                  <select class="selectpicker" id="tipo_ingreso" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo_ingreso" title="Seleccione un tipo de ingreso..." data-width="50%">
+                  <select class="selectpicker" id="tipo_ingreso" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo_ingreso" title="Seleccione un tipo de ingreso..." data-width="50%" data-validation="required">
                       {% for tipo in tipo_ingreso %}
                       <option value="{{tipo.id}}"> {{ tipo.tipo | safe }} </option>
                       {% endfor %}
@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col-sm-12 col-md-6">
                 <label for="cliente"> Cliente </label><br>
-                <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="50%">
+                <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="50%" data-validation="required">
                   {% for cliente in clientes %}
                   <option value="{{cliente.id}}"> {{ cliente.nombre | safe }} </option>
                   {% endfor %}
@@ -40,7 +40,7 @@
               
               <div class="col-sm-12 col-md-6">
                 <label for="cliente"> Empresa </label><br>
-                <select class="selectpicker" id="empresa" name="empresa" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione una Empresa..." data-width="100%">
+                <select class="selectpicker" id="empresa" name="empresa" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione una Empresa..." data-width="100%" data-validation="required">
                   {% for empresa in empresas %}
                   <option value="{{empresa.id}}"> {{ empresa.nombre | safe }} </option>
                   {% endfor %}
