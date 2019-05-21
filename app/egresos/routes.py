@@ -162,9 +162,27 @@ def pagos_realizados():
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])
 def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)
-    return render_template("perfil_pago.html", pago=pago)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago)
 
-
+#Editar pago
+@blueprint.route('/editar_pago/<int:pago_id>"', methods=['GET', 'POST'])
+def editar_pago(pago_id):
+    if request.form:
+        data = request.form
+        pago = Pagos.query.get(pago_id)
+        if "cuenta" in data:
+            pago.cuenta_id = data["cuenta"]
+        if "forma_pago" in data:
+            pago.forma_pago_id = data["forma_pago"]
+        if "referencia" in data:
+            pago.referencia = data["referencia"]
+        if "fecha_pago" in data:
+            pago.fecha_pago = data["fecha_pago"]
+        pago.comentario = data["comentario"]
+        db.session.commit()
+    return redirect("/egresos/perfil_pago/" + str(pago_id))
 ###### Borrar pago
 @blueprint.route("/borrar_pago/<int:pago_id>", methods=['GET', 'POST'])
 def borrar_pago(pago_id):

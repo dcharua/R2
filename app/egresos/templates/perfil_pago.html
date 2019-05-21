@@ -9,6 +9,8 @@
       <div class="header bg-black">
         <h2 class="font-24">Pago</h2>
         <div class="select-btn-group">
+
+           <span class="btn btn-info" data-toggle="modal" data-target="#modal_editar_pago">Editar pago</span>
           {% if pago.status == 'solicitado' %}
           <span class="btn btn-primary open-generar-pago" data-toggle="modal"
             data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
@@ -168,8 +170,9 @@
         </div>
       </div>
     </div>
-    {% include "modal_editar_comentario.html" %}
     {% include "modal_generar_pago.html" %}
+    {% include "modal_editar_pago.html" %}
+    {% include "modal_editar_comentario.html" %}
     {% include "modal_conciliar_movimiento.html" %}
 
     {% endblock content %}
