@@ -28,14 +28,11 @@
                 <div class="row">
                   <div class="col-sm-12 col-md-6">
                 <label for="cliente"> Cliente </label><br>
-                <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="50%" data-validation="required">
+                <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="100%" data-validation="required">
                   {% for cliente in clientes %}
                   <option value="{{cliente.id}}"> {{ cliente.nombre | safe }} </option>
                   {% endfor %}
                 </select>
-                <a href="/administracion/clientes" >
-                    <button class="btn btn-default" style="margin-left: 50px;" type="button">Agregar Nuevo</button>
-                </a>
               </div>
               
               <div class="col-sm-12 col-md-6">

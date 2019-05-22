@@ -212,7 +212,7 @@
         var element = this;
         swal({
           title: "Estas seguro?",
-          text: "Se borrara el registro de esta solicitud de pago!",
+          text: "Se borrara el registro de esta solicitud del pago!",
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
@@ -234,23 +234,23 @@
         });
       });
 
-      //cancelar pago con sweer alert
+      //Cancelar pago con sweer alert
       $('.cancel-pago').on('click', function () {
         var element = this;
         swal({
           title: "Estas seguro?",
-          text: "Se cancelara el pago y se restara de sus documentos asociados!",
+          text: "Se cancelara el pago y se restará de sus documentos asociados!",
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Si, borrar!",
+          confirmButtonText: "Si, Cancelar!",
           closeOnConfirm: false
         }, function () {
           $.ajax({
             url: $(element).attr("data-url"),
             success: function (data) {
               if (data) {
-                swal("Borrado!", "El pago ha sido cancelado.", "success");
+                swal("Listo!", "El pago ha sido cancelado.", "success");
                 setTimeout(function () {
                   location.reload();
                 }, 2000);
@@ -356,7 +356,7 @@
       });
 
 
-      //cancelar pago con sweer alert
+      //Desconciliar pago con sweer alert
       $('.open-desconciliar').on('click', function () {
         var element = this;
         swal({
@@ -373,7 +373,7 @@
             url: $(element).attr("data-url"),
             success: function (data) {
               if (data) {
-                swal("Borrado!", "El pago ha sido desconciliado.", "success");
+                swal("Listo!", "El pago ha sido desconciliado.", "success");
                 setTimeout(function () {
                   location.reload();
                 }, 2000);

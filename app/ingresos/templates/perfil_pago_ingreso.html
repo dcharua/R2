@@ -12,18 +12,14 @@
 
           {% if pago.status == 'por_conciliar'%}
           <span class=" btn bg-deep-purple open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id=pago.id) }}">Conciliar</span>
+          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
+            pago</span>
           {% endif %}
           {% if pago.status == 'conciliado' %}
           <span id="desconciliar-pago" class=" btn bg-purple open-desconciliar" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.desconciliar_pago_ingreso', pago_id=pago.id) }}">Desconciliar
             pago</span>
-          {% endif %}
-          {% if pago.status != 'solicitado' and pago.status != 'cancelado' %}
           <span id="open-conciliar-multiple" class="btn bg-red cancel-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.cancelar_pago_ingreso', pago_id=pago.id) }}">Cancelar
-            pago</span>
-          {% endif %}
-          {% if pago.status == 'solicitado' and pago.status != 'cancelado' %}
-          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
-            pago</span>
+            pago</span>  
           {% endif %}
           </div>
       </div>
@@ -206,23 +202,23 @@
         });
       });
 
-      //cancelar pago con sweer alert
+      //Cancelar pago con sweer alert
       $('.cancel-pago').on('click', function () {
         var element = this;
         swal({
           title: "Estas seguro?",
-          text: "Se cancelara el pago y se restara de sus documentos asociados!",
+          text: "Se cancelara el pago y se restará de sus documentos asociados!",
           type: "warning",
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Si, borrar!",
+          confirmButtonText: "Si, Cancelar!",
           closeOnConfirm: false
         }, function () {
           $.ajax({
             url: $(element).attr("data-url"),
             success: function (data) {
               if (data) {
-                swal("Borrado!", "El pago ha sido cancelado.", "success");
+                swal("Cancelado!", "El pago ha sido cancelado.", "success");
                 setTimeout(function () {
                   location.reload();
                 }, 2000);
@@ -268,7 +264,7 @@
     });
 
 
-       //cancelar pago con sweer alert
+       //Desconciliar pago con sweer alert
        $('.open-desconciliar').on('click', function () {
         var element = this;
         swal({
@@ -285,7 +281,7 @@
             url: $(element).attr("data-url"),
             success: function (data) {
               if (data) {
-                swal("Borrado!", "El pago ha sido desconciliado.", "success");
+                swal("Listo!", "El pago ha sido desconciliado.", "success");
                 setTimeout(function () {
                   location.reload();
                 }, 2000);

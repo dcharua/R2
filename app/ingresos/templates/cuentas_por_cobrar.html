@@ -97,13 +97,7 @@
                         <i data-toggle="tooltip" data-placement="top" title="Marcar como Recibido" class="material-icons">payment</i>
                       </a>                                      
                       {% endif %}
-                      
-                      {% if ingreso.status == 'por_conciliar' %}
-                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"  data-toggle="modal" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar', ingreso_id=ingreso.id) }}">
-                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
-                      </a>
-                      {% endif %}
-                      
+                    
                       <a class="btn btn-xs btn-warning waves-effect open-reprogramar"  data-toggle="modal" data-target="#modal_reprogramar_fecha_ingreso" data-id="{{ingreso.id}}">
                         <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
                       </a>
