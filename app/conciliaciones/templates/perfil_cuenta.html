@@ -11,7 +11,7 @@
       <div class="header bg-black">
         <h2 class="font-24">{{cuenta.nombre}}</h2>
         <div class="select-btn-group">
-          <span class="btn btn-info"  style="margin-right: 10px;" data-toggle="modal"
+          <span class="btn btn-info editar_cuenta" data-empresa="{{cuenta.empresa_id}}" style="margin-right: 10px;" data-toggle="modal"
             data-target="#modal_editar_cuenta">Editar</span>
         </div>
       </div>
@@ -818,5 +818,12 @@
       element.insertAdjacentHTML('beforeend', html);
       $('#modal_editar_comentario').modal('show');
     });
+
+//Editar cuenta
+$('.editar_cuenta').on('click', function () {
+        $('#empresa').val($(this).attr("data-empresa"))
+        $('.selectpicker').selectpicker('refresh')
+    });
+
   </script>
   {% endblock javascripts %}

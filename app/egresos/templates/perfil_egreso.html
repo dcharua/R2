@@ -6,7 +6,7 @@
     <div class="header bg-black">
         <h2 class="font-24">Detalle de Egreso</h2>
         <div class="select-btn-group">
-        <span class="btn btn-info" data-toggle="modal" data-target="#modal_editar_egreso">Editar egreso</span>
+        <span class="btn btn-info editar-egreso" data-beneficiario="{{egreso.beneficiario_id}}" data-empresa="{{egreso.empresa_id}}" data-toggle="modal" data-target="#modal_editar_egreso">Editar egreso</span>
         {% if egreso.pagos|length > 0 %}
             <span class="btn bg-red cancel-egreso" data-type="confirm"
                 data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
@@ -719,5 +719,15 @@
             $("#monto_parcial").fadeOut();
         }
     });
+
+    $('.editar-egreso').on('click', function () {
+        $('#beneficiario').val($(this).attr("data-beneficiario"))
+        $('#empresa').val($(this).attr("data-empresa"))
+        $('.selectpicker').selectpicker('refresh')
+    });
+
+
+
+
 </script>
 {% endblock javascripts %}

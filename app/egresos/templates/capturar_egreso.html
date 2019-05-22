@@ -352,14 +352,22 @@
       url: '/egresos/get_beneficiario_categorias/' + this.value,
       success: function (data) {
         element.innerHTML = "";
-        data.forEach(c => {
-          const html = `<option value="${c.id}"> ${c.nombre} </option>`
+        if(data.length > 0){
+          data.forEach(c => {
+            const html = `<option value="${c.id}"> ${c.nombre} </option>`
+            element.insertAdjacentHTML('beforeend', html);
+          });
+        } else {
+          const html = `{% for categoria in categorias %}
+                          <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                        {% endfor %}`
           element.insertAdjacentHTML('beforeend', html);
-        });
+        }
+       
         $(id).selectpicker('refresh');
       }
     });
-  })
+  });
 
   function initChangers(){
     $('.proveedor').on('change', function () {
@@ -369,7 +377,6 @@
       url: '/egresos/get_beneficiario_categorias/' + this.value,
       success: function (data) {
         element.innerHTML = "";
-        console.log(data.length)
         if(data.length > 0){
           data.forEach(c => {
             const html = `<option value="${c.id}"> ${c.nombre} </option>`

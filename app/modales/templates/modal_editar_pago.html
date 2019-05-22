@@ -11,7 +11,7 @@
             {% if pago.status == 'solicitado' %}
             <div class="col-sm-12 col-md-6">
               <label for="forma_pago"> Cuenta </label><br />
-              <select class="selectpicker" name="cuenta" data-validation="required" data-live-search="true"
+              <select class="selectpicker" id="cuenta_select"  name="cuenta" data-validation="required" data-live-search="true"
                 title="Seleccione una Cuenta..." data-width="100%">
                 {% for cuenta in cuentas %}
                 <option value="{{ cuenta.id }}">
@@ -24,7 +24,7 @@
 
             <div class="col-sm-12 col-md-6">
               <label for="forma_pago"> Forma de pago </label><br />
-              <select class="selectpicker" id="beneficiario" name="forma_pago" data-validation="required"
+              <select class="selectpicker" id="forma_pago_select" name="forma_pago" data-validation="required"
                 data-live-search="true" title="Seleccione una Forma de pago..." data-width="100%">
                 {% for forma_pago in formas_pago %}
                 <option value="{{ forma_pago.id }}">
@@ -38,7 +38,7 @@
           <div class="row" style="margin-bottom:20px !important">
             <div class="col-sm-12 col-md-6">
               <label for="referencia"> Referencia </label>
-              <input type="text" value="{{ pago.referencia }}" class="form-control" name="referencia" />
+              <input type="text" value="{{pago.referencia_pago}}" class="form-control" name="referencia" />
             </div>
 
             <div class="col-sm-12 col-md-6 ">

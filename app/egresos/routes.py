@@ -73,7 +73,7 @@ def capturar_egreso():
     empresas = Empresas.query.all()
     centros_negocios = CentrosNegocio.query.all()
     proveedores = beneficiarios
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo=="egreso").all()
     conceptos = Conceptos.query.all()
     cuentas_banco = Cuentas.query.all()
     formas_pago = FormasPago.query.all()
@@ -178,7 +178,7 @@ def editar_pago(pago_id):
         if "forma_pago" in data:
             pago.forma_pago_id = data["forma_pago"]
         if "referencia" in data:
-            pago.referencia = data["referencia"]
+            pago.referencia_pago = data["referencia"]
         if "fecha_pago" in data:
             pago.fecha_pago = data["fecha_pago"]
         pago.comentario = data["comentario"]
@@ -548,7 +548,7 @@ def borrarEP(egreso_id, pago_id):
 @blueprint.route('/get_beneficiario_categorias/<int:beneficiario_id>', methods=['GET', 'POST'])
 def get_beneficiario_categorias(beneficiario_id):
   list = []
-  categorias = Categorias.query.filter(Categorias.beneficiarios.any(id=beneficiario_id)).all()
+  categorias = Categorias.query.filter(Categorias.beneficiarios.any(id=beneficiario_id), Categorias.tipo=="egreso").all()
   for categoria in categorias:
     list.append({'id': categoria.id, 'nombre': categoria.nombre})
   return jsonify(list)

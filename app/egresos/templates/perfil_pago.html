@@ -10,7 +10,7 @@
         <h2 class="font-24">Pago</h2>
         <div class="select-btn-group">
 
-           <span class="btn btn-info" data-toggle="modal" data-target="#modal_editar_pago">Editar pago</span>
+           <span class="btn btn-info editar_pago" data-cuenta = "{{pago.cuenta_id}}" data-forma_pago = "{{pago.forma_pago_id}}" data-toggle="modal" data-target="#modal_editar_pago">Editar pago</span>
           {% if pago.status == 'solicitado' %}
           <span class="btn btn-primary open-generar-pago" data-toggle="modal"
             data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
@@ -400,5 +400,15 @@
         element.insertAdjacentHTML('beforeend', html);
         $('#modal_editar_comentario').modal('show');
       });
+
+//Editar Pago
+      $('.editar_pago').on('click', function () {
+        $('#forma_pago_select').val($(this).attr("data-forma_pago"))
+        $('#cuenta_select').val($(this).attr("data-cuenta"))
+        $('.selectpicker').selectpicker('refresh')
+    });
+
+
+
     </script>
     {% endblock javascripts %}

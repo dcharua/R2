@@ -25,7 +25,7 @@ def perfil_de_beneficiario(beneficiario_id):
     beneficiario = Beneficiarios.query.get(beneficiario_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
     for egreso in beneficiario.egresos:
       documentos_recibidos += 1
       if egreso.status != 'cancelado':
