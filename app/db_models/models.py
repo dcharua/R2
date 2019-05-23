@@ -420,7 +420,7 @@ class Pagos_Ingresos(db.Model):
     cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cliente = relationship("Clientes", back_populates="pagos_ingresos")
     
-    ingresos = relationship("Ingresos", secondary='ingresos_has_pagos')
+    ingresos = relationship("Ingresos", secondary='ingresos_has_pagos', cascade="all, delete")
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id) 
@@ -446,7 +446,7 @@ class Pagos(db.Model):
     forma_pago = relationship("FormasPago", back_populates="pagos")
     beneficiario_id = Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="pagos")
-    egresos = relationship("Egresos", secondary='egresos_has_pagos')
+    egresos = relationship("Egresos", secondary='egresos_has_pagos',  cascade="all")
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id)           

@@ -21,7 +21,6 @@ def capturar_egreso():
 
     if request.form:
         data = request.form
-        print(data)
         montos = list(map(float, data.getlist("monto")))
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],
@@ -191,11 +190,12 @@ def borrar_pago(pago_id):
     for egreso in pago.egresos:
         ep = EgresosHasPagos.query.filter_by(egreso_id=egreso.id, pago_id=pago.id).first()
         egreso.monto_solicitado -= ep.monto
+        db.session.delete(ep)
+        db.session.commit()
         if egreso.monto_pagado > 0:
             egreso.status = 'parcial'
         else:
             egreso.status = 'pendiente'
-    db.session.delete(ep)
     db.session.delete(pago)
     db.session.commit()
     return jsonify("deleted")
@@ -266,7 +266,6 @@ def mandar_pagar():
 def get_data_pagar_multiple():
         list = []
         egresos = request.args.getlist('egresos[]')
-        print(egresos)
         for egreso in egresos:
                 e = Egresos.query.get(egreso)
                 monto_pendiente = e.monto_total - e.monto_solicitado - e.monto_pagado
@@ -460,7 +459,6 @@ def reprogramar_fecha():
 @login_required
 def reprogramar_fecha_multiple():
         egresos = request.args.getlist('egresos[]')
-        print(egresos)
         fecha = request.args.get('fecha')
         for egreso in egresos:
                 egreso = Egresos.query.get(egreso)
@@ -533,7 +531,6 @@ def desconciliar_pago(pago_id):
 #Borrar Ep
 @blueprint.route("/borrarEP/<int:egreso_id>/<int:pago_id>", methods=['GET', 'POST'])
 def borrarEP(egreso_id, pago_id):
-        print(pago_id)
         egreso = Egresos.query.get(egreso_id)
         pago = Pagos.query.get(pago_id)
         ep = EgresosHasPagos.query.filter_by(egreso_id=egreso_id, pago_id=pago_id).first()
@@ -557,7 +554,6 @@ def get_beneficiario_categorias(beneficiario_id):
 def get_concepto_categoria(categoria_id):
   list = []
   conceptos = Conceptos.query.filter_by(categoria_id=categoria_id).all()
-  print(conceptos)
   for concepto in conceptos:
     list.append({'id': concepto.id, 'nombre': concepto.nombre})
   return jsonify(list)

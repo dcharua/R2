@@ -235,11 +235,10 @@ def borrar_pago(pago_id):
     pago = Pagos_Ingresos.query.get(pago_id)
     for ingreso in pago.ingresos:
         ep = IngresosHasPagos.query.filter_by(ingreso_id  = ingreso.id ,pago_id = pago.id ).first()
-        ingreso.monto_solicitado -= ep.monto
+        ingreso.monto_por_conciliar -= ep.monto
         ingreso.setStatus()
         calcular_saldo_cliente(ingreso.cliente_id)
-        
-    db.session.delete(ep)
+        db.session.delete(ep)
     db.session.delete(pago)
     db.session.commit()
     return  jsonify("deleted")
@@ -291,7 +290,6 @@ def mandar_cobrar():
 
     if request.form:
         data = request.form
-        print(data)
         ingreso = Ingresos.query.get(data["ingreso_id"])
         
         if ('conciliado_check' in data):
@@ -343,8 +341,6 @@ def mandar_cobrar():
 @blueprint.route('/get_data_pagar_multiple', methods=['GET', 'POST'])
 @login_required
 def get_data_pagar_multiple():
-    
-    print(' En get_data_cobrar_multiple')
     list = []
     ingresos = request.args.getlist('ingresos[]')
     for ingreso in ingresos:
@@ -361,7 +357,6 @@ def get_data_pagar_multiple():
 def mandar_cobrar_multiple():
         if request.form:
                 data = request.form
-                print(data)
                 for i in range(int(data["cantidad"])):
                     
                     pago = Pagos_Ingresos(status='por_conciliar', monto_total=data["monto_total_%d" % i], fecha_pago = datetime.now(),
@@ -390,7 +385,6 @@ def mandar_cobrar_multiple():
 @blueprint.route('/get_data_conciliar_pago_ingreso<int:pago_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_conciliar_pago_ingreso(pago_id):
-        print('pago id = ',pago_id)
         pago_ingreso = Pagos_Ingresos.query.get(pago_id)
         return jsonify(pago_id = pago_id, cliente = pago_ingreso.cliente.nombre, monto_total=str(pago_ingreso.monto_total), referencia = pago_ingreso.referencia_pago , cuenta=pago_ingreso.cuenta.nombre)
 
@@ -405,9 +399,6 @@ def get_data_conciliar(ingreso_id):
 @blueprint.route('/conciliar_pago_ingreso', methods=['GET', 'POST'])
 @login_required
 def conciliar_pago_ingreso():
-    
-        print('En conciliar_pago_ingresos!')
-        
         if request.form:
             data = request.form
             print(data)

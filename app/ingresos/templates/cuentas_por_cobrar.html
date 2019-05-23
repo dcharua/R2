@@ -324,7 +324,7 @@
                   <div class="row" style="margin-bottom: 10px;">
                     <div class="col-sm-12 col-md-6">
                         <label for="cliente"> Forma de pago </label><br>
-                        <select class="selectpicker" id="forma_pago" data-live-search="true" name="forma_pago_id_${counter}" title="Seleccione una Forma de Pago..." data-width="100%">
+                        <select class="selectpicker" id="forma_pago" required data-live-search="true" name="forma_pago_id_${counter}" title="Seleccione una Forma de Pago..." data-width="100%">
                           {% for forma in formas_pago %} 
                           <option value="{{forma.id}}"> {{ forma }} </option>
                           {% endfor %} 
@@ -332,7 +332,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <label for="cliente"> Cuenta </label><br>
-                        <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_id_${counter}" title="Seleccione una Cuenta.." data-width="100%">
+                        <select class="selectpicker" id="cuenta" required data-live-search="true" name="cuenta_id_${counter}" title="Seleccione una Cuenta.." data-width="100%">
                           {% for cuenta in cuentas %} 
                           <option value="{{cuenta.id}}"> {{ cuenta }} </option>
                           {% endfor %} 
