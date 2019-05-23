@@ -162,7 +162,7 @@ def cuentas_por_cobrar():
     return render_template("cuentas_por_cobrar.html", ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
 
 
-#Egresos perfil
+#Ingresos perfil
 @blueprint.route('/perfil_ingreso/<int:ingreso_id>', methods=['GET', 'POST'])
 def perfil_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
@@ -205,7 +205,7 @@ def editar_ingreso(ingreso_id):
     return redirect("/ingresos/perfil_ingreso/" + str(ingreso_id))
     
 
-#Egresos Delete
+#Ingresos Delete
 @blueprint.route("/borrar_ingreso/<int:ingreso_id>",  methods=['GET', 'POST'])
 def borrar_ingreso(ingreso_id):
     print('En Borrar Ingreso!')
@@ -290,7 +290,7 @@ def cancelar_pago_ingreso(pago_id):
 def editar_pago(pago_id):
     if request.form:
         data = request.form
-        pago = Pagos.query.get(pago_id)
+        pago = Pagos_Ingresos.query.get(pago_id)
         if "cuenta" in data:
             pago.cuenta_id = data["cuenta"]
         if "forma_pago" in data:
