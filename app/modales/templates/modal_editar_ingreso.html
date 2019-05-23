@@ -1,19 +1,20 @@
-<div class="modal fade" id="modal_editar_egreso" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal_editar_ingreso" tabindex="-1" role="dialog">
+
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.editar_egreso', egreso_id=egreso.id) }}">
+      <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.editar_ingreso', ingreso_id=ingreso.id) }}">
         <div class="modal-header">
-          <h3 class="modal-title" id="largeModalLabel">Editar Egreso</h3>
+          <h3 class="modal-title" id="largeModalLabel">Editar Ingreso</h3>
         </div>
         <div class="modal-body">
           <div class="row" style="margin-bottom:20px !important">
-            {% if egreso.status == 'pendiente' %}
+            {% if ingreso.status == 'pendiente' %}
             <div class="col-sm-12 col-md-6">
-              <label for="beneficiario"> Beneficiario </label><br />
-              <select class="selectpicker" id="beneficiario" name="beneficiario" data-validation="required" data-live-search="true" title="Seleccione una Beneficiario..." data-width="100%" value="{{ egreso.beneficiario_id }}">
-                {% for beneficiario in proveedores %}
-                <option value="{{ beneficiario.id }}">
-                  {{ beneficiario.nombre }}
+              <label for="cliente"> Cliente </label><br />
+              <select class="selectpicker" id="cliente" name="cliente" data-validation="required" data-live-search="true" title="Seleccione una Cliente..." data-width="100%" value="{{ ingreso.cliente_id }}">
+                {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">
+                  {{ cliente.nombre }}
                 </option>
                 {% endfor %}
               </select>
@@ -21,7 +22,7 @@
             {% endif %}
             <div class="col-sm-12 col-md-6">
               <label for="empresa"> Empresa </label><br />
-              <select class="selectpicker" id="empresa" name="empresa" data-validation="required" data-live-search="true" title="Seleccione una Empresa..." data-width="100%" value="{{ egreso.empresa_id }}">
+              <select class="selectpicker" id="empresa" name="empresa" data-validation="required" data-live-search="true" title="Seleccione una Empresa..." data-width="100%" value="{{ ingreso.empresa_id }}">
                 {% for empresa in empresas %}
                 <option value="{{ empresa.id }}"> {{ empresa.nombre }} </option>
                 {% endfor %}
@@ -34,7 +35,7 @@
             <div class="col-sm-12 col-md-6 ">
               <label> Fecha de Vencimiento </label>
               <div class='date mydatepicker' data-provide="datepicker">
-                <input type='text' class="form-control" value="{{egreso.fecha_vencimiento}}"name="fecha_vencimiento" autocomplete="off" required />
+                <input type='text' class="form-control" value="{{ingreso.fecha_vencimiento}}"name="fecha_vencimiento" autocomplete="off" required />
                 <span class="input-group-addon" style="display: none">
                   <i class="material-icons mydate">date_range</i>
                 </span>
@@ -44,11 +45,11 @@
             <div class="col-sm-12 col-md-6">
               <label> Fecha programada de pago </label>
               <div class='date mydatepicker' data-provide="datepicker">
-                  {% if egreso.fecha_programada_pago   %}
-                  <input type='text' class="form-control" value="{{egreso.fecha_programada_pago}}"autocomplete="off" name="fecha_programada_pago" />
-                  {% else %} 
-                  <input type='text' class="form-control"  autocomplete="off" name="fecha_programada_pago" />
-                  {% endif %} 
+                  {% if ingreso.fecha_programada_pago   %}
+                <input type='text' class="form-control" value="{{ingreso.fecha_programada_pago}}"autocomplete="off" name="fecha_programada_pago" />
+                {% else %} 
+                <input type='text' class="form-control"  autocomplete="off" name="fecha_programada_pago" />
+                {% endif %} 
                 <span class="input-group-addon" style="display: none">
                   <i class="material-icons mydate">date_range</i>
                 </span>
@@ -59,12 +60,12 @@
           <div class="row" style="margin-bottom:20px !important">
             <div class="col-sm-12 col-md-6">
               <label for="numero_documento"> # de documento </label>
-              <input type="text" value="{{ egreso.numero_documento }}" class="form-control" name="numero_documento"/>
+              <input type="text" value="{{ ingreso.numero_documento }}" class="form-control" name="numero_documento"/>
             </div>
 
             <div class="col-sm-12 col-md-6">
                 <label for="referencia"> Referencia </label>
-                <input type="text" value="{{ egreso.referencia }}" class="form-control" name="referencia"/>
+                <input type="text" value="{{ ingreso.referencia }}" class="form-control" name="referencia"/>
             </div>
           </div>
 
@@ -72,13 +73,13 @@
           <div class="row" style="margin-bottom:20px !important">
             <div class="col-sm-12">
               <label for="arrendadora"> Comentario </label>
-              <textarea name="comentario" id="comentario" style="width:100%">{{ egreso.comentario }}</textarea>
+              <textarea name="comentario" id="comentario" style="width:100%">{{ ingreso.comentario }}</textarea>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Editar Egreso</button>
+          <button type="submit" class="btn btn-primary">Editar Ingreso</button>
           <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
             <i class="material-icons">close</i>
           </button>

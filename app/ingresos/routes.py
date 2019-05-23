@@ -172,7 +172,7 @@ def perfil_ingreso(ingreso_id):
     conceptos = Conceptos.query.all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
-    
+    empresas = Empresas.query.all()
         
     
     return render_template("perfil_ingreso.html", 
@@ -182,13 +182,27 @@ def perfil_ingreso(ingreso_id):
                            categorias = categorias, 
                            conceptos = conceptos,
                            formas_pago = formas_pago, 
-                           cuentas=cuentas)
+                           cuentas=cuentas,
+                           empresas=empresas)
 
 
-#Egresos Edit   
+#Ingresos Edit
 @blueprint.route('/editar_ingreso/<int:ingreso_id>"', methods=['GET', 'POST'])
 def editar_ingreso(ingreso_id):
-    return redirect("/")
+    if request.form:
+        data = request.form
+        ingreso = Ingresos.query.get(ingreso_id)
+        if "cliente" in data:
+            ingreso.cliente_id =  data["cliente"]
+        ingreso.empresa_id =  data["empresa"]
+        if  data["fecha_programada_pago"]:
+            ingreso.fecha_programada_pago = data["fecha_programada_pago"]
+        ingreso.fecha_vencimiento = data["fecha_vencimiento"]
+        ingreso.referencia = data["referencia"]
+        ingreso.numero_documento = data["numero_documento"]
+        ingreso.comentario = data["comentario"]
+        db.session.commit()
+    return redirect("/ingresos/perfil_ingreso/" + str(ingreso_id))
     
 
 #Egresos Delete
@@ -201,7 +215,7 @@ def borrar_ingreso(ingreso_id):
     calcular_saldo_cliente(ingreso.cliente_id)
     return  jsonify("deleted")
 
-#Egresos Delete
+#Ingresos Cancelar
 @blueprint.route("/cancelar_ingreso/<int:ingreso_id>",  methods=['GET', 'POST'])
 def cancelar_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
@@ -210,7 +224,6 @@ def cancelar_ingreso(ingreso_id):
     calcular_saldo_cliente(ingreso.cliente_id)
     print(ingreso)
     return  jsonify("deleted")
-
 
 
 ##### PAGOS ROUTES  #########
@@ -225,9 +238,11 @@ def pagos_recibidos():
 #perfil pago
 @blueprint.route('/perfil_pago_ingreso/<int:pago_id>', methods=['GET', 'POST'])
 def perfil_pago_ingreso(pago_id):
-    pago = Pagos_Ingresos.query.get(pago_id)    
+    pago = Pagos_Ingresos.query.get(pago_id)  
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()  
     
-    return render_template("perfil_pago_ingreso.html", pago=pago)
+    return render_template("perfil_pago_ingreso.html", pago=pago, formas_pago = formas_pago, cuentas=cuentas)
 
 ###### Borrar pago
 @blueprint.route("/borrar_pago/<int:pago_id>",  methods=['GET', 'POST'])
@@ -269,6 +284,24 @@ def cancelar_pago_ingreso(pago_id):
     db.session.commit()
     
     return  jsonify("deleted")
+
+#Editar pago
+@blueprint.route('/editar_pago/<int:pago_id>"', methods=['GET', 'POST'])
+def editar_pago(pago_id):
+    if request.form:
+        data = request.form
+        pago = Pagos.query.get(pago_id)
+        if "cuenta" in data:
+            pago.cuenta_id = data["cuenta"]
+        if "forma_pago" in data:
+            pago.forma_pago_id = data["forma_pago"]
+        if "referencia" in data:
+            pago.referencia_pago = data["referencia"]
+        if "fecha_pago" in data:
+            pago.fecha_pago = data["fecha_pago"]
+        pago.comentario = data["comentario"]
+        db.session.commit()
+    return redirect("/ingresos/perfil_pago_ingreso/" + str(pago_id))
 
 
 ###########MODALES  ###########

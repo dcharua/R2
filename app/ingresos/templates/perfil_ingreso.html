@@ -8,21 +8,19 @@
     <div class="card">
       <div class="header bg-black">
         <h2 class="font-24">Detalle de Ingreso: {{ingreso.id}}</h2>
-
-        {% if ingreso.pagos_ingresos|length > 0 %}
         <div class="select-btn-group">
-            <span class="btn bg-red cancel-ingreso" data-type="confirm"
-                data-url="{{ url_for('ingresos_blueprint.cancelar_ingreso', ingreso_id=ingreso.id) }}">Cancelar
-                Ingresos</span>
-        </div>
-        {% endif %}
-        {% if ingreso.pagos_ingresos|length == 0 %}
-        <div class="select-btn-group">
-            <span id="cancelar-pago" class="btn bg-red delete-ingreso" data-type="confirm"
-                data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar
-                Ingreso</span>
-        </div>
-        {% endif %}
+          <span class="btn btn-info editar-ingreso" data-cliente="{{ingreso.cliente_id}}" data-empresa="{{ingreso.empresa_id}}" data-toggle="modal" data-target="#modal_editar_ingreso">Editar ingreso</span>
+          {% if ingreso.pagos_ingresos|length > 0 %}
+          <span class="btn bg-red cancel-ingreso" data-type="confirm"
+          data-url="{{ url_for('ingresos_blueprint.cancelar_ingreso', ingreso_id=ingreso.id) }}">Cancelar
+          Ingresos</span>
+          {% endif %}
+          {% if ingreso.pagos_ingresos|length == 0 %}
+          <span id="cancelar-pago" class="btn bg-red delete-ingreso" data-type="confirm"
+            data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar
+            Ingreso</span>
+            {% endif %}
+          </div>
 
         </div>
 
@@ -317,6 +315,7 @@
     </div>
   </div>
 
+  {% include "modal_editar_ingreso.html" %}
   {% include "modal_conciliar_movimiento_ingreso.html" %}
   {% include "modal_reprogramar_fecha.html" %}
   {% include "modal_conciliar_ingreso.html" %}
@@ -346,6 +345,14 @@
   <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 
   <script>
+
+$('.editar-ingreso').on('click', function () {
+        $('#cliente').val($(this).attr("data-cliente"))
+        $('#empresa').val($(this).attr("data-empresa"))
+        $('.selectpicker').selectpicker('refresh')
+    });
+
+
 
     //solcitar pagar un ingreso
     $(".open-cobrar").on("click", function () {
@@ -655,6 +662,9 @@
           $("#referencia_conciliacion").prop('disabled', true);
         }
       });
+
+     
+
 
   </script>
   {% endblock javascripts %}
