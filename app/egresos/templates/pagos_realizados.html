@@ -245,7 +245,7 @@
     });
   });
 
-  //Solicitar Multiple get modal info
+  //Generar Multiple get modal info
   $('#open-generar-pago-multiple').on("click", function () {
     let pagos = []
     // Iterate over all checkboxes in the table
@@ -256,13 +256,14 @@
         pagos.push($(this).val())
       }
     })
-    $.get({
+    if (pagos.length > 0){
+      $.get({
       url: '/egresos/get_data_generar_pagos_multiple',
       data: {
         pagos: pagos
       },
       success: function (data) {
-
+      
         // $('#equictntbl').dataTable().fnDestroy();
         $('.table-modal-1').dataTable().fnDestroy();
         $('.table-modal-2').dataTable().fnDestroy();
@@ -286,11 +287,11 @@
         data.forEach(pago => {
           var html =
             `<tr>
-                            <td>${pago.beneficiario}</td>
-                            <td>${money.format(pago.monto_total)}</td>
-                            <td>${pago.cuenta}</td>
-                            <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
-                        <tr>`
+              <td>${pago.beneficiario}</td>
+              <td>${money.format(pago.monto_total)}</td>
+              <td>${pago.cuenta}</td>
+              <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
+            </tr>`
           if (pago.forma_pago.toLowerCase() == 'cheque') {
             var html =
               `<tr>
@@ -300,7 +301,7 @@
                             <td>${parseInt(pago.numero_cheque) + cheque_counter}</td>
                             <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
                             <input type="hidden" id="numero_cheque" name="numero_cheque" value="${parseInt(pago.numero_cheque) + cheque_counter++}">
-                        <tr>`
+              </tr>`
             if (numero_cuenta) {
               if (numero_cuenta != pago.cuenta_id) {
                 error = true;
@@ -316,16 +317,15 @@
               $('#referencia_pago_cheque').val(num);
             }
             cheque.insertAdjacentHTML('beforeend', html);
-            cheque.removeChild(cheque.lastChild);
+            
             c = true;
           } else if (pago.forma_pago.toLowerCase() == 'transferencia') {
             transferencia.insertAdjacentHTML('beforeend', html);
-            transferencia.removeChild(transferencia.lastChild);
+            
             t = true;
           } else {
             e = true;
             efectivo.insertAdjacentHTML('beforeend', html);
-            efectivo.removeChild(efectivo.lastChild);
           }
 
 
@@ -352,6 +352,14 @@
         ],
       });
     }, 100)
+    } else {
+      swal({
+                  title: "Error!",
+                  text: "Por favor seleccione al menos un pago",
+                  type: "error",
+                });
+    }
+    
   });
 
 
