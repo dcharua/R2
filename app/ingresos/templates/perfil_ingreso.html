@@ -99,9 +99,11 @@
       <div class="header bg-black">
         <h2> Pagos Pendientes</h2>
         <div class="select-btn-group">
-          <span id="generar-pago" class="btn js-modal-buttons bg-green open-cobrar" data-toggle="modal" 
-                data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
-            Generar Pago</span>
+            {% if (ingreso.status != 'por_conciliar' and ingreso.status != 'conciliado') %}
+            <span id="generar-pago" class="btn js-modal-buttons bg-green open-cobrar" data-toggle="modal" 
+                  data-url="{{ url_for('ingresos_blueprint.get_data_pagar', ingreso_id=ingreso.id) }}"> 
+              Generar Pago</span>
+            {% endif %}
         </div>
   
       </div>
