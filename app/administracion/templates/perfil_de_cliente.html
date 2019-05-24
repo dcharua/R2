@@ -194,12 +194,12 @@
 
                 <div class="table-responsive">
 
-                  <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
+                  <table class="table table-bordered table-striped table-hover doc-enviados dataTable" cellspacing="0"
                     width="100%">
 
                     <thead>
                       <tr>
-                        <th><input name="select_all" value="1" id="example-select-all" type="checkbox" class="table-check " /></th>
+                        <th><input name="select_all" value="1" class="table-check doc-enviados-select-all" type="checkbox"/></th>
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
@@ -227,7 +227,7 @@
                       <tr>
                         <td>
                           {% if ingreso.status == 'pendiente' or ingreso.status == 'parcial' %}
-                          <input name="select_all" value="{{ingreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                          <input name="select_all" value="{{ingreso.id}}" type="checkbox" class="table-check doc-enviados-table" />
                           {% endif %}
 
                         </td>
@@ -294,10 +294,10 @@
           </div>
           <div class="body">
             <div class="table-responsive">
-              <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+              <table class="table table-bordered table-striped table-hover js-pagos-cliente dataTable">
                 <thead>
                   <tr>
-                    <th><input name="select_all" value="1" class="select-all table-check" type="checkbox" /></th>
+                    <th><input name="select_all" value="1" id="pagos-cliente-select-all" type="checkbox" class="table-check" /></th>
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Forma</th>
@@ -326,7 +326,7 @@
                   <tr>
                     <td>
                       {% if pago.status == 'por_conciliar' %}
-                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check pagos-cliente-select-all" />
                       {% endif %}
                     </td>
                     <td>{{pago.id}}</td>
@@ -387,6 +387,7 @@
 {% include "modal_agregar_categoria_cliente.html" %}
 {% include "modal_editar_comentario.html" %}
 {% include "modal_editar_cliente.html" %}
+{% include "modal_pagar_ingresos_multiple.html" %}
 
 
 {% endblock content %}
@@ -495,7 +496,7 @@
  
 
       //Jquery table
-      var table2 = $('.js-basic-example2').DataTable({
+      var doc_enviados = $('.doc-enviados').DataTable({
         'order': [1, 'asc'],
         "columnDefs": [{
           "targets": 0,
@@ -504,13 +505,40 @@
       });
 
       // "Select all" control
-      $('.select-all').on('click', function () {
+      $('#doc-enviados-select-all').on('click', function () {
         // Check/uncheck all checkboxes in the table
-        var rows = table2.rows({
+        var rows = doc_enviados.rows({
           'search': 'applied'
         }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
       });
+
+
+
+      var pagos_cliente = $('.js-pagos-cliente').DataTable({
+            dom: 'Bfrtip',
+            responsive: true,
+            "order": [
+              [1, 'desc'],
+              [2, 'asc']
+            ],
+            buttons: [
+              'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            "columnDefs": [{
+              "targets": 0,
+              "orderable": false
+            }]
+          });
+
+          // "Select all" control
+          $('#pagos-cliente-select-all').on('click', function () {
+            // Check/uncheck all checkboxes in the table
+            var rows = pagos_cliente.rows({
+              'search': 'applied'
+            }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+          });
 
 
 
@@ -532,117 +560,248 @@
       });
 
 
-      // "Select all" control
-      $('.table-check').on('click', function () {
-            // Check/uncheck all checkboxes in the table
-            var rows = table.rows({
-              'search': 'applied'
-            }).nodes();
-            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+      //Jquery table
+
+      
+
+
+        $(".editar-cliente").on("click", function () {
+          $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+              console.log(data)
+              const html =
+                ` <div class="input-group" style="margin-bottom:20px !important">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 for="nombre"> Nombre </h4>
+                            <input type='text' class="form-control" name="nombre" value="${data.nombre}" data-validation="required" />
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <h4>Datos Generales</h4>
+                <hr class="mar-t-0">
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="razon_social"> Razón Social </label>
+                        <input type='text' class="form-control" value="${data.razon_social}" name="razon_social" />
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="RFC"> RFC </label>
+                        <input type='text' class="form-control" value= "${data.RFC}"  name="RFC" />
+                    </div>
+                </div>
+
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="direccion">Dirección </label>
+                        <input type='text' class="form-control" value="${data.direccion}"  name="direccion" />
+                    </div>
+                </div>
+
+                <h4>Datos Bancarios</h4>
+                <hr class="mar-t-0">
+
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cuenta_banco"> Cuenta de Banco </label>
+                        <input type='text' class="form-control"  value="${data.cuenta_banco}" name="cuenta_banco" />
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="banco"> Banco </label>
+                        <input type='text' class="form-control" value="${data.banco}" name="banco" />
+                    </div>
+                </div>
+
+                <div style="padding:10px;" class="header">
+                    <h4>Contactos del Cliente</h4>
+                </div>
+                <div style="padding:10px;" class="body" id="clone">
+                <div class="contactos-here"></div>
+                </div>
+              <input type="hidden" id="id" name="id" value="${data.id}">
+              <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+              <hr>`
+              let element = document.querySelector(".cliente-here");
+              element.innerHTML = "";
+              element.insertAdjacentHTML('beforeend', html);
+              var head =`<table style="table-layout: fixed;" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                                <th>Extensión</th>
+                                <th>Puesto</th>
+                            </tr>
+                        </thead>
+                        <tbody>`
+              data.contacto.forEach(contacto => {
+                let data =` <tr>
+                                <td>
+                                    <input type="text" value="${contacto.nombre}" name="nombre_contacto" style="width:100%">
+                                </td>
+                                <td>
+                                    <input type="email" value="${contacto.correo}" name="correo_contacto" style="width:100%">
+                                </td>
+                                <td>
+                                    <input type="tel" value="${contacto.telefono}" name="telefono_contacto" style="width:100%">
+                                </td>
+                                <td>
+                                    <input type="number" value="${contacto.extension}" name="extension_contacto" style="width:100%">
+                                </td>
+                                <td>
+                                    <input class="form-control" value="${contacto.puesto}" type="text" name="puesto_contacto">
+                                </td>
+                            </tr>`
+                            head +=data
+              });
+              const final = head + '</tbody></table>' 
+              let elemen = document.querySelector(".contactos-here");
+                elemen.insertAdjacentHTML('beforeend', final);
+              $('#modal_editar_cliente').modal('show');
+            }
           });
+        });
 
 
-          $(".editar-cliente").on("click", function () {
-            $.ajax({
-              url: $(this).attr("data-url"),
-              success: function (data) {
-                console.log(data)
-                const html =
-                  ` <div class="input-group" style="margin-bottom:20px !important">
-                      <div class="row">
-                          <div class="col-sm-12">
-                              <h4 for="nombre"> Nombre </h4>
-                              <input type='text' class="form-control" name="nombre" value="${data.nombre}" data-validation="required" />
-                          </div>
-                      </div>
+//Solicitar Multiple get modal info
+$('#open-pagar-multiple').on("click", function () {
+    let ingresos = []
+    // Iterate over all checkboxes in the table
+    $('.doc-enviados-table').each(function () {
+
+      // If checkbox is checked
+      if (this.checked) {
+        ingresos.push($(this).val())
+      }
+    })
+    $.get({
+      url: '/ingresos/get_data_pagar_multiple',
+      data: {
+        ingresos: ingresos
+      },
+      success: function (data) {
+        // Clean modal
+        document.querySelector(".multiple-here").innerHTML = "";
+        //group by clientes
+        data = _.mapValues(_.groupBy(data, 'cliente'), clist => clist.map(ingreso => _.omit(ingreso,
+          'cliente')));
+
+        var counter = 0;
+        var monto_total = 0;
+        //for each cliente
+        Object.keys(data).forEach(function (cliente) {
+          var total = data[cliente].map(data => Number(data.monto_total)).reduce((prev, next) =>
+            prev + next);
+          monto_total += total;
+          const html =
+            `<div class="box">
+                <div class="row" style="margin-bottom: 10px;">
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18" id="id">Cliente: <span class="font-bold">${cliente}</span></p>
                   </div>
-
-
-
-                  <h4>Datos Generales</h4>
-                  <hr class="mar-t-0">
-                  <div class="row" style="margin-bottom:20px !important">
-                      <div class="col-sm-12 col-md-6">
-                          <label for="razon_social"> Razón Social </label>
-                          <input type='text' class="form-control" value="${data.razon_social}" name="razon_social" />
-                      </div>
-                      <div class="col-sm-12 col-md-6">
-                          <label for="RFC"> RFC </label>
-                          <input type='text' class="form-control" value= "${data.RFC}"  name="RFC" />
-                      </div>
+                  <div class="col-sm-12 col-md-6">
+                    <p class="font-18">Monto a pagar: <span class="font-bold">${money.format(total)}</span></p>
+                    <input type="hidden" id="monto_total_${counter}" name="monto_total_${counter}" value="${total}">
                   </div>
+                </div>
 
-                  <div class="row" style="margin-bottom:20px !important">
-                      <div class="col-sm-12">
-                          <label for="direccion">Dirección </label>
-                          <input type='text' class="form-control" value="${data.direccion}"  name="direccion" />
-                      </div>
+                <div class="input-group">
+                  <div class="row" style="margin-bottom: 10px;">
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cliente"> Forma de pago </label><br>
+                        <select class="selectpicker" id="forma_pago" required data-live-search="true" name="forma_pago_id_${counter}" title="Seleccione una Forma de Pago..." data-width="100%">
+                          {% for forma in formas_pago %} 
+                          <option value="{{forma.id}}"> {{ forma }} </option>
+                          {% endfor %} 
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <label for="cliente"> Cuenta </label><br>
+                        <select class="selectpicker" id="cuenta" required data-live-search="true" name="cuenta_id_${counter}" title="Seleccione una Cuenta.." data-width="100%">
+                          {% for cuenta in cuentas %} 
+                          <option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                          {% endfor %} 
+                        </select>
+                    </div>
                   </div>
+                </div>
 
-                  <h4>Datos Bancarios</h4>
-                  <hr class="mar-t-0">
+                <table id="table" style="table-layout: fixed;" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>ID ingreso</th>
+                      <th>Monto</th>
+                      <th># de documento</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table${counter}">
+                  </tbody>
+                </table>
+              </div>`
+          //insert cliente group
+          document.querySelector(".multiple-here").insertAdjacentHTML('beforeend', html);
+          //for each ingreso in cliente
+          data[cliente].forEach(data => {
+            const table_data =
+              `
+                  <tr>
+                    <th>${data.ingreso_id}</th>
+                    <th>${money.format(data.monto_total)}</th>
+                    <th>${data.numero_documento}</th>
+                  </tr>
+                  <input type="hidden" id="ingreso${counter}" name="ingreso_${counter}" value="${data.ingreso_id}">
+                  `
+            //insert row to table
+            document.querySelector('.table' + counter).insertAdjacentHTML('beforeend', table_data);
+          })
+          counter++;
+          $('.selectpicker').selectpicker('refresh');
+        });
 
-                  <div class="row" style="margin-bottom:20px !important">
-                      <div class="col-sm-12 col-md-6">
-                          <label for="cuenta_banco"> Cuenta de Banco </label>
-                          <input type='text' class="form-control"  value="${data.cuenta_banco}" name="cuenta_banco" />
-                      </div>
-                      <div class="col-sm-12 col-md-6">
-                          <label for="banco"> Banco </label>
-                          <input type='text' class="form-control" value="${data.banco}" name="banco" />
-                      </div>
-                  </div>
+        //clean monto
+        document.querySelector(".monto-here").innerHTML = "";
+        //insert monto total
+        document.querySelector(".monto-here").insertAdjacentHTML('beforeend',
+          `<p class="font-18 right">Monto total a pagar: <span class="font-bold">${money.format(monto_total)}</span></p>
+          <input type="hidden" id="cantidad" name="cantidad" value=${counter}>
+          `
+        );
+      }
+    });
+    //show modal  
+    $('#modal_pagar_ingresos_multiple').modal('show');
+  });
 
-                  <div style="padding:10px;" class="header">
-                      <h4>Contactos del Cliente</h4>
-                  </div>
-                  <div style="padding:10px;" class="body" id="clone">
-                  <div class="contactos-here"></div>
-                  </div>
-                <input type="hidden" id="id" name="id" value="${data.id}">
-                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
-                <hr>`
-                let element = document.querySelector(".cliente-here");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                var head =`<table style="table-layout: fixed;" class="table table-striped">
-                          <thead>
-                              <tr>
-                                  <th>Nombre</th>
-                                  <th>Correo</th>
-                                  <th>Teléfono</th>
-                                  <th>Extensión</th>
-                                  <th>Puesto</th>
-                              </tr>
-                          </thead>
-                          <tbody>`
-                data.contacto.forEach(contacto => {
-                  let data =` <tr>
-                                  <td>
-                                      <input type="text" value="${contacto.nombre}" name="nombre_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input type="email" value="${contacto.correo}" name="correo_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input type="tel" value="${contacto.telefono}" name="telefono_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input type="number" value="${contacto.extension}" name="extension_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input class="form-control" value="${contacto.puesto}" type="text" name="puesto_contacto">
-                                  </td>
-                              </tr>`
-                              head +=data
-                });
-                const final = head + '</tbody></table>' 
-                let elemen = document.querySelector(".contactos-here");
-                  elemen.insertAdjacentHTML('beforeend', final);
-                $('#modal_editar_cliente').modal('show');
-              }
-            });
-          });
-    </script>
+    
+  //reprogramar multiple
+  $('#reprogramar_multiple').on('submit', function (e) {
+    // Iterate over all checkboxes in the table
+    let ingresos = []
+    $('.doc-enviados-table').each(function () {
+      // If checkbox is checked
+      if (this.checked) {
+        ingresos.push($(this).val())
+      }
+    })
+    $.get({
+      url: '/ingresos/reprogramar_fecha_multiple',
+      data: {
+        ingresos: ingresos,
+        fecha: $('#fecha').val()
+      },
+      success: function (data) {
+        location.reload();
+      }
+    });
+    // Prevent actual form submission
+    e.preventDefault();
+  });
+  
+  </script>
 {% endblock javascripts %}
   
