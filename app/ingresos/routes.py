@@ -550,9 +550,7 @@ def get_data_generar_pago_ingreso(pago_id):
 def reprogramar_fecha():
         if request.form:
             data = request.form
-            print(data)
             ingreso = Ingresos.query.get(data["ingreso_id"])
-            print(ingreso)
             ingreso.fecha_programada_pago = data["fecha"]
             db.session.commit()
             return redirect("/ingresos/cuentas_por_cobrar")
@@ -563,7 +561,6 @@ def reprogramar_fecha():
 @login_required
 def reprogramar_fecha_multiple():      
         ingresos = request.args.getlist('ingresos[]')
-        print(ingresos)
         fecha = request.args.get('fecha')
         for ingreso in ingresos:
             ingreso = Ingresos.query.get(ingreso)

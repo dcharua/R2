@@ -186,8 +186,7 @@
                 </h2>
                 <div class="select-btn-group">
                   <span class="btn btn-primary" id="open-pagar-multiple" data-toggle="modal" data-target="#modal_solicitar_multiple">Pagar</span>
-                  <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple">Reprogramar
-                    fecha</span>
+                  <span class="btn btn-warning" data-toggle="modal" data-target="#modal_reprogramar_fecha_multiple_ingreso">Reprogramar fecha</span>
                 </div>
               </div>
               <div class="body">
@@ -381,7 +380,7 @@
 {% include "modal_cobrar_cuentas_por_cobrar.html" %}
 {% include "modal_pagar_ingresos_multiple.html" %}
 {% include "modal_reprogramar_fecha_ingreso.html" %}
-{% include "modal_reprogramar_fecha_multiple.html" %}
+{% include "modal_reprogramar_fecha_multiple_ingreso.html" %}
 {% include "modal_conciliar_movimiento_ingreso.html" %}
 {% include "modal_conciliar_ingreso.html" %}
 {% include "modal_agregar_categoria_cliente.html" %}
@@ -406,6 +405,40 @@
     <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
     
     <script> 
+
+
+  //reprogramar multiple
+  $('#reprogramar_multiple').on('submit', function (e) {
+    // Iterate over all checkboxes in the table
+    let ingresos = []
+    $('.documentos-table-check').each(function () {
+      // If checkbox is checked
+      if (this.checked) {
+        ingresos.push($(this).val())
+      }
+    })
+    $.get({
+      url: '/ingresos/reprogramar_fecha_multiple',
+      data: {
+        ingresos: ingresos,
+        fecha: $('#fecha').val()
+      },
+      success: function (data) {
+        location.reload();
+      }
+    });
+    // Prevent actual form submission
+    e.preventDefault();
+  });
+
+      //reprogramar un ingreso
+        $(".open-reprogramar").on("click", function () {
+          const html = `  <input type="hidden" id="ingreso_id" name="ingreso_id" value="${$(this).attr("data-id")}">`
+          let element = document.querySelector(".ingreso_id_here");
+          element.innerHTML = "";
+          element.insertAdjacentHTML('beforeend', html);
+        });
+
 
         //Modal Conciliar multiple
 
