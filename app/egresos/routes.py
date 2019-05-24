@@ -122,7 +122,8 @@ def editar_egreso(egreso_id):
         if "beneficiario" in data:
             egreso.beneficiario_id =  data["beneficiario"]
         egreso.empresa_id =  data["empresa"]
-        egreso.fecha_programada_pago = data["fecha_programada_pago"]
+        if  data["fecha_programada_pago"]:
+            egreso.fecha_programada_pago = data["fecha_programada_pago"]
         egreso.fecha_vencimiento = data["fecha_vencimiento"]
         egreso.referencia = data["referencia"]
         egreso.numero_documento = data["numero_documento"]
