@@ -1,5 +1,5 @@
 from app.egresos import blueprint
-from flask import render_template, request, redirect, flash, jsonify
+from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
@@ -165,6 +165,7 @@ def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
+    writeString2('2019/02/02', pago.monto_total, pago.beneficiario.nombre, 'Concepto', 'Notas', 2)
     return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago)
 
 #Editar pago
@@ -560,10 +561,36 @@ def get_concepto_categoria(categoria_id):
   return jsonify(list)
 
 
+@blueprint.route('/reembolso_egreso/<int:egreso_id>', methods=['GET', 'POST'])
+def reembolso_egreso(egreso_id):
+  if request.form:
+    data = request.form
+    egreso = Egresos.query.get(egreso_id)
+    if ('parcial' in data):
+      monto = - data["monto_parcial"]
+      egreso.monto_total += monto
+      egreso.monto_pagado += monto
+    else:  
+      monto = - egreso.monto_pagado
+      egreso.monto_pagado = 0
+      egreso.monto_total += monto
+    pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
+    fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egreso.beneficiario_id)
+    ep = EgresosHasPagos(egreso=egreso, pago=pago, monto=monto)
+    db.session.commit()
+  return redirect("/egresos/perfil_egreso/" + str(egreso_id))
+
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+from reportlab.lib.pagesizes import portrait
+from PyPDF2 import PdfFileWriter, PdfFileReader
+from io import StringIO
+from num2words import num2words
 
 def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
 
-    cv = canvas.Canvas("sample_PDF2")
+    cv = canvas.Canvas("app/cheque")
 
     # Horizontal, Vertical
 
@@ -588,3 +615,4 @@ def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
     cv.drawString(360, 180, str(numero))
 
     cv.save()
+    return send_file('cheque', as_attachment=True)

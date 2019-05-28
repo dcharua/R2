@@ -11,14 +11,13 @@
             <span class="btn bg-red cancel-egreso" data-type="confirm"
                 data-url="{{ url_for('egresos_blueprint.cancelar_egreso', egreso_id=egreso.id) }}">Cancelar
                 egreso</span>
-                {% endif %}
-                {% if egreso.pagos|length == 0 %}
-                
+        {% endif %}
+        {% if egreso.pagos|length == 0 %}
                 <span id="cancelar-pago" class="btn bg-red delete-egreso" data-type="confirm"
                 data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar
                 egreso</span>
-                
-                {% endif %}
+        {% endif %}
+            <span id="cancelar-pago" class="btn bg-red reembolso-egreso"  data-toggle="modal" data-target="#modal_reembolso">Reembolso</span>
             </div>
     </div>
 
@@ -314,6 +313,7 @@
         </div>
     </div>
 </div>
+{% include "modal_reembolso.html" %}
 {% include "modal_editar_egreso.html" %}
 {% include "modal_editar_comentario.html" %}
 {% include "modal_pagar.html" %}
@@ -440,6 +440,16 @@
             $("#referencia_conciliacion").fadeOut()
         }
     });
+
+     // Conciliado check for modal generar pago
+     $("#conciliado_check_reembolso").change(function () {
+        if (this.checked) {
+            $("#referencia_conciliacion_reembolso").fadeIn()
+        } else {
+            $("#referencia_conciliacion_reembolso").fadeOut()
+        }
+    });
+
 
 
 
@@ -604,7 +614,6 @@
 
 
     $('.editar-detalle').on('click', function () {
-        console.log('in')
         $.ajax({
             url: $(this).attr("data-url"),
             success: function (data) {
@@ -615,7 +624,7 @@
             <div class="row" style="margin-bottom:20px !important">
                             <div class="col-sm-12 col-md-6">
                                     <label for="beneficiario"> Centro de negocios </label><br>
-                                    <select class="selectpicker"  data-live-search="true" 
+                                    <select class="selectpicker" id="centro-detalle" data-live-search="true" 
                                     name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
                                     {% for centro in centros_negocio %}
                                     <option value="{{centro.id}}"> {{ centro.nombre }} </option>
@@ -624,7 +633,7 @@
                             </div>
                             <div class="col-sm-12 col-md-6">
                                     <label for="proveedor"> Proveedor </label><br>
-                                    <select class="selectpicker"  data-live-search="true" 
+                                    <select class="selectpicker"  id="proveedor-detalle"  data-live-search="true" 
                                     name="proveedor" title="Seleccione un Proveedor..."
                                      data-width="100%">
                                      {% for provedor in proveedores %}
@@ -637,7 +646,7 @@
                         <div class="row" style="margin-bottom:20px !important">
                             <div class="col-sm-12 col-md-6">
                                 <label for="categoria"> Cuenta de Mayor </label>
-                                <select class="selectpicker" data-live-search="true" 
+                                <select class="selectpicker"   id="categoria-detalle" data-live-search="true" 
                                   name="categoria" title="Seleccione una Cuenta de Mayor..."
                                   data-width="100%">
                                   {% for categoria in categorias %}
@@ -648,7 +657,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <label for="concepto"> Cuenta de Menor</label>
                                 <select class="selectpicker"  
-                                data-live-search="true" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="100%">
+                                data-live-search="true"   id="concepto-detalle" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="100%">
                                 {% for concepto in conceptos %}
                                 <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                                 {% endfor %}
@@ -670,7 +679,7 @@
     
                         <div class="row" style="margin-bottom:20px !important">
                                 <div class="col-sm-12">
-                                    <label for="arrendadora"> Detallea </label>
+                                    <label for="arrendadora"> Descripción</label>
                                     <textarea name="comentario" id="comentario" style="width:100%" > ${data.descripcion}</textarea>
                                  </div>
                         </div>
@@ -686,6 +695,11 @@
                 let element = document.querySelector(".detalle-here");
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#centro-detalle').val(data.centro_negocios)
+                $('#proveedor-detalle').val(data.proveedor)
+                $('#categoria-detalle').val(data.categoria)
+                $('#concepto-detalle').val(data.concepto)
                 $('.selectpicker').selectpicker('refresh');
                 $('#modal_editar_detalle').modal('show');
             }
@@ -717,6 +731,14 @@
             $("#monto_parcial").fadeIn();
         } else {
             $("#monto_parcial").fadeOut();
+        }
+    });
+
+    $("#parcial_reembolso").change(function () {
+        if (this.checked) {
+            $("#monto_parcial_reembolso").fadeIn();
+        } else {
+            $("#monto_parcial_reembolso").fadeOut();
         }
     });
 

@@ -312,6 +312,12 @@ def editar_comentario():
         elif (data["type"] == "Cliente"):
             obj = Clientes.query.get(data["id"])
             obj.comentarios = data["comentario"]
+        elif (data["type"] == "Ingreso"):
+            obj = Ingresos.query.get(data["id"])
+            obj.comentario = data["comentario"]
+        elif (data["type"] == "PagoIngreso"):
+            obj = Pagos_Ingresos.query.get(data["id"])
+            obj.comentario = data["comentario"]
         db.session.commit()  
     return redirect(data["url"])
 
@@ -324,7 +330,8 @@ def borrar_categoria_beneficiario(categoria_id, beneficiario_id):
   db.session.commit()  
   return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))
 
-#CONTACTOS
+#CONTACTOS 
+#BENEFICIARIOS
 #BORRAR
 @blueprint.route('/borrar_contacto/<contacto_id>', methods=['GET', 'POST'])
 @login_required
@@ -348,3 +355,30 @@ def agregar_contacto(beneficiario_id):
     db.session.add(contacto)
     db.session.commit()
   return redirect('/administracion/perfil_de_beneficiario/'+str(beneficiario_id))
+
+#Cliente
+
+#CONTACTOS
+#BORRAR
+@blueprint.route('/borrar_contacto_cliente/<contacto_id>', methods=['GET', 'POST'])
+@login_required
+def borrar_contacto_cliente(contacto_id):
+  contacto = ContactoCliente.query.get(contacto_id)
+  db.session.delete(contacto)
+  db.session.commit()
+  return jsonify('success') 
+
+#CONTACTOS
+#AGREGAR
+@blueprint.route('/agregar_contacto_cliente/<cliente_id>', methods=['GET', 'POST'])
+@login_required
+def agregar_contacto_cliente(cliente_id):
+  if request.form:
+    data = request.form
+    cliente = Clientes.query.get(cliente_id)
+    contacto = ContactoCliente(nombre=data["nombre_contacto"], correo=data["correo_contacto"],
+              telefono=data["telefono_contacto"], extension=data["extension_contacto"], puesto=data["puesto_contacto"])
+    cliente.contacto.append(contacto) 
+    db.session.add(contacto)
+    db.session.commit()
+  return redirect('/administracion/perfil_de_cliente/'+str(cliente_id))

@@ -265,9 +265,9 @@
       success: function (data) {
       
         // $('#equictntbl').dataTable().fnDestroy();
-        $('.table-modal-1').dataTable().fnDestroy();
-        $('.table-modal-2').dataTable().fnDestroy();
-        $('.table-modal-3').dataTable().fnDestroy();
+        //$('.table-modal-1').dataTable().fnDestroy();
+        //$('.table-modal-2').dataTable().fnDestroy();
+        //$('.table-modal-3').dataTable().fnDestroy();
 
         var c = false;
         var t = false;
@@ -351,13 +351,13 @@
           'copy', 'csv', 'excel', 'pdf', 'print'
         ],
       });
-    }, 100)
+    }, 500)
     } else {
       swal({
-                  title: "Error!",
-                  text: "Por favor seleccione al menos un pago",
-                  type: "error",
-                });
+        title: "Error!",
+        text: "Por favor seleccione al menos un pago",
+        type: "error",
+      });
     }
     
   });
