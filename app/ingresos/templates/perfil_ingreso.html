@@ -115,7 +115,7 @@
                     <th>ID</th>
                     <th>Forma</th>
                     <th>Cuenta</th>
-                    <th>Descripcion</th>
+                    <th>Referencia</th>
                     <th>Monto</th>
                     <th>Status</th>
                     <th>Acciones</th>
@@ -127,7 +127,7 @@
                     <th>ID</th>
                     <th>Forma</th>
                     <th>Cuenta</th>
-                    <th>Descripcion</th>
+                    <th>Referencia</th>
                     <th>Monto</th>
                     <th>Status</th>
                     <th>Acciones</th>
@@ -141,7 +141,7 @@
                 <td>{{pago.id}}</td>
                 <td>{{pago.forma_pago}}</td>
                 <td>{{pago.cuenta.nombre}}</td>
-                <td>{{pago.descripcion}}</td>
+                <td>{{pago.referencia_pago}}</td>
                 <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                 <td> {% if pago.status == 'conciliado' %}
                   <span class="badge bg-liquidado">Liquidado</span>
@@ -193,7 +193,7 @@
                         <th>Fecha de pago</th>
                         <th>Forma</th>
                         <th>Cuenta</th>
-                        <th>Descripcion</th>
+                        <th>Referencia</th>
                         <th>Monto Venta</th>
                         <th>Status</th>
                         <th>Acciones</th>
@@ -205,7 +205,7 @@
                         <th>Fecha de pago</th>
                         <th>Forma</th>
                         <th>Cuenta</th>
-                        <th>Descripcion</th>
+                        <th>Referencia</th>
                         <th>Monto Venta</th>
                         <th>Status</th>
                         <th>Acciones</th>
@@ -222,7 +222,7 @@
                     <td>{{pago.fecha_pago}}</td>
                     <td>{{pago.forma_pago}}</td>
                     <td>{{pago.cuenta.nombre}}</td>
-                    <td>{{pago.descripcion}}</td>
+                    <td>{{pago.referencia_pago}}</td>
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                     <td> {% if pago.status == 'conciliado' %}
                       <span class="badge bg-liquidado">Liquidado</span>
