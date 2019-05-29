@@ -748,7 +748,21 @@
         $('.selectpicker').selectpicker('refresh')
     });
 
-
+    $('.categoria').on('change', function () {
+    let id = "#concepto" + $(this).attr('id').slice(-1);
+    let element = document.querySelector(id);
+    $.ajax({
+      url: '/egresos/get_concepto_categoria/' + this.value,
+      success: function (data) {
+        element.innerHTML = "";
+        data.forEach(c => {
+          const html = `<option value="${c.id}"> ${c.nombre} </option>`
+          element.insertAdjacentHTML('beforeend', html);
+        });
+        $(id).selectpicker('refresh');
+      }
+    });
+  });
 
 
 </script>

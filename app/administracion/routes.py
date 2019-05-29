@@ -37,7 +37,7 @@ def perfil_de_beneficiario(beneficiario_id):
       if egreso.status == 'liquidado':
         documentos_liquidados += 1
       elif egreso.status == 'cancelado':
-        documentos_liquidados += 1
+        documentos_cancelados += 1
       elif egreso.status == 'pendiente':
         documentos_pendientes += 1
       elif egreso.status == 'solicitado':

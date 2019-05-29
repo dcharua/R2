@@ -435,7 +435,9 @@
 
       //reprogramar un ingreso
         $(".open-reprogramar").on("click", function () {
-          const html = `  <input type="hidden" id="ingreso_id" name="ingreso_id" value="${$(this).attr("data-id")}">`
+          const html = `  
+          <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+          <input type="hidden" id="ingreso_id" name="ingreso_id" value="${$(this).attr("data-id")}">`
           let element = document.querySelector(".ingreso_id_here");
           element.innerHTML = "";
           element.insertAdjacentHTML('beforeend', html);
@@ -594,6 +596,7 @@
         document.querySelector(".monto-here").insertAdjacentHTML('beforeend',
           `<p class="font-18 right">Monto total a pagar: <span class="font-bold">${money.format(monto_total)}</span></p>
           <input type="hidden" id="cantidad" name="cantidad" value=${counter}>
+          <input type='hidden' class="form-control" name="url" value="${window.location}"/>
           `
         );
       }

@@ -118,7 +118,15 @@
                       <tbody class="here">
                         <tr>
                           <td>
-                            <select class="selectpicker" name="categoria" title="Seleccione una Cueenta de Mayor..." data-width="80%">
+                            <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
+                              {% for centro in centros_negocios %}
+                              <option value="{{centro.id}}"> {{ centro.nombre | safe }} </option>
+                              {% endfor %}
+                            </select>
+                          </td>
+
+                          <td>
+                            <select class="selectpicker categoria" id="categoria0" name="categoria" title="Seleccione una Cuenta de Mayor..." data-width="80%">
                               {% for categoria in categorias %}
                               <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
                               {% endfor %}
@@ -126,20 +134,13 @@
                           </td>
 
                           <td>
-                            <select class="selectpicker" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="80%">
+                            <select class="selectpicker" id="concepto0" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="80%">
                               {% for concepto in conceptos %}
                               <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
                               {% endfor %}
                             </select>
                           </td>
                           
-                          <td>
-                            <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
-                              {% for centro in centros_negocios %}
-                              <option value="{{centro.id}}"> {{ centro.nombre | safe }} </option>
-                              {% endfor %}
-                            </select>
-                          </td>
 
                           <td>
                             <input class="form-control" type="text" name="monto" data-validation="number" data-validation="number" data-validation-allowing="float">
@@ -247,29 +248,13 @@
 <script>
 
  $(document).ready(function () {
-    var counter=0;
+    var counter=1;
 
 
 $("#add-row").click(function () {
         const html = `
                 <tr>
-                      <td>
-                        <select class="selectpicker" name="categoria" title="Seleccione un Centro de Negocios..." data-width="80%">
-                          {% for categoria in categorias %}
-                          <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
-                          {% endfor %}
-                        </select>
-                      </td>
-
-                      <td>
-                        <select class="selectpicker" name="concepto" title="Seleccione un Centro de Negocios..." data-width="80%">
-                          {% for concepto in conceptos %}
-                          <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
-                          {% endfor %}
-                        </select>
-                      </td>
-                      
-                      <td>
+                    <td>
                         <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
                           {% for centro in centros_negocios %}
                           <option value="{{centro.id}}"> {{ centro.nombre | safe }} </option>
@@ -277,6 +262,23 @@ $("#add-row").click(function () {
                         </select>
                       </td>
 
+                      <td>
+                        <select class="selectpicker" name="categoria" id="categoria${counter}"  title="Seleccione una Cuenta de mayor..." data-width="80%">
+                          {% for categoria in categorias %}
+                          <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
+                          {% endfor %}
+                        </select>
+                      </td>
+
+                      <td>
+                        <select class="selectpicker" name="concepto" id="concepto${counter}"  title="Seleccione una Cuenta de menor..." data-width="80%">
+                          {% for concepto in conceptos %}
+                          <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
+                          {% endfor %}
+                        </select>
+                      </td>
+                      
+                     
                       <td>
                         <input class="form-control" type="text"  name="monto" data-validation="number" data-validation-allowing="float">
                       </td>
@@ -320,6 +322,24 @@ $("#conciliado_check").change(function () {
       $("#referencia_conciliacion").prop('disabled', true);
     }
   });
+
+  $('.categoria').on('change', function () {
+    let id = "#concepto" + $(this).attr('id').slice(-1);
+    let element = document.querySelector(id);
+    $.ajax({
+      url: '/ingresos/get_concepto_categoria/' + this.value,
+      success: function (data) {
+        console.log(data)
+        element.innerHTML = "";
+        data.forEach(c => {
+          const html = `<option value="${c.id}"> ${c.nombre} </option>`
+          element.insertAdjacentHTML('beforeend', html);
+        });
+        $(id).selectpicker('refresh');
+      }
+    });
+  });
+
 
 </script>
 {% endblock javascripts %}

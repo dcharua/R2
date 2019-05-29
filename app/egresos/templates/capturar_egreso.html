@@ -401,7 +401,6 @@
     $.ajax({
       url: '/egresos/get_concepto_categoria/' + this.value,
       success: function (data) {
-        console.log(data)
         element.innerHTML = "";
         data.forEach(c => {
           const html = `<option value="${c.id}"> ${c.nombre} </option>`

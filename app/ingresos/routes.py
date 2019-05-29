@@ -17,7 +17,6 @@ def route_template(template):
 def calcular_saldo_cliente(cliente_id):
     
     cliente = Clientes.query.get(cliente_id)
-    print('Cliente = ',cliente)
     ingresos = cliente.ingresos
     saldo_pendiente = 0
     saldo_por_conciliar = 0
@@ -115,13 +114,7 @@ def captura_ingresos():
                                       numero_control = data.getlist("numero_control")[i], 
                                       descripcion=data.getlist("descripcion")[i])
             ingreso.detalles.append(detalle)
-        
-        
-        
-            
-        print('Linea 90')
         db.session.add(ingreso)  
-        print('Linea 92')
         db.session.commit()
         calcular_saldo_cliente(data["cliente"])
         
@@ -130,7 +123,7 @@ def captura_ingresos():
     clientes = Clientes.query.all()
     empresas = Empresas.query.all()
     centros_negocios = CentrosNegocio.query.all()
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo=="ingreso").all()
     conceptos = Conceptos.query.all()
     cuentas_banco = Cuentas.query.all()
     formas_pago = FormasPago.query.all()
@@ -138,8 +131,6 @@ def captura_ingresos():
     
 
     return render_template("capturar_ingreso.html",
-                           navbar_data_capture = 'active',
-                           title = "aaaRegistro de ingresos",
                            tipo_ingreso = tipo_ingreso,
                            clientes = clientes,
                            categorias  = categorias,
@@ -147,13 +138,11 @@ def captura_ingresos():
                            cuentas_banco = cuentas_banco,
                            centros_negocios = centros_negocios,
                            formas_pago = formas_pago,        
-                           empresas = empresas,
-                           velocity_max = 1)
+                           empresas = empresas)
 
 
 @blueprint.route('/cuentas_por_cobrar', methods=['GET', 'POST'])
 def cuentas_por_cobrar():
-    print(Ingresos.query.all())
     ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').all()
     ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').filter(Ingresos.status != 'cancelado').all()
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
@@ -208,7 +197,6 @@ def editar_ingreso(ingreso_id):
 #Ingresos Delete
 @blueprint.route("/borrar_ingreso/<int:ingreso_id>",  methods=['GET', 'POST'])
 def borrar_ingreso(ingreso_id):
-    print('En Borrar Ingreso!')
     ingreso = Ingresos.query.get(ingreso_id)
     db.session.delete(ingreso)
     db.session.commit()
@@ -222,7 +210,6 @@ def cancelar_ingreso(ingreso_id):
     ingreso.status ='cancelado'
     db.session.commit()
     calcular_saldo_cliente(ingreso.cliente_id)
-    print(ingreso)
     return  jsonify("deleted")
 
 
@@ -262,9 +249,7 @@ def borrar_pago(pago_id):
 ###### Cancelar pago
 @blueprint.route("/cancelar_pago_ingreso/<int:pago_id>",  methods=['GET', 'POST'])
 def cancelar_pago_ingreso(pago_id):
-    
     pago = Pagos_Ingresos.query.get(pago_id)
-    
     for ingreso in pago.ingresos:
         ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id ).first()
         if pago.status == 'conciliado':
@@ -311,7 +296,6 @@ def editar_pago(pago_id):
 @login_required
 def get_data_pagar(ingreso_id):
         ingreso = Ingresos.query.get(ingreso_id)   
-
         return jsonify(ingreso_id = ingreso.id, cliente = str(ingreso.cliente.nombre), monto_total = str(ingreso.monto_total), 
         monto_pagado = str(ingreso.monto_pagado),monto_por_conciliar = str(ingreso.monto_por_conciliar), numero_documento = ingreso.numero_documento)
 
@@ -320,11 +304,9 @@ def get_data_pagar(ingreso_id):
 @blueprint.route('/mandar_cobrar', methods=['GET', 'POST'])
 @login_required
 def mandar_cobrar():
-
     if request.form:
         data = request.form
         ingreso = Ingresos.query.get(data["ingreso_id"])
-        
         if ('conciliado_check' in data):
             status_pago = 'conciliado'
     
@@ -405,11 +387,10 @@ def mandar_cobrar_multiple():
                             db.session.add(ep)
                             db.session.commit()
                             calcular_saldo_cliente(ing.cliente_id)
-                    
-                    
-                    
-
-                return  redirect("/ingresos/cuentas_por_cobrar")   
+                if ('url' in data):
+                    return redirect(data["url"])
+                else:
+                    return  redirect("/ingresos/cuentas_por_cobrar")   
 
 
 
@@ -444,30 +425,19 @@ def conciliar_pago_ingreso():
                 pago.referencia_conciliacion = data["referencia"]
                 pago.fecha_conciliacion = data["fecha"]
                 pago.comentario = data["comentario"]
-
-                print('Pago ID = ',pago.id)            
                 ep = IngresosHasPagos.query.filter_by(pago_id = pago.id)
-                print(type(ep))
-                print(list(ep))
 
                 for p in list(ep):
-                    print('ingros_has_pago = ',p)
-                    print('-Id = ',p.ingreso_id)
-                    print('-Monto = ',p.monto)
-
-
                     ingreso = Ingresos.query.get(p.ingreso_id)
-
                     ingreso.monto_por_conciliar -= p.monto
-                    print('ingreso.monto_pagado = ',ingreso.monto_pagado)
                     ingreso.monto_pagado += p.monto
-                    print('ingreso.monto_pagado = ',ingreso.monto_pagado)
-
                     ingreso.setStatus()
                     calcular_saldo_cliente(ingreso.cliente_id)
                     db.session.commit()
-                    
-            return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
+            if ('url' in data):
+                return redirect(data["url"])
+            else:       
+                return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
         
 #Desconciliar Pago
 @blueprint.route("/desconciliar_pago_ingreso/<int:pago_id>",  methods=['GET', 'POST'])
@@ -493,8 +463,6 @@ def desconciliar_pago_ingreso(pago_id):
 @blueprint.route('/conciliar_ingreso', methods=['GET', 'POST'])
 @login_required
 def conciliar_ingreso():
-        print('En conciliar_ingreso!')
-        
         if request.form:
             data = request.form
             ingreso = Ingresos.query.get(data["ingreso_id"])
@@ -523,9 +491,7 @@ def conciliar_ingreso():
 def get_data_conciliar_multiple():
         list = []
         pagos = request.args.getlist('pagos[]')
-        print('HERE!')
         for pago in pagos:
-            print(pago)
             p =  Pagos_Ingresos.query.get(pago)
             list.append({'pago_id': p.id, 'cliente': p.cliente.nombre, 'monto_total': str(p.monto_total), 'referencia': p.referencia_pago, 'cuenta': p.cuenta.nombre})
         return jsonify(list)
@@ -553,7 +519,10 @@ def reprogramar_fecha():
             ingreso = Ingresos.query.get(data["ingreso_id"])
             ingreso.fecha_programada_pago = data["fecha"]
             db.session.commit()
-            return redirect("/ingresos/cuentas_por_cobrar")
+            if ('url' in data):
+                return redirect(data["url"])
+            else:
+                return redirect("/ingresos/cuentas_por_cobrar")
 
 
 #reprogramar fecha multiple
@@ -608,16 +577,6 @@ def agregar_detalle(ingreso_id):
 def get_data_editar_detalle(detalle_id):
 
     detalle = DetallesIngreso.query.get(detalle_id)
-    print('ID = ',detalle.id)
-    print('centro_negocios=',detalle.centro_negocios_id)
-    print('cliente=',detalle.cliente_id)
-    print('monto=',str(detalle.monto))
-    print('categoria =',detalle.categoria_id)
-    print('concepto=',detalle.concepto_id)
-    print('numero_control=',detalle.numero_control)
-    print('descripcion=',detalle.descripcion)
-    
-
     return jsonify(id = detalle.id, centro_negocios = detalle.centro_negocios_id, 
                        cliente=detalle.cliente_id,  monto=str(detalle.monto), 
                        categoria = detalle.categoria_id , concepto=detalle.concepto_id, 
@@ -641,3 +600,13 @@ def editar_detalle(ingreso_id):
                 detalle.descripcion = data["comentario"]
                 db.session.commit()
                 return redirect("/ingresos/perfil_ingreso/"+str(ingreso_id))
+
+
+@blueprint.route('/get_concepto_categoria/<int:categoria_id>', methods=['GET', 'POST'])
+def get_concepto_categoria(categoria_id):
+  list = []
+  conceptos = Conceptos.query.filter_by(categoria_id=categoria_id).all()
+  for concepto in conceptos:
+    list.append({'id': concepto.id, 'nombre': concepto.nombre})
+  return jsonify(list)
+

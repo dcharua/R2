@@ -531,7 +531,8 @@
           //reprogramar un egreso
           $("#open-reprogramar").on("click", function () {
             const html =
-              `  <input type="hidden" id="egreso_id" name="egreso_id" value="${$(this).attr("data-id")}">`
+              `  <input type="hidden" id="egreso_id" name="egreso_id" value="${$(this).attr("data-id")}">
+              <input type='hidden' class="form-control" name="url" value="${window.location}"/>`            
             let element = document.querySelector(".egreso_id_here");
             element.innerHTML = "";
             element.insertAdjacentHTML('beforeend', html);
