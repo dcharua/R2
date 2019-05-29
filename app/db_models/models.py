@@ -257,6 +257,7 @@ class Egresos(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    fecha_documento = Column(Date)
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
@@ -353,6 +354,7 @@ class Ingresos(db.Model):
     referencia = Column(String(200))
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
+    fecha_documento = Column(Date)
     numero_documento = Column(String(20))
     monto_total = Column(Numeric(10, 2))
     monto_pagado = Column(Numeric(10, 2))

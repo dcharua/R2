@@ -55,6 +55,7 @@ def captura_ingresos():
         ingreso = Ingresos(cliente_id = data["cliente"],
                            tipo_ingreso_id = data["tipo_ingreso"],
                            fecha_vencimiento = data["fecha_vencimiento"], 
+                           fecha_documento = data["fecha_documento"],
                            numero_documento = data["numero_documento"],
                            empresa_id = data["empresa"],
                            referencia = data["referencia"],
@@ -348,8 +349,10 @@ def mandar_cobrar():
         db.session.add(ep)
         db.session.add(pago)
         db.session.commit()
-        
-        return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
+        if ('url' in data):
+            return redirect(data["url"])
+        else:
+            return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
 
 
 # Solicitar multiples pagos data for modal 
@@ -415,10 +418,7 @@ def get_data_conciliar(ingreso_id):
 def conciliar_pago_ingreso():
         if request.form:
             data = request.form
-            print(data)
             pagos = (data.getlist('pago_id'))
-            print('PAGOS = ',pagos)
-
             for pago_id in pagos:
                 pago = Pagos_Ingresos.query.get(pago_id)
                 pago.status = 'conciliado';
@@ -437,7 +437,7 @@ def conciliar_pago_ingreso():
             if ('url' in data):
                 return redirect(data["url"])
             else:       
-                return  redirect("/ingresos/perfil_ingreso/"+str(ingreso.id))  
+                return  redirect("/ingresos/perfil_ingreso/"+str(pago.ingreso_id))  
         
 #Desconciliar Pago
 @blueprint.route("/desconciliar_pago_ingreso/<int:pago_id>",  methods=['GET', 'POST'])
@@ -609,4 +609,27 @@ def get_concepto_categoria(categoria_id):
   for concepto in conceptos:
     list.append({'id': concepto.id, 'nombre': concepto.nombre})
   return jsonify(list)
+
+@blueprint.route('/reembolso/<int:ingreso_id>', methods=['GET', 'POST'])
+def reembolso(ingreso_id):
+  if request.form:
+    data = request.form
+    ingreso = Ingresos.query.get(ingreso_id)
+    if ('parcial' in data):
+      monto = - data["monto_parcial"]
+      ingreso.monto_total += monto
+      ingreso.monto_pagado += monto
+    else:  
+      monto = - ingreso.monto_pagado
+      ingreso.monto_pagado = 0
+      ingreso.monto_total += monto
+    pago = Pagos_Ingresos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
+    fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], cliente_id=ingreso.cliente_id)
+    ip = IngresosHasPagos(ingreso=ingreso, pago=pago, monto=monto)
+    detalle = DetallesIngreso(centro_negocios_id=data["centro_negocios"], cliente_id = ingreso.cliente_id,
+                        categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
+                        numero_control='reembolso', descripcion=data["comentario"])
+    ingreso.detalles.append(detalle)
+    db.session.commit()
+  return redirect("/ingresos/perfil_ingreso/" + str(ingreso_id))
 

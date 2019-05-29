@@ -16,7 +16,7 @@ def route_template(template):
 @login_required
 def beneficiarios():
     beneficiarios = Beneficiarios.query.all()
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
     return render_template("beneficiarios.html", beneficiarios=beneficiarios, categorias=categorias)      
 
 @blueprint.route('/perfil_de_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])

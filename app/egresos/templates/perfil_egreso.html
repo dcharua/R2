@@ -17,7 +17,7 @@
                 data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar
                 egreso</span>
         {% endif %}
-            <span id="cancelar-pago" class="btn bg-red reembolso-egreso"  data-toggle="modal" data-target="#modal_reembolso">Reembolso</span>
+            <span class="btn bg-red reembolso-egreso"  data-toggle="modal" data-target="#modal_reembolso">Reembolso</span>
             </div>
     </div>
 
@@ -441,14 +441,6 @@
         }
     });
 
-     // Conciliado check for modal generar pago
-     $("#conciliado_check_reembolso").change(function () {
-        if (this.checked) {
-            $("#referencia_conciliacion_reembolso").fadeIn()
-        } else {
-            $("#referencia_conciliacion_reembolso").fadeOut()
-        }
-    });
 
 
 

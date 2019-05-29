@@ -36,7 +36,7 @@ def agregar_centro():
         empresa_id=data["empresa"],  arrendadora=data["arrendadora"],  comentario=data["comentario"]  ) 
         db.session.add(centro) 
         db.session.commit()   
-        return redirect("/administracion/otros")  
+        return redirect("/administracion/centros_negocios")  
 
 
 @blueprint.route('/agregar_concepto', methods=['GET', 'POST'])

@@ -42,6 +42,24 @@
                 </div>
               </div>
 
+              <div class="input-group">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6 ">
+                    <label for="ref"># de Documento</label>
+                    <input class="form-control" type="text" id="ref" name="numero_documento" data-validation="required">
+                  </div>
+                  <div class="col-sm-12 col-md-6 ">
+                    <label> Fecha de documento </label>
+                    <div class='input-group date mydatepicker' data-provide="datepicker">
+                      <input type='text' class="form-control set-today" name="fecha_documento" autocomplete="off" required/>
+                      <span class="input-group-addon">
+                        <i class="material-icons mydate">date_range</i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="input-group ">
                 <div class="row">
                   <div class="col-sm-12 col-md-6 ">
@@ -68,10 +86,6 @@
 
               <div class="input-group">
                 <div class="row">
-                  <div class="col-sm-12 col-md-6 ">
-                    <label for="ref"># de Documento</label>
-                    <input class="form-control" type="text" id="ref" name="numero_documento" data-validation="required">
-                  </div>
                   <div class="col-sm-12 col-md-6 ">
                     <label for="referencia">Referencia/ Orden de compra </label>
                     <input class="form-control" type="text" id="referencia" name="referencia">
@@ -130,10 +144,11 @@
                             {% endfor %}
                           </select>
                         </td>
-                        <td >
+                        <td>
 
                           <select class="selectpicker categoria" data-live-search="true" name="categoria"
-                            title="Seleccione una Cuenta de Mayor..." data-width="80%" data-validation="required" id="categoria0">
+                            title="Seleccione una Cuenta de Mayor..." data-width="80%" data-validation="required"
+                            id="categoria0">
                             {% for categoria in categorias %}
                             <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
                             {% endfor %}
@@ -143,9 +158,9 @@
                           <select class="selectpicker" data-live-search="true" name="concepto"
                             title="Seleccione una Cuenta de Menor..." data-width="80%" data-validation="required"
                             id="concepto0">
-                              {% for concepto in conceptos %}
-                                <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
-                              {% endfor %}
+                            {% for concepto in conceptos %}
+                            <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
+                            {% endfor %}
                           </select>
                         </td>
                         <td>
@@ -346,13 +361,13 @@
   $('#beneficiario').change(function () {
     $("#proveedor0").val($(this).val());
     $("#proveedor0").selectpicker('refresh');
-    let id = "#categoria0" 
+    let id = "#categoria0"
     let element = document.querySelector(id);
     $.ajax({
       url: '/egresos/get_beneficiario_categorias/' + this.value,
       success: function (data) {
         element.innerHTML = "";
-        if(data.length > 0){
+        if (data.length > 0) {
           data.forEach(c => {
             const html = `<option value="${c.id}"> ${c.nombre} </option>`
             element.insertAdjacentHTML('beforeend', html);
@@ -363,54 +378,53 @@
                         {% endfor %}`
           element.insertAdjacentHTML('beforeend', html);
         }
-       
+
         $(id).selectpicker('refresh');
       }
     });
   });
 
-  function initChangers(){
+  function initChangers() {
     $('.proveedor').on('change', function () {
-    let id = "#categoria" + $(this).attr('id').slice(-1);
-    let element = document.querySelector(id);
-    $.ajax({
-      url: '/egresos/get_beneficiario_categorias/' + this.value,
-      success: function (data) {
-        element.innerHTML = "";
-        if(data.length > 0){
+      let id = "#categoria" + $(this).attr('id').slice(-1);
+      let element = document.querySelector(id);
+      $.ajax({
+        url: '/egresos/get_beneficiario_categorias/' + this.value,
+        success: function (data) {
+          element.innerHTML = "";
+          if (data.length > 0) {
+            data.forEach(c => {
+              const html = `<option value="${c.id}"> ${c.nombre} </option>`
+              element.insertAdjacentHTML('beforeend', html);
+            });
+          } else {
+            const html = `{% for categoria in categorias %}
+                          <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
+                        {% endfor %}`
+            element.insertAdjacentHTML('beforeend', html);
+          }
+
+          $(id).selectpicker('refresh');
+        }
+      });
+    });
+
+
+    $('.categoria').on('change', function () {
+      let id = "#concepto" + $(this).attr('id').slice(-1);
+      let element = document.querySelector(id);
+      $.ajax({
+        url: '/egresos/get_concepto_categoria/' + this.value,
+        success: function (data) {
+          element.innerHTML = "";
           data.forEach(c => {
             const html = `<option value="${c.id}"> ${c.nombre} </option>`
             element.insertAdjacentHTML('beforeend', html);
           });
-        } else {
-          const html = `{% for categoria in categorias %}
-                          <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
-                        {% endfor %}`
-          element.insertAdjacentHTML('beforeend', html);
+          $(id).selectpicker('refresh');
         }
-       
-        $(id).selectpicker('refresh');
-      }
+      });
     });
-  });
-
-
-  $('.categoria').on('change', function () {
-    let id = "#concepto" + $(this).attr('id').slice(-1);
-    let element = document.querySelector(id);
-    $.ajax({
-      url: '/egresos/get_concepto_categoria/' + this.value,
-      success: function (data) {
-        element.innerHTML = "";
-        data.forEach(c => {
-          const html = `<option value="${c.id}"> ${c.nombre} </option>`
-          element.insertAdjacentHTML('beforeend', html);
-        });
-        $(id).selectpicker('refresh');
-      }
-    });
-  });
-}
- 
+  }
 </script>
 {% endblock javascripts %}
