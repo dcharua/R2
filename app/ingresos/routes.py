@@ -338,7 +338,7 @@ def mandar_cobrar():
         pago = Pagos_Ingresos(status = status_pago , cliente = ingreso.cliente, fecha_pago = datetime.now(),
                               fecha_conciliacion = fecha_conciliacion, monto_total = monto_total_pago, 
                               cuenta_id = data["cuenta_id"], forma_pago_id = data["forma_pago_id"],
-                              referencia_pago = data["ingreso_id"],
+                              referencia_pago = data["referencia_pago"],
                               referencia_conciliacion = referencia_conciliacion)
       
         ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
