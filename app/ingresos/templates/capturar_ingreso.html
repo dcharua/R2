@@ -128,9 +128,9 @@
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
+                          <th>Centro Negocio</th>
                           <th>Cuenta de Mayor</th>
                           <th>Cuenta de Menor</th>
-                          <th>Centro Negocio</th>
                           <th>Monto</th>
                           <th># de Control</th>
                           <th>Descripcíon</th>
@@ -296,15 +296,15 @@
                       <td>
                         <select class="selectpicker" name="categoria" id="categoria${counter}"  title="Seleccione una Cuenta de mayor..." data-width="80%">
                           {% for categoria in categorias %}
-                          <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
+                          <option value="{{categoria.id}}"> {{ categoria.nombre}} </option>
                           {% endfor %}
                         </select>
                       </td>
 
                       <td>
-                        <select class="selectpicker" name="concepto" id="concepto${counter}"  title="Seleccione una Cuenta de menor..." data-width="80%">
+                        <select class="selectpicker" data-live-search="true" name="concepto" id="concepto${counter}"  title="Seleccione una Cuenta de menor..." data-width="80%">
                           {% for concepto in conceptos %}
-                          <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
+                          <option value="{{concepto.id}}"> {{ concepto.nombre}} </option>
                           {% endfor %}
                         </select>
                       </td>
