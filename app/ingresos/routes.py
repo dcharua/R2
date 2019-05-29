@@ -158,7 +158,7 @@ def perfil_ingreso(ingreso_id):
     ingreso = Ingresos.query.get(ingreso_id)
     clientes = Clientes.query.all()
     centros_negocio = CentrosNegocio.query.all()
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo=="ingreso").all()
     conceptos = Conceptos.query.all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()

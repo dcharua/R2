@@ -75,7 +75,7 @@
 
                                 {% else %}
                                 <a class="btn js-modal-buttons btn-xs btn-danger waves-effect open-recalcular"
-                                    data-id="{{cuenta.ultima_conciliacion.id}}">
+                                    data-id="{{cuenta.ultima_conciliacion.id}}"  data-saldo="{{cuenta.ultima_conciliacion.saldo_usuario}}">
                                     <i data-toggle="tooltip" data-placement="top" title="Recalcular conciliación"
                                         class="material-icons">payment</i>
                                 </a>
@@ -124,6 +124,7 @@
         const html =
             `<input type="hidden" name="cuenta_id" value="${$(this).data('id')}">
         <hr>`
+
         let element = document.querySelector(".here-cc");
         element.innerHTML = "";
         element.insertAdjacentHTML('beforeend', html);
@@ -188,6 +189,7 @@
         const html =
             `<input type="hidden" name="conciliacion_id" value="${$(this).data('id')}">
         <hr>`
+        $('#saldo-input').val($(this).data('saldo'));
         let element = document.querySelector(".here-rc");
         element.innerHTML = "";
         element.insertAdjacentHTML('beforeend', html);

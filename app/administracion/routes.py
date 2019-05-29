@@ -201,13 +201,9 @@ def get_data_editar_cliente(cliente_id):
 def editar_cliente():
     if request.form:
         data = request.form
-        print('Administaracion, linea 204 = ',data)
         cliente = Clientes.query.get(data["id"]) 
         cliente.nombre = data["nombre"]
-        print(data["nombre"])
-        print('RFC = ',data["RFC"])
         cliente.RFC = data["RFC"] 
-        print(data["RFC"])
         cliente.direccion = data["direccion"]
         cliente.razon_social = data["razon_social"]
         cliente.cuenta_banco = data["cuenta_banco"] 

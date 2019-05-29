@@ -128,9 +128,9 @@
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
+                          <th>Centro Negocio</th>
                           <th>Cuenta de Mayor</th>
                           <th>Cuenta de Menor</th>
-                          <th>Centro Negocio</th>
                           <th>Monto</th>
                           <th># de Control</th>
                           <th>Descripcíon</th>
@@ -203,9 +203,9 @@
                     <hr>
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label for="beneficiario"> Cuenta de banco </label><br>
-                          <select class="selectpicker" multiple id="cuenta_id" onchange='ajaxFirstOnChange()'
+                          <select class="selectpicker" id="cuenta_id" onchange='ajaxFirstOnChange()'
                             data-live-search="true" name="cuenta_id" data-max-options="{{ velocity_max | safe }}"
                             title="Seleccione un Banco..." data-width="100%">
                             {% for cuenta in cuentas_banco %}
@@ -213,7 +213,7 @@
                             {% endfor %}
                           </select>
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label> Fecha de pago </label>
                           <div class='input-group date mydatepicker' data-provide="datepicker">
                             <input type='text' class="form-control set-today" name="fecha_pago" autocomplete="off" />
@@ -227,9 +227,9 @@
 
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" multiple id="forma_pago" onchange='ajaxFirstOnChange()'
+                          <select class="selectpicker" id="forma_pago" onchange='ajaxFirstOnChange()'
                             data-live-search="true" name="forma_pago" data-max-options="{{ velocity_max | safe }}"
                             title="Seleccione uns forma de Pago..." data-width="100%">
                             {% for forma in formas_pago %}
@@ -237,7 +237,7 @@
                             {% endfor %}
                           </select>
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label> Referencia de pago </label>
                           <input class="form-control" type="text" id="referencia_pago" name="referencia_pago">
                         </div>
@@ -246,12 +246,12 @@
 
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label style="margin-top: 7px;" for="fname">Monto</label>
                           <input class="form-control" type="text" id="monto_pagado" name="monto_pagado"
                             data-validation="number" data-validation-allowing="float">
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
                           <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
                           <input disabled placeholder="Referencia" class="form-control" type="text"
@@ -280,7 +280,7 @@
 <script>
   $(document).ready(function () {
     var counter = 1;
-
+    initCategoria();
 
     $("#add-row").click(function () {
       const html = `
@@ -294,7 +294,7 @@
                       </td>
 
                       <td>
-                        <select class="selectpicker" name="categoria" id="categoria${counter}"  title="Seleccione una Cuenta de mayor..." data-width="80%">
+                        <select class="selectpicker categoria" name="categoria" id="categoria${counter}"  title="Seleccione una Cuenta de mayor..." data-width="80%">
                           {% for categoria in categorias %}
                           <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
                           {% endfor %}
@@ -328,6 +328,7 @@
       element.insertAdjacentHTML('beforeend', html);
 
       $('.selectpicker').selectpicker('refresh');
+      initCategoria();
 
 
     });
@@ -354,21 +355,21 @@
     }
   });
 
-  $('.categoria').on('change', function () {
-    let id = "#concepto" + $(this).attr('id').slice(-1);
-    let element = document.querySelector(id);
-    $.ajax({
-      url: '/ingresos/get_concepto_categoria/' + this.value,
-      success: function (data) {
-        console.log(data)
-        element.innerHTML = "";
-        data.forEach(c => {
-          const html = `<option value="${c.id}"> ${c.nombre} </option>`
-          element.insertAdjacentHTML('beforeend', html);
-        });
-        $(id).selectpicker('refresh');
-      }
+  function initCategoria(){
+    $('.categoria').on('change', function () {
+      let element = document.querySelector("#concepto");
+      $.ajax({
+        url: '/ingresos/get_concepto_categoria/' + this.value,
+        success: function (data) {
+          element.innerHTML = "";
+          data.forEach(c => {
+            const html = `<option value="${c.id}"> ${c.nombre} </option>`
+            element.insertAdjacentHTML('beforeend', html);
+          });
+          $(id).selectpicker('refresh');
+        }
+      });
     });
-  });
+  }
 </script>
 {% endblock javascripts %}
