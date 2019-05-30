@@ -108,8 +108,8 @@ def perfil_egreso(egreso_id):
     cur.execute(sql)
     for row in cur:
         print(row.colnumero,row.coldescripcion)
-    print('test succesffujjl')
-    
+    print('test succesfull')
+
     egreso = Egresos.query.get(egreso_id)
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
