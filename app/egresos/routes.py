@@ -102,14 +102,6 @@ def cuentas_por_pagar():
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
-    cur=db_gerardo.cursor()
-    sql = "select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO"
-    
-    cur.execute(sql)
-    for row in cur:
-        print(row.colnumero,row.coldescripcion)
-    print('test succesfull')
-
     egreso = Egresos.query.get(egreso_id)
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
