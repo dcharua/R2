@@ -2,7 +2,7 @@ from app.egresos import blueprint
 from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager
+from app import db, login_manager, db_gerardo
 from app.db_models.models import *
 from datetime import date
 from decimal import Decimal
@@ -102,6 +102,14 @@ def cuentas_por_pagar():
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
+    cur=db_gerardo.cursor()
+    sql = "select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO"
+    
+    cur.execute(sql)
+    for row in cur:
+        print(row.colnumero,row.coldescripcion)
+
+    print('test succesffujjl')
     egreso = Egresos.query.get(egreso_id)
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()

@@ -1,4 +1,4 @@
-
+import pyodbc
 
 
 
@@ -8,7 +8,7 @@
 Instructions to install on  Microsoft ODBC Driver for SQL Server on Linux
 
 1. find Linux Distribution of your machine:
-    'cat /etc/issue'
+    'cat /etc/issue'pyt
 
 2. sudo su 
 3. curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
@@ -37,18 +37,19 @@ Now you can run the following function:
 '''
 
 
-def read_db()
+def read_db():
     con=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")
     cur=con.cursor()
+    sql = "select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO"
     
+    cur.execute(sql)
+    for row in cur:
+        print(row.colnumero,row.coldescripcion)
+    
+
+    print('test succesfful')
     return cur
-    
 
-sql = "select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO"
-cur = sead_db()
-cur.execute(sql)
 
-for row in cur:
-    print(row.colnumero,row.coldescripcion)
+read_db()
 
-print('test succesfful')
