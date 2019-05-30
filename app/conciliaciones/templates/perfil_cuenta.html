@@ -230,10 +230,10 @@
         </div>
         <div class="body">
           <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <table class="table table-bordered table-striped table-hover egresos dataTable">
               <thead>
                 <tr>
-                  <th><input name="select_all2" value="1" class="select-all table-check" type="checkbox" /></th>
+                  <th><input name="select_all2" value="1" class="table-check  table-check-egresos" type="checkbox" /></th>
                   <th>ID</th>
                   <th>Fecha</th>
                   <th>Forma</th>
@@ -327,15 +327,15 @@
           <h2>
             Ingresos
             <div class="select-btn-group">
-              <span id="open-conciliar-multiple" class="btn bg-deep-purple ">Conciliar movimientos</span>
+              <span id="open-conciliar-multiple-ingresos" class="btn bg-deep-purple ">Conciliar movimientos</span>
             </div>
           </h2>
         </div>
         <div class="body">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+          <table class="table table-bordered table-striped table-hover ingresos dataTable">
             <thead>
               <tr>
-                <th><input name="select_all" value="1" class="select-all conciliar-table" type="checkbox" /></th>
+                <th><input name="select_all2" value="1" class="table-check  table-check-ingresos" type="checkbox" /></th>
                 <th>ID</th>
                 <th>Fecha</th>
                 <th>Forma</th>
@@ -364,7 +364,7 @@
               <tr>
                 <td>
                   {% if pago.status == 'por_conciliar' %}
-                  <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table" />
+                  <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check conciliar-table-ingreso" />
                   {% endif %}
                 </td>
                 <td>{{pago.id}}</td>
@@ -404,11 +404,9 @@
                   </a>
                   {% endif %}
                   {% if pago.status == 'por_conciliar' %}
-                  <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar"
-                    data-url="{{ url_for('egresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                    <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento"
-                      class="material-icons">assignment_turned_in</i>
-                  </a>
+                  <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar-ingreso" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id=pago.id) }}">
+                      <i data-toggle="tooltip" data-placement="top" title="Conciliar Movimiento" class="material-icons">assignment_turned_in</i>
+                    </a>
                   {% endif %}
                 </td>
               </tr>
@@ -432,7 +430,7 @@
         </div>
         <div class="body">
           <div class="table-responsive">
-            <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+            <table class="table table-bordered table-striped table-hover conciliaciones dataTable">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -500,8 +498,10 @@
   {% include "modal_conciliar_movimiento.html" %}
   {% include "modal_recalcular_conciliacion.html" %}
   {% include "modal_generar_pago.html" %}
+  {% include "modal_conciliar_movimiento_ingreso.html" %}
   {% include "modal_editar_comentario.html" %}
   {% include "modal_editar_cuenta.html" %}
+  
   <!-- Modal numero de cheque -->
   <div class="modal fade" id="numero_cheque" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
@@ -612,7 +612,6 @@
 
     //Modal Conciliar Egreso
     $("#open-conciliar-cuenta").on("click", function () {
-        console.log("in")
       $.ajax({
         url: $(this).attr("data-url"),
         success: function (data) {
@@ -689,7 +688,7 @@
   });
 
 
-    // hacemos el form sumbit de concilair cuenta con ajax
+    // hacemos el form sumbit de conciliar cuenta con ajax
     $("#form-rc").submit(function () {
       $.ajax({
         url: "/conciliaciones/recalcular_conciliacion",
@@ -754,9 +753,9 @@
       return false;
     });
 
-
+    //EGRESOS TABLES
     //Jquery table
-    var table = $('.js-basic-example').DataTable({
+    var table = $('.egresos').DataTable({
       'order': [1, 'asc'],
       "columnDefs": [{
         "targets": 0,
@@ -765,9 +764,29 @@
     });
 
     // "Select all" control
-    $('.select-all').on('click', function () {
+    $('.table-check-egresos').on('click', function () {
       // Check/uncheck all checkboxes in the table
       var rows = table.rows({
+        'search': 'applied'
+      }).nodes();
+      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    //INGRESOS TABLES
+    //Jquery table
+    var ingresos_table = $('.ingresos').DataTable({
+      'order': [1, 'asc'],
+      "columnDefs": [{
+        "targets": 0,
+        "orderable": false
+      }]
+    });
+
+    
+    // "Select all" control
+    $('.table-check-ingresos').on('click', function () {
+      // Check/uncheck all checkboxes in the table
+      var rows = ingresos_table.rows({
         'search': 'applied'
       }).nodes();
       $('input[type="checkbox"]', rows).prop('checked', this.checked);
@@ -855,6 +874,97 @@ $('.editar_cuenta').on('click', function () {
         $('#empresa').val($(this).attr("data-empresa"))
         $('.selectpicker').selectpicker('refresh')
     });
+
+    //Modal Conciliar
+    $(".open-conciliar-ingreso").on("click", function () {
+        $.ajax({
+            url: $(this).attr("data-url"),
+            success: function (data) {
+                const html =
+                    `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${data.cuenta}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                <hr>`
+                let element = document.querySelector("#here-conciliar-ingreso");
+                element.innerHTML = "";
+                element.insertAdjacentHTML('beforeend', html);
+                $('.selectpicker').selectpicker('refresh');
+                $('#modal_conciliar_movimiento_ingreso').modal('show');
+            }
+        });
+      });
+
+
+        //Modal Conciliar multiple
+        $("#open-conciliar-multiple-ingresos").on("click", function () {
+        let pagos = []
+        // Iterate over all checkboxes in the table
+        $('.conciliar-table-ingreso').each(function () {
+
+            // If checkbox is checked
+            if (this.checked) {
+                pagos.push($(this).val())
+            }
+        })
+
+        $.get({
+            url: '/ingresos/get_data_conciliar_multiple',
+            data: {
+                pagos: pagos
+            },
+            success: function (data) {
+                let element = document.querySelector("#here-conciliar-ingreso");
+                element.innerHTML = "";
+                data.forEach(pago => {
+                    const html =
+                        `<div class="row" style="margin-bottom:20px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cliente: <span class="font-bold">${pago.cliente}</span></p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(pago.monto_total)}</span></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 ">
+                                <p class="font-18">Cuenta de banco: <span class="font-bold">${pago.cuenta}</span></p>
+                            </div>
+                        </div>
+                <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+
+                <hr>`
+                    element.insertAdjacentHTML('beforeend', html);
+                  });
+                  $('#modal_conciliar_movimiento_ingreso').modal('show');
+
+            }
+        });
+    });
+
+
+    $('.conciliaciones').DataTable({
+      'order': [1, 'asc'],
+      "columnDefs": [{
+        "targets": 0,
+        "orderable": false
+      }]
+    });
+
 
   
   </script>
