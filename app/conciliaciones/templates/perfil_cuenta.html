@@ -53,32 +53,30 @@
           <div role="tabpanel" class="tab-pane fade" id="saldos">
             <div class="row mycontainer">
               <div class="col-sm-12 col-md-4">
-                <p class="font-18">Saldo en transito ingresos: <span
+                <h4>Ingresos</h4>
+                <p class="font-18">Ingresos en Tránsito: <span
                     class="font-bold">{{"${:,.2f}".format(saldo_transito_ingresos)}}</span></p>
-                <p class="font-18">Saldo conciliado ingresos: <span
-                    class="font-bold">{{"${:,.2f}".format(saldo_conciliado_ingresos)}}</span></p>
+                <br>
+                <h4>Egresos</h4>    
+                <p class="font-18">Egreso Solicitado: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_solicitado_egresos)}}</span></p>
+                <p class="font-18">Egreso en Tránsito: <span
+                    class="font-bold">{{"${:,.2f}".format(saldo_transito_egresos)}}</span></p>
               </div>
               <div class="col-sm-12 col-md-4 text-center">
-                <p class="font-16"> <span class="font-16 label label-info">Saldo actual</span>
+              <br>
+                <p class="font-16"> <span class="font-16 label label-info">Saldo en Cuenta</span>
                   <br> <span class="font-bold">{{"${:,.2f}".format(cuenta.saldo)}}</span>
                 </p>
-                <p class="font-16"> <span class="font-16 label label-success">Saldo disponible</span>
+                <p class="font-16"> <span class="font-16 label label-success">Saldo Disponible</span>
                   <br> <span class="font-bold">
                     {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos - saldo_transito_egresos)}}</span>
                 </p>
-                <p class="font-16"> <span class="font-16 label label-default">Saldo en sistema</span>
+                <p class="font-16"> <span class="font-16 label label-default">Saldo en Sistema</span>
                   <br> <span class="font-bold">
                     {{"${:,.2f}".format(saldo_conciliado_ingresos + cuenta.saldo_inicial - saldo_conciliado_egresos)}}
                   </span>
                 </p>
-              </div>
-              <div class="col-sm-12 col-md-4 align-left">
-                <p class="font-18">Saldo solicitado egresos: <span
-                    class="font-bold">{{"${:,.2f}".format(saldo_solicitado_egresos)}}</span></p>
-                <p class="font-18">Saldo en transito egresos: <span
-                    class="font-bold">{{"${:,.2f}".format(saldo_transito_egresos)}}</span></p>
-                <p class="font-18">Saldo conciliado egresos: <span
-                    class="font-bold">{{"${:,.2f}".format(saldo_conciliado_egresos)}}</span></p>
               </div>
             </div>
           </div>
@@ -109,14 +107,14 @@
               </div>
 
               <div class="col-sm-12 col-md-4 text-center">
-                <p class="font-16"> <span class="font-16 label label-success">Saldo real</span>
+                  <p class="font-16"> <span class="font-16 label label-info">Saldo en Cuenta</span>
                   <br> <span class="font-bold"> {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario)}}</span>
                 </p>
-                <p class="font-16"> <span class="font-16 label label-info">Saldo sistema </span>
+                <p class="font-16"> <span class="font-16 label label-default">Saldo en Sistema</span>
                   <br> <span class="font-bold">
                     {{"${:,.2f}".format(ultima_conciliacion.saldo_sistema)}}</span>
                 </p>
-                <p class="font-16"> <span class="font-16 label label-default">Diferencia</span>
+                <p class="font-16"> <span class="font-16 label label-warning">Diferencia</span>
                   <br> <span class="font-bold">
                     {{"${:,.2f}".format(ultima_conciliacion.saldo_usuario - ultima_conciliacion.saldo_sistema)}}
                   </span>
