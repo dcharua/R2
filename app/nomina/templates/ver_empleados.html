@@ -36,8 +36,9 @@
                               </tr>
                           </tfoot>
                           <tbody>
+                              {% for empleado in empleados %}
                               <tr>
-                                  <td>Luis Jesus Martinez</td>
+                                  <td>{{empleado.cnombre}}</td>
                                   <td>Santafe</td>
                                   <td>Administrador</td>
                                   <td>18,000.00</td>
@@ -47,6 +48,7 @@
                                     </a>
                                   </td>
                               </tr>
+                              {% endfor%}
                           </tbody>
                       </table>
                   </div>

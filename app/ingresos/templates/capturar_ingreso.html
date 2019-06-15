@@ -12,104 +12,125 @@
       </div>
       <div class="body">
         <div class="row">
-          <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('ingresos_blueprint.captura_ingresos') }}">
+          <form class="form-horizontal form-label-left" id="user_inputs" method="POST"
+            action="{{ url_for('ingresos_blueprint.captura_ingresos') }}">
             <div class="col-sm-12 col-md-12">
-                <div class="input-group">
+
+              <div class="input-group">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6">
                     <label for="tipo_ingreso"> Tipo de Ingreso </label><br>
-                  <select class="selectpicker" id="tipo_ingreso" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo_ingreso" title="Seleccione un tipo de ingreso..." data-width="50%" data-validation="required">
+                    <select class="selectpicker" id="tipo_ingreso" onchange='ajaxFirstOnChange()'
+                      data-live-search="true" data-max-options="{{ velocity_max | safe }}" name="tipo_ingreso"
+                      title="Seleccione un tipo de ingreso..." data-width="100%" data-validation="required">
                       {% for tipo in tipo_ingreso %}
                       <option value="{{tipo.id}}"> {{ tipo.tipo | safe }} </option>
                       {% endfor %}
                     </select>
                   </div>
-          
-            <br></br>
-              <div class="input-group">
-                <div class="row">
+
                   <div class="col-sm-12 col-md-6">
-                <label for="cliente"> Cliente </label><br>
-                <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione un Cliente..." data-width="100%" data-validation="required">
-                  {% for cliente in clientes %}
-                  <option value="{{cliente.id}}"> {{ cliente.nombre | safe }} </option>
-                  {% endfor %}
-                </select>
-              </div>
-              
-              <div class="col-sm-12 col-md-6">
-                <label for="cliente"> Empresa </label><br>
-                <select class="selectpicker" id="empresa" name="empresa" onchange='ajaxFirstOnChange()' data-live-search="true" data-max-options="{{ velocity_max | safe }}" title="Seleccione una Empresa..." data-width="100%" data-validation="required">
-                  {% for empresa in empresas %}
-                  <option value="{{empresa.id}}"> {{ empresa.nombre | safe }} </option>
-                  {% endfor %}
-                </select>
-
-              </div>
-              
-            </div>
-
-            <div class="input-group ">
-                <div class="row">
-                  <div class="col-sm-12 col-md-6 ">
-                    <label> Fecha de Vencimiento </label>
-                    <div class='date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" name="fecha_vencimiento" autocomplete="off" required/>
-                      <span class="input-group-addon">
-                        <i class="material-icons mydate">date_range</i>
-                      </span>
-                    </div>
+                    <label for="cliente"> Empresa </label><br>
+                    <select class="selectpicker" id="empresa" name="empresa" onchange='ajaxFirstOnChange()'
+                      data-live-search="true" data-max-options="{{ velocity_max | safe }}"
+                      title="Seleccione una Empresa..." data-width="100%" data-validation="required">
+                      {% for empresa in empresas %}
+                      <option value="{{empresa.id}}"> {{ empresa.nombre | safe }} </option>
+                      {% endfor %}
+                    </select>
                   </div>
 
-                  <div class="col-sm-12 col-md-6">
-                    <label> Fecha programada de pago </label>
-                    <div class='date mydatepicker' data-provide="datepicker">
-                      <input type='text' class="form-control" name="fecha_programada_pago" autocomplete="off"/>
-                      <span class="input-group-addon">
-                        <i class="material-icons mydate">date_range</i>
-                      </span>
+                </div>
+
+
+                <div class="input-group">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <label for="cliente"> Cliente </label><br>
+                      <select class="selectpicker" id="cliente" name="cliente" onchange='ajaxFirstOnChange()'
+                        data-live-search="true" data-max-options="{{ velocity_max | safe }}"
+                        title="Seleccione un Cliente..." data-width="100%" data-validation="required">
+                        {% for cliente in clientes %}
+                        <option value="{{cliente.id}}"> {{ cliente.nombre | safe }} </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 ">
+                      <label for="ref"># de Documento</label>
+                      <input class="form-control" type="text" id="numero_documento" name="numero_documento"
+                        data-validation="required">
                     </div>
                   </div>
                 </div>
-              </div>
-              
-              <div class="input-group">
+
+                <div class="input-group">
                   <div class="row">
                     <div class="col-sm-12 col-md-6 ">
-                      <label for="ref"># de Documento</label>
-                      <input class="form-control" type="text" id="numero_documento" name="numero_documento" data-validation="required" >
+                      <label> Fecha de documento </label>
+                      <div class='date mydatepicker' data-provide="datepicker">
+                        <input type='text' class="form-control set-today" name="fecha_documento" autocomplete="off" required />
+                        <span class="input-group-addon">
+                          <i class="material-icons mydate">date_range</i>
+                        </span>
+                      </div>
                     </div>
-                    
-                   <div class="col-sm-12 col-md-6 ">
+                    <div class="col-sm-12 col-md-6 ">
+                      <label> Fecha de Vencimiento </label>
+                      <div class='date mydatepicker' data-provide="datepicker">
+                        <input type='text' class="form-control" name="fecha_vencimiento" autocomplete="off" required />
+                        <span class="input-group-addon">
+                          <i class="material-icons mydate">date_range</i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="input-group ">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                      <label> Fecha programada de pago </label>
+                      <div class='date mydatepicker' data-provide="datepicker">
+                        <input type='text' class="form-control" name="fecha_programada_pago" autocomplete="off" />
+                        <span class="input-group-addon">
+                          <i class="material-icons mydate">date_range</i>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 ">
                       <label for="ref">Referencia / Orden de Venta</label>
                       <input class="form-control" type="text" id="referencia" name="referencia">
                     </div>
-                    
                   </div>
                 </div>
-             </div>
 
 
                 <div class="caracteristicas">
 
                   <div style="padding:10px;" class="header">
                     <h2>Detalles de ingreso</h2>
-                    <button id="delete-row" type="button" class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
+                    <button id="delete-row" type="button"
+                      class="add-btn btn btn-danger btn-circle waves-effect waves-circle waves-float"
                       data-toggle="tooltip" data-placement="top" title="Remover concepto de pago">
                       <i class="material-icons">remove</i>
                     </button>
 
-                    <button id="add-row" type="button" class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
+                    <button id="add-row" type="button"
+                      class="add-btn btn btn-info btn-circle waves-effect waves-circle waves-float"
                       data-toggle="tooltip" data-placement="top" title="Agregar concepto de pago">
                       <i class="material-icons">add</i>
                     </button>
                   </div>
-                  
+
                   <div style="padding:10px;" class="body" id="clone">
                     <table id="table" style="table-layout: fixed;" class="table table-striped">
                       <thead>
                         <tr>
+                          <th>Centro Negocio</th>
                           <th>Cuenta de Mayor</th>
                           <th>Cuenta de Menor</th>
-                          <th>Centro Negocio</th>
                           <th>Monto</th>
                           <th># de Control</th>
                           <th>Descripcíon</th>
@@ -118,23 +139,8 @@
                       <tbody class="here">
                         <tr>
                           <td>
-                            <select class="selectpicker" name="categoria" title="Seleccione una Cueenta de Mayor..." data-width="80%">
-                              {% for categoria in categorias %}
-                              <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
-                              {% endfor %}
-                            </select>
-                          </td>
-
-                          <td>
-                            <select class="selectpicker" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="80%">
-                              {% for concepto in conceptos %}
-                              <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
-                              {% endfor %}
-                            </select>
-                          </td>
-                          
-                          <td>
-                            <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
+                            <select class="selectpicker" name="centro_negocios"
+                              title="Seleccione un Centro de Negocios..." data-width="80%">
                               {% for centro in centros_negocios %}
                               <option value="{{centro.id}}"> {{ centro.nombre | safe }} </option>
                               {% endfor %}
@@ -142,32 +148,54 @@
                           </td>
 
                           <td>
-                            <input class="form-control" type="text" name="monto" data-validation="number" data-validation="number" data-validation-allowing="float">
+                            <select class="selectpicker categoria" id="categoria0" name="categoria"
+                              title="Seleccione una Cuenta de Mayor..." data-width="80%">
+                              {% for categoria in categorias %}
+                              <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
+                              {% endfor %}
+                            </select>
                           </td>
 
                           <td>
-                              <input class="form-control" type="text" name="numero_control">
+                            <select class="selectpicker" id="concepto0" name="concepto"
+                              title="Seleccione una Cuenta de Menor..." data-width="80%">
+                              {% for concepto in conceptos %}
+                              <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
+                              {% endfor %}
+                            </select>
                           </td>
-  
+
 
                           <td>
-                              <input type="text" id="descripcion" name="descripcion" style="width:100%">
+                            <input class="form-control" type="text" name="monto" data-validation="number"
+                              data-validation="number" data-validation-allowing="float">
                           </td>
-                          
+
+                          <td>
+                            <input class="form-control" type="text" name="numero_control">
+                          </td>
+
+
+                          <td>
+                            <input type="text" id="descripcion" name="descripcion" style="width:100%">
+                          </td>
+
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  
+
 
                   <div class="input-group ">
                     <label for="lname">Comentario</label>
-                    <textarea class="form-control" type="text" id="comentario" name="comentario" placeholder=""></textarea>
+                    <textarea class="form-control" type="text" id="comentario" name="comentario"
+                      placeholder=""></textarea>
                   </div>
 
                   <div class="switch">
                     <h2 class="subtitle">Recibido</h2>
-                    <label style="margin-top: 10px"><input id="pagado" name="pagado" type="checkbox"><span class="lever"></span></label>
+                    <label style="margin-top: 10px"><input id="pagado" name="pagado" type="checkbox"><span
+                        class="lever"></span></label>
                   </div>
 
 
@@ -175,18 +203,20 @@
                     <hr>
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label for="beneficiario"> Cuenta de banco </label><br>
-                          <select class="selectpicker" multiple id="cuenta_id" onchange='ajaxFirstOnChange()' data-live-search="true" name="cuenta_id" data-max-options="{{ velocity_max | safe }}"  title="Seleccione un Banco..." data-width="100%">
+                          <select class="selectpicker" id="cuenta_id" onchange='ajaxFirstOnChange()'
+                            data-live-search="true" name="cuenta_id" data-max-options="{{ velocity_max | safe }}"
+                            title="Seleccione un Banco..." data-width="100%">
                             {% for cuenta in cuentas_banco %}
                             <option value="{{cuenta.id}}"> {{ cuenta.nombre | safe }} </option>
                             {% endfor %}
                           </select>
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label> Fecha de pago </label>
                           <div class='input-group date mydatepicker' data-provide="datepicker">
-                            <input type='text' class="form-control set-today" name="fecha_pago" autocomplete="off"/>
+                            <input type='text' class="form-control set-today" name="fecha_pago" autocomplete="off" />
                             <span class="input-group-addon">
                               <i class="material-icons mydate">date_range</i>
                             </span>
@@ -197,15 +227,17 @@
 
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label for="beneficiario"> Forma de pago </label><br>
-                          <select class="selectpicker" multiple id="forma_pago" onchange='ajaxFirstOnChange()' data-live-search="true" name="forma_pago" data-max-options="{{ velocity_max | safe }}"  title="Seleccione uns forma de Pago..." data-width="100%">
+                          <select class="selectpicker" id="forma_pago" onchange='ajaxFirstOnChange()'
+                            data-live-search="true" name="forma_pago" data-max-options="{{ velocity_max | safe }}"
+                            title="Seleccione uns forma de Pago..." data-width="100%">
                             {% for forma in formas_pago %}
                             <option value="{{forma.id}}"> {{ forma.nombre | safe }} </option>
                             {% endfor %}
                           </select>
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label> Referencia de pago </label>
                           <input class="form-control" type="text" id="referencia_pago" name="referencia_pago">
                         </div>
@@ -214,15 +246,16 @@
 
                     <div class="input-group">
                       <div class="row">
-                        <div class="col-sm-12 col-md-6 nomargin">
+                        <div class="col-sm-12 col-md-6 ">
                           <label style="margin-top: 7px;" for="fname">Monto</label>
-                          <input class="form-control" type="text" id="monto_pagado" name="monto_pagado" data-validation="number" data-validation-allowing="float">
+                          <input class="form-control" type="text" id="monto_pagado" name="monto_pagado"
+                            data-validation="number" data-validation-allowing="float">
                         </div>
-                        <div class="col-sm-12 col-md-6 nomargin">
-                          <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in"  />
+                        <div class="col-sm-12 col-md-6 ">
+                          <input type="checkbox" id="conciliado_check" name="conciliado_check" class="filled-in" />
                           <label class="grey-font" for="conciliado_check">Movimiento conciliado</label>
-                          <input disabled placeholder="Referencia" class="form-control" type="text" id="referencia_conciliacion"
-                            name="referencia_conciliacion"> </div>
+                          <input disabled placeholder="Referencia" class="form-control" type="text"
+                            id="referencia_conciliacion" name="referencia_conciliacion"> </div>
                       </div>
                     </div>
 
@@ -234,42 +267,25 @@
 
                   <div class="input-group">
                     <button class="btn btn-primary" style="float: right;">Registrar Ingreso </button>
-                    </div> 
-                    </form> 
-                    </div> 
-                </div> 
-            </div> 
-        </div> 
-    </div> 
-    
+                  </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
 {% block javascripts %} {{ super()}}
 <script>
+  $(document).ready(function () {
+    var counter = 1;
+    initCategoria();
 
- $(document).ready(function () {
-    var counter=0;
-
-
-$("#add-row").click(function () {
-        const html = `
+    $("#add-row").click(function () {
+      const html = `
                 <tr>
-                      <td>
-                        <select class="selectpicker" name="categoria" title="Seleccione un Centro de Negocios..." data-width="80%">
-                          {% for categoria in categorias %}
-                          <option value="{{categoria.id}}"> {{ categoria.nombre | safe }} </option>
-                          {% endfor %}
-                        </select>
-                      </td>
-
-                      <td>
-                        <select class="selectpicker" name="concepto" title="Seleccione un Centro de Negocios..." data-width="80%">
-                          {% for concepto in conceptos %}
-                          <option value="{{concepto.id}}"> {{ concepto.nombre | safe }} </option>
-                          {% endfor %}
-                        </select>
-                      </td>
-                      
-                      <td>
+                    <td>
                         <select class="selectpicker" name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="80%">
                           {% for centro in centros_negocios %}
                           <option value="{{centro.id}}"> {{ centro.nombre | safe }} </option>
@@ -277,6 +293,23 @@ $("#add-row").click(function () {
                         </select>
                       </td>
 
+                      <td>
+                        <select class="selectpicker categoria" name="categoria" id="categoria${counter}"  title="Seleccione una Cuenta de mayor..." data-width="80%">
+                          {% for categoria in categorias %}
+                          <option value="{{categoria.id}}"> {{ categoria.nombre}} </option>
+                          {% endfor %}
+                        </select>
+                      </td>
+
+                      <td>
+                        <select class="selectpicker" data-live-search="true" name="concepto" id="concepto${counter}"  title="Seleccione una Cuenta de menor..." data-width="80%">
+                          {% for concepto in conceptos %}
+                          <option value="{{concepto.id}}"> {{ concepto.nombre}} </option>
+                          {% endfor %}
+                        </select>
+                      </td>
+                      
+                     
                       <td>
                         <input class="form-control" type="text"  name="monto" data-validation="number" data-validation-allowing="float">
                       </td>
@@ -291,11 +324,12 @@ $("#add-row").click(function () {
                       </td>
                           
                 </tr>`
-        let element = document.querySelector(".here");
-        element.insertAdjacentHTML('beforeend', html);
+      let element = document.querySelector(".here");
+      element.insertAdjacentHTML('beforeend', html);
 
-        $('.selectpicker').selectpicker('refresh');
-      
+      $('.selectpicker').selectpicker('refresh');
+      initCategoria();
+
 
     });
 
@@ -303,9 +337,9 @@ $("#add-row").click(function () {
       if ($('#table tr:last').index() != 0)
         $('#table tr:last').remove();
     });
-});
+  });
 
-$("#pagado").change(function () {
+  $("#pagado").change(function () {
     if (this.checked) {
       $("#pagado-form").fadeIn();
     } else {
@@ -313,7 +347,7 @@ $("#pagado").change(function () {
     }
   });
 
-$("#conciliado_check").change(function () {
+  $("#conciliado_check").change(function () {
     if (this.checked) {
       $("#referencia_conciliacion").prop('disabled', false);
     } else {
@@ -321,5 +355,21 @@ $("#conciliado_check").change(function () {
     }
   });
 
+  function initCategoria(){
+    $('.categoria').on('change', function () {
+      let element = document.querySelector("#concepto");
+      $.ajax({
+        url: '/ingresos/get_concepto_categoria/' + this.value,
+        success: function (data) {
+          element.innerHTML = "";
+          data.forEach(c => {
+            const html = `<option value="${c.id}"> ${c.nombre} </option>`
+            element.insertAdjacentHTML('beforeend', html);
+          });
+          $(id).selectpicker('refresh');
+        }
+      });
+    });
+  }
 </script>
 {% endblock javascripts %}

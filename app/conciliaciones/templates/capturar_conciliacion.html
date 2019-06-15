@@ -75,7 +75,7 @@
 
                                 {% else %}
                                 <a class="btn js-modal-buttons btn-xs btn-danger waves-effect open-recalcular"
-                                    data-id="{{cuenta.ultima_conciliacion.id}}">
+                                    data-id="{{cuenta.ultima_conciliacion.id}}"  data-saldo="{{cuenta.ultima_conciliacion.saldo_usuario}}">
                                     <i data-toggle="tooltip" data-placement="top" title="Recalcular conciliación"
                                         class="material-icons">payment</i>
                                 </a>
@@ -119,11 +119,12 @@
 </script>
 <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
 <script>
-    //solcitar pagar un egreso
+    //Concliliación del Saldo de la Cuenta
     $(".open-conciliar-cuenta").on("click", function () {
         const html =
             `<input type="hidden" name="cuenta_id" value="${$(this).data('id')}">
         <hr>`
+
         let element = document.querySelector(".here-cc");
         element.innerHTML = "";
         element.insertAdjacentHTML('beforeend', html);
@@ -145,7 +146,10 @@
                         title: 'La Conciliación es correcta',
                         text: "El saldo en sistema y el saldo a conciliar son iguales",
                         type: "success"
+                    },()=> {
+                        location.reload();
                     });
+
                 } else if(data.res == 2) {
                     //Si no es correcta preguntamos si desear crear el ajuste automatico
                     swal({
@@ -157,7 +161,7 @@
                         confirmButtonColor: "#DD6B55",
                         confirmButtonText: "Ajustar!",
                         closeOnConfirm: false
-                        }, function () {
+                        }, function (res) {
                             //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
                         $.ajax({
                             url: '/conciliaciones/ajustar_conciliacion/'+ data.conciliacion,
@@ -188,6 +192,7 @@
         const html =
             `<input type="hidden" name="conciliacion_id" value="${$(this).data('id')}">
         <hr>`
+        $('#saldo-input').val($(this).data('saldo'));
         let element = document.querySelector(".here-rc");
         element.innerHTML = "";
         element.insertAdjacentHTML('beforeend', html);
@@ -209,6 +214,8 @@
                         title: 'La Conciliación es correcta',
                         text: "El saldo en sistema y el saldo a conciliar son iguales",
                         type: "success"
+                    }, () => {
+                        location.reload();
                     });
                 } else if(data.res == 2) {
                     //Si no es correcta preguntamos si desear crear el ajuste automatico
@@ -221,7 +228,7 @@
                         confirmButtonColor: "#DD6B55",
                         confirmButtonText: "Ajustar!",
                         closeOnConfirm: false
-                        }, function () {
+                        }, function (res) {
                             //Si ocupa el ajuste automatico post a ajustar_conciliacion via ajax
                         $.ajax({
                             url: '/conciliaciones/ajustar_conciliacion/'+ data.conciliacion,

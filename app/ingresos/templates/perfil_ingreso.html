@@ -20,6 +20,8 @@
             data-url="{{ url_for('ingresos_blueprint.borrar_ingreso', ingreso_id=ingreso.id) }}">Borrar
             Ingreso</span>
             {% endif %}
+
+            <span class="btn bg-deep-orange reembolso-egreso"  data-toggle="modal" data-target="#modal_reembolso_ingreso">Reembolso</span>            
           </div>
 
         </div>
@@ -78,6 +80,8 @@
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
+              <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Ingreso"
+                data-id="{{ingreso.id}}" data-value="{{ingreso.comentario}}">Editar</span>
               <p class="font-18 font-bold">Comentarios</p>
               <p class="font-18">{{ingreso.comentario}} </p>
             </div>
@@ -113,7 +117,7 @@
                     <th>ID</th>
                     <th>Forma</th>
                     <th>Cuenta</th>
-                    <th>Descripcion</th>
+                    <th>Referencia</th>
                     <th>Monto</th>
                     <th>Status</th>
                     <th>Acciones</th>
@@ -125,7 +129,7 @@
                     <th>ID</th>
                     <th>Forma</th>
                     <th>Cuenta</th>
-                    <th>Descripcion</th>
+                    <th>Referencia</th>
                     <th>Monto</th>
                     <th>Status</th>
                     <th>Acciones</th>
@@ -139,7 +143,7 @@
                 <td>{{pago.id}}</td>
                 <td>{{pago.forma_pago}}</td>
                 <td>{{pago.cuenta.nombre}}</td>
-                <td>{{pago.descripcion}}</td>
+                <td>{{pago.referencia_pago}}</td>
                 <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                 <td> {% if pago.status == 'conciliado' %}
                   <span class="badge bg-liquidado">Liquidado</span>
@@ -191,7 +195,7 @@
                         <th>Fecha de pago</th>
                         <th>Forma</th>
                         <th>Cuenta</th>
-                        <th>Descripcion</th>
+                        <th>Referencia</th>
                         <th>Monto Venta</th>
                         <th>Status</th>
                         <th>Acciones</th>
@@ -203,7 +207,7 @@
                         <th>Fecha de pago</th>
                         <th>Forma</th>
                         <th>Cuenta</th>
-                        <th>Descripcion</th>
+                        <th>Referencia</th>
                         <th>Monto Venta</th>
                         <th>Status</th>
                         <th>Acciones</th>
@@ -220,7 +224,7 @@
                     <td>{{pago.fecha_pago}}</td>
                     <td>{{pago.forma_pago}}</td>
                     <td>{{pago.cuenta.nombre}}</td>
-                    <td>{{pago.descripcion}}</td>
+                    <td>{{pago.referencia_pago}}</td>
                     <td>{{"${:,.2f}".format(pago.monto_total)}}</td>
                     <td> {% if pago.status == 'conciliado' %}
                       <span class="badge bg-liquidado">Liquidado</span>
@@ -233,12 +237,6 @@
                       <a class="btn btn-xs btn-info waves-effect" href='/ingresos/perfil_pago_ingreso/{{pago.id}}' data-toggle="tooltip"
                         data-placement="top" title="Ver detalle">
                         <i class="material-icons">visibility</i>
-                      </a>
-                      {% if pago.status == 'por_conciliar' %}
-                      <a class="btn btn-xs bg-deep-purple waves-effect open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar', pago_id=pago.id) }}">
-                        <i data-toggle="tooltip" data-placement="top" title="Mandar a Cobrar" class="material-icons">assignment_turned_in</i>
-                      </a>
-                      {% endif %}
                       </a>
                     </td>
                   </tr>
@@ -269,7 +267,6 @@
           <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
             <thead>
               <tr>
-                <th>Cliente</th>
                 <th>Centro de Negocios</th>
                 <th>Cuenta de Mayor</th>
                 <th>Cuenta de Menor</th>
@@ -281,7 +278,6 @@
             </thead>
             <tfoot>
               <tr>
-                <th>Cliente</th>
                 <th>Centro de Negocios</th>
                 <th>Cuenta de Mayor</th>
                 <th>Cuenta de Menor</th>
@@ -294,7 +290,6 @@
             <tbody>
               {% for detalle in ingreso.detalles %}
               <tr>
-                <td>{{detalle.cliente}}</td>
                 <td>{{detalle.centro_negocios}}</td>
                 <td>{{detalle.categoria}}</td>
                 <td>{{detalle.concepto}}</td>
@@ -317,16 +312,16 @@
     </div>
   </div>
 
+  {% include "modal_editar_comentario.html" %}
+  {% include "modal_reembolso_ingreso.html" %}
   {% include "modal_editar_ingreso.html" %}
   {% include "modal_conciliar_movimiento_ingreso.html" %}
   {% include "modal_reprogramar_fecha.html" %}
-  {% include "modal_conciliar_ingreso.html" %}
   {% include "modal_reprogramar_fecha_multiple.html" %}
   {% include "modal_cobrar_cuentas_por_cobrar.html" %}
   {% include "modal_pagar_multiple.html" %}
   {% include "modal_agregar_detalle_ingresos.html" %}
   {% include "modal_editar_detalle_ingreso.html" %}
-  {% include "modal_test.html" %}
   
   {% endblock content %}
 
@@ -385,6 +380,22 @@ $('.editar-ingreso').on('click', function () {
         });
       });
 
+      $(".open-editar-comentario").on("click", function () {
+        let element = document.querySelector(".editar-comentario-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="comentario"> Comentario</label>
+                        <textarea class="form-control" type="text" name="comentario">${ $(this).attr("data-value")}</textarea>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_comentario').modal('show');
+    });
 
 
 
@@ -409,8 +420,9 @@ $('.editar-ingreso').on('click', function () {
                             </div>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
                 <hr>`
-                let element = document.querySelector(".here");
+                let element = document.querySelector(".here-conciliar");
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
                 $('.selectpicker').selectpicker('refresh');
@@ -580,7 +592,7 @@ $('.editar-ingreso').on('click', function () {
                             <div class="col-sm-12 col-md-6">
                                     <label for="beneficiario"> Centro de negocios </label><br>
                                     <select class="selectpicker"  data-live-search="true" 
-                                    name="centro_negocios" title="Seleccione un Centro de Negocios..." data-width="100%">
+                                    name="centro_negocios" id="centro-detalle" title="Seleccione un Centro de Negocios..." data-width="100%">
                                     {% for centro in centros_negocio %}
                                     <option value="{{centro.id}}"> {{ centro.nombre }} </option>
                                     {% endfor %}
@@ -589,7 +601,7 @@ $('.editar-ingreso').on('click', function () {
                             <div class="col-sm-12 col-md-6">
                                     <label for="cliente"> Cliente </label><br>
                                     <select class="selectpicker"  data-live-search="true" 
-                                    name="cliente" title="Seleccione un Cliente..."
+                                    name="cliente" id="cliente-detalle" title="Seleccione un Cliente..."
                                      data-width="100%">
                                      {% for cliente in clientes %}
                                      <option value="{{cliente.id}}"> {{cliente.nombre }} </option>
@@ -602,7 +614,7 @@ $('.editar-ingreso').on('click', function () {
                             <div class="col-sm-12 col-md-6">
                                 <label for="categoria"> Cuenta de Mayor </label>
                                 <select class="selectpicker" data-live-search="true" 
-                                  name="categoria" title="Seleccione una Cuenta de Mayor..."
+                                  name="categoria" id="categoria-detalle" title="Seleccione una Cuenta de Mayor..."
                                   data-width="100%">
                                   {% for categoria in categorias %}
                                   <option value="{{categoria.id}}"> {{ categoria.nombre }} </option>
@@ -612,7 +624,7 @@ $('.editar-ingreso').on('click', function () {
                             <div class="col-sm-12 col-md-6">
                                 <label for="concepto"> Cuenta de Menor</label>
                                 <select class="selectpicker"  
-                                data-live-search="true" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="100%">
+                                data-live-search="true" id="concepto-detalle" name="concepto" title="Seleccione una Cuenta de Menor..." data-width="100%">
                                 {% for concepto in conceptos %}
                                 <option value="{{concepto.id}}"> {{ concepto.nombre }} </option>
                                 {% endfor %}
@@ -651,6 +663,11 @@ $('.editar-ingreso').on('click', function () {
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
                 $('.selectpicker').selectpicker('refresh');
+                $('#centro-detalle').val(data.centro_negocios)
+                $('#cliente-detalle').val(data.cliente)
+                $('#categoria-detalle').val(data.categoria)
+                $('#concepto-detalle').val(data.concepto)
+                $('.selectpicker').selectpicker('refresh');
                 $('#modal_editar_detalle_ingreso').modal('show');
             }
         });
@@ -665,8 +682,29 @@ $('.editar-ingreso').on('click', function () {
         }
       });
 
-     
+      $("#parcial_reembolso").change(function () {
+        if (this.checked) {
+            $("#monto_parcial_reembolso").fadeIn();
+        } else {
+            $("#monto_parcial_reembolso").fadeOut();
+        }
+    });
 
-
+    $('.categoria').on('change', function () {
+      console.log("in")
+      let id = "#concepto" + $(this).attr('id').slice(-1);
+      let element = document.querySelector(id);
+      $.ajax({
+        url: '/ingresos/get_concepto_categoria/' + this.value,
+        success: function (data) {
+          element.innerHTML = "";
+          data.forEach(c => {
+            const html = `<option value="${c.id}"> ${c.nombre} </option>`
+            element.insertAdjacentHTML('beforeend', html);
+          });
+          $(id).selectpicker('refresh');
+        }
+      });
+    });
   </script>
   {% endblock javascripts %}

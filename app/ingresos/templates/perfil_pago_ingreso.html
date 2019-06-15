@@ -13,7 +13,7 @@
 
           {% if pago.status == 'por_conciliar'%}
           <span class=" btn bg-deep-purple open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id=pago.id) }}">Conciliar</span>
-          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
+          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-id="{{pago.ingresos[0].id}}" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
             pago</span>
           {% endif %}
           {% if pago.status == 'conciliado' %}
@@ -65,6 +65,8 @@
         <div class="row mycontainer">
           <div class="col-sm-12">
             <div class="border-box">
+                <span class="btn btn-info open-editar-comentario " style="float:right" data-type="PagoIngreso"
+                data-id="{{pago.id}}" data-value="{{pago.comentario}}">Editar</span>
               <p class="font-18 font-bold">Comentarios</p>
               <p class="font-18">{{pago.comentario}} </p>
             </div>
@@ -148,10 +150,10 @@
       </div>
     </div>
     
+    {% include "modal_editar_comentario.html" %}
     {% include "modal_editar_pago_ingresos.html" %}
     {% include "modal_conciliar_movimiento_ingreso.html" %}
     {% include "modal_generar_pago.html" %}
-
     {% endblock content %}
 
     {% block javascripts %}
@@ -204,7 +206,7 @@
               if (data) {
                 swal("Borrado!", "El pago ha sido eliminado.", "success");
                 setTimeout(function () {
-                  location.replace('/egresos/cuentas_por_pagar');
+                  location.replace('/ingresos/perfil_ingreso/' +  $(element).attr("data-id"));
                 }, 2000);
               }
             }
@@ -212,6 +214,23 @@
 
         });
       });
+
+      $(".open-editar-comentario").on("click", function () {
+        let element = document.querySelector(".editar-comentario-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="comentario"> Comentario</label>
+                        <textarea class="form-control" type="text" name="comentario">${ $(this).attr("data-value")}</textarea>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_comentario').modal('show');
+    });
 
       //Cancelar pago con sweer alert
       $('.cancel-pago').on('click', function () {
@@ -264,6 +283,7 @@
                             </div>
                         </div>
                 <input type="hidden" id="pago_id" name="pago_id" value="${data.pago_id}">
+                <input type="hidden" id="ingreso_id" name="ingreso_id" value="${$(this).attr("data-id")}">
                 <hr>`
                 let element = document.querySelector(".here");
                 element.innerHTML = "";

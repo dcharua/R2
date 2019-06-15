@@ -26,7 +26,7 @@ class Beneficiarios(db.Model):
     nombre = Column(String(50))
     RFC = Column(String(20))
     direccion = Column(String(150))
-    razon_social = Column(String(50))
+    razon_social = Column(String(100))
     cuenta_banco = Column(String(20))
     banco = Column(String(30))
     saldo = Column(Numeric(10, 2)) 
@@ -93,7 +93,7 @@ class Clientes(db.Model):
     nombre = Column(String(50))
     RFC = Column(String(50))
     direccion = Column(String(50))
-    razon_social = Column(String(50))
+    razon_social = Column(String(100))
     cuenta_banco = Column(String(50))
     saldo_pendiente = Column(Numeric(20, 2))
     saldo_por_conciliar = Column(Numeric(20, 2))
@@ -257,6 +257,7 @@ class Egresos(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    fecha_documento = Column(Date)
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
@@ -332,8 +333,6 @@ class FormasPago(db.Model):
         return self.nombre  
 
 
-
-
 #########3#########3#########3#########3#########3#########3
 #########3#########3#########3#########3#########3#########3
 
@@ -353,6 +352,7 @@ class Ingresos(db.Model):
     referencia = Column(String(200))
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
+    fecha_documento = Column(Date)
     numero_documento = Column(String(20))
     monto_total = Column(Numeric(10, 2))
     monto_pagado = Column(Numeric(10, 2))

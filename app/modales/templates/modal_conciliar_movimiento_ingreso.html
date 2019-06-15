@@ -8,9 +8,9 @@
                     <i class="material-icons">close</i>
                 </button>
             </div>
-            <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('ingresos_blueprint.conciliar_pago_ingreso') }}">
+            <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('ingresos_blueprint.conciliar_pago_ingreso') }}">
                 <div class="modal-body">
-                    <div style="margin-bottom:20px;" class="here"></div>
+                    <div style="margin-bottom:20px;" id="here-conciliar-ingreso" class="here-conciliar"></div>
                     
                     <div class="input-group ">
                         <div class="row">

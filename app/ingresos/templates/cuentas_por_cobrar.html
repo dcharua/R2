@@ -1,4 +1,4 @@
-{% extends "base_site.html" %}
+  {% extends "base_site.html" %}
 
 {% block stylesheets %}
 {{ super() }}
@@ -191,9 +191,6 @@
 {% include "modal_pagar_ingresos_multiple.html" %}
 {% include "modal_reprogramar_fecha_ingreso.html" %}
 {% include "modal_reprogramar_fecha_multiple_ingreso.html" %}
-{% include "modal_conciliar_movimiento_ingreso.html" %}
-{% include "modal_conciliar_ingreso.html" %}
-
 {% endblock content %}
 
 
@@ -397,138 +394,5 @@
     }
   });
 
-
-
-
-
-  //Modal Conciliar
-  $(".open-conciliar").on("click", function () {
-        $.ajax({
-            url: $(this).attr("data-url"),
-            success: function (data) {
-                const html =
-                    `<div class="row" style="margin-bottom:20px;">
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Cliente: <span class="font-bold">${data.cliente}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(data.monto_total)}</span></p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Empresa: <span class="font-bold">${data.empresa}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Numero de Documento : <span class="font-bold">${data.num_documento}</span></p>
-                            </div>
-                        </div>
-                <input type="hidden" id="ingreso_id" name="ingreso_id" value="${data.ingreso_id}">
-                <hr>`
-                let element = document.querySelector(".here-conciliar");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                $('#modal_conciliar_ingreso').modal('show');
-            }
-        });
-    });
-
-
-
-
-
-
-
-
-
-
-    //Modal Conciliar multiple
-
-    $("#open-conciliar-multiple").on("click", function () {
-        let pagos = []
-        // Iterate over all checkboxes in the table
-        $('.conciliar-table').each(function () {
-
-            // If checkbox is checked
-            if (this.checked) {
-                pagos.push($(this).val())
-            }
-        })
-
-        $.get({
-            url: '/ingresos/get_data_conciliar_multiple',
-            data: {
-                pagos: pagos
-            },
-            success: function (data) {
-                let element = document.querySelector(".here");
-                element.innerHTML = "";
-                data.forEach(pago => {
-                    const html =
-                        `<div class="row" style="margin-bottom:20px;">
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Beneficiario: <span class="font-bold">${pago.beneficiario}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Monto a conciliar: <span class="font-bold">${money.format(pago.monto_total)}</span></p>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Cuenta de banco: <span class="font-bold">${pago.cuenta}</span></p>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <p class="font-18">Referencia de pago : <span class="font-bold">${pago.referencia}</span></p>
-                            </div>
-                        </div>
-                <input type="hidden" id="pago_id" name="pago_id" value="${pago.pago_id}">
-                <hr>`
-                    element.insertAdjacentHTML('beforeend', html);
-                    $('#modal_conciliar_movimiento').modal('show');
-
-                });
-
-            }
-        });
-    });
-
-  //Jquery table
-
- //Jquery table
-
-  var pagar_table = $('.pagar_table').DataTable({
-      dom: 'Bfrtip',
-      responsive: true,
-      "order": [
-        [1, 'desc'],
-        [2, 'asc']
-      ],
-      buttons: [
-        'copy', 'csv', 'excel', 'pdf', 'print'
-      ],
-      "columnDefs": [{
-        "targets": 0,
-        "orderable": false
-      }]
-    });
-
-    // "Select all" control
-    $('.select-all-t1').on('click', function () {
-      // Check/uncheck all checkboxes in the table
-      var rows = pagar_table.rows({
-        'search': 'applied'
-      }).nodes();
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
-    });
-                  
-    $("#conciliado_check").change(function () {
-        if (this.checked) {
-          $("#referencia_conciliacion").prop('disabled', false);
-        } else {
-          $("#referencia_conciliacion").prop('disabled', true);
-        }
-      });
 </script>
 {% endblock javascripts %}

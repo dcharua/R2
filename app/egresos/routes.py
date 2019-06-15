@@ -1,8 +1,8 @@
 from app.egresos import blueprint
-from flask import render_template, request, redirect, flash, jsonify
+from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager
+from app import db, login_manager, db_gerardo
 from app.db_models.models import *
 from datetime import date
 from decimal import Decimal
@@ -24,7 +24,7 @@ def capturar_egreso():
         montos = list(map(float, data.getlist("monto")))
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],
-                         numero_documento=data["numero_documento"],
+                         fecha_documento = data["fecha_documento"], numero_documento=data["numero_documento"],
                          monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
                          empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente')
         if (data["fecha_programada_pago"] != ""):
@@ -105,7 +105,7 @@ def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo=="egreso").all()
     conceptos = Conceptos.query.all()
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
@@ -165,6 +165,7 @@ def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
+    writeString2('2019/02/02', pago.monto_total, pago.beneficiario.nombre, 'Concepto', 'Notas', 2)
     return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago)
 
 #Editar pago
@@ -452,7 +453,10 @@ def reprogramar_fecha():
                 egreso = Egresos.query.get(data["egreso_id"])
                 egreso.fecha_programada_pago = data["fecha"]
                 db.session.commit()
-                return redirect("/egresos/cuentas_por_pagar")
+                if ('url' in data):
+                    return redirect(data["url"])
+                else:
+                    return redirect("/egresos/cuentas_por_pagar")
 
 
 #reprogramar fecha multiple
@@ -465,7 +469,10 @@ def reprogramar_fecha_multiple():
                 egreso = Egresos.query.get(egreso)
                 egreso.fecha_programada_pago = fecha
         db.session.commit()
-        return redirect("/egresos/cuentas_por_pagar")
+        if ('url' in data):
+            return redirect(data["url"])
+        else:
+            return redirect("/egresos/cuentas_por_pagar")
 
 
 ### Detalles ###
@@ -560,10 +567,40 @@ def get_concepto_categoria(categoria_id):
   return jsonify(list)
 
 
+@blueprint.route('/reembolso_egreso/<int:egreso_id>', methods=['GET', 'POST'])
+def reembolso_egreso(egreso_id):
+  if request.form:
+    data = request.form
+    egreso = Egresos.query.get(egreso_id)
+    if ('parcial' in data):
+      monto = - data["monto_parcial"]
+      egreso.monto_total += monto
+      egreso.monto_pagado += monto
+    else:  
+      monto = - egreso.monto_pagado
+      egreso.monto_pagado = 0
+      egreso.monto_total += monto
+    pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
+    fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egreso.beneficiario_id)
+    ep = EgresosHasPagos(egreso=egreso, pago=pago, monto=monto)
+    detalle = DetallesEgreso(centro_negocios_id=data["centro_negocios"], proveedor_id=data["proveedor"],
+                        categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
+                        numero_control='reembolso', descripcion=data["comentario"])
+    egreso.detalles.append(detalle)
+    db.session.commit()
+  return redirect("/egresos/perfil_egreso/" + str(egreso_id))
+
+
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import cm
+from reportlab.lib.pagesizes import portrait
+from PyPDF2 import PdfFileWriter, PdfFileReader
+from io import StringIO
+from num2words import num2words
 
 def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
 
-    cv = canvas.Canvas("sample_PDF2")
+    cv = canvas.Canvas("app/cheque")
 
     # Horizontal, Vertical
 
@@ -588,3 +625,4 @@ def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
     cv.drawString(360, 180, str(numero))
 
     cv.save()
+    return send_file('cheque', as_attachment=True)

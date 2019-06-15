@@ -30,6 +30,7 @@
                               <tbody>
                           {% for beneficiario in beneficiarios %}
                                 {% for contacto in beneficiario.contacto %}
+                                {% if contacto.nombre or contacto.correo or contacto.telefono %}
                                 <tr>
                                 <td>{{beneficiario.nombre}}</td>
                                   <td>{{contacto.nombre}}</td>
@@ -38,11 +39,13 @@
                                   <td>{{contacto.extension}}</td>
                                   <td>{{contacto.puesto}}</td>
                                 </tr>
+                                {% endif %}
                                 {% endfor %}
                                 {% endfor %}
 
                                 {% for cliente in clientes %}
                                 {% for contacto in cliente.contacto %}
+                                {% if contacto.nombre or contacto.correo or contacto.telefono %}
                                 <tr>
                                 <td>{{cliente.nombre}}</td>
                                   <td>{{contacto.nombre}}</td>
@@ -51,6 +54,7 @@
                                   <td>{{contacto.extension}}</td>
                                   <td>{{contacto.puesto}}</td>
                                 </tr>
+                                {% endif %}
                                 {% endfor %}
                                 {% endfor %}
                               </tbody>
