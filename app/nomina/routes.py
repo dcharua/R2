@@ -15,7 +15,7 @@ def route_template(template):
 @login_required
 def ver_empleados():
     cur=db_gerardo.cursor()
-    sql = "select * from empleados"
+    sql = "select * from empleados JOIN puestos pues_descripcion ON empleado.c_puesto = puestos.id"
     cur.execute(sql)
     return render_template('ver_empleados.html',
                             empleados=cur)

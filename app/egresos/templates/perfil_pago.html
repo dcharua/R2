@@ -16,8 +16,9 @@
             data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
             pago</span>
           {% endif %}
-          {% if pago.forma_pago.nombre.lower() == 'cheque' %}
-          <span class="btn btn-info" data-toggle="modal"> Imprimir cheque</span>
+          {% if pago.forma_pago.nombre.lower() == 'cheque' and pago.fecha_pago %}
+          <a  href="{{ url_for('egresos_blueprint.imprimir_cheque', pago_id=pago.id) }}">
+          <span class="btn btn-info" data-toggle="modal"> Imprimir cheque</span></a>
           {% endif %}
           {% if pago.status == 'por_conciliar'%}
           <span class=" btn bg-deep-purple open-conciliar"
@@ -199,6 +200,7 @@
     </script>
     <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
     <script>
+
       $('.js-basic-example').DataTable({
         dom: 'Bfrtip',
         responsive: true,
