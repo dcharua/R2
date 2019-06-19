@@ -11,10 +11,13 @@
         <div class="select-btn-group">
 
            <span class="btn btn-info editar_pago" data-cuenta = "{{pago.cuenta_id}}" data-forma_pago = "{{pago.forma_pago_id}}" data-toggle="modal" data-target="#modal_editar_pago">Editar pago</span>
-          {% if pago.status == 'solicitado' %}
+          {% if pago.status == 'solicitado' and pago.forma_pago.nombre.lower() != 'cheque' %}
           <span class="btn btn-primary open-generar-pago" data-toggle="modal"
             data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
             pago</span>
+          {% endif %}
+          {% if pago.status == 'solicitado' and pago.forma_pago.nombre.lower() == 'cheque' %}
+          <a  href="{{ url_for('egresos_blueprint.generar_cheque', pago_id=pago.id) }}" onclick="cheque()" class="btn btn-primary " > Generar Cheque</a>
           {% endif %}
           {% if pago.forma_pago.nombre.lower() == 'cheque' and pago.fecha_pago %}
           <a  href="{{ url_for('egresos_blueprint.imprimir_cheque', pago_id=pago.id) }}">
@@ -263,7 +266,11 @@
         });
       });
 
-
+    function cheque(){
+    window.setTimeout(()=>{
+      location.reload();
+    }, 1000)
+  }
 
       //Modal generar pago
       $(".open-generar-pago").on("click", function () {

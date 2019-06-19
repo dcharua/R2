@@ -38,6 +38,8 @@
                 <th>Fecha <br> programada</th>
                 <th>Fecha de <br> vencimiento</th>
                 <th>Monto Total</th>
+                <th>Monto Pendiente</th>
+                <th>Monto Pagado</th>
                 <th>Status</th>
                 <th>Acciones</th>
               </tr>
@@ -51,6 +53,8 @@
                 <th>Fecha <br> programada</th>
                 <th>Fecha de <br> vencimiento</th>
                 <th>Monto Total</th>
+                <th>Monto Pendiente</th>
+                <th>Monto Pagado</th>
                 <th>Status</th>
                 <th>Acciones</th>
               </tr>
@@ -70,6 +74,8 @@
                 <td>{{egreso.fecha_programada_pago}}</td>
                 <td>{{egreso.fecha_vencimiento}}</td>
                 <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
+                <td>{{"${:,.2f}".format(egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado - egreso.monto_por_conciliar)}}</td>
+                <td>{{"${:,.2f}".format(egreso.monto_pagado)}}</td>
                 <td>
                   {% if egreso.status == 'pendiente'%}
                   <span class="badge bg-pendiente">Pendiente</span>

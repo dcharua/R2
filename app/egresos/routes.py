@@ -365,8 +365,6 @@ def generar_pago():
                 pago = Pagos.query.get(data["pago_id"])
                 pago.referencia_pago = data["referencia_pago"]
                 pago.fecha_pago = data["fecha_pago"]
-                if pago.forma_pago.nombre.lower() == "cheque":
-                        pago.cuenta.numero_cheque += 1
                 for egreso in pago.egresos:
                         ep = EgresosHasPagos.query.filter_by(
                             egreso_id=egreso.id, pago_id=pago.id).first()
@@ -386,8 +384,6 @@ def generar_pago():
                                         egreso.status = 'por_conciliar'
 
                 db.session.commit()
-                if (pago.forma_pago.nombre.lower() == 'cheque'):
-                    return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
                 if ('url' in data):
                     return redirect(data["url"])
                 else:
@@ -591,6 +587,27 @@ def reembolso_egreso(egreso_id):
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
+@blueprint.route('/generar_cheque/<int:pago_id>', methods=['GET', 'POST'])
+def generar_cheque(pago_id):
+        pago = Pagos.query.get(pago_id)
+        pago.referencia_pago = pago.cuenta.numero_cheque
+        pago.cuenta.numero_cheque += 1
+        pago.fecha_pago = date.today()
+        for egreso in pago.egresos:
+                ep = EgresosHasPagos.query.filter_by(
+                        egreso_id=egreso.id, pago_id=pago.id).first()
+                egreso.monto_pagado += ep.monto
+                egreso.monto_solicitado -= ep.monto
+                if egreso.monto_pagado == egreso.monto_total:
+                        egreso.pagado = True
+                egreso.monto_por_conciliar += ep.monto
+                pago.status = 'por_conciliar'
+                if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
+                        egreso.status = 'por_conciliar'
+
+        db.session.commit()
+        return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
+                
 @blueprint.route('/imprimir_cheque/<int:pago_id>', methods=['GET', 'POST'])
 def imprimir_cheque(pago_id):
     pago = Pagos.query.get(pago_id)

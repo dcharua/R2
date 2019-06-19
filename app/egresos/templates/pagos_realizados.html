@@ -52,7 +52,10 @@
             <tbody>
               {% for pago in pagos %}
               <tr>
-                <td> <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check pagar-table" />
+                <td> 
+                  {% if pago.forma_pago.nombre.lower() != 'cheque' %}
+                   <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check pagar-table" />
+                  {% endif %}
                 </td>
                 <td>{{pago.id}}</td>
                 <td>{{pago.beneficiario}}</td>
@@ -65,11 +68,19 @@
                     data-toggle="tooltip" data-placement="top" title="Ver detalle">
                     <i class="material-icons">visibility</i>
                   </a>
+                  {% if pago.forma_pago.nombre.lower() != 'cheque' %}
                   <a class="btn btn-xs btn-success waves-effect open-generar-pago"
                     data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
                     <i class="material-icons" data-toggle="tooltip" data-placement="top"
                       title="Generar pago">payment</i>
                   </a>
+                  {% else %}
+                  <a class="btn btn-xs bg-teal waves-effect" 
+                    href="{{ url_for('egresos_blueprint.generar_cheque', pago_id=pago.id) }}" onclick="cheque()">
+                    <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                      title="Generar cheque">print</i>
+                  </a>
+                  {% endif %}
                   <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
                     data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
                     <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
@@ -244,6 +255,12 @@
       }
     });
   });
+
+  function cheque(){
+    window.setTimeout(()=>{
+      location.reload();
+    }, 1000)
+  }
 
   //Generar Multiple get modal info
   $('#open-generar-pago-multiple').on("click", function () {
