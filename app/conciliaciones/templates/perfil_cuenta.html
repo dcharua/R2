@@ -199,7 +199,7 @@
                     <i class="material-icons col-blue">account_balance</i>
                   </div>
                   <div class="content">
-                    <div class="text">Último cheque</div>
+                    <div class="text">Próximo Cheque</div>
                     <div class="number">{{cuenta.numero_cheque}}</div>
                   </div>
                 </div>
@@ -970,6 +970,12 @@ $('.editar_cuenta').on('click', function () {
         "orderable": false
       }]
     });
+
+    function cheque(){
+    window.setTimeout(()=>{
+      location.reload();
+    }, 1000)
+  }
 
 
   

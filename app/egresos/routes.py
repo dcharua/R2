@@ -238,6 +238,7 @@ def get_data_pagar(egreso_id):
 def mandar_pagar():
         if request.form:
                 data = request.form
+                print(data)
                 egreso = Egresos.query.get(data["egreso_id"])
                 if ('parcial' in data):
                         monto_total = data["monto_parcial"]
@@ -275,7 +276,7 @@ def get_data_pagar_multiple():
         return jsonify(list)
 
 
-#Solicitar pago from sumbit
+#Solicitar pago Múltiple from sumbit
 @blueprint.route('/mandar_pagar_multiple', methods=['GET', 'POST'])
 @login_required
 def mandar_pagar_multiple():
