@@ -20,7 +20,7 @@ def ver_empleados():
     return render_template('ver_empleados.html',
                             empleados=cur)
 
-@blueprint.route('/capturar_conciliacion', methods=['GET', 'POST'])
+@blueprint.route('/capturar_nomina', methods=['GET', 'POST'])
 def capturar_nomina():
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])

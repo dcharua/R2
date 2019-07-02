@@ -4,7 +4,7 @@
 <!-- INFO CARD -->
 <div class="card">
     <div class="header bg-black">
-        <h2 class="font-24">Detalle de Egreso</h2>
+        <h2 class="font-24">Perfil del Egreso</h2>
         <div class="select-btn-group">
         <span class="btn btn-info editar-egreso" data-beneficiario="{{egreso.beneficiario_id}}" data-empresa="{{egreso.empresa_id}}" data-toggle="modal" data-target="#modal_editar_egreso">Editar egreso</span>
         {% if egreso.pagos|length > 0 %}
@@ -76,8 +76,6 @@
                         class="font-bold">{{"${:,.2f}".format(egreso.monto_solicitado)}}</span></p>
                 <p class="font-18">Monto por Conciliar: <span
                         class="font-bold">{{"${:,.2f}".format(egreso.monto_por_conciliar)}}</span></p>
-
-
             </div>
         </div>
         <div class="row mycontainer">
@@ -105,7 +103,7 @@
                 </h2>
                 {% if egreso.status == 'parcial' or egreso.status == 'pendiente' %}
                 <div class="select-btn-group">
-                    <span class="btn btn-primary open-pagar" data-toggle="modal"
+                    <span class="btn btn-primary open-pagar js-modal-buttons" data-toggle="modal"
                         data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">Solicitar
                         pago</span>
                 </div>
@@ -151,11 +149,23 @@
                                         data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
                                     </a>
-                                    <a class="btn btn-xs btn-success waves-effect open-generar-pago"
+                                        {% if (pago.forma_pago.nombre.lower() == 'cheque')%}
+                                        <a class="btn btn-xs bg-teal waves-effect" 
+                                          href="{{ url_for('egresos_blueprint.generar_cheque', pago_id=pago.id) }}" onclick="cheque()">
+                                          <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                                            title="Generar cheque">print</i>
+                                        </a>
+                                        {% else %}
+                                      <a class="btn btn-xs btn-success waves-effect open-generar-pago"
                                         data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
                                         <i class="material-icons" data-toggle="tooltip" data-placement="top"
-                                            title="Generar pago">payment</i>
-                                    </a>
+                                          title="Generar pago">payment</i>
+                                      </a>
+                                      {% endif %}
+                                      <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm"
+                                        data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
+                                        <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
+                                      </a>
                                 </td>
                             </tr>
                             {% endif %}
@@ -352,7 +362,7 @@
             url: $(this).attr("data-url"),
             success: function (data) {
                 const html =
-                    `<div class="row mar-b-10" >
+                `<div class="row mar-b-10" >
                     <div class="col-sm-12 col-md-6 ">
                       <p class="font-18">Beneficiario:  <span class="font-bold">${data.beneficiario}</span></p>
                     </div>
@@ -366,15 +376,16 @@
                     </div>
                   </div>
                   <input type="hidden" id="egreso_id" name="egreso_id" value="${data.egreso_id}">
-                  <input type='hidden' class="form-control" name="url" value="${window.location}"/>   
+                  <input type="hidden" class="form-control" name="url" value="${window.location}">   
                   <hr>`
-                let element = document.querySelector(".here");
+                let element = document.querySelector("#solicitar_pago");
                 element.innerHTML = "";
                 element.insertAdjacentHTML('beforeend', html);
                 $('#modal_pagar').modal('show');
             }
         });
     });
+
     //Modal generar pago
     $(".open-generar-pago").on("click", function () {
         $.ajax({
@@ -753,6 +764,42 @@
         });
         $(id).selectpicker('refresh');
       }
+    });
+  });
+
+  function cheque(){
+    window.setTimeout(()=>{
+      location.reload();
+    }, 1000)
+  }
+
+  //Borrar pago con sweer alert
+  $('.delete-pago').on('click', function () {
+    var element = this;
+    swal({
+      title: "Estas seguro?",
+      text: "Se borrará el registro de esta solicitud de pago!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Si, borrar!",
+      closeOnConfirm: false
+    }, function () {
+      console.log(element)
+      $.ajax({
+        url: $(element).attr("data-url"),
+        success: function (data) {
+          if (data) {
+            swal("Borrado!", "El pago ha sido eliminado.", "success");
+            setTimeout(function () {
+              location.reload();
+            }, 2000);
+
+
+          }
+        }
+      })
+
     });
   });
 

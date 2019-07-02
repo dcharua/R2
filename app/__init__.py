@@ -13,7 +13,7 @@ import sqlalchemy
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-db_gerardo=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
+db_gerardo=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")
 
 def get_db_gerardo():
     return db_gerardo

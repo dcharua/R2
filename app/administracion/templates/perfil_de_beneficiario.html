@@ -476,10 +476,18 @@
                         data-placement="top" title="Ver detalle">
                         <i class="material-icons">visibility</i>
                       </a>
-                      {% if pago.status == 'solicitado' %}
+                      {% if pago.status == 'solicitado'%}
+                      {% if (pago.forma_pago.nombre.lower() == 'cheque')%}
+                      <a class="btn btn-xs bg-teal waves-effect" 
+                        href="{{ url_for('egresos_blueprint.generar_cheque', pago_id=pago.id) }}" onclick="cheque()">
+                        <i class="material-icons" data-toggle="tooltip" data-placement="top"
+                          title="Generar cheque">print</i>
+                      </a>
+                      {% else %}
                       <a class="btn btn-xs btn-success waves-effect open-generar-pago" data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">
                         <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Generar pago">payment</i>
                       </a>
+                      {% endif %}
                       <a class="btn btn-xs btn-danger waves-effect delete-pago" data-type="confirm" data-url="{{ url_for('egresos_blueprint.borrar_pago', pago_id=pago.id) }}">
                         <i data-toggle="tooltip" data-placement="top" title="Borrar" class="material-icons">delete</i>
                       </a>
@@ -1131,5 +1139,10 @@
             });
           });
 
+          function cheque(){
+    window.setTimeout(()=>{
+      location.reload();
+    }, 1000)
+  }
         </script>
         {% endblock javascripts %}
