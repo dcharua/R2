@@ -1,3 +1,4 @@
+
 from sqlalchemy import Binary, Column, Integer, String, Date, Numeric, Table, ForeignKey, Boolean, not_, event
 from app import db
 from sqlalchemy.orm import relationship, backref
