@@ -17,15 +17,11 @@ def connect_mysql():
     
     
     df = pd.read_sql_query('select TOP 5 * from mov_vtasdevcli', cnxn)
-    
-    print('hey')
-    print(df.head())
     return df
 
 @blueprint.route('/index')
 @login_required
 def index():
-    print('hey')
     #df = connect_mysql()
     #df.to_csv('tst.csv',sep=',')
     return render_template('index.html')

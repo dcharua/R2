@@ -102,14 +102,6 @@ def cuentas_por_pagar():
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
-    cur=db_gerardo.cursor()
-    sql = "select * from colores where coldescripcion like '%NEGR%' ORDER BY COLNUMERO"
-    
-    cur.execute(sql)
-    for row in cur:
-        print(row.colnumero,row.coldescripcion)
-    print('test succesfull')
-
     egreso = Egresos.query.get(egreso_id)
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
@@ -173,8 +165,11 @@ def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
-    writeString2('2019/02/02', pago.monto_total, pago.beneficiario.nombre, 'Concepto', 'Notas', 2)
-    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago)
+    ep = EgresosHasPagos.query.filter_by(pago_id=pago_id)
+    montoDocumentos = 0
+    for egreso in ep:
+        montoDocumentos =+ egreso.egreso.monto_total
+    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago, ep=ep, montoDocumentos = montoDocumentos)
 
 #Editar pago
 @blueprint.route('/editar_pago/<int:pago_id>"', methods=['GET', 'POST'])
@@ -247,6 +242,7 @@ def get_data_pagar(egreso_id):
 def mandar_pagar():
         if request.form:
                 data = request.form
+                print(data)
                 egreso = Egresos.query.get(data["egreso_id"])
                 if ('parcial' in data):
                         monto_total = data["monto_parcial"]
@@ -284,7 +280,7 @@ def get_data_pagar_multiple():
         return jsonify(list)
 
 
-#Solicitar pago from sumbit
+#Solicitar pago Múltiple from sumbit
 @blueprint.route('/mandar_pagar_multiple', methods=['GET', 'POST'])
 @login_required
 def mandar_pagar_multiple():
@@ -374,8 +370,6 @@ def generar_pago():
                 pago = Pagos.query.get(data["pago_id"])
                 pago.referencia_pago = data["referencia_pago"]
                 pago.fecha_pago = data["fecha_pago"]
-                if pago.forma_pago.nombre.lower() == "cheque":
-                        pago.cuenta.numero_cheque += 1
                 for egreso in pago.egresos:
                         ep = EgresosHasPagos.query.filter_by(
                             egreso_id=egreso.id, pago_id=pago.id).first()
@@ -598,6 +592,33 @@ def reembolso_egreso(egreso_id):
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
+@blueprint.route('/generar_cheque/<int:pago_id>', methods=['GET', 'POST'])
+def generar_cheque(pago_id):
+        pago = Pagos.query.get(pago_id)
+        pago.referencia_pago = pago.cuenta.numero_cheque
+        pago.cuenta.numero_cheque += 1
+        pago.fecha_pago = date.today()
+        for egreso in pago.egresos:
+                ep = EgresosHasPagos.query.filter_by(
+                        egreso_id=egreso.id, pago_id=pago.id).first()
+                egreso.monto_pagado += ep.monto
+                egreso.monto_solicitado -= ep.monto
+                if egreso.monto_pagado == egreso.monto_total:
+                        egreso.pagado = True
+                egreso.monto_por_conciliar += ep.monto
+                pago.status = 'por_conciliar'
+                if egreso.status != 'parcial' and egreso.monto_pagado == egreso.monto_total:
+                        egreso.status = 'por_conciliar'
+
+        db.session.commit()
+        return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
+                
+@blueprint.route('/imprimir_cheque/<int:pago_id>', methods=['GET', 'POST'])
+def imprimir_cheque(pago_id):
+    pago = Pagos.query.get(pago_id)
+    return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
+
+
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
@@ -606,25 +627,28 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 from io import StringIO
 from num2words import num2words
 
-def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
-
-    cv = canvas.Canvas("app/cheque")
+def chequePDF(fecha, monto, beneficiario, egresos, numero, pago_id):
+    cv = canvas.Canvas('app/cheque' +str(numero) +'.pdf')
 
     # Horizontal, Vertical
 
     #create a string
-    cv.drawString(390, 770, fecha)
+    cv.drawString(390, 770, str(fecha))
 
     # Fila 2
-    cv.drawString(30, 710, beneficiario)
+    cv.drawString(30, 710, str(beneficiario))
     cv.drawString(430, 710, str(monto))
 
     #Fila 3
     cv.drawString(30, 690, num2words(monto, lang='es').upper() + ' PESOS 00/100 M.N.')
 
     #Fila 3
-    cv.drawString(160, 500, 'Concepto: ' + concepto + ' | Notas: ' + notas)
-    cv.drawString(400, 500, '$' + str(monto))
+    offset = 0
+    for egreso in egresos:
+        ep =  EgresosHasPagos.query.filter_by(egreso_id=egreso.id, pago_id=pago_id).first() 
+        cv.drawString(160 + offset, 500 - offset, ' | # de documento: ' + str(egreso.numero_documento))
+        cv.drawString(400, 500 - offset, '$' + str(ep.monto))
+        offset += 20
 
     #Fila 5
     cv.drawString(400, 200, str(monto))
@@ -633,4 +657,4 @@ def writeString2(fecha, monto, beneficiario, concepto, notas, numero):
     cv.drawString(360, 180, str(numero))
 
     cv.save()
-    return send_file('cheque', as_attachment=True)
+    return send_file('cheque' +str(numero) +'.pdf' , as_attachment=True)

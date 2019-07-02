@@ -11,13 +11,17 @@
         <div class="select-btn-group">
 
            <span class="btn btn-info editar_pago" data-cuenta = "{{pago.cuenta_id}}" data-forma_pago = "{{pago.forma_pago_id}}" data-toggle="modal" data-target="#modal_editar_pago">Editar pago</span>
-          {% if pago.status == 'solicitado' %}
+          {% if pago.status == 'solicitado' and pago.forma_pago.nombre.lower() != 'cheque' %}
           <span class="btn btn-primary open-generar-pago" data-toggle="modal"
             data-url="{{ url_for('egresos_blueprint.get_data_generar_pago', pago_id=pago.id) }}">Generar
             pago</span>
           {% endif %}
-          {% if pago.forma_pago.nombre.lower() == 'cheque' %}
-          <span class="btn btn-info" data-toggle="modal"> Imprimir cheque</span>
+          {% if pago.status == 'solicitado' and pago.forma_pago.nombre.lower() == 'cheque' %}
+          <a  href="{{ url_for('egresos_blueprint.generar_cheque', pago_id=pago.id) }}" onclick="cheque()" class="btn btn-primary " > Generar Cheque</a>
+          {% endif %}
+          {% if pago.forma_pago.nombre.lower() == 'cheque' and pago.fecha_pago %}
+          <a  href="{{ url_for('egresos_blueprint.imprimir_cheque', pago_id=pago.id) }}">
+          <span class="btn btn-info" data-toggle="modal"> Imprimir cheque</span></a>
           {% endif %}
           {% if pago.status == 'por_conciliar'%}
           <span class=" btn bg-deep-purple open-conciliar"
@@ -91,85 +95,123 @@
     </div>
 
 
-    <!-- DETALLES TABLE -->
+    <!-- Egresos Pagados TABLE -->
     <div class="card">
-      <div class="header bg-black">
-        <h2>Cuentas o Documentos pagados</h2>
-      </div>
-      <div class="body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Beneficiario</th>
-                <th># Documento</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <th>ID</th>
-                <th>Beneficiario</th>
-                <th># Documento</th>
-                <th>Monto</th>
-                <th>Status</th>
-                <th>Acciones</th>
-              </tr>
-            </tfoot>
-
-            <tbody>
-              {% for egreso in pago.egresos %}
-              <tr>
-                <td>{{egreso.id}}</td>
-                <td>{{egreso.beneficiario}}</td>
-                <td>{{egreso.numero_documento}}</td>
-                <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                <td>
-                  {% if egreso.status == 'pendiente'%}
-                  <span class="badge bg-pendiente">Pendiente</span>
-                  {% endif %}
-                  {% if egreso.status == 'solicitado'%}
-                  <span class="badge bg-solicitado">Solicitado</span>
-                  {% endif %}
-                  {% if egreso.status == 'parcial'%}
-                  <span class="badge bg-parcial">Parcial</span>
-                  {% endif %}
-                  {% if egreso.status == 'liquidado'%}
-                  <span class="badge bg-liquidado">Liquidado</span>
-                  {% endif %}
-                  {% if egreso.status == 'cancelado'%}
-                  <span class="badge bg-cancelado">Cancelado</span>
-                  {% endif %}
-                  {% if egreso.status == 'por_conciliar'%}
-                  <span class="badge bg-por-conciliar">Por conciliar</span>
-                  {% endif %}
-                </td>
-                <td>
-                  <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
-                    data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                    <i class="material-icons">visibility</i>
+        <div class="header bg-black">
+          <h2>Cuentas o Documentos pagados</h2>
+        </div>
+        <div class="body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover js-basic-example documentos_table dataTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Beneficiario</th>
+                  <th># Documento</th>
+                  <th>Monto Documento</th>
+                  <th>Monto Pagado</th>
+                  <th>Status</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                {% for egreso in ep %}
+                <tr>
+                  <td>{{egreso.egreso.id}}</td>
+                  <td>{{egreso.egreso.beneficiario}}</td>
+                  <td>{{egreso.egreso.numero_documento}}</td>
+                  <td>{{"${:,.2f}".format(egreso.egreso.monto_total)}}</td>
+                  <td>{{"${:,.2f}".format(egreso.monto)}}</td>
+                  <td>
+                    {% if egreso.egreso.status == 'pendiente'%}
+                    <span class="badge bg-pendiente">Pendiente</span>
+                    {% endif %}
+                    {% if egreso.egreso.status == 'solicitado'%}
+                    <span class="badge bg-solicitado">Solicitado</span>
+                    {% endif %}
+                    {% if egreso.egreso.status == 'parcial'%}
+                    <span class="badge bg-parcial">Parcial</span>
+                    {% endif %}
+                    {% if egreso.egreso.status == 'liquidado'%}
+                    <span class="badge bg-liquidado">Liquidado</span>
+                    {% endif %}
+                    {% if egreso.egreso.status == 'cancelado'%}
+                    <span class="badge bg-cancelado">Cancelado</span>
+                    {% endif %}
+                    {% if egreso.egreso.status == 'por_conciliar'%}
+                    <span class="badge bg-por-conciliar">Por conciliar</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.egreso.id}}"
+                      data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                      <i class="material-icons">visibility</i>
+                    </a>
+                    {% if pago.egresos |length > 1 %}
+                      <a class="btn btn-xs btn-danger waves-effect" href="/egresos/borrarEP/{{egreso.egreso.id}}/{{pago.id}}"
+                      data-toggle="tooltip" data-placement="top" title="Borrar pago del documento">
+                      <i class="material-icons">delete</i>
+                    {% endif %}
                   </a>
-                  {% if pago.egresos |length > 1 %}
-                    <a class="btn btn-xs btn-danger waves-effect" href="/egresos/borrarEP/{{egreso.id}}/{{pago.id}}"
-                    data-toggle="tooltip" data-placement="top" title="Borrar pago del documento">
-                    <i class="material-icons">delete</i>
-                  {% endif %}
-                </a>
-                  
-                  <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
-                    <i class="material-icons">delete</i>
-                  </a> -->
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+                    
+                    <!-- <a class="btn btn-xs btn-danger waves-effect" data-toggle="tooltip" data-placement="top" title="Borrar">
+                      <i class="material-icons">delete</i>
+                    </a> -->
+                  </td>
+                </tr>
+                
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>Total Documentos:</strong></td>
+                  <td><strong>{{"${:,.2f}".format(montoDocumentos)}}</strong></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>Descuentos:</strong></td>
+                  <td><strong>$20</strong></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>Notas de Crédito:</strong></td>
+                  <td><strong>$50</strong></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td><strong>Total a Pagar:</strong></td>
+                  <td><strong>{{"${:,.2f}".format(pago.monto_total)}}</strong></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
     {% include "modal_generar_pago.html" %}
     {% include "modal_editar_pago.html" %}
     {% include "modal_editar_comentario.html" %}
@@ -199,14 +241,22 @@
     </script>
     <script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
     <script>
-      $('.js-basic-example').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        buttons: [
-          'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
-      });
 
+var documentos_table = $('.documentos_table').DataTable({
+    dom: 'Bfrtip',
+    responsive: true,
+    "order": [
+      [1, 'desc'],
+      [2, 'asc']
+    ],
+    buttons: [
+      'copy', 'csv', 'excel', 'pdf', 'print'
+    ],
+    "columnDefs": [{
+      "targets": 0,
+      "orderable": false
+    }]
+  });
       //Borrar pago con sweer alert
       $('.delete-pago').on('click', function () {
         var element = this;
@@ -261,7 +311,11 @@
         });
       });
 
-
+    function cheque(){
+    window.setTimeout(()=>{
+      location.reload();
+    }, 1000)
+  }
 
       //Modal generar pago
       $(".open-generar-pago").on("click", function () {

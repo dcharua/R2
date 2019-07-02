@@ -250,7 +250,7 @@ def centros_negocios():
 @blueprint.route('/otros', methods=['GET', 'POST'])
 @login_required
 def otros():
-    categorias = Categorias.query.all()
+    categorias = Categorias.query.order_by(Categorias.nombre)
     conceptos = Conceptos.query.all()
     empresas = Empresas.query.all()
     formas_pago = FormasPago.query.all()
