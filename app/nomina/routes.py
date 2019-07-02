@@ -15,12 +15,12 @@ def route_template(template):
 @login_required
 def ver_empleados():
     cur=db_gerardo.cursor()
-    sql = "select * from empleados JOIN puestos pues_descripcion ON empleado.c_puesto = puestos.id"
+    sql = "select * from empleados"
     cur.execute(sql)
     return render_template('ver_empleados.html',
                             empleados=cur)
 
-@blueprint.route('/capturar_conciliacion', methods=['GET', 'POST'])
+@blueprint.route('/capturar_nomina', methods=['GET', 'POST'])
 def capturar_nomina():
     formaPago = list(['Banamex','Santander','BBVA'])
     vendor = list(['categoria_1','categoria_2','categoria_3','categoria_4','categoria_5'])

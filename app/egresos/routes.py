@@ -165,7 +165,11 @@ def perfil_pago(pago_id):
     pago = Pagos.query.get(pago_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
-    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago)
+    ep = EgresosHasPagos.query.filter_by(pago_id=pago_id)
+    montoDocumentos = 0
+    for egreso in ep:
+        montoDocumentos =+ egreso.egreso.monto_total
+    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago, ep=ep, montoDocumentos = montoDocumentos)
 
 #Editar pago
 @blueprint.route('/editar_pago/<int:pago_id>"', methods=['GET', 'POST'])

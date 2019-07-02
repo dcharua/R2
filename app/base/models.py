@@ -38,5 +38,5 @@ def user_loader(id):
 def request_loader(request):
     username = request.form.get('username')
     user = User.query.filter_by(username=username).first()
-    print(user)
+    #print(user)
     return user if user else None
