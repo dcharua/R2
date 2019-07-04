@@ -2,39 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2a9d106-abd0-4a6c-82e1-3e7364843afe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/R2.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/jshint.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/CuentasxPagar.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/db_migration.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/docum_recepcion.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/egresos_copy.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/egresos_mapping.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/egresos_mapping.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/egresos_migration.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/ingresos.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/ingresos.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/proveedor_mapping.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/proveedores.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/recepcion_documentos.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/GEZ_Conecciones/test_data.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque13.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque14.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque15.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque16.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque17.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque18.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque19.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/cheque7.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/egresos/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/egresos/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/home/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/home/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/sample_PDF2" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,11 +12,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="292">
+              <caret line="64" column="5" selection-start-line="64" selection-start-column="5" selection-end-line="64" selection-end-column="5" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -67,18 +35,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/home/routes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
@@ -87,9 +43,9 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/__init__.py" />
         <option value="$PROJECT_DIR$/app/egresos/routes.py" />
         <option value="$PROJECT_DIR$/app/home/routes.py" />
+        <option value="$PROJECT_DIR$/app/__init__.py" />
       </list>
     </option>
   </component>
@@ -192,12 +148,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1562273628744</updated>
-      <workItem from="1562273634109" duration="833000" />
+      <workItem from="1562273634109" duration="1340000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="833000" />
+    <option name="totallyTimeSpent" value="1340000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="24" y="23" width="1280" height="728" extended-state="0" />
@@ -239,16 +195,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/modales/routes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -285,6 +231,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/home/routes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="33" lean-forward="true" selection-start-line="12" selection-start-column="33" selection-end-line="12" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/conciliaciones/routes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -294,12 +250,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/home/routes.py">
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="292">
+          <caret line="64" column="5" selection-start-line="64" selection-start-column="5" selection-end-line="64" selection-end-column="5" />
           <folding>
-            <element signature="e#0#30#0" expanded="true" />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
