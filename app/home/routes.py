@@ -5,19 +5,6 @@ import pandas as pd
 
 import pyodbc
 
-def connect_mysql():
-
-    driver = '/usr/local/lib/libmsodbcsql.13.dylib'
-    driver = '{ODBC Driver 13 for SQL Server}'
-    
-    cnxn = pyodbc.connect(
-                          "Server=shoesclothing.net;"
-                          "Database=Gez_pruebas;"
-                          "uid={user_id};pwd={password}")
-    
-    
-    df = pd.read_sql_query('select TOP 5 * from mov_vtasdevcli', cnxn)
-    return df
 
 @blueprint.route('/index')
 @login_required

@@ -2,7 +2,7 @@ from app.egresos import blueprint
 from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager, db_gerardo
+from app import db, login_manager
 from app.db_models.models import *
 from datetime import date
 from decimal import Decimal
@@ -89,6 +89,8 @@ def capturar_egreso():
                            cuentas_banco=cuentas_banco,
                            formas_pago=formas_pago)
 
+
+
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
@@ -133,6 +135,8 @@ def editar_egreso(egreso_id):
 
 
 
+
+
 #Egresos Delete
 @blueprint.route("/borrar_egreso/<int:egreso_id>", methods=['GET', 'POST'])
 def borrar_egreso(egreso_id):
@@ -144,9 +148,26 @@ def borrar_egreso(egreso_id):
 #Egresos Delete
 @blueprint.route("/cancelar_egreso/<int:egreso_id>", methods=['GET', 'POST'])
 def cancelar_egreso(egreso_id):
+    '''
     egreso = Egresos.query.get(egreso_id)
     egreso.status = 'cancelado'
     db.session.commit()
+    '''
+    print('heere')
+    return jsonify("deleted")
+
+#Egresos Delete
+@blueprint.route("/cancelar_egreso_2/<int:egreso_id>", methods=['GET', 'POST'])
+def cancelar_egreso_2(egreso_id):
+    egreso = Egresos.query.get(egreso_id)
+    egreso.status = 'cancelado'
+    db.session.commit()
+    return jsonify("deleted")
+
+
+@blueprint.route('/test_egreso"', methods=['GET', 'POST'])
+def test_egreso():
+    print('heeey')
     return jsonify("deleted")
 
 
@@ -188,6 +209,8 @@ def editar_pago(pago_id):
         pago.comentario = data["comentario"]
         db.session.commit()
     return redirect("/egresos/perfil_pago/" + str(pago_id))
+
+
 ###### Borrar pago
 @blueprint.route("/borrar_pago/<int:pago_id>", methods=['GET', 'POST'])
 def borrar_pago(pago_id):

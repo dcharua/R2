@@ -13,7 +13,6 @@ import sqlalchemy
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-db_gerardo=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")
 
 def get_db_gerardo():
     return db_gerardo
@@ -59,11 +58,11 @@ def create_app(config):
     LOGIN_DISABLED = True,
     SQLALCHEMY_TRACK_MODIFICATIONS = True,
     #SQLALCHEMY_DATABASE_URI ="mssql+pyodbc://%s:%s@%s/%s?driver=ODBC+Driver+17+for+SQL+Server" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
-    SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
+    #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
     #print("mysql+pymysql://{}s:{}@{}s/{}s".format(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME')))
 
     # Para Adrian
-    #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
+    SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
 
         
     )
