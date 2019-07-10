@@ -25,7 +25,7 @@ def capturar_egreso():
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],
                          fecha_documento = data["fecha_documento"], numero_documento=data["numero_documento"],
-                         monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
+                         monto_total=monto_total, monto_documento = monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
                          empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente')
         if (data["fecha_programada_pago"] != ""):
           egreso.fecha_programada_pago = data["fecha_programada_pago"]
@@ -105,6 +105,7 @@ def cuentas_por_pagar():
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
+    egresos = Egresos.query.filter(Egresos.beneficiario_id==egreso.beneficiario_id).all()
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
     categorias = Categorias.query.filter(Categorias.tipo=="egreso").all()
@@ -112,7 +113,7 @@ def perfil_egreso(egreso_id):
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
     formas_pago = FormasPago.query.all()
-    return render_template("perfil_egreso.html", egreso=egreso, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
+    return render_template("perfil_egreso.html", egreso=egreso, egresos = egresos, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos Edit
@@ -641,6 +642,21 @@ def imprimir_cheque(pago_id):
     pago = Pagos.query.get(pago_id)
     return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
 
+
+#Egresos Edit
+@blueprint.route('/nota_credito/<int:egreso_id>"', methods=['GET', 'POST'])
+def nota_credito(egreso_id):
+    if request.form:
+        data = request.form
+        egreso_QB =Egresos.query.get(egreso_id)
+        nota_credito = NotasCredito(egreso_QB_id=egreso_id, aplicado = False, monto=data["monto"], numero_documento = data["numero_documento"], comentario=data["comentario"], fecha=data["fecha"], beneficiario_id = egreso_QB.beneficiario_id )
+        if "aplicar_check" in data:
+            nota_credito.aplicado = True
+            nota_credito.egreso_WR = data["egreso_WR"]
+            egreso_WR = Egresos.query.get(data["egreso_WR"])
+            egreso_WR.monto_total -=  Decimal(nota_credito.monto)
+        db.session.commit()
+    return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
 
 from reportlab.pdfgen import canvas

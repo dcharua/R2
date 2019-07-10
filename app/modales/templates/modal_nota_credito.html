@@ -1,0 +1,81 @@
+<div class="modal fade" id="modal_nota_credito" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="largeModalLabel">Generar nota de crédito</h4>
+            </div>
+            <form class="form-horizontal form-label-left" id="mandar_pagar_form" method="POST"
+                action="{{ url_for('egresos_blueprint.nota_credito', egreso_id=egreso.id) }}">
+
+                <div class="modal-body">
+
+                    <div class="margin-10">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 nomargin">
+                                <label class="grey-font" for="numero_documento">Monto</label>
+                                <input placeholder="Monto" class="form-control" type="text" id="monto" name="monto"
+                                    data-validation="number" data-validation-allowing="float">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="margin-10">
+                        <div class="row" style="margin-bottom:10px">
+                            <div class="col-sm-12 col-md-6">
+                                <label class="grey-font" for="numero_documento">Numero de documento</label>
+                                <input type="text" class="form-control" id="numero_documento" name="numero_documento"
+                                    class="filled-in" value="reembolso" />
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <label> Fecha </label>
+                                <div class='input-group date mydatepicker' data-provide="datepicker">
+                                    <input type='text' name="fecha" autocomplete="off"
+                                        class="form-control  set-today" />
+                                    <span class="input-group-addon">
+                                        <i class="material-icons mydate">date_range</i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="margin-10">
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-sm-12 col-md-6 ">
+                                <input type="checkbox" id="aplicar_check" name="aplicar_check" class="filled-in" />
+                                <label class="grey-font" for="aplicar_check">Aplicar</label>
+                            </div>
+                            <div class="col-sm-12 col-md-6 ">
+                                <div style="display: none" id="aplicar">
+                                    <label for="egreso_WR"> Egreso </label><br>
+                                    <select class="selectpicker" data-live-search="true" name="egreso_WR"
+                                        title="Seleccione una Egreso..." data-width="100%"
+                                        data-validation="required">
+                                        {% for egreso in egresos %}
+                                        <option value="{{egreso.id}}"> {{ egreso.numero_documento }} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label for="comentario">Comentario</label>
+                                <textarea name="comentario" id="comentario" style="width:100%"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-link waves-effect ">Enviar</button>
+                    <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
