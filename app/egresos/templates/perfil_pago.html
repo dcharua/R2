@@ -106,7 +106,6 @@
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Beneficiario</th>
                   <th># Documento</th>
                   <th>Monto Documento</th>
                   <th>Monto Pagado</th>
@@ -119,7 +118,6 @@
                 {% for egreso in ep %}
                 <tr>
                   <td>{{egreso.egreso.id}}</td>
-                  <td>{{egreso.egreso.beneficiario}}</td>
                   <td>{{egreso.egreso.numero_documento}}</td>
                   <td>{{"${:,.2f}".format(egreso.egreso.monto_total)}}</td>
                   <td>{{"${:,.2f}".format(egreso.monto)}}</td>
@@ -160,20 +158,18 @@
                     </a> -->
                   </td>
                 </tr>
-                
                 {% endfor %}
+
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                <tr>
+                  <td style="font-size: 0";>v</td>
                   <td></td>
                   <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="font-size: 0";>w</td>
                   <td></td>
                   <td><strong>Total Documentos:</strong></td>
                   <td><strong>{{"${:,.2f}".format(montoDocumentos)}}</strong></td>
@@ -181,8 +177,7 @@
                   <td></td>
                 </tr>
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td style="font-size: 0";>x</td>
                   <td></td>
                   <td><strong>Descuentos:</strong></td>
                   <td><strong>$20</strong></td>
@@ -190,8 +185,7 @@
                   <td></td>
                 </tr>
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td style="font-size: 0";>y</td>
                   <td></td>
                   <td><strong>Notas de Crédito:</strong></td>
                   <td><strong>$50</strong></td>
@@ -199,8 +193,7 @@
                   <td></td>
                 </tr>
                 <tr>
-                  <td></td>
-                  <td></td>
+                  <td style="font-size: 0";>z</td>
                   <td></td>
                   <td><strong>Total a Pagar:</strong></td>
                   <td><strong>{{"${:,.2f}".format(pago.monto_total)}}</strong></td>
@@ -246,15 +239,14 @@ var documentos_table = $('.documentos_table').DataTable({
     dom: 'Bfrtip',
     responsive: true,
     "order": [
-      [1, 'desc'],
-      [2, 'asc']
+      [0, 'asc']
     ],
     buttons: [
       'copy', 'csv', 'excel', 'pdf', 'print'
     ],
     "columnDefs": [{
-      "targets": 0,
-      "orderable": false
+    "targets": [0,1,2,3,4,5],  
+    "orderable": false
     }]
   });
       //Borrar pago con sweer alert
@@ -461,8 +453,6 @@ var documentos_table = $('.documentos_table').DataTable({
         $('#cuenta_select').val($(this).attr("data-cuenta"))
         $('.selectpicker').selectpicker('refresh')
     });
-
-
 
     </script>
     {% endblock javascripts %}

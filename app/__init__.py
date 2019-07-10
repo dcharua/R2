@@ -14,8 +14,8 @@ import sqlalchemy
 db = SQLAlchemy()
 login_manager = LoginManager()
 
-def get_db_gerardo():
-    return db_gerardo
+#def get_db_gerardo():
+#   return db_gerardo
 
 def register_extensions(app):
     db.init_app(app)

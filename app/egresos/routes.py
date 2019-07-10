@@ -597,11 +597,13 @@ def reembolso_egreso(egreso_id):
   if request.form:
     data = request.form
     egreso = Egresos.query.get(egreso_id)
-    if ('parcial' in data):
-      monto = - data["monto_parcial"]
+    if ('parcial_reembolso' in data):
+      print("parcial")
+      monto = - Decimal(data["monto_parcial"])
       egreso.monto_total += monto
       egreso.monto_pagado += monto
     else:  
+      print("noparcial")
       monto = - egreso.monto_pagado
       egreso.monto_pagado = 0
       egreso.monto_total += monto
