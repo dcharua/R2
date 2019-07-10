@@ -2,8 +2,7 @@ from app.nomina import blueprint
 from flask import render_template, request
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager, db_gerardo
-
+from app import db, login_manager
 
 
 @blueprint.route('/<template>')
@@ -14,9 +13,9 @@ def route_template(template):
 @blueprint.route('/ver_empleados')
 @login_required
 def ver_empleados():
-    cur=db_gerardo.cursor()
-    sql = "select * from empleados"
-    cur.execute(sql)
+    # cur=db_gerardo.cursor()
+    # sql = "select * from empleados"
+    # cur.execute(sql)
     return render_template('ver_empleados.html',
                             empleados=cur)
 

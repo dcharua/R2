@@ -18,7 +18,8 @@
                 egreso</span>
         {% endif %}
             <span class="btn bg-red reembolso-egreso"  data-toggle="modal" data-target="#modal_reembolso">Reembolso</span>
-            </div>
+            <span class="btn bg-red nota-egreso"  data-toggle="modal" data-target="#modal_nota_credito">Nota de crédito</span>
+        </div>
     </div>
 
 
@@ -323,6 +324,7 @@
         </div>
     </div>
 </div>
+{% include "modal_nota_credito.html" %}
 {% include "modal_reembolso.html" %}
 {% include "modal_editar_egreso.html" %}
 {% include "modal_editar_comentario.html" %}
@@ -451,6 +453,16 @@
             $("#referencia_conciliacion").fadeOut()
         }
     });
+
+        // Conciliado check for modal generar pago
+    $("#aplicar_check").change(function () {
+        if (this.checked) {
+            $("#aplicar").fadeIn()
+        } else {
+            $("#aplicar").fadeOut()
+        }
+    });
+
 
 
 
