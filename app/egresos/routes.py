@@ -613,6 +613,7 @@ def reembolso_egreso(egreso_id):
                         categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
                         numero_control='reembolso', descripcion=data["comentario"])
     egreso.detalles.append(detalle)
+    db.session.add(ep)
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
@@ -643,18 +644,37 @@ def imprimir_cheque(pago_id):
     return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
 
 
-#Egresos Edit
+#ver notas
+@blueprint.route('/notas_credito', methods=['GET', 'POST'])
+def notas_credito():
+    notas = NotasCredito.query.all()
+    return render_template("notas_credito.html", notas=notas)
+
+#ver notas
+@blueprint.route('/perfil_nota/<int:nota_id>', methods=['GET', 'POST'])
+def perfil_nota(nota_id):
+    nota = NotasCredito.query.get(nota_id)
+    return render_template("perfil_nota.html", nota=nota)
+#crear notas de credito
 @blueprint.route('/nota_credito/<int:egreso_id>"', methods=['GET', 'POST'])
 def nota_credito(egreso_id):
     if request.form:
         data = request.form
-        egreso_QB =Egresos.query.get(egreso_id)
-        nota_credito = NotasCredito(egreso_QB_id=egreso_id, aplicado = False, monto=data["monto"], numero_documento = data["numero_documento"], comentario=data["comentario"], fecha=data["fecha"], beneficiario_id = egreso_QB.beneficiario_id )
+        egresoQB =Egresos.query.get(egreso_id)
+        nota_credito = NotasCredito(egreso_QB_id=egreso_id, aplicado = False, monto=data["monto"], numero_documento = data["numero_documento"], comentario=data["comentario"], fecha=data["fecha"], beneficiario =egresoQB.beneficiario )
         if "aplicar_check" in data:
             nota_credito.aplicado = True
-            nota_credito.egreso_WR = data["egreso_WR"]
-            egreso_WR = Egresos.query.get(data["egreso_WR"])
-            egreso_WR.monto_total -=  Decimal(nota_credito.monto)
+            nota_credito.egreso_WR_id = data["egresoWR"]
+            egresoWR = Egresos.query.get(data["egresoWR"])
+            egresoWR.monto_total -=  Decimal(nota_credito.monto)
+       
+        if "generar_reembolso_check" in data:
+            monto = - Decimal(data["monto"])
+            pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["numero_documento"], fecha_pago=data["fecha"], status='conciliado',
+            fecha_conciliacion=data["fecha"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egresoQB.beneficiario_id)
+            ep = EgresosHasPagos(egreso=egresoWR, pago=pago, monto=monto)
+            db.session.add(ep)
+        db.session.add(nota_credito)
         db.session.commit()
     return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
