@@ -296,6 +296,7 @@ def editar_pago(pago_id):
 @blueprint.route('/get_data_pagar<int:ingreso_id>', methods=['GET', 'POST'])
 @login_required
 def get_data_pagar(ingreso_id):
+   
         ingreso = Ingresos.query.get(ingreso_id)   
         return jsonify(ingreso_id = ingreso.id, cliente = str(ingreso.cliente.nombre), monto_total = str(ingreso.monto_total), 
         monto_pagado = str(ingreso.monto_pagado),monto_por_conciliar = str(ingreso.monto_por_conciliar), numero_documento = ingreso.numero_documento)
@@ -361,6 +362,7 @@ def mandar_cobrar():
 def get_data_pagar_multiple():
     list = []
     ingresos = request.args.getlist('ingresos[]')
+    print('gg')
     for ingreso in ingresos:
             ing = Ingresos.query.get(ingreso)
             monto_pendiente = ing.monto_total - ing.monto_por_conciliar - ing.monto_pagado

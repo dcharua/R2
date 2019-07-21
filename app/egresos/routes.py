@@ -2,7 +2,7 @@ from app.egresos import blueprint
 from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager#, db_gerardo
+from app import db, login_manager
 from app.db_models.models import *
 from datetime import date
 from decimal import Decimal
@@ -46,7 +46,7 @@ def capturar_egreso():
         monto_total = sum(montos)
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],
                          fecha_documento = data["fecha_documento"], numero_documento=data["numero_documento"],
-                         monto_total=monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
+                         monto_total=monto_total, monto_documento = monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
                          empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente')
         if (data["fecha_programada_pago"] != ""):
           egreso.fecha_programada_pago = data["fecha_programada_pago"]
@@ -110,6 +110,8 @@ def capturar_egreso():
                            cuentas_banco=cuentas_banco,
                            formas_pago=formas_pago)
 
+
+
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
@@ -126,6 +128,7 @@ def cuentas_por_pagar():
 def perfil_egreso(egreso_id):
 
     egreso = Egresos.query.get(egreso_id)
+    egresos = Egresos.query.filter(Egresos.beneficiario_id==egreso.beneficiario_id).all()
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
     categorias = Categorias.query.filter(Categorias.tipo=="egreso").all()
@@ -133,7 +136,7 @@ def perfil_egreso(egreso_id):
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
     formas_pago = FormasPago.query.all()
-    return render_template("perfil_egreso.html", egreso=egreso, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
+    return render_template("perfil_egreso.html", egreso=egreso, egresos = egresos, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos Edit
@@ -156,6 +159,8 @@ def editar_egreso(egreso_id):
 
 
 
+
+
 #Egresos Delete
 @blueprint.route("/borrar_egreso/<int:egreso_id>", methods=['GET', 'POST'])
 def borrar_egreso(egreso_id):
@@ -167,9 +172,26 @@ def borrar_egreso(egreso_id):
 #Egresos Delete
 @blueprint.route("/cancelar_egreso/<int:egreso_id>", methods=['GET', 'POST'])
 def cancelar_egreso(egreso_id):
+    '''
     egreso = Egresos.query.get(egreso_id)
     egreso.status = 'cancelado'
     db.session.commit()
+    '''
+    print('heere')
+    return jsonify("deleted")
+
+#Egresos Delete
+@blueprint.route("/cancelar_egreso_2/<int:egreso_id>", methods=['GET', 'POST'])
+def cancelar_egreso_2(egreso_id):
+    egreso = Egresos.query.get(egreso_id)
+    egreso.status = 'cancelado'
+    db.session.commit()
+    return jsonify("deleted")
+
+
+@blueprint.route('/test_egreso"', methods=['GET', 'POST'])
+def test_egreso():
+    print('heeey')
     return jsonify("deleted")
 
 
@@ -211,6 +233,8 @@ def editar_pago(pago_id):
         pago.comentario = data["comentario"]
         db.session.commit()
     return redirect("/egresos/perfil_pago/" + str(pago_id))
+
+
 ###### Borrar pago
 @blueprint.route("/borrar_pago/<int:pago_id>", methods=['GET', 'POST'])
 def borrar_pago(pago_id):
@@ -597,8 +621,8 @@ def reembolso_egreso(egreso_id):
   if request.form:
     data = request.form
     egreso = Egresos.query.get(egreso_id)
-    if ('parcial' in data):
-      monto = - data["monto_parcial"]
+    if ('parcial_reembolso' in data):
+      monto = - Decimal(data["monto_parcial"])
       egreso.monto_total += monto
       egreso.monto_pagado += monto
     else:  
@@ -612,6 +636,7 @@ def reembolso_egreso(egreso_id):
                         categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
                         numero_control='reembolso', descripcion=data["comentario"])
     egreso.detalles.append(detalle)
+    db.session.add(ep)
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
@@ -641,6 +666,40 @@ def imprimir_cheque(pago_id):
     pago = Pagos.query.get(pago_id)
     return(chequePDF(pago.fecha_pago, pago.monto_total, pago.beneficiario.razon_social, pago.egresos, pago.referencia_pago, pago.id ))
 
+
+#ver notas
+@blueprint.route('/notas_credito', methods=['GET', 'POST'])
+def notas_credito():
+    notas = NotasCredito.query.all()
+    return render_template("notas_credito.html", notas=notas)
+
+#ver notas
+@blueprint.route('/perfil_nota/<int:nota_id>', methods=['GET', 'POST'])
+def perfil_nota(nota_id):
+    nota = NotasCredito.query.get(nota_id)
+    return render_template("perfil_nota.html", nota=nota)
+#crear notas de credito
+@blueprint.route('/nota_credito/<int:egreso_id>"', methods=['GET', 'POST'])
+def nota_credito(egreso_id):
+    if request.form:
+        data = request.form
+        egresoQB =Egresos.query.get(egreso_id)
+        nota_credito = NotasCredito(egreso_QB_id=egreso_id, aplicado = False, monto=data["monto"], numero_documento = data["numero_documento"], comentario=data["comentario"], fecha=data["fecha"], beneficiario =egresoQB.beneficiario )
+        if "aplicar_check" in data:
+            nota_credito.aplicado = True
+            nota_credito.egreso_WR_id = data["egresoWR"]
+            egresoWR = Egresos.query.get(data["egresoWR"])
+            egresoWR.monto_total -=  Decimal(nota_credito.monto)
+       
+        if "generar_reembolso_check" in data:
+            monto = - Decimal(data["monto"])
+            pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["numero_documento"], fecha_pago=data["fecha"], status='conciliado',
+            fecha_conciliacion=data["fecha"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egresoQB.beneficiario_id)
+            ep = EgresosHasPagos(egreso=egresoWR, pago=pago, monto=monto)
+            db.session.add(ep)
+        db.session.add(nota_credito)
+        db.session.commit()
+    return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
 
 from reportlab.pdfgen import canvas

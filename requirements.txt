@@ -10,3 +10,5 @@ pandas
 pyodbc
 numpy
 pymysql
+num2words
+reportlab

@@ -1,3 +1,4 @@
+
 from sqlalchemy import Binary, Column, Integer, String, Date, Numeric, Table, ForeignKey, Boolean, not_, event
 from app import db
 from sqlalchemy.orm import relationship, backref
@@ -7,7 +8,8 @@ from flask import flash, redirect
 Base = declarative_base()
 
 
-beneficiario_has_categorias = Table('beneficiario_has_categorias', db.Model.metadata,
+
+beneficiario_has_categorias = Table('beneficiario_has_categorias', db.Model.metadata, 
     Column('beneficiario_id', Integer, ForeignKey('beneficiarios.id'), primary_key=True),
     Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
 )
@@ -38,6 +40,7 @@ class Beneficiarios(db.Model):
     detalles_egresos = relationship("DetallesEgreso")
     
     pagos = relationship("Pagos")
+    notas_credito = relationship("NotasCredito");
     
     contacto=relationship("ContactoBeneficiario") 
 
@@ -263,6 +266,7 @@ class Egresos(db.Model):
     numero_documento = Column(String(20))
     monto_total =  Column(Numeric(10, 2))
     monto_pagado =  Column(Numeric(10, 2))
+    monto_documento =  Column(Numeric(10, 2))
     monto_solicitado =  Column(Numeric(10, 2))
     monto_por_conciliar = Column(Numeric(10, 2))
     referencia = Column(String(40))
@@ -270,6 +274,8 @@ class Egresos(db.Model):
     pagado = Column(Boolean)
     status = Column(String(20))
     detalles = relationship("DetallesEgreso")
+    
+  
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="egresos")
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
@@ -332,6 +338,31 @@ class FormasPago(db.Model):
     def __repr__(self):
         return self.nombre  
 
+class NotasCredito(db.Model):
+    __tablename__ = 'notas_credito'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True)
+    egreso_QB_id = Column(Integer, ForeignKey('egresos.id'))
+    egreso_WR_id = Column(Integer, ForeignKey('egresos.id'))
+
+    egreso_QB = relationship('Egresos',
+          primaryjoin='Egresos.id==NotasCredito.egreso_QB_id',
+          uselist=False)
+
+    egreso_WR = relationship('Egresos',
+           primaryjoin='Egresos.id==NotasCredito.egreso_WR_id',
+          uselist=False)
+    monto =  Column(Numeric(10, 2))
+    numero_documento = Column(String(20))
+    fecha = Column(Date)
+    comentario = Column(String(200))
+    beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
+    beneficiario = relationship("Beneficiarios", back_populates="notas_credito")
+    aplicado = Column(Boolean)
+    
+    def __repr__(self):
+        return self.nombre 
 
 #########3#########3#########3#########3#########3#########3
 #########3#########3#########3#########3#########3#########3

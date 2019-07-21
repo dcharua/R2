@@ -314,6 +314,9 @@ def editar_comentario():
         elif (data["type"] == "PagoIngreso"):
             obj = Pagos_Ingresos.query.get(data["id"])
             obj.comentario = data["comentario"]
+        elif (data["type"] == "Nota"):
+            obj = NotasCredito.query.get(data["id"])
+            obj.comentario = data["comentario"]
         db.session.commit()  
     return redirect(data["url"])
 

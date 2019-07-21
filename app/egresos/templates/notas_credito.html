@@ -1,0 +1,148 @@
+{% extends "base_site.html" %}
+
+{% block stylesheets %}
+{{ super() }}
+{% endblock stylesheets %}
+
+{% block content %}
+<!-- Basic Examples -->
+
+<!-- #END# Basic Examples -->
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header bg-black">
+                <h2>
+                    Notas de crédito
+                </h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover tabla-notas dataTable ">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th># Nota de crédito</th>
+                                <th># Documento origen</th>
+                                <th># Documento destino</th>
+                                <th>Monto</th>
+                                <th>Aplicado</th>
+                                <th>Ver</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Beneficiario</th>
+                                <th># Nota de crédito</th>
+                                <th># Documento origen</th>
+                                <th># Documento destino</th>
+                                <th>Monto</th>
+                                <th>Aplicado</th>
+                                <th>Ver</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for nota in notas %}
+                            <tr>
+                                <td>{{nota.id}}</td>
+                                <td>{{nota.beneficiario}}</td>
+                                <td>{{nota.numero_documento }}</td>
+                                <td>{{nota.egreso_QB.numero_documento}}</td>
+                                <td>{{nota.egreso_WR.numero_documento}}</td>
+                                <td>{{"${:,.2f}".format(nota.monto)}}</td>
+                                <td>   
+                                    {% if nota.aplicado == True%}
+                                        <span class="badge bg-liquidado">Aplicada</span>
+                                       
+                                    {% endif %}
+                                    {% if nota.aplicado == False%}
+                                        <span class="badge bg-solicitado">No aplicada</span>
+                                    {% endif %} 
+                                </td>
+                                <td>
+                                    <a class="btn btn-xs btn-info waves-effect" href='/egresos/perfil_nota/{{nota.id}}'
+                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        <i class="material-icons">visibility</i>
+                                    </a>
+
+
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+{{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
+
+<script>
+    //Jquery table
+    var table1 = $('.tabla-notas').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        "order": [
+            [1, 'desc'],
+            [2, 'asc']
+        ],
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columnDefs": [{
+            "targets": 0,
+            "orderable": false
+        }]
+    });
+    // "Select all" control
+    $('.select-all1').on('click', function () {
+        // Check/uncheck all checkboxes in the table
+        var rows = table1.rows({
+            'search': 'applied'
+        }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    });
+
+    var table2 = $('.tabla-realizados').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        "order": [
+            [1, 'desc'],
+            [2, 'asc']
+        ],
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        "columnDefs": [{
+            "targets": 0,
+            "orderable": false
+        }]
+    });
+</script>
+{% endblock javascripts %}

@@ -35,7 +35,7 @@ Instructions to install on  Microsoft ODBC Driver for SQL Server on Linux
 Now you can run the following function:
 (run pip install pyodbc if needed)
 '''
-
+import pyodbc 
 
 def read_db():
     con=pyodbc.connect("DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez_pruebas;uid=gezsa001;pwd=gez9105ru2")

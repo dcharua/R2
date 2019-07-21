@@ -1,0 +1,147 @@
+{% extends "base_site.html" %}
+
+{% block content %}
+<!-- INFO CARD -->
+<div class="card">
+    <div class="header bg-black">
+        <h2 class="font-24">Perfil del Nota de crédito</h2>
+        <div class="select-btn-group">
+            <span class="btn btn-info editar-egreso" >Editar</span>
+            <span class="btn bg-red">Borrar</span>
+        </div>
+    </div>
+
+
+    <div class="body">
+        <div class="row mycontainer">
+            <div class="col-sm-12 col-md-8">
+                <p class="font-18">Beneficiario: <span class="font-bold">
+                        <a class="btn btn-xs btn-info waves-effect"
+                            href='/administracion/perfil_de_beneficiario/{{nota.beneficiario.id}}' data-toggle="tooltip"
+                            data-placement="top" title="Ver beneficiario">
+                            {{nota.beneficiario}}</a></span> </p>
+                <p class="font-18">Id: <span class="font-bold">{{nota.id}}</span></p>
+                <p class="font-18"># de documento: <span class="font-bold">{{nota.numero_documento}}</span>
+                </p>
+                <p class="font-18">Fecha: <span class="font-bold">{{nota.fecha}}</span></p>
+
+            </div>
+            <div class="col-sm-12 col-md-4 align-left">
+
+                <p class="font-18">Status:
+                    {% if nota.aplicado == True%}
+                    <span class="badge bg-liquidado">Aplicada</span>
+
+                    {% endif %}
+                    {% if nota.aplicado == False%}
+                    <span class="badge bg-solicitado">No aplicada</span>
+                    {% endif %}
+                </p>
+                <p class="font-18">Monto: <span class="font-bold">{{"${:,.2f}".format(nota.monto)}}</span></p>
+
+                <p class="font-18">Documento origen:
+                    <a class="btn btn-xs btn-info waves-effect"
+                        href='/administracion/perfil_de_egreso/{{nota.egreso_QB.id}}' data-toggle="tooltip"
+                        data-placement="top" title="Ver documento">
+                        {{nota.egreso_WR.numero_documento}}</a>
+                </p>
+                </p>
+                <p class="font-18">Documento destino: <a class="btn btn-xs btn-info waves-effect"
+                        href='/administracion/perfil_de_egreso/{{nota.egreso_WR.id}}' data-toggle="tooltip"
+                        data-placement="top" title="Ver documento">
+                        {{nota.egreso_WR.numero_documento}}</a>
+                </p>
+
+            </div>
+        </div>
+        <div class="row mycontainer">
+            <div class="col-sm-12">
+                <div class="border-box">
+                    <span class="btn btn-info open-editar-comentario " style="float:right" data-type="Nota"
+                        data-id="{{nota.id}}" data-value="{{nota.comentario}}">Editar</span>
+                    <p class="font-18 font-bold">Comentarios</p>
+                    <p class="font-18" style="white-space:pre;">{{nota.comentario}} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% include "modal_editar_comentario.html" %}
+{% endblock content %}
+
+{% block javascripts %}
+{{ super() }}
+<!-- Jquery DataTable Plugin Js -->
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/dataTables.buttons.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.flash.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/jszip.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/pdfmake.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/vfs_fonts.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.html5.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/jquery-datatable/extensions/export/buttons.print.min.js') }}">
+</script>
+<script src="{{ url_for('static', filename='vendors/sweetalert/sweetalert.min.js') }}"></script>
+
+<script>
+    $(".open-editar-comentario").on("click", function () {
+        let element = document.querySelector(".editar-comentario-here");
+        element.innerHTML = "";
+        const html = `
+                <div class="row" style="margin-bottom:20px !important">
+                    <div class="col-sm-12">
+                        <label for="comentario"> Comentario</label>
+                        <textarea class="form-control" type="text" name="comentario">${ $(this).attr("data-value")}</textarea>
+                    </div>
+                    <input type='hidden' class="form-control" name="id" value="${ $(this).attr("data-id")}"/>
+                    <input type='hidden' class="form-control" name="type" value="${ $(this).attr("data-type")}"/>
+                    <input type='hidden' class="form-control" name="url" value="${window.location}"/>
+                </div>`
+        element.insertAdjacentHTML('beforeend', html);
+        $('#modal_editar_comentario').modal('show');
+    });
+
+
+
+    //Borrar pago con sweer alert
+    $('.delete-pago').on('click', function () {
+        var element = this;
+        swal({
+            title: "Estas seguro?",
+            text: "Se borrará el registro de esta solicitud de pago!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Si, borrar!",
+            closeOnConfirm: false
+        }, function () {
+            console.log(element)
+            $.ajax({
+                url: $(element).attr("data-url"),
+                success: function (data) {
+                    if (data) {
+                        swal("Borrado!", "El pago ha sido eliminado.", "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+
+
+                    }
+                }
+            })
+
+        });
+    });
+</script>
+{% endblock javascripts %}
