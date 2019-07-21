@@ -2,7 +2,7 @@ from app.nomina import blueprint
 from flask import render_template, request
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager, db_gerardo
+from app import db, login_manager#, db_gerardo
 
 
 

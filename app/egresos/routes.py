@@ -2,16 +2,37 @@ from app.egresos import blueprint
 from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
-from app import db, login_manager, db_gerardo
+from app import db, login_manager#, db_gerardo
 from app.db_models.models import *
 from datetime import date
 from decimal import Decimal
+
+import pyodbc
+import pandas as pd
 
 
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
     return render_template(template + '.html')
+
+
+def test_connection():
+   
+    '''
+    con_GEZ = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
+    con_rdm = pyodbc.connect(
+        "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=rdm;uid=gezsa001;pwd=gez9105ru2")
+
+    sql = "SELECT * FROM dbo.proveedores"
+    data = pd.read_sql(sql,con_GEZ)
+    print(data.head())
+    
+    '''
+    print('TEST SUCCESSFUL!')
+
+    return
 
 
 #####  EGRESOS ROUTES #########
@@ -92,6 +113,7 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
+    test_connection()
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
@@ -102,6 +124,7 @@ def cuentas_por_pagar():
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])
 def perfil_egreso(egreso_id):
+
     egreso = Egresos.query.get(egreso_id)
     centros_negocio = CentrosNegocio.query.all()
     proveedores = Beneficiarios.query.all()
