@@ -192,20 +192,12 @@
 
                 <div class="table-responsive">
 
-<<<<<<< HEAD
                   <table class="table table-bordered table-striped table-hover doc-enviados dataTable" cellspacing="0"
-=======
-                  <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id= "documentos-table" cellspacing="0"
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
                     width="100%">
 
                     <thead>
                       <tr>
-<<<<<<< HEAD
                         <th><input name="select_all" value="1" class="table-check doc-enviados-select-all" type="checkbox"/></th>
-=======
-                        <th><input name="select_all" value="1" id="documentos-table-select" type="checkbox" class="table-check " /></th>
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
@@ -233,11 +225,7 @@
                       <tr>
                         <td>
                           {% if ingreso.status == 'pendiente' or ingreso.status == 'parcial' %}
-<<<<<<< HEAD
                           <input name="select_all" value="{{ingreso.id}}" type="checkbox" class="table-check doc-enviados-table" />
-=======
-                          <input name="select_all" value="{{ingreso.id}}" type="checkbox" class="table-check documentos-table-check" />
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
                           {% endif %}
 
                         </td>
@@ -304,17 +292,10 @@
           </div>
           <div class="body">
             <div class="table-responsive">
-<<<<<<< HEAD
               <table class="table table-bordered table-striped table-hover js-pagos-cliente dataTable">
                 <thead>
                   <tr>
                     <th><input name="select_all" value="1" id="pagos-cliente-select-all" type="checkbox" class="table-check" /></th>
-=======
-              <table class="table table-bordered table-striped table-hover dataTable"  id="pagos-table">
-                <thead>
-                  <tr>
-                    <th><input name="select_all" value="1" id="pagos-table-select" class="select-all table-check" type="checkbox" /></th>
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
                     <th>ID</th>
                     <th>Fecha</th>
                     <th>Forma</th>
@@ -343,11 +324,7 @@
                   <tr>
                     <td>
                       {% if pago.status == 'por_conciliar' %}
-<<<<<<< HEAD
                       <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check pagos-cliente-select-all" />
-=======
-                      <input name="select_all" value="{{pago.id}}" type="checkbox" class="table-check pagos-table-check" />
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
                       {% endif %}
                     </td>
                     <td>{{pago.id}}</td>
@@ -407,11 +384,8 @@
 {% include "modal_agregar_categoria_cliente.html" %}
 {% include "modal_editar_comentario.html" %}
 {% include "modal_editar_cliente.html" %}
-<<<<<<< HEAD
 {% include "modal_pagar_ingresos_multiple.html" %}
-=======
 {% include "modal_agregar_contacto_cliente.html" %}
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
 
 
 {% endblock content %}
@@ -722,11 +696,7 @@
  
 
       //Jquery table
-<<<<<<< HEAD
       var doc_enviados = $('.doc-enviados').DataTable({
-=======
-      var documentos_table = $('#documentos-table').DataTable({
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
         'order': [1, 'asc'],
         "columnDefs": [{
           "targets": 0,
@@ -735,15 +705,9 @@
       });
 
       // "Select all" control
-<<<<<<< HEAD
       $('#doc-enviados-select-all').on('click', function () {
         // Check/uncheck all checkboxes in the table
         var rows = doc_enviados.rows({
-=======
-      $('#documentos-table-select').on('click', function () {
-        // Check/uncheck all checkboxes in the table
-        var rows = documentos_table.rows({
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
           'search': 'applied'
         }).nodes();
         $('input[type="checkbox"]', rows).prop('checked', this.checked);
@@ -963,7 +927,6 @@ $('#open-pagar-multiple').on("click", function () {
                     <p class="font-18">Monto a pagar: <span class="font-bold">${money.format(total)}</span></p>
                     <input type="hidden" id="monto_total_${counter}" name="monto_total_${counter}" value="${total}">
                   </div>
-<<<<<<< HEAD
                 </div>
 
                 <div class="input-group">
@@ -1059,83 +1022,5 @@ $('#open-pagar-multiple').on("click", function () {
   });
   
   </script>
-=======
-                <input type="hidden" id="id" name="id" value="${data.id}">
-                <input type='hidden' class="form-control" name="url" value="${window.location}"/>
-                <hr>`
-                let element = document.querySelector(".cliente-here");
-                element.innerHTML = "";
-                element.insertAdjacentHTML('beforeend', html);
-                var head =`<table style="table-layout: fixed;" class="table table-striped">
-                          <thead>
-                              <tr>
-                                  <th>Nombre</th>
-                                  <th>Correo</th>
-                                  <th>Teléfono</th>
-                                  <th>Extensión</th>
-                                  <th>Puesto</th>
-                              </tr>
-                          </thead>
-                          <tbody>`
-                data.contacto.forEach(contacto => {
-                  let data =` <tr>
-                                  <td>
-                                      <input type="text" value="${contacto.nombre}" name="nombre_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input type="email" value="${contacto.correo}" name="correo_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input type="tel" value="${contacto.telefono}" name="telefono_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input type="number" value="${contacto.extension}" name="extension_contacto" style="width:100%">
-                                  </td>
-                                  <td>
-                                      <input class="form-control" value="${contacto.puesto}" type="text" name="puesto_contacto">
-                                  </td>
-                              </tr>`
-                              head +=data
-                });
-                const final = head + '</tbody></table>' 
-                let elemen = document.querySelector(".contactos-here");
-                  elemen.insertAdjacentHTML('beforeend', final);
-                $('#modal_editar_cliente').modal('show');
-              }
-            });
-          });
-
-
-    //Borrar contacto
-    $('.delete-contacto').on('click', function () {
-        var element = this;
-        swal({
-            title: "Estas seguro?",
-            text: "Se borrara el contacto de este beneficiario!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Si, borrar!",
-            closeOnConfirm: false
-        }, function () {
-            $.ajax({
-                url: $(element).attr("data-url"),
-                success: function (data) {
-                    if (data) {
-                        swal("Borrado!", "El contacto ha sido eliminado.", "success");
-                        setTimeout(function () {
-                          location.reload();
-                        }, 2000);
-                    }
-                }
-            })
-
-        });
-    });
-
-      
-
-    </script>
->>>>>>> dedc95d324608d8f4139e579e6295bf46c7d3edf
 {% endblock javascripts %}
   
