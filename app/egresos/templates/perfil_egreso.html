@@ -20,7 +20,7 @@
                 egreso</span>
             {% endif %}
             <span class="btn bg-red reembolso-egreso" data-toggle="modal"
-                data-target="#modal_reembolso">Reembolso</span>
+                data-target="#modal_reembolso" onclick="setReembolso({{egreso.beneficiario.id}})">Reembolso</span>
             <span class="btn bg-red nota-egreso" data-toggle="modal" data-target="#modal_nota_credito">Nota de
                 crédito</span>
         </div>
@@ -473,6 +473,15 @@
         }
     });
 
+     // reembolso
+     $("#monto_documento").change(function () {
+        if (this.checked) {
+            $("#table_monto_documento").fadeIn()
+        } else {
+            $("#table_monto_documento").fadeOut()
+        }
+    });
+
     // Conciliado check for modal generar pago
     $("#mismo_egreso").change(function () {
         if (this.checked) {
@@ -491,8 +500,12 @@
 
     
 
-
-
+    function setReembolso(beneficiario){
+        console.log(beneficiario)
+        console.log("in")
+        $('#proveedor_reembolso').val(beneficiario)
+        $('.selectpicker').selectpicker('refresh');
+    }
 
 
 
@@ -532,7 +545,6 @@
     });
 
     //Modal Conciliar multiple
-
     $("#open-conciliar-multiple").on("click", function () {
         let pagos = []
         // Iterate over all checkboxes in the table
