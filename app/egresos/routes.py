@@ -19,20 +19,19 @@ def route_template(template):
 
 def test_connection():
    
-    '''
-    con_GEZ = pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
-    con_rdm = pyodbc.connect(
-        "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=rdm;uid=gezsa001;pwd=gez9105ru2")
+    try:
+        con_GEZ = pyodbc.connect(
+            "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
+        con_rdm = pyodbc.connect(
+            "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=rdm;uid=gezsa001;pwd=gez9105ru2")
 
-    sql = "SELECT * FROM dbo.proveedores"
-    data = pd.read_sql(sql,con_GEZ)
-    print(data.head())
+        sql = "SELECT * FROM dbo.proveedores"
+        data = pd.read_sql(sql,con_GEZ)
+        return (data.head())
     
-    '''
-    print('TEST SUCCESSFUL!')
+    except Exception as e:
 
-    return
+        return e
 
 
 #####  EGRESOS ROUTES #########
@@ -115,12 +114,12 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
-    test_connection()
+    text = test_connection()
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
-    return render_template("cuentas_por_pagar.html", egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
+    return render_template("cuentas_por_pagar.html",text = text, egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos perfil
