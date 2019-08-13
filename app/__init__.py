@@ -56,7 +56,7 @@ def configure_logs(app):
 def create_app(config):
 
     sched = BackgroundScheduler(daemon=True)
-    sched.add_job(test_job, 'interval', minutes=1)
+    sched.add_job(test_job, 'interval', days=1)
     sched.start()
 
     app = Flask(__name__, static_folder='base/static')
@@ -84,7 +84,8 @@ def create_app(config):
     register_blueprints(app)
     configure_database(app)
 
-    from app.db_models.db_migration import run_all_migrations
-    run_all_migrations()
+    # ONLY UNCOMMENT FOR THE FIRST MIGRATION!
+    #from app.db_models.db_migration import run_all_migrations
+    #run_all_migrations()
     
     return app

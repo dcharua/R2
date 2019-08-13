@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2a9d106-abd0-4a6c-82e1-3e7364843afe" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/db_models/db_migration.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/egresos/test_delete.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/db_models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db_models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/egresos/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/egresos/routes.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -20,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
+            <state relative-caret-position="227">
+              <caret line="86" column="45" selection-start-line="86" selection-start-column="45" selection-end-line="86" selection-end-column="45" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -32,7 +27,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/ingresos/routes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1635">
+            <state relative-caret-position="-638">
               <caret line="116" column="44" selection-start-line="109" selection-start-column="12" selection-end-line="116" selection-end-column="44" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
@@ -246,12 +241,12 @@
       <workItem from="1563599500079" duration="11712000" />
       <workItem from="1563896309319" duration="26890000" />
       <workItem from="1564757843162" duration="96951000" />
-      <workItem from="1565713913262" duration="40000" />
+      <workItem from="1565713913262" duration="237000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="140518000" />
+    <option name="totallyTimeSpent" value="140715000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="160" y="114" width="960" height="546" extended-state="0" />
@@ -341,16 +336,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/ingresos/routes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="116" column="44" selection-start-line="109" selection-start-column="12" selection-end-line="116" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/modales/templates/modal_agregar_centro.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="675">
@@ -395,10 +380,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/ingresos/routes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-638">
+          <caret line="116" column="44" selection-start-line="109" selection-start-column="12" selection-end-line="116" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
+        <state relative-caret-position="227">
+          <caret line="86" column="45" selection-start-line="86" selection-start-column="45" selection-end-line="86" selection-end-column="45" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
