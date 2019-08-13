@@ -614,19 +614,21 @@ def reembolso_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
     if ('parcial_reembolso' in data):
       monto = - Decimal(data["monto_parcial"])
-      egreso.monto_total += monto
-      egreso.monto_pagado += monto
     else:  
       monto = - egreso.monto_pagado
-      egreso.monto_pagado = 0
-      egreso.monto_total += monto
+
+    egreso.monto_pagado += monto
     pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
     fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egreso.beneficiario_id)
     ep = EgresosHasPagos(egreso=egreso, pago=pago, monto=monto)
-    detalle = DetallesEgreso(centro_negocios_id=data["centro_negocios"], proveedor_id=data["proveedor"],
-                        categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
-                        numero_control='reembolso', descripcion=data["comentario"])
-    egreso.detalles.append(detalle)
+
+    if ('monto_documento' in data):
+      egreso.monto_total += monto
+      egreso.monto_documento += monto
+      detalle = DetallesEgreso(centro_negocios_id=data["centro_negocios"], proveedor_id=data["proveedor"],
+                                categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
+                                numero_control='reembolso', descripcion=data["comentario"])
+      egreso.detalles.append(detalle)
     db.session.add(ep)
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))
