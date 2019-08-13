@@ -11,11 +11,18 @@ import pyodbc
 import urllib
 import sqlalchemy
 
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
 db = SQLAlchemy()
 login_manager = LoginManager()
 
-#def get_db_gerardo():
-#   return db_gerardo
+
+
+def test_job():
+    from app.db_models.db_migration import run_all_migrations
+    run_all_migrations()
+    return
 
 def register_extensions(app):
     db.init_app(app)
@@ -47,7 +54,11 @@ def configure_logs(app):
 
 
 def create_app(config):
-    
+
+    sched = BackgroundScheduler(daemon=True)
+    sched.add_job(test_job, 'interval', minutes=1)
+    sched.start()
+
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
     app.config.from_mapping(
@@ -64,13 +75,16 @@ def create_app(config):
     # Para Adrian
     #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
 
-        
     )
+
 
     db = SQLAlchemy(app)
     login_manager = LoginManager()
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)
+
+    from app.db_models.db_migration import run_all_migrations
+    run_all_migrations()
     
     return app

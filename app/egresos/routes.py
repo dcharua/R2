@@ -4,8 +4,19 @@ from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
-from datetime import date
+from app.db_models.db_migration import *
+from datetime import date,timedelta
 from decimal import Decimal
+import unidecode
+from sqlalchemy.sql import func
+
+import pyodbc
+import pandas as pd
+import numpy as np
+import time
+
+
+########################### REAL EGRESOS!! ########################
 
 
 @blueprint.route('/<template>')
@@ -94,11 +105,14 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
+
+    run_all_migrations()
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     return render_template("cuentas_por_pagar.html", egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
+
 
 
 #Egresos perfil

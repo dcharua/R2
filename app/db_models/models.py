@@ -8,7 +8,6 @@ from flask import flash, redirect
 Base = declarative_base()
 
 
-
 beneficiario_has_categorias = Table('beneficiario_has_categorias', db.Model.metadata, 
     Column('beneficiario_id', Integer, ForeignKey('beneficiarios.id'), primary_key=True),
     Column('categoria_id', Integer, ForeignKey('categorias.id'), primary_key=True)
@@ -20,12 +19,15 @@ cliente_has_categorias = Table('cliente_has_categorias', db.Model.metadata,
 )
 #Tables in alpha order
 
+
+
 class Beneficiarios(db.Model):
     __tablename__ = 'beneficiarios'
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer,unique=True, nullable=False, primary_key=True)
-    nombre = Column(String(50))
+    nombre = Column(String(100))
+    nombre_corto = Column(String(50))
     RFC = Column(String(20))
     direccion = Column(String(150))
     razon_social = Column(String(100))
@@ -76,8 +78,9 @@ class CentrosNegocio(db.Model):
     nombre = Column(String(50))
     numero = Column(String(20))
     tipo = Column(String(50))
-    direccion =  Column(String(50))
+    direccion = Column(String(150))
     arrendadora = Column(String(50))
+    telefono = Column(String(50))
     comentario = Column(String(250))
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="centro")
@@ -131,7 +134,8 @@ class Conciliaciones(db.Model):
     saldo_sistema = Column(Numeric(10, 2))
 
     def __repr__(self):
-        return self.banco + ' / ' + self.numero   
+        return self.banco + ' / ' + self.numero
+
 class Conceptos(db.Model):
     __tablename__ = 'conceptos'
     __table_args__ = {'extend_existing': True}
@@ -251,7 +255,7 @@ class EgresosHasPagos(db.Model):
     pago_id = Column(Integer, ForeignKey('pagos_egresos.id'), primary_key=True)
     monto = Column(Numeric(10, 2))
     egreso = relationship("Egresos", backref=backref("pagos_assoc"))
-    pago =  relationship("Pagos", backref=backref("egresos_assoc"))
+    pago = relationship("Pagos", backref=backref("egresos_assoc"))
 
 
 class Egresos(db.Model):
@@ -264,16 +268,20 @@ class Egresos(db.Model):
     fecha_vencimiento = Column(Date)
     fecha_programada_pago = Column(Date)
     numero_documento = Column(String(20))
-    monto_total =  Column(Numeric(10, 2))
-    monto_pagado =  Column(Numeric(10, 2))
-    monto_documento =  Column(Numeric(10, 2))
-    monto_solicitado =  Column(Numeric(10, 2))
+    monto_total = Column(Numeric(10, 2))
+    monto_pagado = Column(Numeric(10, 2))
+    monto_documento = Column(Numeric(10, 2))
+    monto_solicitado = Column(Numeric(10, 2))
     monto_por_conciliar = Column(Numeric(10, 2))
     referencia = Column(String(40))
     comentario = Column(String(200))
     pagado = Column(Boolean)
     status = Column(String(20))
-    detalles = relationship("DetallesEgreso")
+
+    iva = Column(Numeric(10, 2))
+    descuento = Column(Numeric(10, 2))
+    notas_credito = Column(Numeric(10, 2))
+
     
   
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
@@ -281,6 +289,7 @@ class Egresos(db.Model):
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="egresos")
     pagos = relationship("Pagos", secondary='egresos_has_pagos')
+    detalles = relationship("DetallesEgreso")
 
     def setStatus(self, pagos=None):
         egreso = self.query.get(self.id)
@@ -311,6 +320,34 @@ class Egresos(db.Model):
     
  
 
+class Empleados(db.Model):
+    __tablename__ = 'empleados'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(50))
+    apellido = Column(String(50))
+    segundo_appellido = Column(String(50))
+    sexo = Column(String(10))
+    puesto = Column(String(50))
+    tienda = Column(Integer)
+    departamento = Column(Integer)
+    fecha_nacimiento = Column(Date)
+    fecha_alta = Column(Date)
+    fecha_ingreso = Column(Date)
+    fecha_contrato = Column(Date)
+    fecha_baja = Column(Date)
+    motivo_baja = Column(String(200))
+    sueldo = Column(Numeric(10,2))
+    prestamo_monto = Column(Numeric(10,2))
+    prestamos_fecha_entrega = Column(Date)
+    prestamos_fecha_vuelta = Column(Date)
+
+
+    def __repr__(self):
+        return '{} {} {}'.format(self.nombre,self.apellido,self.segundo_appellido)
+
+
 class Empresas(db.Model):
     __tablename__ = 'empresas'
     __table_args__ = {'extend_existing': True}
@@ -321,9 +358,9 @@ class Empresas(db.Model):
     centro = relationship("CentrosNegocio")
     cuenta = relationship("Cuentas")
     ingresos = relationship("Ingresos")
-    
+
     def __repr__(self):
-        return self.nombre 
+        return self.nombre
 
 
 class FormasPago(db.Model):
@@ -364,8 +401,7 @@ class NotasCredito(db.Model):
     def __repr__(self):
         return self.nombre 
 
-#########3#########3#########3#########3#########3#########3
-#########3#########3#########3#########3#########3#########3
+
 
 class Ingresos(db.Model):
 
@@ -389,6 +425,10 @@ class Ingresos(db.Model):
     monto_pagado = Column(Numeric(10, 2))
     monto_solicitado = Column(Numeric(10, 2))
     monto_por_conciliar = Column(Numeric(10, 2))
+    costo_venta = Column(Numeric(10, 2))
+    iva_ingresos = Column(Numeric(10, 2))
+    iva_ventas = Column(Numeric(10, 2))
+    utilidad_neta = Column(Numeric(10, 2))
     detalles = relationship("DetallesIngreso")
     comentario = Column(String(200))
     pagado = Column(Boolean)
@@ -427,7 +467,7 @@ class IngresosHasPagos(db.Model):
     pago_id = Column(Integer, ForeignKey('pagos_ingresos.id'), primary_key=True)
     monto = Column(Numeric(10, 2))
     ingreso = relationship("Ingresos", backref=backref("pagos_assoc"))
-    pago =  relationship("Pagos_Ingresos", backref=backref("ingresos_assoc"))  
+    pago = relationship("Pagos_Ingresos", backref=backref("ingresos_assoc"))
     
 
 class Pagos_Ingresos(db.Model):
@@ -495,7 +535,97 @@ class Tipo_Ingreso(db.Model):
 
     def __repr__(self):
         return self.tipo
-    
+
+
+
+
+################### MAPPING TABLES!  ##################
+
+
+
+class Clientes_Mapping(db.Model):
+    __tablename__ = 'Test_Table'
+    __table_args__ = {'extend_existing': True}
+
+    GEZ_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    R2_id = Column(Integer,ForeignKey('beneficiarios.id'))
+
+    def __repr__(self):
+        return self.nombre
+
+
+
+class Empresas_Mapping(db.Model):
+    __tablename__ = 'Empresas_Mapping'
+    __table_args__ = {'extend_existing': True}
+
+    Map_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    GEZ_id = Column(Integer, unique=True, nullable=False)
+    R2_id = Column(Integer)
+
+
+    def __repr__(self):
+        return '{}'.format(self.R2_id)#, self.R2_id
+
+
+class Beneficiarios_Mapping(db.Model):
+    __tablename__ = 'beneficiarios_mapping'
+    __table_args__ = {'extend_existing': True}
+
+    Map_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    GEZ_id = Column(Integer, unique=True, nullable=False)
+    R2_id = Column(Integer)
+
+    def __repr__(self):
+        return '{}'.format(self.R2_id)#, self.R2_id
+
+
+class CentrosNegocio_Mapping(db.Model):
+    __tablename__ = 'centrosnegocio_mapping'
+    __table_args__ = {'extend_existing': True}
+
+    Map_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    GEZ_id = Column(Integer, unique=True, nullable=False)
+    R2_id = Column(Integer)
+
+    def __repr__(self):
+        return '{}'.format(self.R2_id)#, self.R2_id
+
+class Empleados_Mapping(db.Model):
+    __tablename__ = 'empleados_mapping'
+    __table_args__ = {'extend_existing': True}
+
+    Map_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    GEZ_id = Column(Integer, unique=True, nullable=False)
+    R2_id = Column(Integer)
+
+    def __repr__(self):
+        return '{}'.format(self.R2_id)#, self.R2_id
+
+### MAPPING TABLES ####
+class Egresos_Mapping(db.Model):
+    __tablename__ = 'egresos_mapping'
+    __table_args__ = {'extend_existing': True}
+
+    Map_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    GEZ_id = Column(Integer, unique=True, nullable=False)
+    R2_id = Column(Integer)
+
+    def __repr__(self):
+        return '{}'.format(self.R2_id)#, self.R2_id
+
+class Ingresos_Mapping(db.Model):
+    __tablename__ = 'ingresos_mapping'
+    __table_args__ = {'extend_existing': True}
+
+    Map_id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    GEZ_id = Column(Integer, unique=True, nullable=False)
+    R2_id = Column(Integer)
+
+    def __repr__(self):
+        return '{}'.format(self.R2_id)#, self.R2_id
+
+
 
 #After insert events
 def after_insert_listener(mapper, connection, target):
