@@ -69,7 +69,9 @@
 
 
                     <div style="padding:10px;" class="body">
-                        <table id="table" style="table-layout: fixed;" class="table table-striped">
+                    <input type="checkbox" id="monto_documento" name="monto_documento" class="filled-in" checked="true"/>
+                    <label class="grey-font" for="monto_documento">Modificar monto del documento</label>
+                        <table id="table_monto_documento" style="table-layout: fixed;" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Centro de Negocio</th>
@@ -92,7 +94,7 @@
                                     <td>
                                         <select class="selectpicker proveedor" data-live-search="true" name="proveedor"
                                             title="Seleccione un Proveedor..." data-width="80%"
-                                            data-validation="required" id="proveedor0" (onchange)="setCategoria()">
+                                            data-validation="required" id="proveedor_reembolso" (onchange)="setCategoria()">
                                             {% for provedor in proveedores %}
                                             <option value="{{provedor.id}}"> {{provedor.nombre }} </option>
                                             {% endfor %}

@@ -4,8 +4,19 @@ from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
-from datetime import date
+from app.db_models.db_migration import *
+from datetime import date,timedelta
 from decimal import Decimal
+import unidecode
+from sqlalchemy.sql import func
+
+import pyodbc
+import pandas as pd
+import numpy as np
+import time
+
+
+########################### REAL EGRESOS!! ########################
 
 import pyodbc
 import pandas as pd
@@ -114,12 +125,18 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
+<<<<<<< HEAD
     text = test_connection()
+=======
+
+    run_all_migrations()
+>>>>>>> 9e98721530f9324568cd50dfc0043e35e973a024
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     return render_template("cuentas_por_pagar.html",text = text, egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
+
 
 
 #Egresos perfil
@@ -622,19 +639,21 @@ def reembolso_egreso(egreso_id):
     egreso = Egresos.query.get(egreso_id)
     if ('parcial_reembolso' in data):
       monto = - Decimal(data["monto_parcial"])
-      egreso.monto_total += monto
-      egreso.monto_pagado += monto
     else:  
       monto = - egreso.monto_pagado
-      egreso.monto_pagado = 0
-      egreso.monto_total += monto
+
+    egreso.monto_pagado += monto
     pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
     fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egreso.beneficiario_id)
     ep = EgresosHasPagos(egreso=egreso, pago=pago, monto=monto)
-    detalle = DetallesEgreso(centro_negocios_id=data["centro_negocios"], proveedor_id=data["proveedor"],
-                        categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
-                        numero_control='reembolso', descripcion=data["comentario"])
-    egreso.detalles.append(detalle)
+
+    if ('monto_documento' in data):
+      egreso.monto_total += monto
+      egreso.monto_documento += monto
+      detalle = DetallesEgreso(centro_negocios_id=data["centro_negocios"], proveedor_id=data["proveedor"],
+                                categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
+                                numero_control='reembolso', descripcion=data["comentario"])
+      egreso.detalles.append(detalle)
     db.session.add(ep)
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))

@@ -21,7 +21,7 @@
                     </div>
                     <div class="col-sm-12 col-md-6 nomargin">
                         <label for="beneficiario"> Cuenta </label><br>
-                        <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_id" title="Seleccione una Cuenta.." data-width="100%">
+                        <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta_id" title="Seleccione una Cuenta.." data-width="100%" data-validation="required">
                            {% for cuenta in cuentas %} 
                            <option value="{{cuenta.id}}"> {{ cuenta }} </option>
                           {% endfor %} 
