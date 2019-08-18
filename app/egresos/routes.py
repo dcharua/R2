@@ -126,8 +126,12 @@ def perfil_egreso(egreso_id):
     conceptos = Conceptos.query.all()
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
+    notas = NotasCredito.query.filter(NotasCredito.egreso_WR_id == egreso_id)
+    monto_notas = 0
+    for nota in notas:
+        monto_notas += nota.monto
     formas_pago = FormasPago.query.all()
-    return render_template("perfil_egreso.html", egreso=egreso, egresos = egresos, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
+    return render_template("perfil_egreso.html", egreso=egreso, notas = notas, monto_notas = monto_notas,egresos = egresos, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos Edit
