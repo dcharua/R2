@@ -19,9 +19,9 @@
                 data-url="{{ url_for('egresos_blueprint.borrar_egreso', egreso_id=egreso.id) }}">Borrar
                 egreso</span>
             {% endif %}
-            <span class="btn bg-red reembolso-egreso" data-toggle="modal"
+            <span class="btn bg-blue-grey reembolso-egreso" data-toggle="modal"
                 data-target="#modal_reembolso" onclick="setReembolso({{egreso.beneficiario.id}})">Reembolso</span>
-            <span class="btn bg-red nota-egreso" data-toggle="modal" data-target="#modal_nota_credito">Nota de
+            <span class="btn bg-teal nota-egreso" data-toggle="modal" data-target="#modal_nota_credito">Nota de
                 crédito</span>
         </div>
     </div>
@@ -74,20 +74,25 @@
                             class="font-bold">{{"${:,.2f}".format(egreso.monto_documento)}}</span></p>
                 </b>
                 <b>
+                    <p class="font-18">Notas de Crédito: <span
+                            class="font-bold">{{"${:,.2f}".format(monto_notas)}}</span></p>
+                </b>
+                <b>
+                        <p class="font-18">Descuentos: <span
+                                class="font-bold">{{"${:,.2f}".format(egreso.descuento)}}</span></p>
+                    </b>
+                <b>
                     <p class="font-18">Monto total a Pagar: <span
                             class="font-bold">{{"${:,.2f}".format(egreso.monto_total)}}</span></p>
                 </b>
                 <p class="font-18">Monto Pagado: <span
                         class="font-bold">{{"${:,.2f}".format(egreso.monto_pagado)}}</span></p>
-                <p class="font-18">Monto Pendiente: <span class="font-bold">{{"${:,.2f}".format(egreso.monto_documento -
-                egreso.monto_pagado)}}</span></p>
+                <p class="font-18">Monto Pendiente: <span class="font-bold">{{"${:,.2f}".format(egreso.monto_total -
+                egreso.monto_pagado - egreso.monto_solicitado - egreso.monto_por_conciliar)}}</span></p>
                 <p class="font-18">Monto Solicitado: <span
                         class="font-bold">{{"${:,.2f}".format(egreso.monto_solicitado)}}</span></p>
                 <p class="font-18">Monto por Conciliar: <span
                         class="font-bold">{{"${:,.2f}".format(egreso.monto_por_conciliar)}}</span></p>
-                <p class="font-18">Monto por Notas de Crédito: <span
-                    class="font-bold">{{"${:,.2f}".format(monto_notas)}}</span></p>
-            </div>
         </div>
         <div class="row mycontainer">
             <div class="col-sm-12">
@@ -375,7 +380,6 @@
                             {% for nota in notas %}
                             <tr>
                                 <td>{{nota.id}}</td>
-                                <td>{{nota.beneficiario}}</td>
                                 <td>{{nota.numero_documento }}</td>
                                 <td>{{nota.egreso_QB.numero_documento}}</td>
                                 <td>{{nota.egreso_WR.numero_documento}}</td>
