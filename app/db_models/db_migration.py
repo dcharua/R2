@@ -6,7 +6,6 @@ from app import db, login_manager
 from app.db_models.models import *
 from datetime import date,timedelta
 from decimal import Decimal
-import unidecode
 from sqlalchemy.sql import func
 
 import pyodbc
@@ -293,7 +292,7 @@ def get_direccion(item,variable):
         ciudad = str(item['sucdelompio']).rstrip()
 
 
-    return unidecode.unidecode(calle + ' ' + colonia + ' ' + cp + ' ' + ciudad + ' ' + estado + ' ' + pais)
+    return (calle + ' ' + colonia + ' ' + cp + ' ' + ciudad + ' ' + estado + ' ' + pais)
 
 
 def agregar_contactos(proveedor):
@@ -698,19 +697,14 @@ def initialize_global_var():
 
 
 def run_all_migrations():
-    #initialize_global_var()
-    #con_GEZ, con_rdm = get_connections()
-
-    #list_GEZ, list_R2, mapping_table = get_lists(con_GEZ, 'egresos')
-
-
-
-
+    initialize_global_var()
+    con_GEZ, con_rdm = get_connections()
+    #mapping_beneficiarios = mapping_to_Dataframe(Beneficiarios_Mapping.query.all())
     i = 0
 
     # #Migrate Empresas
-    # variable = 'empresas'
-    # migrate_table(con_GEZ, con_rdm, variable)
+    variable = 'empresas'
+    migrate_table(con_GEZ, con_rdm, variable)
     #
     # #Migrate Proveedores
     #

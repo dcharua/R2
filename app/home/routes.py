@@ -11,6 +11,12 @@ import pyodbc
 def index():
     #df = connect_mysql()
     #df.to_csv('tst.csv',sep=',')
+
+    print(' HEEEEEREEEEEEEE ' )
+    from app.db_models.db_migration import run_all_migrations
+    run_all_migrations()
+
+
     return render_template('index.html')
 
 
