@@ -146,8 +146,14 @@ def perfil_egreso(egreso_id):
     conceptos = Conceptos.query.all()
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
+    notas = NotasCredito.query.filter(NotasCredito.egreso_WR_id == egreso_id)
+    monto_notas = 0
+    for nota in notas:
+        monto_notas += nota.monto
     formas_pago = FormasPago.query.all()
-    return render_template("perfil_egreso.html", egreso=egreso, egresos = egresos, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
+    if egreso.descuento is None:
+            egreso.descuento = 0
+    return render_template("perfil_egreso.html", egreso=egreso, notas = notas, monto_notas = monto_notas,egresos = egresos, empresas=empresas, centros_negocio=centros_negocio, proveedores=proveedores, categorias=categorias, conceptos=conceptos, formas_pago=formas_pago, cuentas=cuentas)
 
 
 #Egresos Edit
@@ -223,9 +229,14 @@ def perfil_pago(pago_id):
     cuentas = Cuentas.query.all()
     ep = EgresosHasPagos.query.filter_by(pago_id=pago_id)
     montoDocumentos = 0
+    montoDescuentos = 0
     for egreso in ep:
+        if egreso.egreso.descuento is None:
+                egreso.egreso.descuento = 0  
+        montoDescuentos =+ egreso.egreso.descuento
         montoDocumentos =+ egreso.egreso.monto_total
-    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago, ep=ep, montoDocumentos = montoDocumentos)
+        
+    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago, ep=ep, montoDocumentos = montoDocumentos, montoDescuentos = montoDescuentos)
 
 #Editar pago
 @blueprint.route('/editar_pago/<int:pago_id>"', methods=['GET', 'POST'])

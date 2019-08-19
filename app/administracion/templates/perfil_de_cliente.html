@@ -285,7 +285,7 @@
     <!-- PAGOS TABLE -->
     <div class="card">
           <div class="header bg-black">
-            <h2>Pagos de Cliente</h2>
+            <h2>Pagos del Cliente</h2>
             <div class="select-btn-group">
               <span id="open-conciliar-multiple" class="btn bg-deep-purple">Conciliar movimientos</span>
             </div>
@@ -445,7 +445,7 @@
         $("#open-conciliar-multiple").on("click", function () {
         let pagos = []
         // Iterate over all checkboxes in the table
-        $('.pagos-table-check').each(function () {
+        $('.pagos-cliente-select-all').each(function () {
 
             // If checkbox is checked
             if (this.checked) {
@@ -705,7 +705,7 @@
       });
 
       // "Select all" control
-      $('#doc-enviados-select-all').on('click', function () {
+      $('.doc-enviados-select-all').on('click', function () {
         // Check/uncheck all checkboxes in the table
         var rows = doc_enviados.rows({
           'search': 'applied'
