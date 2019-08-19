@@ -55,9 +55,9 @@ def configure_logs(app):
 
 def create_app(config):
 
-    sched = BackgroundScheduler(daemon=True)
-    sched.add_job(test_job, 'interval', days=1)
-    sched.start()
+    # sched = BackgroundScheduler(daemon=True)
+    # sched.add_job(test_job, 'interval', days=1)
+    # sched.start()
 
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
@@ -69,11 +69,11 @@ def create_app(config):
     LOGIN_DISABLED = True,
     SQLALCHEMY_TRACK_MODIFICATIONS = True,
     #SQLALCHEMY_DATABASE_URI ="mssql+pyodbc://%s:%s@%s/%s?driver=ODBC+Driver+17+for+SQL+Server" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
-    SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
+    #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME'))
     #print("mysql+pymysql://{}s:{}@{}s/{}s".format(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME')))
 
     # Para Adrian
-    #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
+    SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
 
     )
 

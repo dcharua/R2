@@ -353,7 +353,7 @@ class Empresas(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
-    nombre = Column(String(50))
+    nombre = Column(String(50),unique=True)
     egresos = relationship("Egresos")
     centro = relationship("CentrosNegocio")
     cuenta = relationship("Cuentas")
@@ -530,7 +530,7 @@ class Tipo_Ingreso(db.Model):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True)
-    tipo = Column(String(50))
+    tipo = Column(String(50),unique=True)
     ingresos = relationship("Ingresos")
 
     def __repr__(self):

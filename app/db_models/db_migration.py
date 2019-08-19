@@ -6,7 +6,6 @@ from app import db, login_manager
 from app.db_models.models import *
 from datetime import date,timedelta
 from decimal import Decimal
-import unidecode
 from sqlalchemy.sql import func
 
 import pyodbc
@@ -22,18 +21,6 @@ def get_connections():
         "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
     con_rdm = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=rdm;uid=gezsa001;pwd=gez9105ru2")
-    '''
-    sql = "SELECT * FROM dbo.Ingresos_Cabecera_r2"
-    data = pd.read_sql(sql,con_GEZ)
-    data.to_csv('~/Desktop/Ingresos_Cabecera_r2.csv',index = False)
-    print(data.head())
-    print('TEST SUCCESSFUL!')
-
-    sql = "SELECT * FROM dbo.Ingresos_Detalles_r2"
-    data = pd.read_sql(sql, con_GEZ)
-    data.to_csv('~/Desktop/Ingresos_Detalles_r2.csv', index=False)
-
-    '''
 
     return con_GEZ,con_rdm
 
@@ -96,7 +83,7 @@ def translate_egreso(egreso,R2_id):
 
 def generar_pago_migracion(beneficiario_id,monto_total,egreso):
 
-    status = 'liquidado'
+    status = 'conciliado'
     global pago_id_egreso
     pago_id_egreso = pago_id_egreso + 1
     fecha_pago = str(egreso['FechaDPago']) if str(egreso['FechaDPago']) != 'NaT' else None
@@ -293,7 +280,7 @@ def get_direccion(item,variable):
         ciudad = str(item['sucdelompio']).rstrip()
 
 
-    return unidecode.unidecode(calle + ' ' + colonia + ' ' + cp + ' ' + ciudad + ' ' + estado + ' ' + pais)
+    return (calle + ' ' + colonia + ' ' + cp + ' ' + ciudad + ' ' + estado + ' ' + pais)
 
 
 def agregar_contactos(proveedor):
@@ -698,19 +685,14 @@ def initialize_global_var():
 
 
 def run_all_migrations():
-    #initialize_global_var()
-    #con_GEZ, con_rdm = get_connections()
-
-    #list_GEZ, list_R2, mapping_table = get_lists(con_GEZ, 'egresos')
-
-
-
+    initialize_global_var()
+    con_GEZ, con_rdm = get_connections()
 
     i = 0
 
     # #Migrate Empresas
-    # variable = 'empresas'
-    # migrate_table(con_GEZ, con_rdm, variable)
+    variable = 'empresas'
+    migrate_table(con_GEZ, con_rdm, variable)
     #
     # #Migrate Proveedores
     #
@@ -727,8 +709,8 @@ def run_all_migrations():
 
     # Migrate Egresos
 
-    variable = 'egresos'
-    print('Job running at :',time.time())
+    #variable = 'egresos'
+    #print('Job running at :',time.time())
     #migrate_table(con_GEZ, con_rdm, variable)
 
     # Migrate Ingresos

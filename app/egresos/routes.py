@@ -7,7 +7,6 @@ from app.db_models.models import *
 from app.db_models.db_migration import *
 from datetime import date,timedelta
 from decimal import Decimal
-import unidecode
 from sqlalchemy.sql import func
 
 import pyodbc
@@ -106,7 +105,6 @@ def capturar_egreso():
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
 
-    run_all_migrations()
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
