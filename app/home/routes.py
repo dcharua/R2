@@ -6,11 +6,22 @@ import pandas as pd
 import pyodbc
 
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from app.db_models.db_migration import run_all_migrations
+
+
 @blueprint.route('/index')
 @login_required
 def index():
-    #df = connect_mysql()
-    #df.to_csv('tst.csv',sep=',')
+
+    print('Here!')
+    # sched = BackgroundScheduler(daemon=True)
+    # sched.add_job(run_all_migrations, 'interval', minutes=1)
+    # #sched.add_job(run_all_migrations(), 'interval', days=1)
+    # sched.start()
+
+    run_all_migrations()
+
     return render_template('index.html')
 
 

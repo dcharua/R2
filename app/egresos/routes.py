@@ -14,6 +14,8 @@ import pandas as pd
 import numpy as np
 import time
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from app.db_models.db_migration import run_all_migrations
 
 ########################### REAL EGRESOS!! ########################
 

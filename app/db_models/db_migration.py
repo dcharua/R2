@@ -12,8 +12,11 @@ import pyodbc
 import pandas as pd
 import numpy as np
 import time
+from config import config_dict
 
-
+# from app import create_app
+# app = create_app(config_dict['Debug'])
+# app.app_context().push()
 
 def get_connections():
 
@@ -81,14 +84,14 @@ def translate_egreso(egreso,R2_id):
 
 
 
-def generar_pago_migracion(beneficiario_id,monto_total,egreso):
+def generar_pago_migracion(beneficiario_id, monto_total, egreso):
 
     status = 'conciliado'
     global pago_id_egreso
     pago_id_egreso = pago_id_egreso + 1
     fecha_pago = str(egreso['FechaDPago']) if str(egreso['FechaDPago']) != 'NaT' else None
 
-    pago = Pagos(id=int(pago_id_egreso), fecha_pago = fecha_pago, status=status, beneficiario_id=int(beneficiario_id), monto_total=float(monto_total),
+    pago = Pagos(id=int(pago_id_egreso), fecha_pago=fecha_pago, status=status, beneficiario_id=int(beneficiario_id), monto_total=float(monto_total),
                  cuenta_id=int(cuenta_id), forma_pago_id=int(forma_pago_id))
 
     #print('\nPago: \nid = {} \n status = {} \nfecha_pago = {}\n beneficiario_id = {} \nmonto_total= {} \n cuenta_id = {} \n forma_pago_id = {}'.format(pago_id_egreso,status,fecha_pago,beneficiario_id,monto_total,cuenta_id, forma_pago_id))
@@ -96,7 +99,7 @@ def generar_pago_migracion(beneficiario_id,monto_total,egreso):
     return pago
 
 
-def generar_detalle_egreso(R2_id,egreso, beneficiario_id):
+def generar_detalle_egreso(R2_id, egreso, beneficiario_id):
 
     try: centro_negocios_id = int(mapping_centros_negocio[mapping_centros_negocio.GEZ_id == int(egreso['AlmQRecibe'])].R2_id)
     except: centro_negocios_id = centros_negocio_sin_definir_id
@@ -109,8 +112,7 @@ def generar_detalle_egreso(R2_id,egreso, beneficiario_id):
 
     detalle = DetallesEgreso(centro_negocios_id =int(centro_negocios_id), proveedor_id=int(beneficiario_id),
                              categoria_id=int(categoria_id), concepto_id=int(concepto_id), monto=float(monto),
-                             numero_control=numero_control,
-                             descripcion=descripcion)
+                             numero_control=numero_control,descripcion=descripcion)
 
 
 
@@ -685,6 +687,11 @@ def initialize_global_var():
 
 
 def run_all_migrations():
+
+
+    # app = create_app(config)
+    # with app.app_context():
+    print("I'm working...")
     initialize_global_var()
     con_GEZ, con_rdm = get_connections()
 
