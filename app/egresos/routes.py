@@ -15,7 +15,7 @@ import numpy as np
 import time
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from app.db_models.db_migration import run_all_migrations
+from app.db_models.db_migration import *
 
 ########################### REAL EGRESOS!! ########################
 
@@ -50,7 +50,6 @@ def test_connection():
 #Egresos Create
 @blueprint.route('/capturar_egreso', methods=['GET', 'POST'])
 def capturar_egreso():
-
     if request.form:
         data = request.form
         montos = list(map(float, data.getlist("monto")))
@@ -108,10 +107,9 @@ def capturar_egreso():
     conceptos = Conceptos.query.all()
     cuentas_banco = Cuentas.query.all()
     formas_pago = FormasPago.query.all()
-
     return render_template("capturar_egreso.html",
                            navbar_data_capture='active',
-                           title="Registro de Egresos",
+                           title="Registro de Egresos --"+str(a),
                            beneficiarios=beneficiarios,
                            empresas=empresas,
                            centros_negocios=centros_negocios,
@@ -126,12 +124,6 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
-<<<<<<< HEAD
-    
-    
-=======
-
->>>>>>> 8895bd9bf6b11b79709c9884ac0766953742c93f
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()

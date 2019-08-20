@@ -497,8 +497,12 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
     if variable == 'egresos':
 
         fecha_documento, fecha_vencimiento, fecha_programada_pago, numero_documento, monto_total, monto_pagado, monto_solicitado, monto_por_conciliar, referencia, comentario, \
-        pagado, status, beneficiario_id, empresa_id, iva, descuento, monto_documento, notas_credito, detalle, pago = translate_ingreso(variable_item,variable)
-
+        pagado, status, beneficiario_id, empresa_id, iva, descuento, monto_documento, notas_credito, detalle, pago = translate_egreso(variable_item,variable)
+        
+        variable_item = Egresos(id=int(R2_id), fecha_documento=fecha_documento, fecha_vencimiento=fecha_vencimiento, fecha_programada_pago=fecha_programada_pago, numero_documento=str(numero_documento),
+                                monto_total=float(monto_total), monto_pagado=float(monto_pagado), monto_solicitado=float(monto_solicitado),
+                                monto_por_conciliar=float(monto_por_conciliar), referencia=str(referencia),comentario=comentario, pagado=pagado,status=status,
+                                beneficiario_id=int(beneficiario_id), empresa_id=int(empresa_id), iva=float(iva), descuento=float(descuento), monto_documento=float(monto_documento),notas_credito=float(notas_credito))
 
         variable_map = Egresos_Mapping(GEZ_id=int(GEZ_id), R2_id=int(R2_id))
 
@@ -508,12 +512,6 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
             ep = EgresosHasPagos(egreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto_total))
             db.session.add(pago)
             db.session.add(ep)
-
-
-        variable_item = Egresos(id=int(R2_id), fecha_documento=fecha_documento, fecha_vencimiento=fecha_vencimiento, fecha_programada_pago=fecha_programada_pago, numero_documento=str(numero_documento),
-                                monto_total=float(monto_total), monto_pagado=float(monto_pagado), monto_solicitado=float(monto_solicitado),
-                                monto_por_conciliar=float(monto_por_conciliar), referencia=str(referencia),comentario=comentario, pagado=pagado,status=status,
-                                beneficiario_id=int(beneficiario_id), empresa_id=int(empresa_id), iva=float(iva), descuento=float(descuento), monto_documento=float(monto_documento),notas_credito=float(notas_credito))
 
 
 
@@ -687,20 +685,12 @@ def initialize_global_var():
 
 
 def run_all_migrations():
-<<<<<<< HEAD
-    initialize_global_var()
-    con_GEZ, con_rdm = get_connections()
-    #mapping_beneficiarios = mapping_to_Dataframe(Beneficiarios_Mapping.query.all())
-=======
-
-
-    # app = create_app(config)
-    # with app.app_context():
+    
+    pd.DataFrame(np.zeros([3,4])).to_csv('Prueba.csv')
     print("I'm working...")
     initialize_global_var()
     con_GEZ, con_rdm = get_connections()
 
->>>>>>> 8895bd9bf6b11b79709c9884ac0766953742c93f
     i = 0
 
     # #Migrate Empresas
@@ -709,12 +699,12 @@ def run_all_migrations():
     #
     # #Migrate Proveedores
     #
-    # variable = 'beneficiarios'
-    # migrate_table(con_GEZ, con_rdm, variable)
+    variable = 'beneficiarios'
+    migrate_table(con_GEZ, con_rdm, variable)
     #
     # # Migrate Centrs_Negocio
-    # variable = 'centros_negocio'
-    # migrate_table(con_GEZ, con_rdm, variable)
+    variable = 'centros_negocio'
+    migrate_table(con_GEZ, con_rdm, variable)
 
     # Migrate Empleados
     # variable = 'empleados'
@@ -722,9 +712,9 @@ def run_all_migrations():
 
     # Migrate Egresos
 
-    #variable = 'egresos'
+    variable = 'egresos'
     #print('Job running at :',time.time())
-    #migrate_table(con_GEZ, con_rdm, variable)
+    migrate_table(con_GEZ, con_rdm, variable)
 
     # Migrate Ingresos
 
@@ -742,6 +732,7 @@ def run_all_migrations():
     # # paso 3 asegurar que GEZ_nombre, GEZ_id esten correctos en get_nombre_and_id
 
 
+    return 10
 
 
     #Paso 4: Generar translation function
@@ -754,5 +745,3 @@ def run_all_migrations():
 
     # # paso 4 asegurar que las variables que dependen de sub-queries funcionen:
 
-def job():
-    print("I'm working...")
