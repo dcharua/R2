@@ -55,10 +55,17 @@ def configure_logs(app):
 
 def create_app(config):
 
+<<<<<<< HEAD
     #sched = BackgroundScheduler(daemon=True)
     #sched.add_job(test_job, 'interval', minutes=10)
     #sched.start()
     
+=======
+    # sched = BackgroundScheduler(daemon=True)
+    # sched.add_job(test_job, 'interval', days=1)
+    # sched.start()
+
+>>>>>>> 8895bd9bf6b11b79709c9884ac0766953742c93f
     app = Flask(__name__, static_folder='base/static')
     app.config.from_object(config)
     app.config.from_mapping(
@@ -87,6 +94,10 @@ def create_app(config):
     register_extensions(app)
     register_blueprints(app)
     configure_database(app)
+
+    db.app = app
+    db.init_app(app)
+
 
     # ONLY UNCOMMENT FOR THE FIRST MIGRATION!
     from app.db_models.db_migration import run_all_migrations

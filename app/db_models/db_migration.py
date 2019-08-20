@@ -12,8 +12,11 @@ import pyodbc
 import pandas as pd
 import numpy as np
 import time
+from config import config_dict
 
-
+# from app import create_app
+# app = create_app(config_dict['Debug'])
+# app.app_context().push()
 
 def get_connections():
 
@@ -21,18 +24,6 @@ def get_connections():
         "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
     con_rdm = pyodbc.connect(
         "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=rdm;uid=gezsa001;pwd=gez9105ru2")
-    '''
-    sql = "SELECT * FROM dbo.Ingresos_Cabecera_r2"
-    data = pd.read_sql(sql,con_GEZ)
-    data.to_csv('~/Desktop/Ingresos_Cabecera_r2.csv',index = False)
-    print(data.head())
-    print('TEST SUCCESSFUL!')
-
-    sql = "SELECT * FROM dbo.Ingresos_Detalles_r2"
-    data = pd.read_sql(sql, con_GEZ)
-    data.to_csv('~/Desktop/Ingresos_Detalles_r2.csv', index=False)
-
-    '''
 
     return con_GEZ,con_rdm
 
@@ -93,14 +84,14 @@ def translate_egreso(egreso,R2_id):
 
 
 
-def generar_pago_migracion(beneficiario_id,monto_total,egreso):
+def generar_pago_migracion(beneficiario_id, monto_total, egreso):
 
-    status = 'liquidado'
+    status = 'conciliado'
     global pago_id_egreso
     pago_id_egreso = pago_id_egreso + 1
     fecha_pago = str(egreso['FechaDPago']) if str(egreso['FechaDPago']) != 'NaT' else None
 
-    pago = Pagos(id=int(pago_id_egreso), fecha_pago = fecha_pago, status=status, beneficiario_id=int(beneficiario_id), monto_total=float(monto_total),
+    pago = Pagos(id=int(pago_id_egreso), fecha_pago=fecha_pago, status=status, beneficiario_id=int(beneficiario_id), monto_total=float(monto_total),
                  cuenta_id=int(cuenta_id), forma_pago_id=int(forma_pago_id))
 
     #print('\nPago: \nid = {} \n status = {} \nfecha_pago = {}\n beneficiario_id = {} \nmonto_total= {} \n cuenta_id = {} \n forma_pago_id = {}'.format(pago_id_egreso,status,fecha_pago,beneficiario_id,monto_total,cuenta_id, forma_pago_id))
@@ -108,7 +99,7 @@ def generar_pago_migracion(beneficiario_id,monto_total,egreso):
     return pago
 
 
-def generar_detalle_egreso(R2_id,egreso, beneficiario_id):
+def generar_detalle_egreso(R2_id, egreso, beneficiario_id):
 
     try: centro_negocios_id = int(mapping_centros_negocio[mapping_centros_negocio.GEZ_id == int(egreso['AlmQRecibe'])].R2_id)
     except: centro_negocios_id = centros_negocio_sin_definir_id
@@ -121,8 +112,7 @@ def generar_detalle_egreso(R2_id,egreso, beneficiario_id):
 
     detalle = DetallesEgreso(centro_negocios_id =int(centro_negocios_id), proveedor_id=int(beneficiario_id),
                              categoria_id=int(categoria_id), concepto_id=int(concepto_id), monto=float(monto),
-                             numero_control=numero_control,
-                             descripcion=descripcion)
+                             numero_control=numero_control,descripcion=descripcion)
 
 
 
@@ -697,9 +687,20 @@ def initialize_global_var():
 
 
 def run_all_migrations():
+<<<<<<< HEAD
     initialize_global_var()
     con_GEZ, con_rdm = get_connections()
     #mapping_beneficiarios = mapping_to_Dataframe(Beneficiarios_Mapping.query.all())
+=======
+
+
+    # app = create_app(config)
+    # with app.app_context():
+    print("I'm working...")
+    initialize_global_var()
+    con_GEZ, con_rdm = get_connections()
+
+>>>>>>> 8895bd9bf6b11b79709c9884ac0766953742c93f
     i = 0
 
     # #Migrate Empresas
@@ -721,8 +722,8 @@ def run_all_migrations():
 
     # Migrate Egresos
 
-    variable = 'egresos'
-    print('Job running at :',time.time())
+    #variable = 'egresos'
+    #print('Job running at :',time.time())
     #migrate_table(con_GEZ, con_rdm, variable)
 
     # Migrate Ingresos

@@ -14,6 +14,8 @@ import pandas as pd
 import numpy as np
 import time
 
+from apscheduler.schedulers.background import BackgroundScheduler
+from app.db_models.db_migration import run_all_migrations
 
 ########################### REAL EGRESOS!! ########################
 
@@ -124,8 +126,12 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
+<<<<<<< HEAD
     
     
+=======
+
+>>>>>>> 8895bd9bf6b11b79709c9884ac0766953742c93f
     egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
     egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
     formas_pago = FormasPago.query.all()
