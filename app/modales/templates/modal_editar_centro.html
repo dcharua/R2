@@ -1,0 +1,83 @@
+
+<!-- Modal pagos -->
+<div class="modal fade" id="modal_editar_centro" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal form-label-left" id="user_inputs" method="POST" action="{{ url_for('modales_blueprint.editar_centro') }}">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="largeModalLabel"> Editar Centro de Negocios</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12 col-md-6">
+                            <label for="nombre"> Centro de Negocios </label>
+                            <input type='text' class="form-control" name="nombre" data-validation="required" autocomplete="false" id="nombre_editar" />
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                                <label for="beneficiario"> Empresa </label><br>
+                                <select class="selectpicker" id="empresa_editar" name="empresa" data-validation="required"
+                                    data-live-search="true" title="Seleccione una Empresa..."
+                                    data-width="100%">
+                                    {% for empresa in empresas %}
+                                    <option value="{{empresa.id}}"> {{ empresa.nombre }} </option>
+                                    {% endfor %}
+                                </select>
+                            
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12 col-md-6">
+                                <label for="numero"> Numero del Centro de Negocios </label>
+                                <input type='text' class="form-control" name="numero" autocomplete="false" id="numero_editar" />
+                           
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                                <label for="beneficiario"> Tipo </label><br>
+                                <select class="selectpicker" id="tipo_editar" name="tipo" data-validation="required"
+                                  data-live-search="true" title="Seleccione un Tipo de Negocios..."
+                                  data-width="100%">
+                                  <option value="Tienda fisica">Tienda fisica</option>
+                                  <option value="E-commerce">E-commerce</option>
+                                  <option value="Mayorista">Mayorista</option>
+                                  <option value="Compras">Compras</option>
+                                  <option value="Administración">Administración</option>
+                                  <option value="Socios">Socios</option>
+                                  <option value="Operaciones">Operaciones</option>
+                                </select>
+                          
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:20px !important">
+                        <div class="col-sm-12 col-md-6">
+                                <label for="direccion"> Dirección </label>
+                                <input type='text' class="form-control" name="direccion" autocomplete="false" id="direccion_editar" />
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                                <label for="arrendadora"> Arrendadora </label>
+                                <input type='text' class="form-control" name="arrendadora" autocomplete="false" id="arrendadora_editar" />
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12">
+                                <label for="arrendadora"> Comentario </label>
+                                <textarea name="comentario" id="comentario_editar" style="width:100%"></textarea>
+                             </div>
+                    </div>
+
+                </div>
+
+                <input type="hidden" name="id" id="id_editar">
+    
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                    <button type="button" class="btn btn-link btn-circle waves-effect btn-close" data-dismiss="modal">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

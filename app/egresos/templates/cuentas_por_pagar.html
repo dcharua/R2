@@ -424,8 +424,10 @@
       [1, 'desc'],
       [2, 'asc']
     ],
+    pageLength: 100,
+    lengthMenu: [0, 5, 10, 20, 50, 100, 200, 500],
     buttons: [
-      'copy', 'csv', 'excel', 'pdf', 'print'
+      'excel', 'pdf'
     ],
     "columnDefs": [{
       "targets": 0,
@@ -449,6 +451,8 @@
   var conciliar_table = $('.conciliar_table').DataTable({
     dom: 'Bfrtip',
     responsive: true,
+    pageLength: 100,
+    lengthMenu: [0, 5, 10, 20, 50, 100, 200, 500],
     "order": [
       [1, 'desc'],
       [2, 'asc']

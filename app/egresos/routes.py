@@ -78,16 +78,16 @@ def capturar_egreso():
         else:
             db.session.add(egreso)
         db.session.commit()
-        return redirect("/egresos/cuentas_por_pagar")
+        return redirect("/egresos/capturar_egreso")
 
-    beneficiarios = Beneficiarios.query.all()
-    empresas = Empresas.query.all()
-    centros_negocios = CentrosNegocio.query.all()
+    beneficiarios = Beneficiarios.query.order_by(Beneficiarios.nombre)
+    empresas = Empresas.query.order_by(Empresas.nombre)
+    centros_negocios = CentrosNegocio.query.order_by(CentrosNegocio.nombre)
     proveedores = beneficiarios
-    categorias = Categorias.query.filter(Categorias.tipo=="egreso").all()
-    conceptos = Conceptos.query.all()
-    cuentas_banco = Cuentas.query.all()
-    formas_pago = FormasPago.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo=="egreso").order_by(Categorias.nombre)
+    conceptos = Conceptos.query.order_by(Conceptos.nombre)
+    cuentas_banco = Cuentas.query.order_by(Cuentas.nombre)
+    formas_pago = FormasPago.query.order_by(FormasPago.nombre)
 
     return render_template("capturar_egreso.html",
                            navbar_data_capture='active',
