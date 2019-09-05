@@ -57,7 +57,7 @@ def capturar_egreso():
         egreso = Egresos(beneficiario_id=data["beneficiario"], fecha_vencimiento=data["fecha_vencimiento"],
                          fecha_documento = data["fecha_documento"], numero_documento=data["numero_documento"],
                          monto_total=monto_total, monto_documento = monto_total, monto_pagado=0, monto_solicitado=0, monto_por_conciliar=0, referencia=data["referencia"],
-                         empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente')
+                         empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente', notas_credito=0)
         if (data["fecha_programada_pago"] != ""):
           egreso.fecha_programada_pago = data["fecha_programada_pago"]
         for i in range(len(data.getlist("monto"))):
@@ -97,16 +97,17 @@ def capturar_egreso():
         else:
             db.session.add(egreso)
         db.session.commit()
-        return redirect("/egresos/cuentas_por_pagar")
+        return redirect("/egresos/capturar_egreso")
 
-    beneficiarios = Beneficiarios.query.all()
-    empresas = Empresas.query.all()
-    centros_negocios = CentrosNegocio.query.all()
+    beneficiarios = Beneficiarios.query.order_by(Beneficiarios.nombre)
+    empresas = Empresas.query.order_by(Empresas.nombre)
+    centros_negocios = CentrosNegocio.query.order_by(CentrosNegocio.nombre)
     proveedores = beneficiarios
-    categorias = Categorias.query.filter(Categorias.tipo=="egreso").all()
-    conceptos = Conceptos.query.all()
-    cuentas_banco = Cuentas.query.all()
-    formas_pago = FormasPago.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo=="egreso").order_by(Categorias.nombre)
+    conceptos = Conceptos.query.order_by(Conceptos.nombre)
+    cuentas_banco = Cuentas.query.order_by(Cuentas.nombre)
+    formas_pago = FormasPago.query.order_by(FormasPago.nombre)
+
     return render_template("capturar_egreso.html",
                            navbar_data_capture='active',
                            title="Registro de Egresos --",
@@ -169,6 +170,9 @@ def editar_egreso(egreso_id):
         egreso.referencia = data["referencia"]
         egreso.numero_documento = data["numero_documento"]
         egreso.comentario = data["comentario"]
+        egreso.descuento = Decimal(data["descuento"])
+        egreso.monto_total = egreso.monto_documento - egreso.descuento - egreso.notas_credito
+        egreso.setStatus()
         db.session.commit()
     return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
@@ -228,13 +232,17 @@ def perfil_pago(pago_id):
     ep = EgresosHasPagos.query.filter_by(pago_id=pago_id)
     montoDocumentos = 0
     montoDescuentos = 0
+    montoNotasCredito = 0
     for egreso in ep:
         if egreso.egreso.descuento is None:
-                egreso.egreso.descuento = 0  
-        montoDescuentos =+ egreso.egreso.descuento
-        montoDocumentos =+ egreso.egreso.monto_total
+                egreso.egreso.descuento = 0
+        if egreso.egreso.notas_credito is None:
+                egreso.egreso.notas_credito = 0   
+        montoDescuentos += egreso.egreso.descuento
+        montoDocumentos += egreso.egreso.monto_documento
+        montoNotasCredito += egreso.egreso.notas_credito
         
-    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago, ep=ep, montoDocumentos = montoDocumentos, montoDescuentos = montoDescuentos)
+    return render_template("perfil_pago.html", pago=pago, cuentas= cuentas, formas_pago = formas_pago, ep=ep, montoDocumentos = montoDocumentos, montoDescuentos = montoDescuentos, montoNotasCredito = montoNotasCredito)
 
 #Editar pago
 @blueprint.route('/editar_pago/<int:pago_id>"', methods=['GET', 'POST'])
@@ -641,11 +649,7 @@ def reembolso_egreso(egreso_id):
   if request.form:
     data = request.form
     egreso = Egresos.query.get(egreso_id)
-    if ('parcial_reembolso' in data):
-      monto = - Decimal(data["monto_parcial"])
-    else:  
-      monto = - egreso.monto_pagado
-
+    monto = - Decimal(data["monto"])
     egreso.monto_pagado += monto
     pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
     fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egreso.beneficiario_id)
@@ -658,6 +662,7 @@ def reembolso_egreso(egreso_id):
                                 categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
                                 numero_control='reembolso', descripcion=data["comentario"])
       egreso.detalles.append(detalle)
+    egreso.setStatus()
     db.session.add(ep)
     db.session.commit()
   return redirect("/egresos/perfil_egreso/" + str(egreso_id))
@@ -712,13 +717,17 @@ def nota_credito(egreso_id):
             nota_credito.egreso_WR_id = data["egresoWR"]
             egresoWR = Egresos.query.get(data["egresoWR"])
             egresoWR.monto_total -=  Decimal(nota_credito.monto)
+            egresoWR.notas_credito += Decimal(nota_credito.monto)
        
         if "generar_reembolso_check" in data:
             monto = - Decimal(data["monto"])
             pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["numero_documento"], fecha_pago=data["fecha"], status='conciliado',
             fecha_conciliacion=data["fecha"], monto_total=monto, comentario=data["comentario"], beneficiario_id=egresoQB.beneficiario_id)
             ep = EgresosHasPagos(egreso=egresoWR, pago=pago, monto=monto)
+            #nota_credito.pago = pago
+            egresoWR.monto_pagado -= Decimal(nota_credito.monto)
             db.session.add(ep)
+        egresoWR.setStatus()
         db.session.add(nota_credito)
         db.session.commit()
     return redirect("/egresos/perfil_egreso/" + str(egreso_id))

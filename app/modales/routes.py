@@ -39,6 +39,37 @@ def agregar_centro():
         return redirect("/administracion/centros_negocios")  
 
 
+
+@blueprint.route('/get_data_editar_centro/<cid>', methods=['GET', 'POST'])
+@login_required
+def get_data_editar_centro(cid):
+  print("i")
+  centro = CentrosNegocio.query.get(cid)
+  return jsonify(id=centro.id, numero=centro.numero, nombre=centro.nombre, tipo=centro.tipo, direccion= centro.direccion,  empresa_id=centro.empresa_id, arrendadora= centro.arrendadora, comentario=centro.comentario) 
+
+@blueprint.route('/editar_centro', methods=['GET', 'POST'])
+@login_required
+def editar_centro():
+    if request.form:
+        data = request.form
+        print(data)
+        centro = CentrosNegocio.query.get(data["id"])
+
+        centro.nombre=data["nombre"]
+        centro.numero=data["numero"]
+        centro.tipo=data["tipo"]
+        centro.direccion=data["direccion"]
+        centro.empresa_id=data["empresa"]  
+        centro.arrendadora=data["arrendadora"]
+        centro.comentario=data["comentario"]
+        db.session.add(centro) 
+        db.session.commit()   
+        return redirect("/administracion/centros_negocios")  
+
+
+
+
+
 @blueprint.route('/agregar_concepto', methods=['GET', 'POST'])
 @login_required
 def agregar_concepto():

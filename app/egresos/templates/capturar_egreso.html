@@ -128,7 +128,7 @@
                     <tbody class="here">
                       <tr>
                         <td>
-                          <select class="selectpicker" name="centro_negocios"
+                          <select class="selectpicker" data-live-search="true" name="centro_negocios"
                             title="Seleccione un Centro de Negocios..." data-width="80%" data-validation="required">
                             {% for centro in centros_negocios %}
                             <option value="{{centro.id}}"> {{ centro.nombre }} </option>

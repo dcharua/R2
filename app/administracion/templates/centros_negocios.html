@@ -17,7 +17,6 @@
                       <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Numero</th>
                                 <th>Tipo</th>
@@ -27,7 +26,6 @@
                           </thead>
                           <tfoot>
                               <tr>
-                                <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Numero</th>
                                 <th>Tipo</th>
@@ -38,15 +36,13 @@
                           <tbody>
                               {% for centro in centros %}
                               <tr>
-                                  <td>{{centro.id}}</td>
                                   <td>{{centro.nombre}}</td>
                                   <td>{{centro.numero}}</td>
                                   <td>{{centro.tipo}}</td>
                                   <td>{{centro.empresa}}</td>
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_centro/{{centro.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        <i class="material-icons">visibility</i>
-                                    </a>
+                                    <a class="btn btn-xs btn-info waves-effect" data-toggle="tooltip" data-placement="top" title="Editar">
+                                        <i data-toggle="tooltip" data-placement="top" title="Editar" onclick="edit({{centro.id}})" class="material-icons">edit</i>
                                     </a>
                                   </td>
                               </tr>
@@ -60,6 +56,7 @@
   </div>
   <!-- #END# Basic Examples -->
 
+{% include "modal_editar_centro.html" %}  
 {% include "modal_agregar_centro.html" %}
 
 {% endblock content %}
@@ -85,5 +82,27 @@
          'copy', 'csv', 'excel', 'pdf', 'print'
      ]
   });
+
+  function edit(centro){
+    $.ajax({
+              url: "/modales/get_data_editar_centro/" + centro.toString(),
+              success: function (data) {
+                  console.log(data)
+                  $("#nombre_editar").val(data.nombre)
+                  $("#id_editar").val(data.id)
+                  $("#numero_editar").val(data.numero)
+                  $("#direccion_editar").val(data.direccion)
+                  $("#tipo_editar").val(data.tipo)
+                  $("#tipo_editar").selectpicker('refresh');
+                  $("#arrendadora_editar").val(data.arrendadora)
+                  $("#comentario_editar").val(data.comentario)
+                  $("#empresa_editar").val(data.empresa_id)
+                  $("#empresa_editar").selectpicker('refresh');
+
+                  $('#modal_editar_centro').modal('show');
+              }
+
+    })
+  }
 </script>
 {% endblock javascripts %}

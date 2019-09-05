@@ -52,25 +52,23 @@
                         </div>
                     </div>
 
+                    
                     <div class="margin-10">
-                        <div class="row" style="margin-top:10px;">
-                            <div class="col-sm-12 col-md-6 ">
-                                <input type="checkbox" id="parcial_reembolso" name="parcial_reembolso"
-                                    class="filled-in" />
-                                <label class="grey-font" for="parcial_reembolso">Monto parcial</label>
-                            </div>
-                            <div class="col-sm-12 col-md-6 ">
-                                <input placeholder="Monto parcial" class="form-control" style="display:none" type="text"
-                                    id="monto_parcial_reembolso" name="monto_parcial" data-validation="number"
-                                    data-validation-allowing="float">
+                        <div class="row" style="margin-bottom:10px">
+                            <div class="col-sm-12 col-md-6">
+                                <label class="grey-font" for="monto">Monto</label>
+                                <input placeholder="Monto" class="form-control" type="text"
+                                name="monto" data-validation="number" data-validation-allowing="float">
                             </div>
                         </div>
                     </div>
 
+                  
+
 
                     <div style="padding:10px;" class="body">
                     <input type="checkbox" id="monto_documento" name="monto_documento" class="filled-in" checked="true"/>
-                    <label class="grey-font" for="monto_documento">Modificar monto del documento</label>
+                    <label class="grey-font" for="monto_documento">Saldar Documento</label>
                         <table id="table_monto_documento" style="table-layout: fixed;" class="table table-striped">
                             <thead>
                                 <tr>
@@ -83,7 +81,7 @@
                             <tbody class="here">
                                 <tr>
                                     <td>
-                                        <select class="selectpicker" name="centro_negocios"
+                                        <select class="selectpicker" name="centro_negocios" data-live-search="true"
                                             title="Seleccione un Centro de Negocios..." data-width="80%"
                                             data-validation="required">
                                             {% for centro in centros_negocio %}

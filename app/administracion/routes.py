@@ -57,7 +57,7 @@ def perfil_de_beneficiario(beneficiario_id):
 def agregar_beneficiario():
     if request.form:
         data = request.form
-        beneficiario = Beneficiarios(nombre=data["nombre"], RFC=data["RFC"], 
+        beneficiario = Beneficiarios(nombre=data["nombre"],nombre_corto=data["nombre"], RFC=data["RFC"], 
             direccion=data["direccion"], razon_social=data["razon_social"],
             cuenta_banco=data["cuenta_banco"], saldo = 0, status = 'liquidado', banco=data["banco"])
         for i in range(len(data.getlist("nombre_contacto"))):
@@ -88,6 +88,7 @@ def editar_beneficiario():
         data = request.form
         beneficiario = Beneficiarios.query.get(data["id"]) 
         beneficiario.nombre=data["nombre"]
+        beneficiario.nombre_corto=data["nombre"]
         beneficiario.RFC=data["RFC"] 
         beneficiario.direccion=data["direccion"]
         beneficiario.razon_social=data["razon_social"]
