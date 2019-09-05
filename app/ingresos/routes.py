@@ -6,6 +6,8 @@ from app import db, login_manager
 from datetime import datetime
 from app.db_models.models import *
 import decimal
+from decimal import Decimal
+
 
 @blueprint.route('/<template>')
 @login_required
@@ -617,14 +619,9 @@ def reembolso(ingreso_id):
   if request.form:
     data = request.form
     ingreso = Ingresos.query.get(ingreso_id)
-    if ('parcial' in data):
-      monto = - data["monto_parcial"]
-      ingreso.monto_total += monto
-      ingreso.monto_pagado += monto
-    else:  
-      monto = - ingreso.monto_pagado
-      ingreso.monto_pagado = 0
-      ingreso.monto_total += monto
+    monto = - Decimal(data["monto"])
+    ingreso.monto_total += monto
+    ingreso.monto_pagado += monto
     pago = Pagos_Ingresos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
     fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], cliente_id=ingreso.cliente_id)
     ip = IngresosHasPagos(ingreso=ingreso, pago=pago, monto=monto)

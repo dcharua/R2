@@ -42,7 +42,7 @@ class Beneficiarios(db.Model):
     detalles_egresos = relationship("DetallesEgreso")
     
     pagos = relationship("Pagos")
-    notas_credito = relationship("NotasCredito");
+    notas_credito = relationship("NotasCredito")
     
     contacto=relationship("ContactoBeneficiario") 
 
@@ -396,6 +396,8 @@ class NotasCredito(db.Model):
     comentario = Column(String(200))
     beneficiario_id= Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="notas_credito")
+    #pago_id= Column(Integer, ForeignKey('pagos_egresos.id'))
+    #pago = relationship("Pagos", back_populates="notas_credito")
     aplicado = Column(Boolean)
     
     def __repr__(self):
@@ -518,6 +520,7 @@ class Pagos(db.Model):
     beneficiario_id = Column(Integer, ForeignKey('beneficiarios.id'))
     beneficiario = relationship("Beneficiarios", back_populates="pagos")
     egresos = relationship("Egresos", secondary='egresos_has_pagos',  cascade="all")
+    #notas_credito = relationship("NotasCredito")
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id)           

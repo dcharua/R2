@@ -108,9 +108,9 @@
                   <th>ID</th>
                   <th># Documento</th>
                   <th>Monto Documento</th>
-                  <th>Monto Pagado</th>
                   <th>Descuento</th>
                   <th>Notas de Crédito</th>
+                  <th>Monto Pagado</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -121,9 +121,9 @@
                   <td>{{egreso.egreso.id}}</td>
                   <td>{{egreso.egreso.numero_documento}}</td>
                   <td>{{"${:,.2f}".format(egreso.egreso.monto_documento)}}</td>
-                  <td>{{"${:,.2f}".format(egreso.monto)}}</td>
                   <td>{{"${:,.2f}".format(egreso.egreso.descuento)}}</td>
-                  <td></td>
+                  <td>{{"${:,.2f}".format(egreso.egreso.notas_credito)}}</td>
+                  <td>{{"${:,.2f}".format(egreso.monto)}}</td>
                   <td>
                     <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.egreso.id}}"
                       data-toggle="tooltip" data-placement="top" title="Ver detalle">
@@ -173,7 +173,7 @@
                   <td style="font-size: 0";>y</td>
                   <td></td>
                   <td><strong>Notas de Crédito:</strong></td>
-                  <td><strong>$0.00</strong></td>
+                  <td><strong>{{"${:,.2f}".format(montoNotasCredito)}}</strong></td>
                   <td></td>
                   <td></td>
                   <td></td>
