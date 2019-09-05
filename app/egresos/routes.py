@@ -109,7 +109,7 @@ def capturar_egreso():
     formas_pago = FormasPago.query.all()
     return render_template("capturar_egreso.html",
                            navbar_data_capture='active',
-                           title="Registro de Egresos --"+str(a),
+                           title="Registro de Egresos --",
                            beneficiarios=beneficiarios,
                            empresas=empresas,
                            centros_negocios=centros_negocios,
