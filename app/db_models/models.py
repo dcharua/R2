@@ -629,11 +629,3 @@ class Ingresos_Mapping(db.Model):
         return '{}'.format(self.R2_id)#, self.R2_id
 
 
-
-#After insert events
-def after_insert_listener(mapper, connection, target):
-    flash('Egreso con id %i ingresado' %(target.id), 'success')
-    return redirect("egresos/perfil_egreso/%i" % (target.id))
-    
-event.listen(Egresos, 'after_insert', after_insert_listener)
-

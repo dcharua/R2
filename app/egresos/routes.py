@@ -41,6 +41,8 @@ def capturar_egreso():
                          empresa_id=data["empresa"], comentario=data["comentario"], pagado=False, status='pendiente', notas_credito=0)
         if (data["fecha_programada_pago"] != ""):
           egreso.fecha_programada_pago = data["fecha_programada_pago"]
+        else:
+          egreso.fecha_programada_pago = egreso.fecha_vencimiento
         for i in range(len(data.getlist("monto"))):
             detalle = DetallesEgreso(centro_negocios_id=data.getlist("centro_negocios")[i], proveedor_id=data.getlist("proveedor")[i],
                                      categoria_id=data.getlist("categoria")[i], concepto_id=data.getlist(
@@ -106,12 +108,16 @@ def capturar_egreso():
 #Egresos View all
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
-
-    egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
-    egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
+    if request.form:
+        data = request.form
+        #egresos_pagados = Egresos.query.filter(Egresos.pagado == True, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).all()
+        egresos_pendientes = Egresos.query.filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).order_by(Egresos.id.desc()).limit(500)
+    else:    
+        #egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
+        egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).order_by(Egresos.id.desc()).limit(500)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
-    return render_template("cuentas_por_pagar.html", egresos_pagados=egresos_pagados, egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
+    return render_template("cuentas_por_pagar.html", egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
 
 
 

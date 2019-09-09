@@ -23,6 +23,33 @@
       </div>
 
       <div class="body">
+        <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.cuentas_por_pagar') }}">
+        <div class="row">
+          <p style="margin-left: 15px">Filtro por fecha programada de pago</p>
+          <div class="col-sm-12 col-md-4 ">
+            <label> Inicio </label>
+            <div class='input-group date mydatepicker' data-provide="datepicker">
+              <input type='text' class="form-control set-today" name="inicio" autocomplete="off" required />
+              <span class="input-group-addon">
+                <i class="material-icons mydate">date_range</i>
+              </span>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-4 ">
+            <label> Fin </label>
+            <div class='input-group date mydatepicker' data-provide="datepicker">
+              <input type='text' class="form-control set-today" name="fin" autocomplete="off" required />
+              <span class="input-group-addon">
+                <i class="material-icons mydate">date_range</i>
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <button style="margin-top: 25px;" class="btn btn-primary">Filtrar</button>
+          </div>
+        </div>
+      </form>
 
         <div class="table-responsive">
 
@@ -65,7 +92,8 @@
               <tr>
                 <td>
                   {% if egreso.status != 'solicitado' %}
-                  <input name="select_all-t1" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
+                  <input name="select_all-t1" value="{{egreso.id}}" type="checkbox"
+                    class="table-check pendientes-table" />
                   {% endif %}
                 </td>
                 <td>{{egreso.id}}</td>
@@ -74,7 +102,9 @@
                 <td>{{egreso.fecha_programada_pago}}</td>
                 <td>{{egreso.fecha_vencimiento}}</td>
                 <td>{{"${:,.2f}".format(egreso.monto_total)}} </td>
-                <td>{{"${:,.2f}".format(egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado - egreso.monto_por_conciliar)}}</td>
+                <td>
+                  {{"${:,.2f}".format(egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado - egreso.monto_por_conciliar)}}
+                </td>
                 <td>{{"${:,.2f}".format(egreso.monto_pagado)}}</td>
                 <td>
                   {% if egreso.status == 'pendiente'%}
