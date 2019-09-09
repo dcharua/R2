@@ -111,7 +111,7 @@ def cuentas_por_pagar():
     if request.form:
         data = request.form
         #egresos_pagados = Egresos.query.filter(Egresos.pagado == True, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).all()
-        egresos_pendientes = Egresos.query.filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).order_by(Egresos.id.desc()).limit(500)
+        egresos_pendientes = Egresos.query.filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).order_by(Egresos.id.desc()).all()
     else:    
         #egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
         egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).order_by(Egresos.id.desc()).limit(500)
