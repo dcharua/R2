@@ -246,7 +246,8 @@ def cuentas():
 def centros_negocios():
     centros = CentrosNegocio.query.all()
     empresas = Empresas.query.all()
-    return render_template("centros_negocios.html", centros=centros, empresas=empresas)
+    cuentas = Cuentas.query.all()
+    return render_template("centros_negocios.html", centros=centros, empresas=empresas, cuentas=cuentas)
 
 @blueprint.route('/otros', methods=['GET', 'POST'])
 @login_required
