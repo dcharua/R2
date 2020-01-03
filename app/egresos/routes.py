@@ -5,7 +5,7 @@ from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
 from app.db_models.db_migration import *
-from datetime import date,timedelta
+from datetime import date,datetime,timedelta
 from decimal import Decimal
 from sqlalchemy.sql import func
 
@@ -124,26 +124,34 @@ def capturar_egreso():
 
 
 
-#Egresos View all
+#Egresos View all only consignaciones
 @blueprint.route('/cuentas_por_pagar', methods=['GET', 'POST'])
 def cuentas_por_pagar():
-<<<<<<< HEAD
-    egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
-    egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).all()
-=======
     if request.form:
         data = request.form
-        #egresos_pagados = Egresos.query.filter(Egresos.pagado == True, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).all()
-        egresos_pendientes = Egresos.query.filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(data["inicio"], data["fin"])).order_by(Egresos.id.desc()).all()
+        start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+        end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+        if data["type_date"] == "programada":
+           egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(start, end), DetallesEgreso.descripcion==data['type_egreso']).all()
+        else:
+           egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_vencimiento.between(start, end), DetallesEgreso.descripcion==data['type_egreso']).all()
+
+        formas_pago = FormasPago.query.all()
+        cuentas = Cuentas.query.all()
+        return render_template("cuentas_por_pagar.html",inicio = start, fin= end, type_date= data["type_date"], type =data["type_egreso"] ,egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
     else:    
         #egresos_pagados = Egresos.query.filter(Egresos.pagado == True).all()
-        egresos_pendientes = Egresos.query.filter(Egresos.pagado == False).order_by(Egresos.id.desc()).limit(500)
->>>>>>> c63db30b15fd490b93f3485f88d72bb993361157
-    formas_pago = FormasPago.query.all()
-    cuentas = Cuentas.query.all()
-    return render_template("cuentas_por_pagar.html", egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
+        today = date.today()
+        d1 = today.strftime("%Y/%m/%d")
+        d = datetime.today() - timedelta(days=30)
+        d2 = d.strftime("%Y/%m/%d")
 
-
+        egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.fecha_programada_pago.between(d2, d1),Egresos.pagado == False, DetallesEgreso.descripcion=='Firme').order_by(Egresos.id.desc()).limit(500)
+    
+        formas_pago = FormasPago.query.all()
+        cuentas = Cuentas.query.all()
+        return render_template("cuentas_por_pagar.html", inicio = d2, fin= d1, type_date= "", type ="" , egresos_pendientes=egresos_pendientes, formas_pago=formas_pago, cuentas=cuentas)
 
 #Egresos perfil
 @blueprint.route('/perfil_egreso/<int:egreso_id>', methods=['GET', 'POST'])

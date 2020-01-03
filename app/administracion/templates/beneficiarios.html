@@ -22,8 +22,8 @@
                                 <th>RFC</th>
                                 <th>Razon Social</th>
                                 <th>Cuenta Banco</th>
-                                <th>Saldo</th>
-                                <th>Status</th>
+                               <!-- <th>Saldo</th>
+                                <th>Status</th>-->
                                 <th>Acciones</th>
                               </tr>
                           </thead>
@@ -34,8 +34,8 @@
                                 <th>RFC</th>
                                 <th>Razon Social</th>
                                 <th>Cuenta Banco</th>
-                                <th>Saldo</th>
-                                <th>Status</th>
+                                <!--<th>Saldo</th>
+                                <th>Status</th>-->
                                 <th>Acciones</th>
                               </tr>
                           </tfoot>
@@ -47,7 +47,7 @@
                                   <td>{{beneficiario.RFC}}</td>
                                   <td>{{beneficiario.razon_social}}</td>
                                   <td>{{beneficiario.banco}} / {{beneficiario.cuenta_banco}}</td>
-                                  <td>{{beneficiario.saldo}}</td>
+                                  <!---<td>{{beneficiario.saldo}}</td>
                                   <td>
                                       {% if beneficiario.status == 'pendiente'%}
                                       <span class="badge bg-pendiente">Pendiente</span>
@@ -67,7 +67,7 @@
                                       {% if beneficiario.status == 'por_conciliar'%}
                                       <span class="badge bg-por-conciliar">Por conciliar</span>
                                       {% endif %}
-                                  </td>
+                                  </td>--->
                                   
                                   <td>
                                     <a class="btn btn-xs btn-info waves-effect" href="/administracion/perfil_de_beneficiario/{{beneficiario.id}}" data-toggle="tooltip" data-placement="top" title="Ver detalle">
