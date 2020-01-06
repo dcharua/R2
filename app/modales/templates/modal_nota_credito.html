@@ -61,39 +61,33 @@
                                         {% endfor %}
                                     </select>
                                 </div>
+				<div style="padding:0px 5px;" class="margin-10 col-sm-12">
+					<div class="row" style="margin-top:10px;">
+	    					<div class="col-sm-12 col-md-3">
+	        					<input type="checkbox" id="generar_reembolso_check" name="generar_reembolso_check"  class="filled-in" />
+	        					<label class="grey-font" for="generar_reembolso_check">Generar reembolso</label>
+	    					</div>
+						<div style="display: none" id="generar_reembolso">
+            						<div class="col-sm-12 col-md-4 ">
+                					<label for="forma_pago"> Forma de pago </label><br>
+                					<select class="selectpicker" id="forma_pago" data-live-search="true" name="forma_pago" title="Seleccione una Forma de Pago..." data-width="100%" data-validation="required">
+                    						{% for forma in formas_pago %}
+                    							<option value="{{forma.id}}"> {{ forma }} </option>
+                   						 {% endfor %}
+                					</select>
+            					</div>
+            					<div class="col-sm-12 col-md-4 ">
+                					<label for="cuenta"> Cuenta </label><br>
+                					<select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta" title="Seleccione una Cuenta.." data-width="100%">
+                   					 	{% for cuenta in cuentas %}
+                    							<option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                    						{% endfor %}
+                					</select>
+            					</div>
+        				</div>
+    				</div>
+				</div>
                             </span>
-                        </div>
-                    </div>
-
-                    <div class="margin-10">
-                        <div class="row" style="margin-top:10px;">
-                            <div class="col-sm-12 col-md-4 ">
-                                <input type="checkbox" id="generar_reembolso_check" name="generar_reembolso_check"
-                                    class="filled-in" />
-                                <label class="grey-font" for="generar_reembolso_check">Generar reembolso</label>
-                            </div>
-                            <div style="display: none" id="generar_reembolso">
-
-                                <div class="col-sm-12 col-md-4 ">
-                                    <label for="forma_pago"> Forma de pago </label><br>
-                                    <select class="selectpicker" id="forma_pago" data-live-search="true"
-                                        name="forma_pago" title="Seleccione una Forma de Pago..." data-width="100%"
-                                        data-validation="required">
-                                        {% for forma in formas_pago %}
-                                        <option value="{{forma.id}}"> {{ forma }} </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="col-sm-12 col-md-4 ">
-                                    <label for="cuenta"> Cuenta </label><br>
-                                    <select class="selectpicker" id="cuenta" data-live-search="true" name="cuenta"
-                                        title="Seleccione una Cuenta.." data-width="100%">
-                                        {% for cuenta in cuentas %}
-                                        <option value="{{cuenta.id}}"> {{ cuenta }} </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

@@ -30,6 +30,7 @@
                                 <th>Monto</th>
                                 <th>Aplicado</th>
                                 <th>Ver</th>
+				<th>Acciones</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -42,6 +43,7 @@
                                 <th>Monto</th>
                                 <th>Aplicado</th>
                                 <th>Ver</th>
+				<th>Acciones</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -67,9 +69,17 @@
                                         data-toggle="tooltip" data-placement="top" title="Ver detalle">
                                         <i class="material-icons">visibility</i>
                                     </a>
-
-
                                 </td>
+				<td>
+					<a class="btn btn-xs btn-success waves-effect" href='/egresos/active/{{nota.id}}'
+                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        	<i class="material-icons">check</i>
+                                    	</a>
+					<a class="btn btn-xs btn-danger waves-effect" href='/egresos/cancel/{{nota.id}}'
+                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                        	<i class="material-icons">not_interested</i>
+                                    	</a>
+				</td>
                             </tr>
                             {% endfor %}
                             </tr>

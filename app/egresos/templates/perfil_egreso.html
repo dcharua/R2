@@ -563,9 +563,21 @@
     // Conciliado check for modal generar pago
     $("#mismo_egreso").change(function () {
         if (this.checked) {
+    	    let styleDisabled = {
+		opacity: '0.5',
+		pointerEvents: 'none'		
+	    };
+
             $("#egresoWR").val($(this).attr("data-id"));
             $("#egresoWR").selectpicker('refresh');
-        }
+            $('.bootstrap-select').css(styleDisabled)
+	}else{
+	    let styleDisabled = {
+                opacity: 1,
+                pointerEvents: 'auto'
+            };
+	    $('.bootstrap-select').css(styleDisabled)
+	}
     });
 
     $("#generar_reembolso_check").change(function () {
