@@ -725,6 +725,29 @@ def notas_credito():
 def perfil_nota(nota_id):
     nota = NotasCredito.query.get(nota_id)
     return render_template("perfil_nota.html", nota=nota)
+
+#ver notas
+@blueprint.route('/active/<int:nota_id>', methods=['GET', 'POST'])
+def active_nota(nota_id):
+    nota = NotasCredito.query.get(nota_id)
+    nota.aplicado = 1
+    db.session.commit()
+
+    notas = NotasCredito.query.all()
+    return render_template("notas_credito.html", notas=notas)
+
+#ver notas
+@blueprint.route('/cancel/<int:nota_id>', methods=['GET', 'POST'])
+def cancel_nota(nota_id):
+    nota = NotasCredito.query.get(nota_id)
+    nota.aplicado = 0
+    db.session.commit()
+
+    notas = NotasCredito.query.all()
+    return render_template("notas_credito.html", notas=notas)
+
+
+
 #crear notas de credito
 @blueprint.route('/nota_credito/<int:egreso_id>"', methods=['GET', 'POST'])
 def nota_credito(egreso_id):
@@ -738,7 +761,7 @@ def nota_credito(egreso_id):
             egresoWR = Egresos.query.get(data["egresoWR"])
             egresoWR.monto_total -=  Decimal(nota_credito.monto)
             egresoWR.notas_credito += Decimal(nota_credito.monto)
-       
+
         if "generar_reembolso_check" in data:
             monto = - Decimal(data["monto"])
             pago = Pagos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["numero_documento"], fecha_pago=data["fecha"], status='conciliado',

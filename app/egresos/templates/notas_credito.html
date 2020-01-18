@@ -71,14 +71,18 @@
                                     </a>
                                 </td>
 				<td>
-					<a class="btn btn-xs btn-success waves-effect" href='/egresos/active/{{nota.id}}'
-                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        	<i class="material-icons">check</i>
-                                    	</a>
-					<a class="btn btn-xs btn-danger waves-effect" href='/egresos/cancel/{{nota.id}}'
-                                        data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                                        	<i class="material-icons">not_interested</i>
-                                    	</a>
+					{% if nota.aplicado == True%}
+                                        	<a class="btn btn-xs btn-danger waves-effect" href='/egresos/cancel/{{nota.id}}'
+                                        		data-toggle="tooltip" data-placement="top" title="Cancelar nota">
+                                                	<i class="material-icons">not_interested</i>
+						</a>
+                                    	{% endif %}
+                                    	{% if nota.aplicado == False%}
+                                        	 <a class="btn btn-xs btn-success waves-effect" href='/egresos/active/{{nota.id}}'
+                                                data-toggle="tooltip" data-placement="top" title="Aplicar nota">
+                                                	<i class="material-icons">check</i>
+                                        	</a>
+                                   	 {% endif %}					
 				</td>
                             </tr>
                             {% endfor %}

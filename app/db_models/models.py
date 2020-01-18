@@ -399,7 +399,7 @@ class NotasCredito(db.Model):
     #pago_id= Column(Integer, ForeignKey('pagos_egresos.id'))
     #pago = relationship("Pagos", back_populates="notas_credito")
     aplicado = Column(Boolean)
-    
+    status = Column(Integer)
     def __repr__(self):
         return self.nombre 
 
