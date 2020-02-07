@@ -27,6 +27,7 @@ def agregar_categoria():
         return redirect("/administracion/otros")     
 
 
+
 @blueprint.route('/agregar_centro', methods=['GET', 'POST'])
 @login_required
 def agregar_centro():
@@ -36,16 +37,14 @@ def agregar_centro():
         empresa_id=data["empresa"],  arrendadora=data["arrendadora"],  comentario=data["comentario"]  ) 
         db.session.add(centro) 
         db.session.commit()   
-        return redirect("/administracion/centros_negocios")  
-
-
+        return redirect("/administracion/centros_negocios")
 
 @blueprint.route('/get_data_editar_centro/<cid>', methods=['GET', 'POST'])
 @login_required
 def get_data_editar_centro(cid):
-  print("i")
   centro = CentrosNegocio.query.get(cid)
   return jsonify(id=centro.id, numero=centro.numero, nombre=centro.nombre, tipo=centro.tipo, direccion= centro.direccion,  empresa_id=centro.empresa_id, arrendadora= centro.arrendadora, comentario=centro.comentario) 
+
 
 @blueprint.route('/editar_centro', methods=['GET', 'POST'])
 @login_required

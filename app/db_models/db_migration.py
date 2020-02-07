@@ -187,6 +187,8 @@ def initialize_global_var(con, variable):
     global concepto_id
     global cuenta_id
     global forma_pago_id
+    global cuenta_id_egreso
+    global forma_pago_id_egreso
     global tipo_ingreso_id
     global formas_pago
 
@@ -224,7 +226,7 @@ def initialize_global_var(con, variable):
     centros_negocio = CentrosNegocio.query.all()
 
     ###Tablas de Mapeo
-    mapping_cuentas = pd.read_excel('./app/db_models/cuentas_mapping.xlsx',converters={'Banamex':str,'Amex':str,'BBVA':str,'Efectivo':str,'Credito':str})
+    mapping_cuentas = pd.read_excel('./app/db_models/MapeoCuentasIngresos.xlsx',converters={'Banamex':str,'Amex':str,'BBVA':str,'Efectivo':str,'Credito':str})
     mapping_beneficiarios = mapping_to_Dataframe(Beneficiarios_Mapping.query.all())
     mapping_empresas = mapping_to_Dataframe(Empresas_Mapping.query.all())
     mapping_centros_negocio = mapping_to_Dataframe(CentrosNegocio_Mapping.query.all())
@@ -238,8 +240,8 @@ def initialize_global_var(con, variable):
     if variable == 'egresos':
         categoria_id = Categorias.query.filter(Categorias.nombre == "Compras").all()[0].id
         concepto_id = Conceptos.query.filter(Conceptos.nombre == 'Zapato').all()[0].id
-        cuenta_id = Cuentas.query.filter(Cuentas.nombre == 'Prueba').all()[0].id
-        forma_pago_id = FormasPago.query.filter(FormasPago.nombre == 'Transferencia').all()[0].id
+        cuenta_id_egreso = Cuentas.query.filter(Cuentas.nombre == 'Prueba').all()[0].id
+        forma_pago_id_egreso = FormasPago.query.filter(FormasPago.nombre == 'Transferencia').all()[0].id
         centros_negocio_sin_definir_id = CentrosNegocio.query.filter(CentrosNegocio.nombre == 'SinDefinir').all()[0].id
         try: pago_id_egreso = db.session.query(db.func.max(Pagos.id)).scalar() + 1
         except: pago_id_egreso = 1
@@ -324,7 +326,7 @@ def generar_pago_migracion(beneficiario_id, monto_total, egreso):
     fecha_pago = str(egreso['FechaDPago']) if str(egreso['FechaDPago']) != 'NaT' else None
 
     pago = Pagos(id=int(pago_id_egreso), fecha_pago=fecha_pago, status=status, beneficiario_id=int(beneficiario_id), monto_total=float(monto_total),
-                 cuenta_id=int(cuenta_id), forma_pago_id=int(forma_pago_id))
+                 cuenta_id=int(cuenta_id_egreso), forma_pago_id=int(forma_pago_id_egreso))
 
     #print('\nPago: \nid = {} \n status = {} \nfecha_pago = {}\n beneficiario_id = {} \nmonto_total= {} \n cuenta_id = {} \n forma_pago_id = {}'.format(pago_id_egreso,status,fecha_pago,beneficiario_id,monto_total,cuenta_id, forma_pago_id))
 
@@ -342,7 +344,7 @@ def generar_detalle_egreso(R2_id, egreso, beneficiario_id):
 
     detalle = DetallesEgreso(centro_negocios_id =int(centro_negocios_id), proveedor_id=int(beneficiario_id),
                              categoria_id=int(categoria_id), concepto_id=int(concepto_id), monto=float(monto),
-                             numero_control=numero_control,descripcion=descripcion)
+                             numero_control=numero_control, descripcion=descripcion)
 
 
 
@@ -411,9 +413,6 @@ def generar_detalle_ingreso(R2_id, cliente_id, concepto_ingresos_id, detalle):
     try: centro_negocios_id = int(mapping_centros_negocio[mapping_centros_negocio.GEZ_id == int(detalle['SucID'])].R2_id)
     except: centro_negocios_id = centros_negocio_sin_definir_id
 
-    cliente_id = cliente_id # ESTA BIEN USAR EL MISMO CLIENTE LOS INGRESOS?
-    categoria_ingresos_id = categoria_ingresos_id # ESTA BIEN USAR LA MISMO CATEOGRIA LOS INGRESOS?
-
 
     detalle = DetallesIngreso(cliente_id=cliente_id,
                               categoria_id=categoria_ingresos_id,
@@ -470,9 +469,9 @@ def translate_beneficiario(proveedor,variable,con):
     razon_social = proveedor['pro_razon'].rstrip()
 
     try:
-        numero_cuenta = (pd.read_sql("select provcta_numero from dbo.proveedores_cuentasdeposito where prov_vtaprov = {}".format(GEZ_id), con)).iloc[0,0]
+        cuenta_banco = (pd.read_sql("select provcta_numero from dbo.proveedores_cuentasdeposito where prov_vtaprov = {}".format(GEZ_id), con)).iloc[0,0]
 
-    except: numero_cuenta = ''
+    except: cuenta_banco = ''
 
     try:
         banco = (
@@ -482,11 +481,11 @@ def translate_beneficiario(proveedor,variable,con):
 
     saldo = 0
 
-    status = proveedor['pro_status']
+    status = 'Activo' if proveedor['pro_status'] else 'Inactivo'
 
     contacto_1, contacto_2, contacto_3 = agregar_contactos(proveedor)
 
-    return GEZ_id, nombre, nombre_corto, RFC, direccion, comentarios, razon_social, numero_cuenta, banco, saldo, status, contacto_1,contacto_2, contacto_3
+    return GEZ_id, nombre, nombre_corto, RFC, direccion, comentarios, razon_social, cuenta_banco.rstrip(), banco, saldo, status, contacto_1,contacto_2, contacto_3
 
 
 
@@ -600,12 +599,13 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
         GEZ_id, nombre, nombre_corto, RFC, direccion, comentarios, razon_social, cuenta_banco, banco, saldo, status, contacto_1,contacto_2, contacto_3 = translate_beneficiario(variable_item,variable,con)
 
         variable_item = Beneficiarios(id=R2_id, nombre=nombre,nombre_corto=nombre_corto, RFC=RFC,
-                                      direccion=direccion, razon_social=razon_social,comentarios = comentarios,
+                                      direccion=direccion, razon_social=razon_social,comentarios=comentarios,
                                       cuenta_banco=cuenta_banco, saldo=saldo, status=status, banco=banco)
 
         variable_item.contacto.append(contacto_1)
         variable_item.contacto.append(contacto_2)
         variable_item.contacto.append(contacto_3)
+
 
         variable_map = Beneficiarios_Mapping(GEZ_id=int(GEZ_id), R2_id=int(R2_id))
 
@@ -639,9 +639,16 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
     if variable == 'egresos':
 
         fecha_documento, fecha_vencimiento, fecha_programada_pago, numero_documento, monto_total, monto_pagado, monto_solicitado, monto_por_conciliar, referencia, comentario, \
-        pagado, status, beneficiario_id, empresa_id, iva, descuento, monto_documento, notas_credito, detalle, pago = translate_egreso(R2_id, variable_item)
+        pagado, status, beneficiario_id, empresa_id, iva, descuento, monto_documento, notas_credito, detalle = translate_egreso(R2_id, variable_item)
 
 
+        if status == 'liquidado':
+            pago = generar_pago_migracion(beneficiario_id, monto_total, variable_item)
+            ep = EgresosHasPagos(egreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto_total))
+            db.session.add(pago)
+            db.session.add(ep)
+        else:
+            pago = None
 
         variable_item = Egresos(id=int(R2_id), fecha_documento=fecha_documento, fecha_vencimiento=fecha_vencimiento, fecha_programada_pago=fecha_programada_pago, numero_documento=str(numero_documento),
                                 monto_total=float(monto_total), monto_pagado=float(monto_pagado), monto_solicitado=float(monto_solicitado),
@@ -655,13 +662,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
 
         # Generar Pago para los liquidados
 
-        if status == 'liquidado':
-            pago = generar_pago_migracion(beneficiario_id, monto_total, variable_item)
-            ep = EgresosHasPagos(egreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto_total))
-            db.session.add(pago)
-            db.session.add(ep)
-        else:
-            pago = None
+
 
 
 
@@ -689,7 +690,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
         detalles = list_GEZ_Detalles[list_GEZ_Detalles.Movtos_ID == variable_item['md_id']]
         variable_map = Ingresos_Mapping(GEZ_id=int(GEZ_id), R2_id=int(R2_id))
 
-
+        pdb.set_trace()
         # Por cada detalle encontrado del ingreso generar un detalle
         for i in range(len(detalles)):
 
@@ -724,6 +725,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
         db.session.add(variable_item)
 
         db.session.add(variable_map)
+        # pdb.set_trace()
         db.session.commit()
 
     return
@@ -760,9 +762,6 @@ def migrate_table(con_GEZ, con_rdm, variable):
         match = mapping_table[mapping_table.GEZ_id == int(GEZ_id)]
         variable_item = list_GEZ.iloc[i, :]
 
-        pdb.set_trace()
-
-
 
         if len(match) > 0:
 
@@ -772,13 +771,13 @@ def migrate_table(con_GEZ, con_rdm, variable):
             print('This id is already registered as R2_id = {} ! doing Nothing!'.format(R2_id))
 
             if variable == 'egreso':
-                if variable_item['Cancelado'] == 'True':
+                if str(variable_item['Cancelado']) == 'True':
                     egreso = Egresos.query.get(R2_id)
                     egreso.status = 'cancelado'
                     db.session.commit()
 
             if variable == 'beneficiario':
-                if variable_item['pro_status'] == 'False':
+                if str(variable_item['pro_status']) == 'False':
                     beneficiario = Beneficiarios.query.get(R2_id)
                     beneficiario.status = 'cancelado'
                     db.session.commit()
@@ -805,59 +804,155 @@ def migrate_table(con_GEZ, con_rdm, variable):
             write_variable_R2(variable, R2_id, GEZ_id, GEZ_nombre, variable_item, agregar_item, list_GEZ, con_GEZ)
 
 
+
+
 def write_inital_conditions():
 
+    try: Tipo_Ingreso.query.filter(Tipo_Ingreso.tipo == 'Ventas').all()[0].id
+    except:
+        tipo_i = Tipo_Ingreso(tipo='Ventas')
+        db.session.add(tipo_i)
+
     # CLIENTES
-    cliente = Clientes(nombre='Ventas Tiendas Fisicas', saldo_pendiente=0, saldo_por_conciliar=0, saldo_cobrado=0,status='conciliado')
-    db.session.add(cliente)
+    try: Clientes.query.filter(Clientes.nombre == 'Ventas Tiendas Fisicas').all()[0].id
+    except:
+        cliente = Clientes(nombre='Ventas Tiendas Fisicas', saldo_pendiente=0, saldo_por_conciliar=0, saldo_cobrado=0,status='conciliado')
+        db.session.add(cliente)
 
-    cliente = Clientes(nombre='Ventas Ecommerce', saldo_pendiente=0, saldo_por_conciliar=0, saldo_cobrado=0, status='conciliado')
-    db.session.add(cliente)
+    try: Clientes.query.filter(Clientes.nombre == 'Ventas Ecommerce').all()[0].id
+    except:
+        cliente = Clientes(nombre='Ventas Ecommerce', saldo_pendiente=0, saldo_por_conciliar=0, saldo_cobrado=0, status='conciliado')
+        db.session.add(cliente)
 
-    cliente = Clientes(nombre='Ventas Adicionales', saldo_pendiente=0, saldo_por_conciliar=0, saldo_cobrado=0, status='conciliado')
-    db.session.add(cliente)
+    try:  Clientes.query.filter(Clientes.nombre == 'Ventas Adicionales').all()[0].id
+    except:
+        cliente = Clientes(nombre='Ventas Adicionales', saldo_pendiente=0, saldo_por_conciliar=0, saldo_cobrado=0, status='conciliado')
+        db.session.add(cliente)
 
     # CUENTAS
-    cuenta = Cuentas(nombre='Prueba')
+
+    try:  Cuentas.query.filter(Cuentas.nombre == 'Prueba').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='Prueba', saldo=0,  saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try: Cuentas.query.filter(Cuentas.nombre == 'SinDefinir').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='SinDefinir', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+
+
+    try: Cuentas.query.filter(Cuentas.nombre == 'BBVA 111').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BBVA 111', banco='BBVA', numero='0103783111', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+
+    try: Cuentas.query.filter(Cuentas.nombre == 'BBVA 189').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BBVA 189', banco='BANCOMER', numero='0103783189', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'BBVA 196').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BBVA 196', banco='AMERICAN EXPRESS', numero='0443850196', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'BMX').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BMX', banco='BANAMEX', numero='0055637', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'BB Clasica').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BB Clasica', banco='BAJIO', numero='0001615466', saldo=0, saldo_inicial=0)
     db.session.add(cuenta)
 
-    cuenta = Cuentas(nombre='SinDefinir')
-    db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'BB Inversion').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BB Inversion', banco='BAJIO', numero='', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'BX+').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BX+',banco='VE POR MAS', numero='28384', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'BBVA 6646').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='BBVA 6646',banco='Ecommerce', numero='0100906646', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+    try:
+        Cuentas.query.filter(Cuentas.nombre == 'Oficina Efectivo').all()[0].id
+    except:
+        cuenta = Cuentas(nombre='Oficina Efectivo',banco='Oficina', numero='01', saldo=0, saldo_inicial=0)
+        db.session.add(cuenta)
+
+
 
     # CATEGORIAS
-    categoria = Categorias(nombre="Compras", tipo='egreso')
-    db.session.add(categoria)
+    try: Categorias.query.filter(Categorias.nombre == 'Comprass').all()[0].id
+    except:
+        categoria = Categorias(nombre="Compras", tipo='egreso')
+        db.session.add(categoria)
 
-    categoria = Categorias(nombre="Ventas", tipo='ingreso')
-    db.session.add(categoria)
+    try: Categorias.query.filter(Categorias.nombre == 'Ventas').all()[0].id
+    except:
+        categoria = Categorias(nombre="Ventas", tipo='ingreso')
+        db.session.add(categoria)
 
     # CONCEPTOS
-    concepto = Conceptos(nombre='Zapato', categoria_id=1)
-    db.session.add(concepto)
+    try: Conceptos.query.filter(Conceptos.nombre == 'Zapato').all()[0].id
+    except:
+        concepto = Conceptos(nombre='Zapato', categoria_id=1)
+        db.session.add(concepto)
 
-    concepto = Conceptos(nombre='Tiendas', categoria_id=2)
-    db.session.add(concepto)
+    try: Conceptos.query.filter(Conceptos.nombre == 'Tiendas').all()[0].id
+    except:
+        concepto = Conceptos(nombre='Tiendas', categoria_id=2)
+        db.session.add(concepto)
 
-    concepto = Conceptos(nombre='Ecommerce', categoria_id=2)
-    db.session.add(concepto)
+    try: Conceptos.query.filter(Conceptos.nombre == 'Ecommerce').all()[0].id
+    except:
+        concepto = Conceptos(nombre='Ecommerce', categoria_id=2)
+        db.session.add(concepto)
 
-    concepto = Conceptos(nombre='Adicionales', categoria_id=2)
+    try: Conceptos.query.filter(Conceptos.nombre == 'Adicionales').all()[0].id
+    except:
+        concepto = Conceptos(nombre='Adicionales', categoria_id=2)
+        db.session.add(concepto)
 
     # FORMAS DE PAGO
-    db.session.add(concepto)
 
-    forma_pago = FormasPago(nombre='Efectivo')
-    db.session.add(forma_pago)
+    try: FormasPago.query.filter(FormasPago.nombre == 'Efectivo').all()[0].id
+    except:
+        forma_pago = FormasPago(nombre='Efectivo')
+        db.session.add(forma_pago)
 
-    forma_pago = FormasPago(nombre='Transferencia')
-    db.session.add(forma_pago)
+    try: FormasPago.query.filter(FormasPago.nombre == 'Transferencia').all()[0].id
+    except:
+        forma_pago = FormasPago(nombre='Transferencia')
+        db.session.add(forma_pago)
 
-    forma_pago = FormasPago(nombre='Cheque')
-    db.session.add(forma_pago)
+    try: FormasPago.query.filter(FormasPago.nombre == 'Cheque').all()[0].id
+    except:
+        forma_pago = FormasPago(nombre='Cheque')
+        db.session.add(forma_pago)
 
     # CENTRO DE NEGOCIOS
-    centro_negocios = FormasPago(nombre='SinDefinir')
-    db.session.add(centro_negocios)
+    try: CentrosNegocio.query.filter(CentrosNegocio.nombre == 'SinDefinir').all()[0].id
+    except:
+        centro_negocios = CentrosNegocio(nombre='SinDefinir')
+        db.session.add(centro_negocios)
 
     db.session.commit()
 
@@ -892,7 +987,7 @@ def write_inital_conditions():
 
 def run_all_migrations():
 
-    variables = [ 'empresas', 'beneficiarios', 'centros_negocio', 'empleados', 'ingresos', 'egresos']
+    variables = ['empresas', 'beneficiarios', 'centros_negocio', 'empleados', 'egresos', 'ingresos']
 
 
     con_GEZ, con_rdm = get_connections()
@@ -903,11 +998,14 @@ def run_all_migrations():
 
 
     # Generar Variables Globales
-    initialize_global_var(con_GEZ, variables[0])
-    print('1. Gloabl varables Initiated \n')
+    for variable in variables[:-1]:
 
-    # Migrate all of the records in GEZ for varaible
-    migrate_table(con_GEZ, con_rdm, variables[0])
-    print('2.Table Migrated succesfully \n')
+        print('Variable! = ',variable)
+        initialize_global_var(con_GEZ, variable)
+        print('1. Gloabl varables Initiated \n')
+
+        # Migrate all of the records in GEZ for varaible
+        migrate_table(con_GEZ, con_rdm, variable)
+        print('2.Table Migrated succesfully \n')
 
 

@@ -197,9 +197,6 @@ def editar_egreso(egreso_id):
     return redirect("/egresos/perfil_egreso/" + str(egreso_id))
 
 
-
-
-
 #Egresos Delete
 @blueprint.route("/borrar_egreso/<int:egreso_id>", methods=['GET', 'POST'])
 def borrar_egreso(egreso_id):
