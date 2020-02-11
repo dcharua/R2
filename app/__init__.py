@@ -77,7 +77,7 @@ def create_app(config):
     #print("mysql+pymysql://{}s:{}@{}s/{}s".format(environ.get('DB_USER'), environ.get('DB_PASSWORD'), environ.get('DB_ADDRESS'), environ.get('DB_NAME')))
 
     # Para Adrian
-    SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
+    #SQLALCHEMY_DATABASE_URI ="mysql+pymysql://%s:%s@%s/%s" %('root','Adri*83224647', 'localhost','R2')
 
     
     )

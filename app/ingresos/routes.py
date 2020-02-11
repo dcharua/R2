@@ -239,8 +239,8 @@ def perfil_pago_ingreso(pago_id):
 def borrar_pago(pago_id):
     pago = Pagos_Ingresos.query.get(pago_id)
     for ingreso in pago.ingresos:
-        ep = IngresosHasPagos.query.filter_by(ingreso_id  = ingreso.id ,pago_id = pago.id ).first()
-        ingreso.monto_por_conciliar -= ep.monto
+        pago = Pagos_Ingresos.query.filter_by(ingreso_id=ingreso.id).first()
+        ingreso.monto_por_conciliar -= pago.monto
         ingreso.setStatus()
         calcular_saldo_cliente(ingreso.cliente_id)
         db.session.delete(ep)

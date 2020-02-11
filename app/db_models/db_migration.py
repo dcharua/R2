@@ -109,7 +109,7 @@ def get_nombre_and_id(variable_item,variable):
 
     elif variable == 'centros_negocio':
 
-        return variable_item['sucnombre'].rstrip(), variable_item['sucnum']
+        return variable_item['sucnombre'].rstrip(), variable_item['sucnsucursal']
 
     elif variable == 'empleados':
 
@@ -150,14 +150,14 @@ def get_lists(con,variable):
 
         list_R2 = Egresos.query.all()
         list_GEZ = pd.read_sql("SELECT * FROM dbo.Egresos_r2", con)
-        list_GEZ = list_GEZ[list_GEZ.FechaDocto > '2019']
+        list_GEZ = list_GEZ[list_GEZ.FechaDocto > '2018-05-31']
         mapping_table = mapping_egresos
 
     elif variable == 'ingresos':
 
         list_R2 = Ingresos.query.all()
         list_GEZ = pd.read_sql("SELECT * FROM dbo.Ingresos_Cabecera_r2", con)
-        list_GEZ = list_GEZ[list_GEZ.Fecha > '2017']
+        list_GEZ = list_GEZ[list_GEZ.Fecha > '2018-05-31']
         mapping_table = mapping_ingresos
 
     else:
@@ -182,15 +182,15 @@ def get_lists(con,variable):
 
 
 
-def initialize_global_var(con, variable):
-    global categoria_id
-    global concepto_id
-    global cuenta_id
+def initialize_global_var(con):
+    global categoria_id_egresos
+    global concepto_id_egresos
     global forma_pago_id
     global cuenta_id_egreso
     global forma_pago_id_egreso
     global tipo_ingreso_id
     global formas_pago
+    global tipos_sucursales
 
     # IDs por definir
     global centros_negocio_sin_definir_id
@@ -198,8 +198,8 @@ def initialize_global_var(con, variable):
 
     global pago_id_egreso
     global pago_id_ingreso
-    global categoria_ingresos_id
-    global concepto_ingresos_id
+    global categoria_id_ingresos
+    global concepto_id_ingresos
     global centros_negocio
 
     global mapping_empresas
@@ -208,7 +208,7 @@ def initialize_global_var(con, variable):
     global mapping_egresos
     global mapping_empleados
     global mapping_ingresos
-    global mapping_cuentas
+    global mapping_cuentas_efectivo
 
     global list_GEZ_Detalles
     global cliente_id
@@ -221,49 +221,49 @@ def initialize_global_var(con, variable):
     global concepto_ingresos_otro_id
 
 
-    list_GEZ_Detalles = pd.read_sql("SELECT * FROM dbo.Ingresos_Detalles_r2", con)
-    list_GEZ_Detalles = list_GEZ_Detalles[list_GEZ_Detalles.fecha > '2017']
+
     centros_negocio = CentrosNegocio.query.all()
 
     ###Tablas de Mapeo
-    mapping_cuentas = pd.read_excel('./app/db_models/MapeoCuentasIngresos.xlsx',converters={'Banamex':str,'Amex':str,'BBVA':str,'Efectivo':str,'Credito':str})
+    # mapping_cuentas = pd.read_excel('./app/db_models/MapeoCuentasIngresos.xlsx',converters={'Banamex':str,'Amex':str,'BBVA':str,'Efectivo':str,'Credito':str})
+    mapping_cuentas_efectivo = pd.read_excel('./app/db_models/CuentasEfectivo.xlsx', converters={'efectivo_1': str, 'efectivo_2': str})
+
+    tipos_sucursales = pd.read_excel('./app/db_models/Tipos_Sucursal.xlsx')
     mapping_beneficiarios = mapping_to_Dataframe(Beneficiarios_Mapping.query.all())
     mapping_empresas = mapping_to_Dataframe(Empresas_Mapping.query.all())
     mapping_centros_negocio = mapping_to_Dataframe(CentrosNegocio_Mapping.query.all())
     mapping_egresos = mapping_to_Dataframe(Egresos_Mapping.query.all())
     mapping_empleados = mapping_to_Dataframe(Empleados_Mapping.query.all())
     mapping_ingresos = mapping_to_Dataframe(Ingresos_Mapping.query.all())
-    #mapping_cuentas = pd.read_csv('./app/db_models/cuentas_mapping.csv', converters={i: str for i in range(0, 7)})
-
 
     # Constantes Egresos
-    if variable == 'egresos':
-        categoria_id = Categorias.query.filter(Categorias.nombre == "Compras").all()[0].id
-        concepto_id = Conceptos.query.filter(Conceptos.nombre == 'Zapato').all()[0].id
-        cuenta_id_egreso = Cuentas.query.filter(Cuentas.nombre == 'Prueba').all()[0].id
-        forma_pago_id_egreso = FormasPago.query.filter(FormasPago.nombre == 'Transferencia').all()[0].id
-        centros_negocio_sin_definir_id = CentrosNegocio.query.filter(CentrosNegocio.nombre == 'SinDefinir').all()[0].id
-        try: pago_id_egreso = db.session.query(db.func.max(Pagos.id)).scalar() + 1
-        except: pago_id_egreso = 1
+    categoria_id_egresos = Categorias.query.filter(Categorias.nombre == "Compras").all()[0].id
+    concepto_id_egresos = Conceptos.query.filter(Conceptos.nombre == 'Zapato').all()[0].id
+    cuenta_id_egreso = Cuentas.query.filter(Cuentas.nombre == 'Prueba').all()[0].id
+    forma_pago_id_egreso = FormasPago.query.filter(FormasPago.nombre == 'Transferencia').all()[0].id
+    centros_negocio_sin_definir_id = CentrosNegocio.query.filter(CentrosNegocio.nombre == 'SinDefinir').all()[0].id
+    try: pago_id_egreso = db.session.query(db.func.max(Pagos.id)).scalar() + 1
+    except: pago_id_egreso = 1
 
 
     # Constantes Ingresos
-    if variable == 'ingresos':
-        tipo_ingreso_id = Tipo_Ingreso.query.filter(Tipo_Ingreso.tipo == 'Ventas').all()[0].id
-        cliente_ecommerce_id = Clientes.query.filter(Clientes.nombre == 'Ventas Tiendas Fisicas').all()[0].id
-        cliente_tiendas_id = Clientes.query.filter(Clientes.nombre == 'Ventas Ecommerce').all()[0].id
-        cliente_otro_id = Clientes.query.filter(Clientes.nombre == 'Ventas Adicionales').all()[0].id
-        formas_pago = FormasPago.query.all()
-        try: pago_id_ingreso = db.session.query(db.func.max(Pagos_Ingresos.id)).scalar() + 1
-        except: pago_id_ingreso = 1
-        categoria_ingresos_id = Categorias.query.filter(Categorias.nombre == "Ventas").all()[0].id
+    list_GEZ_Detalles = pd.read_sql("SELECT * FROM dbo.Ingresos_Detalles_r2", con)
+    list_GEZ_Detalles = list_GEZ_Detalles[list_GEZ_Detalles.fecha > '2018-05-31']
 
-        concepto_ingresos_tiendas_id = Conceptos.query.filter(Conceptos.nombre == 'Tiendas').all()[0].id
-        concepto_ingresos_ecommerce_id = Conceptos.query.filter(Conceptos.nombre == 'Ventas Ecommerce').all()[0].id
-        concepto_ingresos_otro_id = Conceptos.query.filter(Conceptos.nombre == 'Ventas Adicionales').all()[0].id
+    tipo_ingreso_id = Tipo_Ingreso.query.filter(Tipo_Ingreso.tipo == 'Ventas').all()[0].id
+    cliente_ecommerce_id = Clientes.query.filter(Clientes.nombre == 'Ventas Tiendas Fisicas').all()[0].id
+    cliente_tiendas_id = Clientes.query.filter(Clientes.nombre == 'Ventas Ecommerce').all()[0].id
+    cliente_otro_id = Clientes.query.filter(Clientes.nombre == 'Ventas Adicionales').all()[0].id
+    formas_pago = FormasPago.query.all()
+    try: pago_id_ingreso = db.session.query(db.func.max(Pagos_Ingresos.id)).scalar() + 1
+    except: pago_id_ingreso = 1
+    categoria_id_ingresos = Categorias.query.filter(Categorias.nombre == "Ventas").all()[0].id
 
-        cuenta_id_por_definir = Cuentas.query.filter(Cuentas.nombre == 'SinDefinir').all()[0].id
-        centros_negocio_sin_definir_id = CentrosNegocio.query.filter(CentrosNegocio.nombre == 'SinDefinir').all()[0].id
+    concepto_ingresos_tiendas_id = Conceptos.query.filter(Conceptos.nombre == 'Tiendas').all()[0].id
+    concepto_ingresos_ecommerce_id = Conceptos.query.filter(Conceptos.nombre == 'Ecommerce').all()[0].id
+    concepto_ingresos_otro_id = Conceptos.query.filter(Conceptos.nombre == 'Adicionales').all()[0].id
+
+    cuenta_id_por_definir = Cuentas.query.filter(Cuentas.nombre == 'SinDefinir').all()[0].id
 
 
 
@@ -299,8 +299,16 @@ def translate_egreso(R2_id, egreso):
     pagado = False if status != 'liquidado' else True
 
 
-    beneficiario_id = int(mapping_beneficiarios[mapping_beneficiarios.GEZ_id == int(egreso['Proveedor_ID'])].R2_id)
-    empresa_id = int(mapping_empresas[mapping_empresas.GEZ_id == int(egreso['EmpresaNum'])].R2_id)
+    try: beneficiario_id = int(mapping_beneficiarios[mapping_beneficiarios.GEZ_id == int(egreso['Proveedor_ID'])].R2_id)
+    except: beneficiario_id = Beneficiarios.query.filter(Beneficiarios.nombre == 'SinDefinir').all()[0].id
+
+    try:
+        empresa_id = int(mapping_empresas[mapping_empresas.GEZ_id == int(egreso['EmpresaNum'])].R2_id)
+    except:
+        pdb.set_trace()
+        empresa_id = Empresas.query.filter(Empresas.nombre == 'EMPRESA INVALIDA').all()[0].id
+
+
 
     # NUEVAS COLUMNAS!!!
     iva = egreso['Iva']
@@ -343,7 +351,7 @@ def generar_detalle_egreso(R2_id, egreso, beneficiario_id):
     descripcion = str(egreso['TipoDescripcion'])
 
     detalle = DetallesEgreso(centro_negocios_id =int(centro_negocios_id), proveedor_id=int(beneficiario_id),
-                             categoria_id=int(categoria_id), concepto_id=int(concepto_id), monto=float(monto),
+                             categoria_id=int(categoria_id_egresos), concepto_id=int(concepto_id_egresos), monto=float(monto),
                              numero_control=numero_control, descripcion=descripcion)
 
 
@@ -365,22 +373,25 @@ def translate_ingreso(ingreso):
 
     dias_para_vencimiento = 15
     status = 'por_conciliar'
-    tipo_ingreso_id = tipo_ingreso_id # Definido en funcion 'initalize_global_var()
 
-    # Checar centro de negocio de
-    centro_negocio_tipo = mapping_centros_negocio[mapping_centros_negocio.GEZ_id == int(ingreso['SucID'])].tipo
 
-    if centro_negocio_tipo == 'E-commerce':
-        cliente_id = cliente_ecommerce_id
-        concepto_ingresos_id = concepto_ingresos_tiendas_id
+    try:
+        centro_negocio_tipo = CentrosNegocio.query.filter(CentrosNegocio.numero == int(ingreso.sucnsucursal)).all()[0].tipo
+    except:
+        centro_negocio_tipo = 'PENDIENTE'
 
-    elif centro_negocio_tipo == 'E-commerce':
-        cliente_id = cliente_tiendas_id
-        concepto_ingresos_id = concepto_ingresos_ecommerce_id
+
+    if centro_negocio_tipo == 'Tienda Fisica':
+        cliente_id_ingresos = cliente_ecommerce_id
+        concepto_id_ingresos = concepto_ingresos_tiendas_id
+
+    elif centro_negocio_tipo == 'Ecommerce':
+        cliente_id_ingresos = cliente_tiendas_id
+        concepto_id_ingresos = concepto_ingresos_ecommerce_id
 
     else:
-        cliente_id = cliente_otro_id
-        concepto_ingresos_id = concepto_ingresos_otro_id
+        cliente_id_ingresos = cliente_otro_id
+        concepto_id_ingresos = concepto_ingresos_otro_id
 
 
 
@@ -402,49 +413,82 @@ def translate_ingreso(ingreso):
     comentario = ''
     pagado = False
 
-    return status,tipo_ingreso_id, cliente_id, empresa_id, referencia, fecha_vencimiento, fecha_programada_pago, fecha_documento, numero_documento,monto_total,monto_pagado,\
-           monto_solicitado, monto_por_conciliar,costo_venta,iva_ingresos,iva_ventas,utilidad_neta, pagado, comentario, concepto_ingresos_id
+    return status,tipo_ingreso_id, cliente_id_ingresos, empresa_id, referencia, fecha_vencimiento, fecha_programada_pago, fecha_documento, numero_documento,monto_total,monto_pagado,\
+           monto_solicitado, monto_por_conciliar,costo_venta,iva_ingresos,iva_ventas,utilidad_neta, pagado, comentario, concepto_id_ingresos, centro_negocio_tipo
 
 
 
 
-def generar_detalle_ingreso(R2_id, cliente_id, concepto_ingresos_id, detalle):
+def generar_detalle_ingreso(R2_id, cliente_id, concepto_id_ingresos, detalle):
 
-    try: centro_negocios_id = int(mapping_centros_negocio[mapping_centros_negocio.GEZ_id == int(detalle['SucID'])].R2_id)
+    try: centro_negocios_id = int(mapping_centros_negocio[mapping_centros_negocio.GEZ_id == int(detalle['sucnsucursal'])].R2_id)
     except: centro_negocios_id = centros_negocio_sin_definir_id
 
 
-    detalle = DetallesIngreso(cliente_id=cliente_id,
-                              categoria_id=categoria_ingresos_id,
-                              concepto_id=concepto_ingresos_id,
-                              centro_negocios_id=centro_negocios_id,
-                              monto=detalle['monto_total'],
+    detalle = DetallesIngreso(cliente_id=int(cliente_id),
+                              categoria_id=int(categoria_id_ingresos),
+                              concepto_id=int(concepto_id_ingresos),
+                              centro_negocios_id=int(centro_negocios_id),
+                              monto=float(detalle['monto_total']),
                               descripcion=detalle['nomconcept'], # ES LO QUE SE NECESITA PARA LA DESCRICPION?
                               numero_control = detalle['Referencia_Pago'], # ESTA BIEN ESTO?
-                              ingreso_id = R2_id)
+                              ingreso_id = int(R2_id))
 
 
     return detalle
 
 
-def generar_pago_ingreso_migracion(monto, cliente_id, detalle):
+def generar_pago_ingreso_migracion(ingreso, monto, cliente_id, detalle, efectivo, Sobrante_RDM):
 
     status = 'por_conciliar'
-    cliente_id = cliente_id
+    global pago_id_ingreso
+    pago_id_ingreso += 1
 
-    monto_total = monto
     fecha_pago = str(detalle['fecha'])
-    forma_pago_id = int(FormasPago.query.filter(FormasPago.nombre.ilike('%'+detalle['nomconcept']+'%')).all()[0].id)
     referencia_pago = str(detalle['Referencia_Pago'])
-    try: cuenta_id = int(mapping_cuentas[mapping_cuentas.GEZ_id == int(detalle['ingr_sucursal'])].R2_id) # ayudame con esto
-    except: cuenta_id = cuenta_id_por_definir
 
-    cuenta_id = detalle['Expr1']   # Esto deberia de ser de mapping cuentas? El primer detalle que intente, el numero no coincidia con
+    if detalle['nomconcept'] == 'Tarjetas Bancarias':
+        detalle['nomconcept'] = 'Transferencia'
+
+    elif detalle['nomconcept'] == 'Cheques':
+        detalle['nomconcept'] = 'Cheque'
+
+    else:
+        detalle['nomconcept'] = 'Efectivo'
+
+
+    forma_pago_id = int(FormasPago.query.filter(FormasPago.nombre == str(detalle['nomconcept'])).all()[0].id)
+
+    # si es efectivo, encontrar que cuenta usar con el excel
+    if efectivo:
+
+        try:
+            if Sobrante_RDM:
+                cuenta_numero = mapping_cuentas_efectivo[mapping_cuentas_efectivo.numer_sucursal == int(detalle.sucnsucursal)].efectivo_2.iloc[0]
+            else:
+                cuenta_numero = mapping_cuentas_efectivo[mapping_cuentas_efectivo.numer_sucursal == int(detalle.sucnsucursal)].efectivo_1.iloc[0]
+        except:
+            print('Sucursal {} no se encontro en el excel!!'. format(int(detalle.sucnsucursal)))
+            cuenta_numero = 999999
+
+    # si no es efectivo, usa la
+    else:
+        cuenta_numero = detalle['Expr1']
+
+    try:
+        cuenta_id = Cuentas.query.filter(Cuentas.numero.ilike('%' + str(cuenta_numero) + '%')).all()[0].id
+
+    except:
+        cuenta_id = Cuentas.query.filter(Cuentas.nombre == 'SinDefinir').all()[0].id
+
+
+
+
     comentario = '' #Esta bien esto?
 
-    pago_ingreso = Pagos_Ingresos(referencia_pago=referencia_pago, fecha_pago=fecha_pago, status=status, cliente_id=cliente_id,
-                                  monto_total=monto_total, cuenta_id=cuenta_id,
-                                  forma_pago_id=forma_pago_id, comentario  = comentario
+    pago_ingreso = Pagos_Ingresos(referencia_pago=referencia_pago, fecha_pago=str(fecha_pago), status=status, cliente_id=int(cliente_id),
+                                  monto_total=float(monto), cuenta_id=int(cuenta_id),
+                                  forma_pago_id=int(forma_pago_id), comentario=comentario, ingreso=ingreso
                                   )
 
 
@@ -523,7 +567,11 @@ def translate_centros_negocio(item,variable):
 
     nombre = item['sucnombre']
     numero = int(item['sucnsucursal'])
-    tipo = 'Pendiente de Definir'
+    try:
+        tipo = tipos_sucursales[tipos_sucursales.numer_sucursal == int(item['sucnsucursal'])].Tipo.iloc[0]
+    except:
+        tipo = 'PENDIENTE'
+
     direccion = get_direccion(item,variable)
     arrendadora = 'Pendiente de Definir'
     comentario = ''
@@ -532,7 +580,7 @@ def translate_centros_negocio(item,variable):
                                         .replace('[','').replace(']',''))
 
 
-    return numero, direccion, tipo, arrendadora, comentario, empresa_id
+    return nombre,numero, direccion, tipo, arrendadora, comentario, empresa_id
 
 
 
@@ -612,7 +660,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
 
     if variable == 'centros_negocio':
 
-        numero, direccion, tipo, arrendadora, comentario, empresa_id = translate_centros_negocio(variable_item,variable)
+        nombre, numero, direccion, tipo, arrendadora, comentario, empresa_id = translate_centros_negocio(variable_item,variable)
 
         if int(variable_item['sucempresa']) == 1:
 
@@ -672,12 +720,13 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
     if variable == 'ingresos':
 
         status, tipo_ingreso_id, cliente_id, empresa_id, referencia, fecha_vencimiento, fecha_programada_pago, fecha_documento, numero_documento, monto_total, monto_pagado, \
-        monto_solicitado, monto_por_conciliar, costo_venta, iva_ingresos, iva_ventas, utilidad_neta, pagado, detalle, concepto_ingresos_id = translate_ingreso(variable_item)
+        monto_solicitado, monto_por_conciliar, costo_venta, iva_ingresos, iva_ventas, utilidad_neta, pagado, detalle, concepto_id_ingresos,centro_negocio_tipo = translate_ingreso(variable_item)
 
         sobrante_RDM = variable_item['SobranteRDM']
+        detalles = list_GEZ_Detalles[list_GEZ_Detalles.Movtos_ID == variable_item['md_id']]
 
         # ---- Generar el Ingreso
-        variable_item = Ingresos(id=int(R2_id), status=status, tipo_ingreso_id = tipo_ingreso_id, cliente_id =cliente_id,empresa_id=int(empresa_id),
+        variable_item = Ingresos(id=int(R2_id), status=status, tipo_ingreso_id=tipo_ingreso_id, cliente_id =cliente_id,empresa_id=int(empresa_id),
                                  referencia=str(referencia), fecha_vencimiento=fecha_vencimiento, fecha_programada_pago=fecha_programada_pago,
                                  fecha_documento=fecha_documento, numero_documento=str(numero_documento),
                                  monto_total=float(monto_total), monto_pagado=float(monto_pagado),
@@ -687,38 +736,56 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
 
         # ----  Generar Pagos
 
-        detalles = list_GEZ_Detalles[list_GEZ_Detalles.Movtos_ID == variable_item['md_id']]
+
+
+
         variable_map = Ingresos_Mapping(GEZ_id=int(GEZ_id), R2_id=int(R2_id))
 
-        pdb.set_trace()
+
         # Por cada detalle encontrado del ingreso generar un detalle
         for i in range(len(detalles)):
 
-            detalle = generar_detalle_ingreso(R2_id,cliente_id, concepto_ingresos_id, detalles.iloc[i, :])
-            variable_item.detalles.append(detalle)
+            detalle_object = generar_detalle_ingreso(R2_id,cliente_id, concepto_id_ingresos, detalles.iloc[i, :])
 
-            if detalle['nomconcept'] != 'Efectivo':
-                monto = detalle['monto_total']
-                pago = generar_pago_ingreso_migracion(pago, monto)
-                ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto_total))
+            variable_item.detalles.append(detalle_object)
+
+            if detalles.iloc[i, :]['nomconcept'] != 'Efectivo':
+                monto = detalles.iloc[i, :]['monto_total']
+                pago = generar_pago_ingreso_migracion(variable_item, monto, cliente_id, detalles.iloc[i, :], False, False)
+                # pdb.set_trace()
+                # ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto))
+                # pdb.set_trace()
+
                 db.session.add(pago)
-                db.session.add(ep)
+                # db.session.add(ep)
 
-            if detalle['nomconcept'] == 'Efectivo':
 
-                monto = pago['monto_total'] - sobrante_RDM
-                pago = generar_pago_ingreso_migracion(pago, monto)
-                ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto_total))
+
+            if detalles.iloc[i, :]['nomconcept'] == 'Efectivo':
+
+                monto = detalles.iloc[i, :]['monto_total'] - sobrante_RDM
+                pago = generar_pago_ingreso_migracion(variable_item, monto, cliente_id, detalles.iloc[i, :], True, False)
+                # pdb.set_trace()
+                # ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto))
+                # pdb.set_trace()
+
                 db.session.add(pago)
-                db.session.add(ep)
+                # db.session.add(ep)
 
-                #Asi esta bien? o aunque el monto sea 0, se hace un pago?
-                if (sobrante_RDM > 0) and (monto > 0):
+
+
+                # Asi esta bien? o aunque el monto sea 0, se hace un pago?
+                if (sobrante_RDM > 0):
                     monto = sobrante_RDM
-                    generar_pago_ingreso_migracion(pago, monto)
-                    ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto_total))
+                    pago = generar_pago_ingreso_migracion(variable_item, monto, cliente_id, detalles.iloc[i, :], True, True)
+                    # ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto))
+
                     db.session.add(pago)
-                    db.session.add(ep)
+                    # db.session.add(ep)
+
+
+
+
 
 
     if agregar_item:
@@ -727,6 +794,8 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
         db.session.add(variable_map)
         # pdb.set_trace()
         db.session.commit()
+
+
 
     return
 
@@ -742,7 +811,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
 
 
 
-def migrate_table(con_GEZ, con_rdm, variable):
+def migrate_table(con_GEZ, variable):
 
     list_GEZ, list_R2, mapping_table = get_lists(con_GEZ,variable)
 
@@ -870,7 +939,7 @@ def write_inital_conditions():
         Cuentas.query.filter(Cuentas.nombre == 'BB Clasica').all()[0].id
     except:
         cuenta = Cuentas(nombre='BB Clasica', banco='BAJIO', numero='0001615466', saldo=0, saldo_inicial=0)
-    db.session.add(cuenta)
+        db.session.add(cuenta)
 
 
     try:
@@ -954,11 +1023,12 @@ def write_inital_conditions():
         centro_negocios = CentrosNegocio(nombre='SinDefinir')
         db.session.add(centro_negocios)
 
+    try: Beneficiarios.query.filter(Beneficiarios.nombre == 'SinDefinir').all()[0].id
+    except:
+        beneficiario = Beneficiarios(nombre='SinDefinir')
+        db.session.add(beneficiario)
+
     db.session.commit()
-
-
-
-
 
 
 
@@ -987,25 +1057,28 @@ def write_inital_conditions():
 
 def run_all_migrations():
 
-    variables = ['empresas', 'beneficiarios', 'centros_negocio', 'empleados', 'egresos', 'ingresos']
+    variables = ['empresas', 'beneficiarios', 'centros_negocio', 'empleados', 'egresos','ingresos']
+    # variables = ['ingresos']
+
+    pdb.set_trace()
 
 
     con_GEZ, con_rdm = get_connections()
     print('0. Connections Initiated \n')
 
     write_inital_conditions()
-
+    print('1. Initial Variables have been Written! \n')
 
 
     # Generar Variables Globales
-    for variable in variables[:-1]:
+    for variable in variables:
 
-        print('Variable! = ',variable)
-        initialize_global_var(con_GEZ, variable)
-        print('1. Gloabl varables Initiated \n')
+        initialize_global_var(con_GEZ)
+        print('2. Gloabl varables Initiated \n')
 
+        print('Migrating Variable = ', variable)
         # Migrate all of the records in GEZ for varaible
-        migrate_table(con_GEZ, con_rdm, variable)
+        migrate_table(con_GEZ, variable)
         print('2.Table Migrated succesfully \n')
 
 

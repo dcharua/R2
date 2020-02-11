@@ -29,22 +29,6 @@ def route_template(template):
     return render_template(template + '.html')
 
 
-def test_connection():
-   
-    try:
-        con_GEZ = pyodbc.connect(
-            "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=gez;uid=gezsa001;pwd=gez9105ru2")
-        con_rdm = pyodbc.connect(
-            "DRIVER={ODBC Driver 17 for SQL Server};server=dodder.arvixe.com,1433;database=rdm;uid=gezsa001;pwd=gez9105ru2")
-
-        sql = "SELECT * FROM dbo.proveedores"
-        data = pd.read_sql(sql,con_GEZ)
-        return (data.head())
-    
-    except Exception as e:
-
-        return e
-
 
 #####  EGRESOS ROUTES #########
 #Egresos Create

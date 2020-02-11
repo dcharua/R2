@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e2a9d106-abd0-4a6c-82e1-3e7364843afe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/administracion/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/administracion/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db_models/CuentasEfectivo.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/db_models/CuentasEfectivo.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/db_models/db_migration.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db_models/db_migration.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/db_models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/db_models/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/egresos/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/egresos/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/modales/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/modales/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ingresos/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/ingresos/routes.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="74" column="35" lean-forward="true" selection-start-line="74" selection-start-column="35" selection-end-line="74" selection-end-column="35" />
+            <state relative-caret-position="671">
+              <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -29,19 +31,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/egresos/routes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-982">
-              <caret line="197" selection-start-line="197" selection-end-line="197" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/home/routes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
+            <state>
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -49,11 +41,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/db_models/db_migration.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="924" lean-forward="true" selection-start-line="924" selection-end-line="924" />
+            <state relative-caret-position="659">
+              <caret line="1065" column="4" selection-start-line="1065" selection-start-column="4" selection-end-line="1065" selection-end-column="40" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -64,30 +56,6 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/conciliaciones/templates/capturar_conciliacion.html">
           <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/administracion/routes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="32">
-              <caret line="233" selection-start-line="233" selection-end-line="233" />
-              <folding>
-                <element signature="e#0#40#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/modales/routes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="43" column="32" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -105,8 +73,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/db_models/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1482">
-              <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="20" />
+            <state relative-caret-position="867">
+              <caret line="455" column="45" lean-forward="true" selection-start-line="455" selection-start-column="45" selection-end-line="455" selection-end-column="45" />
               <folding>
                 <element signature="e#1#111#0" expanded="true" />
               </folding>
@@ -115,13 +83,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="1053">
-                <caret line="78" column="83" lean-forward="true" selection-start-line="78" selection-start-column="83" selection-end-line="78" selection-end-column="83" />
-              </first_editor>
-              <second_editor />
+        <entry file="file://$PROJECT_DIR$/app/ingresos/routes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="899">
+              <caret line="259" column="42" lean-forward="true" selection-start-line="259" selection-start-column="42" selection-end-line="259" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/ingresos/templates/cuentas_por_cobrar.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-851" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/ingresos/templates/perfil_ingreso.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1588" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/egresos/routes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1955">
+              <caret line="71" column="51" lean-forward="true" selection-start-line="71" selection-start-column="51" selection-end-line="71" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -137,36 +128,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pago_id_e</find>
-      <find>time</find>
-      <find>egresos_map</find>
-      <find>fecha_pago</find>
-      <find>write_variable_R2</find>
-      <find>cliente_id</find>
-      <find>unidecode</find>
-      <find>tipo</find>
-      <find>saldo</find>
-      <find>empresas</find>
-      <find>empres</find>
-      <find>cuenta_id</find>
-      <find>config</find>
-      <find>get_direccion</find>
-      <find>tipo_in</find>
-      <find>This id is not registered! Registering needed!</find>
-      <find>tipo_ing</find>
-      <find>Beneficiarios</find>
-      <find>strip</find>
-      <find>translate_e</find>
-      <find>translate_eg</find>
-      <find>generar_pago_ingreso_migracion</find>
-      <find>cuenta_id_por_definir</find>
       <find>translate_egreso</find>
-      <find>generar_detalle_ingreso</find>
-      <find>categoria_ingresos_id</find>
-      <find>pdb</find>
       <find>forma_pago_id</find>
+      <find>categoria_ingresos_id</find>
+      <find>concepto_ingresos_id</find>
+      <find>tipo_id</find>
+      <find>categoria_id</find>
+      <find>concepto_id</find>
+      <find>cuenta_id_egreso</find>
+      <find>initialize_global_var</find>
+      <find>mapping_cuentas</find>
+      <find>translate_centros_negocio</find>
+      <find>empleados</find>
       <find>tipo_ingreso_id</find>
+      <find>get_lists</find>
+      <find>get_lis</find>
+      <find>translate_ingreso</find>
+      <find>migrate_table</find>
+      <find>pdb</find>
+      <find>list_GEZ_Detalles</find>
+      <find>cuentas</find>
+      <find>pago_id_egreso</find>
+      <find>pago_id_ingreso</find>
+      <find>global pago_id_ingreso</find>
+      <find>pago_id_ingreso</find>
+      <find>pago_id_egreso</find>
       <find>negocios</find>
+      <find>generar_detalle_ingreso</find>
+      <find>set_</find>
+      <find>pagos_assoc</find>
+      <find>generar_pago_ingreso_migracion</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -178,21 +169,23 @@
         <option value="$PROJECT_DIR$/app/egresos/test_delete.py" />
         <option value="$PROJECT_DIR$/app/modales/templates/modal_agregar_centro.html" />
         <option value="$PROJECT_DIR$/app/administracion/templates/beneficiarios.html" />
-        <option value="$PROJECT_DIR$/app/db_models/models.py" />
         <option value="$PROJECT_DIR$/app/home/templates/index.html" />
         <option value="$PROJECT_DIR$/app/home/routes.py" />
-        <option value="$PROJECT_DIR$/app/__init__.py" />
-        <option value="$PROJECT_DIR$/app/egresos/routes.py" />
         <option value="$PROJECT_DIR$/app/administracion/routes.py" />
         <option value="$PROJECT_DIR$/app/modales/routes.py" />
+        <option value="$PROJECT_DIR$/app/egresos/routes.py" />
+        <option value="$PROJECT_DIR$/app/ingresos/routes.py" />
+        <option value="$PROJECT_DIR$/app/db_models/models.py" />
         <option value="$PROJECT_DIR$/app/db_models/db_migration.py" />
+        <option value="$PROJECT_DIR$/app/__init__.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="23" />
-    <option name="width" value="1280" />
-    <option name="height" value="728" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="1491" />
+    <option name="y" value="46" />
+    <option name="width" value="1957" />
+    <option name="height" value="1185" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -223,6 +216,19 @@
               <item name="R2" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="db_models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="R2" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="ingresos" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="R2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="R2" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="ingresos" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="R2" type="b2602c69:ProjectViewProjectNode" />
@@ -279,13 +285,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="171178000" />
+    <option name="totallyTimeSpent" value="202323000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="728" extended-state="6" />
+    <frame x="1491" y="46" width="1957" height="1185" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17285945" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.11174934" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -307,27 +313,27 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="right" id="SciView" order="4" visible="true" weight="0.038772214" />
+      <window_info anchor="right" id="SciView" order="4" visible="true" weight="0.025065275" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/app/home/routes.py</url>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/egresos/test_delete.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="15" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/ingresos/routes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
-          <caret line="116" column="44" selection-start-line="109" selection-start-column="12" selection-end-line="116" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -382,33 +388,6 @@
     <entry file="file://$PROJECT_DIR$/app/modales/templates/modal_agregar_concepto.html">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="74" column="35" lean-forward="true" selection-start-line="74" selection-start-column="35" selection-end-line="74" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/egresos/routes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-982">
-          <caret line="197" selection-start-line="197" selection-end-line="197" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/home/routes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/administracion/routes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="32">
@@ -454,10 +433,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/ingresos/templates/cuentas_por_cobrar.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-851" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/ingresos/templates/perfil_ingreso.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1588" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/egresos/routes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1955">
+          <caret line="71" column="51" lean-forward="true" selection-start-line="71" selection-start-column="51" selection-end-line="71" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/ingresos/routes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="899">
+          <caret line="259" column="42" lean-forward="true" selection-start-line="259" selection-start-column="42" selection-end-line="259" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/db_models/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1482">
-          <caret line="72" column="6" selection-start-line="72" selection-start-column="6" selection-end-line="72" selection-end-column="20" />
+        <state relative-caret-position="867">
+          <caret line="455" column="45" lean-forward="true" selection-start-line="455" selection-start-column="45" selection-end-line="455" selection-end-column="45" />
           <folding>
             <element signature="e#1#111#0" expanded="true" />
           </folding>
@@ -466,10 +472,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/db_models/db_migration.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="924" lean-forward="true" selection-start-line="924" selection-end-line="924" />
+        <state relative-caret-position="659">
+          <caret line="1065" column="4" selection-start-line="1065" selection-start-column="4" selection-end-line="1065" selection-end-column="40" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/home/routes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="671">
+          <caret line="79" column="5" selection-start-line="79" selection-start-column="5" selection-end-line="79" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
