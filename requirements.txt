@@ -12,3 +12,6 @@ numpy
 pymysql
 num2words
 reportlab
+apscheduler
+PyPDF2
+xlrd

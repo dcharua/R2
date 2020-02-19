@@ -305,7 +305,6 @@ def translate_egreso(R2_id, egreso):
     try:
         empresa_id = int(mapping_empresas[mapping_empresas.GEZ_id == int(egreso['EmpresaNum'])].R2_id)
     except:
-        pdb.set_trace()
         empresa_id = Empresas.query.filter(Empresas.nombre == 'EMPRESA INVALIDA').all()[0].id
 
 
@@ -678,6 +677,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
         nombre, apellido, segundo_appellido, puesto, sexo, tienda, departamento, fecha_nacimiento, fecha_alta, fecha_ingreso, fecha_contrato, \
         fecha_baja, motivo_baja, sueldo, prestamo_monto, prestamos_fecha_entrega, prestamos_fecha_vuelta = translate_empleados(variable_item)
 
+
         variable_item = Empleados(id=R2_id, nombre=nombre, apellido=apellido, segundo_appellido=segundo_appellido, puesto=puesto, sexo=sexo, tienda=tienda,
                                   departamento=departamento, fecha_nacimiento=fecha_nacimiento,fecha_alta=fecha_alta, fecha_ingreso=fecha_ingreso,
                                   fecha_contrato=fecha_contrato, fecha_baja=fecha_baja, motivo_baja=motivo_baja, sueldo=sueldo, prestamo_monto=prestamo_monto)
@@ -752,36 +752,22 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
             if detalles.iloc[i, :]['nomconcept'] != 'Efectivo':
                 monto = detalles.iloc[i, :]['monto_total']
                 pago = generar_pago_ingreso_migracion(variable_item, monto, cliente_id, detalles.iloc[i, :], False, False)
-                # pdb.set_trace()
-                # ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto))
-                # pdb.set_trace()
 
                 db.session.add(pago)
-                # db.session.add(ep)
-
 
 
             if detalles.iloc[i, :]['nomconcept'] == 'Efectivo':
 
                 monto = detalles.iloc[i, :]['monto_total'] - sobrante_RDM
                 pago = generar_pago_ingreso_migracion(variable_item, monto, cliente_id, detalles.iloc[i, :], True, False)
-                # pdb.set_trace()
-                # ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto))
-                # pdb.set_trace()
-
                 db.session.add(pago)
-                # db.session.add(ep)
-
 
 
                 # Asi esta bien? o aunque el monto sea 0, se hace un pago?
                 if (sobrante_RDM > 0):
                     monto = sobrante_RDM
                     pago = generar_pago_ingreso_migracion(variable_item, monto, cliente_id, detalles.iloc[i, :], True, True)
-                    # ep = IngresosHasPagos(ingreso_id=int(R2_id), pago_id=int(pago.id), monto=float(monto))
-
                     db.session.add(pago)
-                    # db.session.add(ep)
 
 
 
@@ -790,9 +776,7 @@ def write_variable_R2(variable, R2_id, GEZ_id, nombre, variable_item, agregar_it
 
     if agregar_item:
         db.session.add(variable_item)
-
         db.session.add(variable_map)
-        # pdb.set_trace()
         db.session.commit()
 
 
@@ -1058,10 +1042,6 @@ def write_inital_conditions():
 def run_all_migrations():
 
     variables = ['empresas', 'beneficiarios', 'centros_negocio', 'empleados', 'egresos','ingresos']
-    # variables = ['ingresos']
-
-    pdb.set_trace()
-
 
     con_GEZ, con_rdm = get_connections()
     print('0. Connections Initiated \n')
