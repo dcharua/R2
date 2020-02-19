@@ -41,8 +41,8 @@
                                   <td>{{centro.tipo}}</td>
                                   <td>{{centro.empresa}}</td>
                                   <td>
-                                    <a class="btn btn-xs btn-info waves-effect" data-toggle="tooltip" data-placement="top" title="Editar">
-                                        <i data-toggle="tooltip" data-placement="top" title="Editar" onclick="edit({{centro.id}})" class="material-icons">edit</i>
+                                    <a class="btn btn-xs btn-info waves-effect" data-toggle="tooltip" onclick="edit({{centro.id}})" data-placement="top" title="Editar">
+                                        <i data-toggle="tooltip" data-placement="top" title="Editar"  class="material-icons">edit</i>
                                     </a>
                                   </td>
                               </tr>
@@ -98,6 +98,11 @@
                   $("#comentario_editar").val(data.comentario)
                   $("#empresa_editar").val(data.empresa_id)
                   $("#empresa_editar").selectpicker('refresh');
+                  $("#efectivo_1_editar").val(data.efectivo_1)
+                  $("#efectivo_1_editar").selectpicker('refresh');
+                  $("#efectivo_2_editar").val(data.efectivo_2)
+                  $("#efectivo_2_editar").selectpicker('refresh');
+
 
                   $('#modal_editar_centro').modal('show');
               }

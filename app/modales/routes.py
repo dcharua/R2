@@ -34,7 +34,7 @@ def agregar_centro():
     if request.form:
         data = request.form
         centro = CentrosNegocio(nombre=data["nombre"], numero=data["numero"],  tipo=data["tipo"],  direccion=data["direccion"],  
-        empresa_id=data["empresa"],  arrendadora=data["arrendadora"],  comentario=data["comentario"]  ) 
+        empresa_id=data["empresa"],  arrendadora=data["arrendadora"],  comentario=data["comentario"], efectivo_1=data["efectivo_1"], efectivo_2=data["efectivo_2"]  ) 
         db.session.add(centro) 
         db.session.commit()   
         return redirect("/administracion/centros_negocios")
@@ -43,7 +43,7 @@ def agregar_centro():
 @login_required
 def get_data_editar_centro(cid):
   centro = CentrosNegocio.query.get(cid)
-  return jsonify(id=centro.id, numero=centro.numero, nombre=centro.nombre, tipo=centro.tipo, direccion= centro.direccion,  empresa_id=centro.empresa_id, arrendadora= centro.arrendadora, comentario=centro.comentario) 
+  return jsonify(id=centro.id, numero=centro.numero, nombre=centro.nombre, tipo=centro.tipo, direccion= centro.direccion,  empresa_id=centro.empresa_id, arrendadora= centro.arrendadora, comentario=centro.comentario, efectivo_1=centro.efectivo_1, efectivo_2=centro.efectivo_2) 
 
 
 @blueprint.route('/editar_centro', methods=['GET', 'POST'])
@@ -61,6 +61,8 @@ def editar_centro():
         centro.empresa_id=data["empresa"]  
         centro.arrendadora=data["arrendadora"]
         centro.comentario=data["comentario"]
+        centro.efectivo_1=data["efectivo_1"]
+        centro.efectivo_2=data["efectivo_2"]
         db.session.add(centro) 
         db.session.commit()   
         return redirect("/administracion/centros_negocios")  
