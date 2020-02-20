@@ -6,6 +6,19 @@
    .bootstrap-select{
 	    z-index: 99 !important;
     }
+    
+    .input-group .bootstrap-select.form-control .dropdown-toggle{
+        box-shadow: none !important;
+    border-radius: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-top: 0px !important;
+    border-bottom: 1px solid #337ab7 !important;
+  }
+
+  .bootstrap-select:not(.input-group-btn), .bootstrap-select[class*=col-]{
+        border: none !important;
+   }
 </style>
 {% endblock stylesheets %}
 
@@ -29,19 +42,19 @@
 
       <div class="body">
 	 <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
-	    <div class="panel panel-primary">
-	        <div class="panel-heading" role="tab" id="headingOne_1">
-	            <h4 class="panel-title">
-	                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="">
+	    <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+	        <div class="panel-heading" role="tab" id="headingOne_1" style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+	            <h4 class="panel-title" style="background-color: transparent !important;">
+	                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" style="color: #337ab7 !important; padding: 0px 0px 10px !important;"  aria-expanded="true" aria-controls="collapseOne_1" class="">
 	                    Filtros de busqueda
 	                </a>
 	            </h4>
 	        </div>
 	        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
-	            <div class="panel-body">
+	            <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
 	                <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.cuentas_por_pagar') }}">
 				<div class="row">
-					<div class="col-sm-12 col-md-12">
+					<div class="col-sm-12 col-md-12" style="z-index: 999;">
                                         	<label> Tipo de fecha</label>
                                         	<div class='input-group'>
                                                 	<select class="form-control" name="type_date">
@@ -55,7 +68,7 @@
 					<div  class="col-sm-12 col-md-6">
             					<label> Fecha de inicio</label>
             					<div class='input-group date mydatepicker'  data-provide="datepicker">
-              						<input value="{{inicio}}" type='text' class="form-control set-today" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);" name="inicio" autocomplete="off" required />
+              						<input value="{{inicio}}" type='text' class="form-control set-today" name="inicio" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
               						<span class="input-group-addon">
                 						<i class="material-icons mydate">date_range</i>
               						</span>
@@ -65,7 +78,7 @@
           				<div class="col-sm-12 col-md-6">
             					<label> Fecha de fin</label>
             					<div class='input-group date mydatepicker'   data-provide="datepicker">
-              						<input value="{{fin}}" type='text' class="form-control set-today" style="box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);" name="fin" autocomplete="off" required />
+              						<input value="{{fin}}" type='text' class="form-control set-today" name="fin" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
               						<span class="input-group-addon">
                 						<i class="material-icons mydate">date_range</i>
               						</span>

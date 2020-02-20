@@ -4,12 +4,27 @@
 {{ super() }}
 {% endblock stylesheets %}
 
+<style>
+  .input-group .bootstrap-select.form-control .dropdown-toggle{
+        box-shadow: none !important;
+    border-radius: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-top: 0px !important;
+    border-bottom: 1px solid #337ab7 !important;
+  }
+
+  .bootstrap-select:not(.input-group-btn), .bootstrap-select[class*=col-]{
+        border: none !important;
+   }
+</style>
+
 {% block content %}
 <!-- Basic Examples -->
 
 <!-- #END# Basic Examples -->
 
-<div class="row clearfix">
+<div class="row clearfix" style="margin-top:3rem;">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="card">
       <div class="header bg-black">
@@ -22,6 +37,81 @@
 
       </div>
       <div class="body">
+        <div  class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+      <div class="panel-heading" role="tab" id="headingOne_1" 
+           style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+          <h4 class="panel-title" style="background-color: transparent !important;">
+              <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="" style="color: #337ab7 !important; padding: 0px 0px 10px !important;">
+                  Filtros de busqueda
+              </a>
+          </h4>
+      </div>
+      <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+        <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+          <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.pagos_realizados_pendientes') }}">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <label> Fecha de inicio</label>
+                        <div class='input-group date mydatepicker' data-provide="datepicker">
+                            <input value="{{inicio}}" type='text' class="form-control set-today" 
+                                    style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;"
+                                    name="inicio" autocomplete="off" />
+                                   <span class=" input-group-addon ">
+                                          <i class="material-icons mydate ">date_range</i>
+                                   </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 ">
+                           <label> Fecha de fin</label>
+                          <div class='input-group date mydatepicker'   data-provide="datepicker ">
+                             <input value="{{fin}}" type='text' class="form-control set-today " 
+                                    style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;"
+                                    name="fin" autocomplete="off" />
+                             <span class="input-group-addon">
+                               <i class="material-icons mydate">date_range</i>
+                             </span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-6">
+                        <label>Status</label>
+                        <div class='input-group'>
+                            <select class="form-control" name="status">
+                                <option value=""></option>
+                                <option {% if status == 'por_conciliar' %}  selected {% endif %} value="por_conciliar" selected>Por Conciliar</option>
+                                <option {% if status == 'conciliado' %}  selected {% endif %} value="conciliado">Conciliado</option>
+                                <option {% if status == 'cancelado' %}  selected {% endif %} value="cancelado"> Cancelado </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6">
+                        <label> Beneficiario</label>
+                        <div class='input-group'>
+                            <select class="form-control" name="beneficiario">
+                                <option value=""></option>
+                                {% for beneficiario in proveedores %}
+                                    <option value="{{ beneficiario.id }}">
+                                      {{ beneficiario.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12">
+                        <button class="btn btn-primary pull-right">Filtrar</button>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <!--<h2 class="text-center">Periodo mostrado {{d2}} - {{d1}}</h2>-->
+                    </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover tabla-pendientes dataTable ">
             <thead>
@@ -111,7 +201,82 @@
         </div>
       </div>
       <div class="body">
-        <div class="table-responsive">
+       <div  class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+      <div class="panel-heading" role="tab" id="headingOne_1" 
+           style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+          <h4 class="panel-title" style="background-color: transparent !important;">
+              <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" aria-expanded="true" aria-controls="collapseOne_1" class="" style="color: #337ab7 !important; padding: 0px 0px 10px !important;">
+                  Filtros de busqueda
+              </a>
+          </h4>
+      </div>
+      <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+        <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+          <form class="form-horizontal form-label-left" method="POST" action="{{ url_for('egresos_blueprint.pagos_realizados_realizados') }}">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <label> Fecha de inicio</label>
+                        <div class='input-group date mydatepicker' data-provide="datepicker">
+                            <input value="{{inicio}}" type='text' class="form-control set-today" 
+                                    style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;"
+                                    name="inicio_realizado" autocomplete="off" />
+                                   <span class=" input-group-addon ">
+                                          <i class="material-icons mydate ">date_range</i>
+                                   </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 ">
+                           <label> Fecha de fin</label>
+                          <div class='input-group date mydatepicker'   data-provide="datepicker ">
+                             <input value="{{fin}}" type='text' class="form-control set-today " 
+                                    style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;"
+                                    name="fin_realizado" autocomplete="off" />
+                             <span class="input-group-addon">
+                               <i class="material-icons mydate">date_range</i>
+                             </span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-12 col-md-6">
+                        <label>Status</label>
+                        <div class='input-group'>
+                            <select class="form-control" name="status_realizado">
+                                <option value=""></option>
+                                <option {% if status == 'por_conciliar' %}  selected {% endif %} value="por_conciliar" selected>Por Conciliar</option>
+                                <option {% if status == 'conciliado' %}  selected {% endif %} value="conciliado">Conciliado</option>
+                                <option {% if status == 'cancelado' %}  selected {% endif %} value="cancelado"> Cancelado </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6">
+                        <label> Beneficiario</label>
+                        <div class='input-group'>
+                            <select class="form-control" name="beneficiario_realizado">
+                                <option value=""></option>
+                                {% for beneficiario in proveedores %}
+                                    <option value="{{ beneficiario.id }}">
+                                      {{ beneficiario.nombre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-12">
+                        <button class="btn btn-primary pull-right">Filtrar</button>
+                    </div>
+                    <div class="col-sm-12 col-md-12">
+                        <!--<h2 class="text-center">Periodo mostrado {{d2}} - {{d1}}</h2>-->
+                    </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
+       <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover tabla-realizados dataTable">
             <thead>
               <tr>

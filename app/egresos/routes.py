@@ -133,9 +133,15 @@ def cuentas_por_pagar():
         end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
 
         if data["type_date"] == "programada":
-           egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(start, end), DetallesEgreso.descripcion==data['type_egreso']).all()
+           if data['type_egreso'] == "Firme":
+              egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(start, end), DetallesEgreso.descripcion!="Consignación").all()
+           else:
+              egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_programada_pago.between(start, end), DetallesEgreso.descripcion==data['type_egreso']).all()
         else:
-           egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_vencimiento.between(start, end), DetallesEgreso.descripcion==data['type_egreso']).all()
+           if data['type_egreso'] == "Firme":
+              egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_vencimiento.between(start, end), DetallesEgreso.descripcion!= "Consignación").all()
+           else:
+              egresos_pendientes = Egresos.query.join(DetallesEgreso).filter(Egresos.pagado == False, Egresos.fecha_vencimiento.between(start, end), DetallesEgreso.descripcion==data['type_egreso']).all()
 
         formas_pago = FormasPago.query.all()
         cuentas = Cuentas.query.all()
@@ -198,6 +204,10 @@ def editar_egreso(egreso_id):
 
 
 
+@blueprint.route("/_get_egresos", methods=['POST'])
+def get_egresos_by_beneficiario():
+    data = request.form
+    return jsonify(data)
 
 
 #Egresos Delete
@@ -236,12 +246,104 @@ def test_egreso():
 
 ##### PAGOS ROUTES  #########
 
+@blueprint.route('/pagos_realizados_pendientes', methods=['GET', 'POST'])
+def pagos_realizados_pendientes():
+   beneficiarios = Beneficiarios.query.order_by(Beneficiarios.nombre)
+   cuentas = Cuentas.query.order_by(Cuentas.nombre)
+   today = date.today()
+   d1 = today.strftime("%Y/%m/%d")
+   d = datetime.today() - timedelta(days=30)
+   d2 = d.strftime("%Y/%m/%d")
+   
+   if request.form:
+      data = request.form
+
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+      beneficiario = data["beneficiario"]
+      status = data["status"]
+
+      pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+
+      if beneficiario != '':
+         pagos = Pagos.query.filter(Pagos.status == 'solicitado', Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+      else:
+         pagos = Pagos.query.filter(Pagos.status == 'solicitado', Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+
+      return render_template("pagos_realizados.html",status=status, inicio=start,fin=end,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
+   else:
+      
+      pagos = Pagos.query.filter(Pagos.status == 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+      pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+      return render_template("pagos_realizados.html",inicio=d2,fin=d1,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
+
+@blueprint.route('/pagos_realizados_realizados', methods=['GET', 'POST'])
+def pagos_realizados_realizados():
+   beneficiarios = Beneficiarios.query.order_by(Beneficiarios.nombre)
+   cuentas = Cuentas.query.order_by(Cuentas.nombre)
+   today = date.today()
+   d1 = today.strftime("%Y/%m/%d")
+   d = datetime.today() - timedelta(days=30)
+   d2 = d.strftime("%Y/%m/%d")
+
+
+   if request.form:
+      data = request.form
+
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+      beneficiario = data["beneficiario"]
+      status = data["status"]
+
+      pagos = Pagos.query.filter(Pagos.status == 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+
+      if beneficiario != '':
+         pagos_realizados = Pagos.query.filter(Pagos.beneficiario_id==beneficiario,Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+      else:
+         pagos_realizados = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+
+      return render_template("pagos_realizados.html",status=status, inicio=start,fin=end,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
+   else:
+      
+      pagos = Pagos.query.filter(Pagos.status == 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+      pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+      return render_template("pagos_realizados.html",inicio=d2,fin=d1,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
+
+
 #pagos tablas
 @blueprint.route('/pagos_realizados', methods=['GET', 'POST'])
 def pagos_realizados():
-    pagos = Pagos.query.filter(Pagos.status == 'solicitado').all()
-    pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado').all()
-    return render_template("pagos_realizados.html", pagos=pagos, pagos_realizados=pagos_realizados)
+   beneficiarios = Beneficiarios.query.order_by(Beneficiarios.nombre)
+   cuentas = Cuentas.query.order_by(Cuentas.nombre)
+   print(request.form)
+   if request.form:
+      data = request.form
+
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+      beneficiario = data["beneficiario"]
+      status = data["status"]
+      
+      if beneficiario != '':
+         pagos = Pagos.query.filter(Pagos.status == 'solicitado', Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+         pagos_realizados = Pagos.query.filter(Pagos.beneficiario_id==beneficiario,Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+      else:
+         pagos = Pagos.query.filter(Pagos.status == 'solicitado', Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+         pagos_realizados = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+
+      return render_template("pagos_realizados.html",status=status, inicio=start,fin=end,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
+   else:
+      today = date.today()
+      d1 = today.strftime("%Y/%m/%d")
+      d = datetime.today() - timedelta(days=30)
+      d2 = d.strftime("%Y/%m/%d")
+
+      pagos = Pagos.query.filter(Pagos.status == 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+      pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
+      return render_template("pagos_realizados.html",inicio=d2,fin=d1,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
 
 #perfil pago
 @blueprint.route('/perfil_pago/<int:pago_id>', methods=['GET', 'POST'])
@@ -718,7 +820,10 @@ def imprimir_cheque(pago_id):
 @blueprint.route('/notas_credito', methods=['GET', 'POST'])
 def notas_credito():
     notas = NotasCredito.query.all()
-    return render_template("notas_credito.html", notas=notas)
+    beneficiarios = Beneficiarios.query.all()
+    cuentas = Cuentas.query.all()
+    formas_pago = FormasPago.query.all()
+    return render_template("notas_credito.html", notas=notas,formas_pago=formas_pago,cuentas=cuentas,beneficiarios=beneficiarios)
 
 #ver notas
 @blueprint.route('/perfil_nota/<int:nota_id>', methods=['GET', 'POST'])
