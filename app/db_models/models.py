@@ -86,6 +86,8 @@ class CentrosNegocio(db.Model):
     empresa = relationship("Empresas", back_populates="centro")
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
+    efectivo_1 = Column(Integer)
+    efectivo_2 = Column(Integer)
 
     def __repr__(self):
         return self.nombre

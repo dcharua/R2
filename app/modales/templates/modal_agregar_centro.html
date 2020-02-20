@@ -62,9 +62,32 @@
 
                         <div class="row" style="margin-bottom:20px !important">
                                 <div class="col-sm-12">
-                                    <label for="arrendadora"> Comentario </label>
+                                    <label for="comentario"> Comentario </label>
                                     <textarea name="comentario" id="comentario" style="width:100%"></textarea>
                                  </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom:20px !important">
+                            <div class="col-sm-12 col-md-6">
+                                <label for="efectivo_1"> Efectivo 1 </label><br>
+                                <select class="selectpicker" id="efectivo_1_editar" name="efectivo_1" data-validation="required"
+                                data-live-search="true" title="Seleccione una cuenta de banco"
+                                data-width="100%">
+                                {% for cuenta in cuentas %}
+                                <option value="{{cuenta.id}}"> {{ cuenta.nombre }} </option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                    <label for="efectivo_2"> Efectivo 2 </label><br>
+                                    <select class="selectpicker" id="efectivo_2_editar" name="efectivo_2" data-validation="required"
+                                    data-live-search="true" title="Seleccione una cuenta de banco"
+                                    data-width="100%">
+                                    {% for cuenta in cuentas %}
+                                <option value="{{cuenta.id}}"> {{ cuenta.nombre }} </option>
+                                {% endfor %}
+                                </select>
+                            </div>
                         </div>
 
                     </div>
