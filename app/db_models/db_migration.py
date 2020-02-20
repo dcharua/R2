@@ -150,14 +150,14 @@ def get_lists(con,variable):
 
         list_R2 = Egresos.query.all()
         list_GEZ = pd.read_sql("SELECT * FROM dbo.Egresos_r2", con)
-        list_GEZ = list_GEZ[list_GEZ.FechaDocto > '2018-05-31']
+        list_GEZ = list_GEZ[list_GEZ.FechaDocto > '2020-01-01']
         mapping_table = mapping_egresos
 
     elif variable == 'ingresos':
 
         list_R2 = Ingresos.query.all()
         list_GEZ = pd.read_sql("SELECT * FROM dbo.Ingresos_Cabecera_r2", con)
-        list_GEZ = list_GEZ[list_GEZ.Fecha > '2018-05-31']
+        list_GEZ = list_GEZ[list_GEZ.Fecha > '2020-01-01']
         mapping_table = mapping_ingresos
 
     else:
