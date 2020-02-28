@@ -381,11 +381,11 @@ def translate_ingreso(ingreso):
 
 
     if centro_negocio_tipo == 'Tienda Fisica':
-        cliente_id_ingresos = cliente_ecommerce_id
+        cliente_id_ingresos = cliente_tiendas_id
         concepto_id_ingresos = concepto_ingresos_tiendas_id
 
     elif centro_negocio_tipo == 'Ecommerce':
-        cliente_id_ingresos = cliente_tiendas_id
+        cliente_id_ingresos = cliente_ecommerce_id
         concepto_id_ingresos = concepto_ingresos_ecommerce_id
 
     else:
