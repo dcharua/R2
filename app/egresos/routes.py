@@ -204,10 +204,10 @@ def editar_egreso(egreso_id):
 
 
 
-@blueprint.route("/_get_egresos", methods=['POST'])
+@blueprint.route("/_get_egresos", methods=['GET','POST'])
 def get_egresos_by_beneficiario():
     data = request.form
-    return jsonify(data)
+    return jsonify(data["beneficiario_id"])
 
 
 #Egresos Delete

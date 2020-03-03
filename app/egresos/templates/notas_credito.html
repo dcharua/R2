@@ -327,10 +327,10 @@
     $(".beneficiario").change(function () {
 	let value = $(this).val()
 	$.ajax({
-      		type: 'POST',
-      		url: "/_get_egresos",
+		method:'POST',
+      		url: "/egresos/_get_egresos",
       		data: {beneficiario_id: value},
-      		dataType: "text",
+      		dataType: "json",
       		success: function(data){
 			console.log(data)
                	}
