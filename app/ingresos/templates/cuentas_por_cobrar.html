@@ -28,14 +28,14 @@
 
         <div class="table-responsive">
 
-          <table class="table table-bordered table-striped table-hover pagar_table dataTable" cellspacing="0" width="100%">
+          <table class="table table-bordered table-striped table-hover js-basic-example pagar_table dataTable" cellspacing="0" width="100%">
               <thead>
                   <tr>
                     <th><input name="select_all" value="1" class="table-check select-all-t1" type="checkbox"  /></th>
                     <th>ID</th>
                     <th>Cliente</th>
+                    <th>Fecha Venta</th>
                     <th>Fecha programada</th>
-                    <th>Fecha de vencimiento</th>
                     <th>Monto</th>
                     <th># Documento</th>
                     <th>Status</th>
@@ -47,8 +47,8 @@
                     <th></th>
                     <th>ID</th>
                     <th>Cliente</th>
+                    <th>Fecha Venta</th>
                     <th>Fecha programada</th>
-                    <th>Fecha de vencimiento</th>
                     <th>Monto</th>
                     <th># Documento</th>
                     <th>Status</th>
@@ -68,8 +68,8 @@
                     </td>
                     <td>{{ingreso.id}}</td>
                     <td>{{ingreso.cliente}}</td>
+                    <td>{{ingreso.fecha_documento}}</td>
                     <td>{{ingreso.fecha_programada_pago}}</td>
-                    <td>{{ingreso.fecha_vencimiento}}</td>
                     <td>{{"${:,.2f}".format(ingreso.monto_total)}} </td>
                     <td>{{ingreso.numero_documento}}</td>
                     
@@ -133,8 +133,8 @@
                       <th><input name="select_all" value="1" class="select-all" type="checkbox" /></th>
                       <th>ID</th>
                       <th>Cliente</th>
+                      <th>Fecha Venta</th>
                       <th>Fecha programada</th>
-                      <th>Fecha de vencimiento</th>
                       <th>Monto</th>
                       <th># Documento</th>
                       <th>Status</th>
@@ -146,8 +146,8 @@
                     <th></th>
                     <th>ID</th>
                     <th>Cliente</th>
+                    <th>Fecha Venta</th>
                     <th>Fecha programada</th>
-                    <th>Fecha de vencimiento</th>
                     <th>Monto</th>
                     <th># Documento</th>
                     <th>Status</th>
@@ -162,8 +162,8 @@
                   <td><input name="select_all" value="1" class="select-all" type="checkbox" /></td>
                   <td>{{ingreso.id}}</td>
                   <td>{{ingreso.cliente}}</td>
+                  <td>{{ingreso.fecha_documento}}</td>
                   <td>{{ingreso.fecha_programada_pago}}</td>
-                  <td>{{ingreso.fecha_vencimiento}}</td>
                   <td>{{"${:,.2f}".format(ingreso.monto_total)}}</td>
                   <td>{{ingreso.numero_documento}}</td>
                   <td> <span class="badge bg-liquidado">Liquidado</span></td>
@@ -393,6 +393,30 @@
       $("#monto_parcial").fadeOut();
     }
   });
+  $('.js-basic-example').DataTable({
+          dom: 'Bfrtip',
+          responsive: true,
+          "order": [[ 1, 'desc' ], [ 2, 'asc' ]],
+          buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+          ],
+          "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+        } ]
+      });
+
+  // "Select all" control
+  $('.select-all').on('click', function () {
+    // Check/uncheck all checkboxes in the table
+    var rows = table.rows({
+      'search': 'applied'
+    }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+  });
+
+
+
 
 </script>
 {% endblock javascripts %}
