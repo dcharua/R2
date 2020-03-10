@@ -408,7 +408,7 @@ def translate_ingreso(ingreso):
     iva_ventas = ingreso['CostoTotalIva']
     utilidad_neta = ingreso['UtilidadNeta']
     monto_solicitado = 0
-    monto_por_conciliar = 0
+    monto_por_conciliar = ingreso['IngresoTotal']
     comentario = ''
     pagado = False
 

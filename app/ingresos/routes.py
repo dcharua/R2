@@ -44,6 +44,7 @@ def calcular_saldo_cliente(cliente_id):
     db.session.add(cliente)  
     db.session.commit()
 
+
 @blueprint.route('/capturar_ingreso', methods=['GET', 'POST'])
 def captura_ingresos():
     
@@ -61,7 +62,12 @@ def captura_ingresos():
                            numero_documento = data["numero_documento"],
                            empresa_id = data["empresa"],
                            referencia = data["referencia"],
-                           monto_total = monto_total, comentario = data["comentario"],pagado = False,      
+                           monto_total = monto_total,
+                           costo_venta=0,
+                           iva_ingresos=0,
+                           iva_ventas=0,
+                           utilidad_neta=monto_total,
+                           comentario = data["comentario"],pagado = False,
                            status = "pendiente", monto_pagado = 0, monto_solicitado = 0,monto_por_conciliar = 0) 
         if (data["fecha_programada_pago"] != ""):
             ingreso.fecha_programada_pago = data["fecha_programada_pago"]                                                                             
@@ -81,13 +87,19 @@ def captura_ingresos():
                 
 
             ingreso = Ingresos(cliente_id = data["cliente"],
-                           tipo_ingreso_id = data["tipo_ingreso"],
-                           fecha_vencimiento = data["fecha_vencimiento"], 
-                           numero_documento = data["numero_documento"],
-                           empresa_id = data["empresa"],
-                           referencia = data["referencia"],
-                           monto_total = monto_total, comentario = data["comentario"],pagado = pagado,      
-                           status = status_ingreso, monto_pagado = monto_pagado, monto_solicitado = 0, monto_por_conciliar = monto_por_conciliar)
+                               tipo_ingreso_id = data["tipo_ingreso"],
+                               fecha_vencimiento = data["fecha_vencimiento"],
+                               numero_documento = data["numero_documento"],
+                               empresa_id = data["empresa"],
+                               referencia = data["referencia"],
+                               monto_total = monto_total,
+                               costo_venta=0,
+                               iva_ingresos=0,
+                               iva_ventas=0,
+                               utilidad_neta=monto_total,
+                               comentario = data["comentario"],
+                               pagado = pagado,
+                               status = status_ingreso, monto_pagado = monto_pagado, monto_solicitado = 0, monto_por_conciliar = monto_por_conciliar)
             if (data["fecha_programada_pago"] != ""):
                 ingreso.fecha_programada_pago = data["fecha_programada_pago"]  
                
@@ -102,10 +114,10 @@ def captura_ingresos():
                                   referencia_conciliacion = data["referencia"],
                                   )
 
-            ep = IngresosHasPagos(ingreso = ingreso, pago = pago_ingreso, monto = float(data["monto_pagado"]))    
-        
-
-            db.session.add(ep)
+            # ep = IngresosHasPagos(ingreso = ingreso, pago = pago_ingreso, monto = float(data["monto_pagado"]))
+            #
+            #
+            # db.session.add(ep)
             db.session.add(pago_ingreso)
             
         for i in range(len(data.getlist("monto"))):           
@@ -117,6 +129,7 @@ def captura_ingresos():
                                       numero_control = data.getlist("numero_control")[i], 
                                       descripcion=data.getlist("descripcion")[i])
             ingreso.detalles.append(detalle)
+
         db.session.add(ingreso)  
         db.session.commit()
         calcular_saldo_cliente(data["cliente"])
@@ -151,6 +164,7 @@ def cuentas_por_cobrar():
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').all()
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
+
     return render_template("cuentas_por_cobrar.html", ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
 
 
@@ -165,8 +179,7 @@ def perfil_ingreso(ingreso_id):
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     empresas = Empresas.query.all()
-        
-    
+
     return render_template("perfil_ingreso.html", 
                            ingreso = ingreso, 
                            centros_negocio = centros_negocio, 
@@ -230,20 +243,25 @@ def pagos_recibidos():
 def perfil_pago_ingreso(pago_id):
     pago = Pagos_Ingresos.query.get(pago_id)  
     formas_pago = FormasPago.query.all()
-    cuentas = Cuentas.query.all()  
-    
-    return render_template("perfil_pago_ingreso.html", pago=pago, formas_pago = formas_pago, cuentas=cuentas)
+    cuentas = Cuentas.query.all()
+
+    ingresos = Ingresos.query.filter(Ingresos.id == int(pago.ingreso_id)).all()
+
+
+    return render_template("perfil_pago_ingreso.html", pago=pago, formas_pago = formas_pago, cuentas=cuentas,ingresos = ingresos)
 
 ###### Borrar pago
 @blueprint.route("/borrar_pago/<int:pago_id>",  methods=['GET', 'POST'])
 def borrar_pago(pago_id):
     pago = Pagos_Ingresos.query.get(pago_id)
-    for ingreso in pago.ingresos:
-        pago = Pagos_Ingresos.query.filter_by(ingreso_id=ingreso.id).first()
-        ingreso.monto_por_conciliar -= pago.monto
-        ingreso.setStatus()
-        calcular_saldo_cliente(ingreso.cliente_id)
-        db.session.delete(ep)
+    ingreso = Ingresos.query.filter(Ingresos.id == int(pago.ingreso_id)).all()[0]
+
+    # for ingreso in pago.ingresos:
+    ingreso.monto_por_conciliar -= pago.monto_total
+    ingreso.setStatus()
+    calcular_saldo_cliente(ingreso.cliente_id)
+        # db.session.delete(ep)
+
     db.session.delete(pago)
     db.session.commit()
     return  jsonify("deleted")
@@ -252,22 +270,26 @@ def borrar_pago(pago_id):
 ###### Cancelar pago
 @blueprint.route("/cancelar_pago_ingreso/<int:pago_id>",  methods=['GET', 'POST'])
 def cancelar_pago_ingreso(pago_id):
+
     pago = Pagos_Ingresos.query.get(pago_id)
-    for ingreso in pago.ingresos:
-        ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id ).first()
-        if pago.status == 'conciliado':
-            ingreso.monto_pagado -= ep.monto
-        if pago.status == 'por_conciliar':
-            ingreso.monto_por_conciliar -= ep.monto
-        ep.monto = 0
-        ingreso.pagado = False   
+    ingreso = Ingresos.query.filter(Ingresos.id == int(pago.ingreso_id)).all()[0]
+
+
+    # for ingreso in pago.ingresos:
+    # ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id ).first()
+    if pago.status == 'conciliado':
+        ingreso.monto_pagado -= pago.monto_total
+    if pago.status == 'por_conciliar':
+        ingreso.monto_por_conciliar -= pago.monto_total
+    # ep.monto = 0
+    ingreso.pagado = False
         
     pago.status = 'cancelado'
     db.session.commit()
     
-    for ingreso in pago.ingresos:
-        ingreso.setStatus()
-        calcular_saldo_cliente(ingreso.cliente_id)
+    # for ingreso in pago.ingresos:
+    ingreso.setStatus()
+    calcular_saldo_cliente(ingreso.cliente_id)
         
     db.session.commit()
     
@@ -344,14 +366,15 @@ def mandar_cobrar():
                               referencia_pago = data["referencia_pago"],
                               referencia_conciliacion = referencia_conciliacion)
       
-        ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)    
+        # ep = IngresosHasPagos(ingreso = ingreso, pago = pago, monto = monto_total_pago)
 
                 
         calcular_saldo_cliente(ingreso.cliente_id)
 
-        db.session.add(ep)
+        # db.session.add(ep)
         db.session.add(pago)
         db.session.commit()
+
         if ('url' in data):
             return redirect(data["url"])
         else:
@@ -364,7 +387,6 @@ def mandar_cobrar():
 def get_data_pagar_multiple():
     list = []
     ingresos = request.args.getlist('ingresos[]')
-    print('gg')
     for ingreso in ingresos:
             ing = Ingresos.query.get(ingreso)
             monto_pendiente = ing.monto_total - ing.monto_por_conciliar - ing.monto_pagado
@@ -389,9 +411,9 @@ def mandar_cobrar_multiple():
                             monto_total_pago = float(ing.monto_total - ing.monto_pagado - ing.monto_por_conciliar)
                             ing.monto_por_conciliar += decimal.Decimal(monto_total_pago)
                             ing.setStatus()
-                            ep = IngresosHasPagos(ingreso = ing, pago = pago, monto = monto_total_pago)
+                            # ep = IngresosHasPagos(ingreso = ing, pago = pago, monto = monto_total_pago)
                             pago.cliente_id = ing.cliente_id
-                            db.session.add(ep)
+                            # db.session.add(ep)
                             db.session.commit()
                             calcular_saldo_cliente(ing.cliente_id)
                 if ('url' in data):
@@ -423,21 +445,21 @@ def conciliar_pago_ingreso():
         if request.form:
             data = request.form
             pagos = (data.getlist('pago_id'))
+
             for pago_id in pagos:
                 pago = Pagos_Ingresos.query.get(pago_id)
                 pago.status = 'conciliado';
                 pago.referencia_conciliacion = data["referencia"]
                 pago.fecha_conciliacion = data["fecha"]
                 pago.comentario = data["comentario"]
-                ep = IngresosHasPagos.query.filter_by(pago_id = pago.id)
 
-                for p in list(ep):
-                    ingreso = Ingresos.query.get(p.ingreso_id)
-                    ingreso.monto_por_conciliar -= p.monto
-                    ingreso.monto_pagado += p.monto
-                    ingreso.setStatus()
-                    calcular_saldo_cliente(ingreso.cliente_id)
-                    db.session.commit()
+                ingreso = Ingresos.query.get(pago.ingreso_id)
+                ingreso.monto_por_conciliar -= pago.monto_total
+                ingreso.monto_pagado += pago.monto_total
+                ingreso.setStatus()
+
+            calcular_saldo_cliente(ingreso.cliente_id)
+            db.session.commit()
             if ('url' in data):
                 return redirect(data["url"])
             else:       
@@ -452,12 +474,11 @@ def desconciliar_pago_ingreso(pago_id):
         pago.fecha_conciliacion = None
         db.session.commit()
         
-        for ingreso in pago.ingresos:
-            ep = IngresosHasPagos.query.filter_by(ingreso_id=ingreso.id , pago_id = pago.id).first()
-            ingreso.monto_por_conciliar += ep.monto
-            ingreso.monto_pagado -= ep.monto
-            ingreso.setStatus() 
-            calcular_saldo_cliente(ingreso.cliente_id)
+        ingreso = Ingresos.query.get(pago.ingreso_id)
+        ingreso.monto_por_conciliar += pago.monto_total
+        ingreso.monto_pagado -= pago.monto_total
+        ingreso.setStatus()
+        calcular_saldo_cliente(ingreso.cliente_id)
         db.session.commit()
         
         return  redirect("/ingresos/cuentas_por_cobrar")       
@@ -479,10 +500,9 @@ def conciliar_ingreso():
                 pago.fecha_pago = data["fecha"]
                 pago.fecha_conciliacion = data["fecha"]
                 pago.comentario = data["comentario"]
-                
-                ep = IngresosHasPagos.query.filter_by(pago_id = pago.id ).first()
-                ingreso.monto_por_conciliar -= ep.monto
-                ingreso.monto_pagado += ep.monto
+
+                ingreso.monto_por_conciliar -= pago.monto_total
+                ingreso.monto_pagado += pago.monto_total
      
             ingreso.setStatus()
             calcular_saldo_cliente(ingreso.cliente_id)
@@ -496,7 +516,7 @@ def get_data_conciliar_multiple():
         list = []
         pagos = request.args.getlist('pagos[]')
         for pago in pagos:
-            p =  Pagos_Ingresos.query.get(pago)
+            p = Pagos_Ingresos.query.get(pago)
             list.append({'pago_id': p.id, 'cliente': p.cliente.nombre, 'monto_total': str(p.monto_total), 'referencia': p.referencia_pago, 'cuenta': p.cuenta.nombre})
         return jsonify(list)
 
@@ -567,7 +587,7 @@ def agregar_detalle(ingreso_id):
             detalle = DetallesIngreso(centro_negocios_id=data["centro_negocios"], cliente_id=data["cliente"], categoria_id=data["categoria"], 
             concepto_id=data["concepto"], monto=data["monto"],  numero_control=data["numero_control"], descripcion=data["comentario"])
             ingreso.detalles.append(detalle)
-            ingreso.monto_total += int(detalle.monto);
+            ingreso.monto_total += int(detalle.monto)
             #Checar el status y que hacer con pago negativo
             ingreso.setStatus()
             db.session.commit()
@@ -624,10 +644,12 @@ def reembolso(ingreso_id):
     ingreso.monto_pagado += monto
     pago = Pagos_Ingresos(forma_pago_id=data["forma_pago"], cuenta_id=data["cuenta"], referencia_pago=data["referencia_pago"], fecha_pago=data["fecha_pago"], status='conciliado',
     fecha_conciliacion=data["fecha_pago"], monto_total=monto, comentario=data["comentario"], cliente_id=ingreso.cliente_id)
-    ip = IngresosHasPagos(ingreso=ingreso, pago=pago, monto=monto)
+    # ip = IngresosHasPagos(ingreso=ingreso, pago=pago, monto=monto)
     detalle = DetallesIngreso(centro_negocios_id=data["centro_negocios"], cliente_id = ingreso.cliente_id,
                         categoria_id=data["categoria"], concepto_id=data["concepto"], monto=monto,
                         numero_control='reembolso', descripcion=data["comentario"])
+
+    # Pregunta: no se necesita editar un pago aqui?
     ingreso.detalles.append(detalle)
     db.session.commit()
   return redirect("/ingresos/perfil_ingreso/" + str(ingreso_id))

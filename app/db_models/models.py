@@ -82,12 +82,13 @@ class CentrosNegocio(db.Model):
     arrendadora = Column(String(50))
     telefono = Column(String(50))
     comentario = Column(String(250))
+    efectivo_1 = Column(Integer)
+    efectivo_2 = Column(Integer)
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="centro")
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
-    efectivo_1 = Column(Integer)
-    efectivo_2 = Column(Integer)
+
 
     def __repr__(self):
         return self.nombre
