@@ -156,7 +156,7 @@ def get_lists(con,variable):
     elif variable == 'ingresos':
 
         list_R2 = Ingresos.query.all()
-        list_GEZ = pd.read_sql("SELECT * FROM dbo.Ingresos_Cabecera_r2", con)
+        list_GEZ = pd.read_sql("SELECT * FROM [Gez].[dbo].[Ingresos_Cabecera_r2] where Fecha >= '2020-01-01 00:00:00'", con)
         list_GEZ = list_GEZ[list_GEZ.Fecha > '2020-01-01']
         mapping_table = mapping_ingresos
 
