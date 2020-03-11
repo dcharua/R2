@@ -4,7 +4,7 @@ from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
-from datetime import date
+from datetime import date,datetime,timedelta
 
 
 @blueprint.route('/<template>')
@@ -70,10 +70,39 @@ def editar_cuenta(cuenta_id):
         db.session.commit()   
         return redirect("/conciliaciones/perfil_cuenta/"+str(cuenta_id))    
 
-@blueprint.route('/perfil_cuenta/<int:cuenta_id>', methods=['GET', 'POST'])
+
+@blueprint.route('/perfil_cuenta_egreso/<int:cuenta_id>', methods=['GET', 'POST'])
 @login_required
-def perfil_cuenta(cuenta_id):
+def perfil_cuenta_egreso(cuenta_id):
     cuenta = Cuentas.query.get(cuenta_id)
+    status = 'conciliado'
+    forma = 1
+
+    today = date.today()
+    d1 = today.strftime("%Y/%m/%d")
+    d = datetime.today() - timedelta(days=30)
+    d2 = d.strftime("%Y/%m/%d")
+    start = d2
+    end = d1
+    
+    pagos_ingresos = Pagos_Ingresos.query.filter(Pagos_Ingresos.status == status, Pagos_Ingresos.fecha_pago.between(start, end), Pagos_Ingresos.cuenta_id == cuenta_id).order_by(Pagos_Ingresos.id.desc()).limit(100)
+
+    if request.form:
+        data = request.form
+
+        start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+        end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+        status = data['status']
+        forma = data['forma']
+
+        if data['forma'] != '':
+           pagos_egresos = Pagos.query.filter(Pagos.forma_pago_id == data['forma'],Pagos.status == status, Pagos.fecha_pago.between(start, end), Pagos.cuenta_id == cuenta_id).order_by(Pagos.id.desc()).limit(100)
+        else:
+           pagos_egresos = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end), Pagos.cuenta_id == cuenta_id).order_by(Pagos.id.desc()).limit(100)
+
+    else:
+        pagos_egresos = Pagos.query.filter(Pagos.status != 'conciliado', Pagos.fecha_pago.between(d2, d1), Pagos.cuenta_id == cuenta_id).order_by(Pagos.id.desc()).limit(100)
+
     empresas = Empresas.query.all()
     saldo_conciliado_egresos, saldo_conciliado_ingresos, saldo_transito_egresos, saldo_transito_ingresos, saldo_solicitado_egresos = 0,0,0,0,0
     for pago in cuenta.pagos:
@@ -92,7 +121,103 @@ def perfil_cuenta(cuenta_id):
     ultima_conciliacion = None
     if (cuenta.conciliaciones):
         ultima_conciliacion = cuenta.conciliaciones[-1]
-    return render_template("perfil_cuenta.html", cuenta=cuenta,  saldo_conciliado_egresos=saldo_conciliado_egresos, saldo_conciliado_ingresos=saldo_conciliado_ingresos, empresas = empresas,
+
+    return render_template("perfil_cuenta.html",forma=forma, status=status, pagos_egresos=pagos_egresos, pagos_ingresos=pagos_ingresos ,inicio=start, fin=end, cuenta=cuenta,  saldo_conciliado_egresos=saldo_conciliado_egresos, saldo_conciliado_ingresos=saldo_conciliado_ingresos, empresas = empresas,
+    saldo_transito_egresos =  saldo_transito_egresos, saldo_transito_ingresos=saldo_transito_ingresos, saldo_solicitado_egresos = saldo_solicitado_egresos, ultima_conciliacion = ultima_conciliacion)
+
+@blueprint.route('/perfil_cuenta_ingreso/<int:cuenta_id>', methods=['GET', 'POST'])
+@login_required
+def perfil_cuenta_ingreso(cuenta_id):
+    cuenta = Cuentas.query.get(cuenta_id)
+    status = 'conciliado'
+    forma = 1
+
+    today = date.today()
+    d1 = today.strftime("%Y/%m/%d")
+    d = datetime.today() - timedelta(days=30)
+    d2 = d.strftime("%Y/%m/%d")
+    start = d2
+    end = d1
+
+    pagos_egresos = Pagos.query.filter(Pagos.forma_pago_id == forma, Pagos.status != status, Pagos.fecha_pago.between(d2, d1), Pagos.cuenta_id == cuenta_id).order_by(Pagos.id.desc()).limit(100)
+
+    if request.form:
+        data = request.form
+
+        start = datetime.strptime(data["inicio_ingreso"], '%Y/%m/%d').strftime("%Y/%m/%d")
+        end = datetime.strptime(data["fin_ingreso"], '%Y/%m/%d').strftime("%Y/%m/%d")
+        status = data['status_ingreso']
+        forma = data['forma_ingreso']
+
+        if data['forma_ingreso'] != '':
+           pagos_ingresos = Pagos_Ingresos.query.filter(Pagos_Ingresos.forma_pago_id == data['forma_ingreso'],Pagos_Ingresos.status == status, Pagos_Ingresos.fecha_pago.between(start, end), Pagos_Ingresos.cuenta_id == cuenta_id).order_by(Pagos_Ingresos.id.desc()).limit(100)
+        else:
+           pagos_ingresos = Pagos_Ingresos.query.filter(Pagos_Ingresos.status == status, Pagos_Ingresos.fecha_pago.between(start, end), Pagos_Ingresos.cuenta_id == cuenta_id).order_by(Pagos_Ingresos.id.desc()).limit(100)
+
+    else:
+       pagos_ingresos = Pagos_Ingresos.query.filter(Pagos_Ingresos.status == 'conciliado', Pagos_Ingresos.fecha_pago.between(start, end), Pagos_Ingresos.cuenta_id == cuenta_id).order_by(Pagos_Ingresos.id.desc()).limit(100)
+
+    empresas = Empresas.query.all()
+    saldo_conciliado_egresos, saldo_conciliado_ingresos, saldo_transito_egresos, saldo_transito_ingresos, saldo_solicitado_egresos = 0,0,0,0,0
+    for pago in cuenta.pagos:
+        if pago.status == 'conciliado':
+            saldo_conciliado_egresos += pago.monto_total
+        elif pago.status == 'por_conciliar':
+            saldo_transito_egresos += pago.monto_total
+        elif pago.status == 'solicitado':
+            saldo_solicitado_egresos += pago.monto_total
+
+    for pago in cuenta.pagos_ingresos:
+        if pago.status == 'conciliado':
+            saldo_conciliado_ingresos += pago.monto_total
+        elif pago.status == 'por_conciliar':
+            saldo_transito_ingresos += pago.monto_total
+    ultima_conciliacion = None
+    if (cuenta.conciliaciones):
+        ultima_conciliacion = cuenta.conciliaciones[-1]
+
+    return render_template("perfil_cuenta.html",forma=forma, status=status, pagos_egresos=pagos_egresos, pagos_ingresos=pagos_ingresos ,inicio=start, fin=end, cuenta=cuenta,  saldo_conciliado_egresos=saldo_conciliado_egresos, saldo_conciliado_ingresos=saldo_conciliado_ingresos, empresas = empresas,
+    saldo_transito_egresos =  saldo_transito_egresos, saldo_transito_ingresos=saldo_transito_ingresos, saldo_solicitado_egresos = saldo_solicitado_egresos, ultima_conciliacion = ultima_conciliacion)
+
+
+@blueprint.route('/perfil_cuenta/<int:cuenta_id>', methods=['GET', 'POST'])
+@login_required
+def perfil_cuenta(cuenta_id):
+    cuenta = Cuentas.query.get(cuenta_id)
+
+    status = 'conciliado'
+    forma = 1
+
+    today = date.today()
+    d1 = today.strftime("%Y/%m/%d")
+    d = datetime.today() - timedelta(days=30)
+    d2 = d.strftime("%Y/%m/%d")
+    start = d2
+    end = d1
+
+    pagos_egresos = Pagos.query.filter(Pagos.status == 'conciliado', Pagos.fecha_pago.between(d2, d1), Pagos.cuenta_id == cuenta_id).order_by(Pagos.id.desc()).limit(100)
+    pagos_ingresos = Pagos_Ingresos.query.filter(Pagos_Ingresos.status != 'conciliado', Pagos_Ingresos.fecha_pago.between(start, end), Pagos_Ingresos.cuenta_id == cuenta_id).order_by(Pagos_Ingresos.id.desc()).limit(100)
+
+    empresas = Empresas.query.all()
+    saldo_conciliado_egresos, saldo_conciliado_ingresos, saldo_transito_egresos, saldo_transito_ingresos, saldo_solicitado_egresos = 0,0,0,0,0
+    for pago in cuenta.pagos:
+        if pago.status == 'conciliado':
+            saldo_conciliado_egresos += pago.monto_total
+        elif pago.status == 'por_conciliar':
+            saldo_transito_egresos += pago.monto_total
+        elif pago.status == 'solicitado':
+            saldo_solicitado_egresos += pago.monto_total
+
+    for pago in cuenta.pagos_ingresos:
+        if pago.status == 'conciliado':
+            saldo_conciliado_ingresos += pago.monto_total
+        elif pago.status == 'por_conciliar':
+            saldo_transito_ingresos += pago.monto_total
+    ultima_conciliacion = None
+    if (cuenta.conciliaciones):
+        ultima_conciliacion = cuenta.conciliaciones[-1]
+
+    return render_template("perfil_cuenta.html",forma=forma, status=status, pagos_egresos=pagos_egresos, pagos_ingresos=pagos_ingresos ,inicio=start, fin=end, cuenta=cuenta,  saldo_conciliado_egresos=saldo_conciliado_egresos, saldo_conciliado_ingresos=saldo_conciliado_ingresos, empresas = empresas,
     saldo_transito_egresos =  saldo_transito_egresos, saldo_transito_ingresos=saldo_transito_ingresos, saldo_solicitado_egresos = saldo_solicitado_egresos, ultima_conciliacion = ultima_conciliacion)
 
 
