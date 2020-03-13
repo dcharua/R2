@@ -250,9 +250,9 @@ def pagos_realizados_pendientes():
       pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
 
       if beneficiario != '':
-         pagos = Pagos.query.filter(Pagos.status == 'solicitado', Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+         pagos = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
       else:
-         pagos = Pagos.query.filter(Pagos.status == 'solicitado', Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+         pagos = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
 
       return render_template("pagos_realizados.html",status=status, inicio=start,fin=end,proveedores=beneficiarios,cuentas=cuentas, pagos=pagos, pagos_realizados=pagos_realizados)
    else:
@@ -274,11 +274,11 @@ def pagos_realizados_realizados():
    if request.form:
       data = request.form
 
-      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
-      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      start = datetime.strptime(data["inicio_realizado"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin_realizado"], '%Y/%m/%d').strftime("%Y/%m/%d")
 
-      beneficiario = data["beneficiario"]
-      status = data["status"]
+      beneficiario = data["beneficiario_realizado"]
+      status = data["status_realizado"]
 
       pagos = Pagos.query.filter(Pagos.status == 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
 
