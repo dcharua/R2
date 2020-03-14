@@ -25,6 +25,66 @@
       
       
       <div class="body">
+	<div  class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+    <div class="panel-heading" role="tab" id="headingOne_1" style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+        <h4 class="panel-title" style="background-color: transparent !important;">
+            <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" style="color: #337ab7 !important; padding: 0px 0px 10px !important;" aria-expanded="true" aria-controls="collapseOne_1" class="">
+                Filtros de busqueda
+            </a>
+        </h4>
+    </div>
+    <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+      <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+        <form class="form-horizontal form-label-left" method="POST" >
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <label> Fecha de inicio</label>
+              <div class='input-group date mydatepicker' data-provide="datepicker">
+                  <input value="{{inicio}}" type='text' class="form-control set-today" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" name="inicio" autocomplete="off" />
+                  <span class=" input-group-addon ">
+                    <i class="material-icons mydate ">date_range</i>
+                  </span>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6 ">
+              <label> Fecha de fin</label>
+              <div class='input-group date mydatepicker'   data-provide="datepicker ">
+                <input value="{{fin}}" type='text' class="form-control set-today " style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" name="fin" autocomplete="off" />
+                <span class="input-group-addon">
+                  <i class="material-icons mydate">date_range</i>
+                </span>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+              <label>Status</label>
+              <div class='input-group'>
+                <select class="form-control" name="status">
+                  <option value=""></option>
+                  <option {% if status == 'por_conciliar' %}  selected {% endif %} value="por_conciliar" selected>Por Conciliar</option>
+                  <option {% if status == 'conciliado' %}  selected {% endif %} value="conciliado">Conciliado</option>
+                  <option {% if status == 'cancelado' %}  selected {% endif %} value="cancelado"> Cancelado </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-sm-6 col-md-6">
+              <label>Cliente</label>
+              <div class='input-group'>
+                <select class="form-control" name="client">
+                </select>
+              </div>
+            </div>
+            
+            <div class="col-sm-12 col-md-12">
+                <button class="btn btn-primary pull-right">Filtrar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
         <div class="table-responsive">
 
