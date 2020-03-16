@@ -177,7 +177,7 @@ def cuentas_por_cobrar():
 
 
 @blueprint.route('/cuentas_por_cobrar_cobrar', methods=['GET', 'POST'])
-def cuentas_por_cobrar():
+def cuentas_por_cobrar_cobrar():
     clientes = Clientes.query.order_by(Clientes.nombre)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
@@ -207,7 +207,7 @@ def cuentas_por_cobrar():
     return render_template("cuentas_por_cobrar.html",inicio=start,fin=end , status=status, client = client ,clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
 
 @blueprint.route('/cuentas_por_cobrar_cobradas', methods=['GET', 'POST'])
-def cuentas_por_cobrar():
+def cuentas_por_cobrar_cobradas():
     clientes = Clientes.query.order_by(Clientes.nombre)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
