@@ -1,9 +1,9 @@
 from app.ingresos import blueprint
-from flask import render_template, request, redirect, flash, jsonify
+from flask import render_template, request, redirect, flash, jsonify, send_file
 from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
-from datetime import datetime
+from datetime import date,datetime,timedelta
 from app.db_models.models import *
 import decimal
 from decimal import Decimal
