@@ -250,7 +250,7 @@ def pagos_realizados_pendientes():
       pagos_realizados = Pagos.query.filter(Pagos.status != 'solicitado',Pagos.fecha_pago.between(d2, d1)).order_by(Pagos.id.desc()).limit(100)
 
       if beneficiario != '':
-         pagos = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
+         pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario,Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
       else:
          pagos = Pagos.query.filter(Pagos.status == status, Pagos.fecha_pago.between(start, end)).order_by(Pagos.id.desc())
 

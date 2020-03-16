@@ -160,6 +160,8 @@ def captura_ingresos():
 @blueprint.route('/cuentas_por_cobrar', methods=['GET', 'POST'])
 def cuentas_por_cobrar():
     clientes = Clientes.query.order_by(Clientes.nombre)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
 
     today = date.today()
     d1 = today.strftime("%Y/%m/%d")
@@ -169,11 +171,70 @@ def cuentas_por_cobrar():
     ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
     ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).filter(Ingresos.status != 'cancelado').limit(100)
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
+    
+
+    return render_template("cuentas_por_cobrar.html",inicio=d2,fin=d1 , status='', client = '', clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
+
+
+@blueprint.route('/cuentas_por_cobrar_cobrar', methods=['GET', 'POST'])
+def cuentas_por_cobrar():
+    clientes = Clientes.query.order_by(Clientes.nombre)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
 
-    return render_template("cuentas_por_cobrar.html", clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
+    today = date.today()
+    d1 = today.strftime("%Y/%m/%d")
+    d = datetime.today() - timedelta(days=30)
+    d2 = d.strftime("%Y/%m/%d")
 
+    data = request.form
+
+    start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+    end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+    client = data["client"]
+    status = data["status"]
+
+    if client != '':
+       ingresos_pendientes = Ingresos.query.filter(Ingresos.cliente_id==client, Ingresos.status == status).filter(Ingresos.fecha_vencimiento.between(start, end)).filter(Ingresos.status != 'cancelado').limit(100)
+    else:
+       ingresos_pendientes = Ingresos.query.filter(Ingresos.status == status).filter(Ingresos.fecha_vencimiento.between(start, end)).filter(Ingresos.status != 'cancelado').limit(100)
+
+    ingresos_recibidos = Ingresos.query.filter(Ingresos.status == 'conciliado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
+    ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
+    
+
+    return render_template("cuentas_por_cobrar.html",inicio=start,fin=end , status=status, client = client ,clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
+
+@blueprint.route('/cuentas_por_cobrar_cobradas', methods=['GET', 'POST'])
+def cuentas_por_cobrar():
+    clientes = Clientes.query.order_by(Clientes.nombre)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+
+    today = date.today()
+    d1 = today.strftime("%Y/%m/%d")
+    d = datetime.today() - timedelta(days=30)
+    d2 = d.strftime("%Y/%m/%d")
+
+    data = request.form
+
+    start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+    end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+    client = data["client"]
+    status = data["status"]
+
+    if client != '':
+        ingresos_recibidos = Ingresos.query.filter(Ingresos.cliente_id==client,Ingresos.status == status).filter(Ingresos.fecha_vencimiento.between(start, end)).limit(100)
+    else:
+        ingresos_recibidos = Ingresos.query.filter(Ingresos.status == status).filter(Ingresos.fecha_vencimiento.between(start, end)).limit(100)
+
+    ingresos_pendientes = Ingresos.query.filter(Ingresos.status != 'conciliado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).filter(Ingresos.status != 'cancelado').limit(100)
+    ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
+    
+
+    return render_template("cuentas_por_cobrar.html",inicio=start,fin=end , status=status, client = client,  clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
 
 #Ingresos perfil
 @blueprint.route('/perfil_ingreso/<int:ingreso_id>', methods=['GET', 'POST'])

@@ -31,7 +31,7 @@
                         </div>
                         <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
                             <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
-                                <form class="form-horizontal form-label-left" method="POST">
+                                <form class="form-horizontal form-label-left" action="{{ url_for('egresos_blueprint.cuentas_por_cobrar_cobrar') }}" method="POST">
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <label> Fecha de inicio</label>
@@ -65,7 +65,7 @@
                                                 <select class="form-control" name="client">
                                                     <option value=""></option>
                                                     {% for cliente in clientes %}
-                                                        <option value="{{ cliente.id }}">
+                                                        <option {% if client==cliente.id %} selected {% endif %} value="{{ cliente.id }}">
                                                           {{ cliente.nombre }}
                                                         </option>
                                                     {% endfor %}
@@ -177,7 +177,7 @@
                         </div>
                         <div id="collapseOne_2" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
                             <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
-                                <form class="form-horizontal form-label-left" method="POST">
+                                <form class="form-horizontal form-label-left" action="{{ url_for('egresos_blueprint.cuentas_por_cobrar_cobradas') }}" method="POST">
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <label> Fecha de inicio</label>
@@ -193,17 +193,6 @@
                                                 <span class="input-group-addon"><i class="material-icons mydate">date_range</i></span>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 col-md-6">
-                                            <label>Status</label>
-                                            <div class='input-group'>
-                                                <select class="form-control" name="status">
-                                                    <option value=""></option>
-                                                    <option {% if status=='por_conciliar' %} selected {% endif %} value="por_conciliar" selected>Por Conciliar</option>
-                                                    <option {% if status=='conciliado' %} selected {% endif %} value="conciliado">Conciliado</option>
-                                                    <option {% if status=='cancelado' %} selected {% endif %} value="cancelado"> Cancelado </option>
-                                                </select>
-                                            </div>
-                                        </div>
 
                                         <div class="col-sm-6 col-md-6">
                                             <label>Cliente</label>
@@ -211,7 +200,7 @@
                                                 <select class="form-control" name="client">
                                                     <option value=""></option>
                                                     {% for cliente in clientes %}
-                                                        <option value="{{ cliente.id }}">
+                                                        <option {% if client==cliente.id %} selected {% endif %} value="{{ cliente.id }}">
                                                           {{ cliente.nombre }}
                                                         </option>
                                                     {% endfor %}
