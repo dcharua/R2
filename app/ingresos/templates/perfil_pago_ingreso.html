@@ -13,7 +13,7 @@
 
           {% if pago.status == 'por_conciliar'%}
           <span class=" btn bg-deep-purple open-conciliar" data-url="{{ url_for('ingresos_blueprint.get_data_conciliar_pago_ingreso', pago_id=pago.id) }}">Conciliar</span>
-          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-id="{{pago.ingresos[0].id}}" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
+          <span id="cancelar-pago" class="btn bg-red delete-pago" data-type="confirm" data-id="{{ingresos[0].id}}" data-url="{{ url_for('ingresos_blueprint.borrar_pago', pago_id=pago.id) }}">Borrar
             pago</span>
           {% endif %}
           {% if pago.status == 'conciliado' %}

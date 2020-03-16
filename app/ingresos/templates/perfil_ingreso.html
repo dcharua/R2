@@ -39,8 +39,9 @@
             </b>
             <p class="font-18">Id: <span class="font-bold">{{ingreso.id}}</span></p>
             <p class="font-18"># de Documento: <span class="font-bold">{{ingreso.numero_documento}}</span></p>
-            <p class="font-18">Fecha de Vencimento: <span class="font-bold">{{ingreso.fecha_vencimiento}}</span></p>
+            <p class="font-18">Fecha de Venta: <span class="font-bold">{{ingreso.fecha_documento}}</span></p>
             <p class="font-18">Fecha programada de pago: <span class="font-bold">{{ingreso.fecha_programada_pago}}</span></p>
+            <p class="font-18">Fecha de Vencimento: <span class="font-bold">{{ingreso.fecha_vencimiento}}</span></p>
             <p class="font-18">Empresa: <span class="font-bold">{{ingreso.empresa}}</span></p>
             <p class="font-18">Referencia / Orden de Venta: <span class="font-bold">{{ingreso.referencia}}</span></p>
           </div>
@@ -73,6 +74,8 @@
             <p class="font-18">Monto Cobrado: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_pagado)}}</span></p>
             <p class="font-18">Monto Pendiente: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_total - ingreso.monto_pagado)}}</span></p>
             <p class="font-18">Monto por Conciliar: <span class="font-bold">{{"${:,.2f}".format(ingreso.monto_por_conciliar)}}</span></p>
+            <p class="font-18">Costo de Venta: <span class="font-bold">{{"${:,.2f}".format(ingreso.costo_venta)}}</span></p>
+            <p class="font-18">Utilidad Neta: <span class="font-bold">{{"${:,.2f}".format(ingreso.utilidad_neta)}}</span></p>
 
 
           </div>

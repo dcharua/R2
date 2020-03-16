@@ -82,12 +82,13 @@ class CentrosNegocio(db.Model):
     arrendadora = Column(String(50))
     telefono = Column(String(50))
     comentario = Column(String(250))
+    efectivo_1 = Column(Integer)
+    efectivo_2 = Column(Integer)
     empresa_id = Column(Integer, ForeignKey('empresas.id'))
     empresa = relationship("Empresas", back_populates="centro")
     detalles_egresos = relationship("DetallesEgreso")
     detalles_ingresos = relationship("DetallesIngreso")
-    efectivo_1 = Column(Integer)
-    efectivo_2 = Column(Integer)
+
 
     def __repr__(self):
         return self.nombre
@@ -245,10 +246,11 @@ class DetallesIngreso(db.Model):
     numero_control = Column(String(200))
     descripcion = Column(String(200)) 
     ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
-    
 
     def __repr__(self):
-        return '<DetallesIngreso {}>'.format(self.id) 
+        return '<DetallesIngreso {}>'.format(self.id)
+
+
 
 class EgresosHasPagos(db.Model):
     __tablename__ = 'egresos_has_pagos'
@@ -433,10 +435,13 @@ class Ingresos(db.Model):
     iva_ingresos = Column(Numeric(10, 2))
     iva_ventas = Column(Numeric(10, 2))
     utilidad_neta = Column(Numeric(10, 2))
-    detalles = relationship("DetallesIngreso")
+
     comentario = Column(String(200))
     pagado = Column(Boolean)
-    pagos_ingresos = relationship("Pagos_Ingresos", secondary='ingresos_has_pagos')
+
+    pagos_ingresos = relationship("Pagos_Ingresos", backref='ingreso')
+    detalles = relationship("DetallesIngreso", backref='ingreso')
+
 
     def setStatus(self, pagos_ingresos=None):
         if pagos_ingresos is None:
@@ -467,11 +472,12 @@ class Ingresos(db.Model):
 class IngresosHasPagos(db.Model):
     __tablename__ = 'ingresos_has_pagos'
 
-    ingreso_id = Column(Integer, ForeignKey('ingresos.id'), primary_key=True)
-    pago_id = Column(Integer, ForeignKey('pagos_ingresos.id'), primary_key=True)
+    id = Column(Integer, unique=True, nullable=False, primary_key=True)
+    ingreso_id = Column(Integer)#, ForeignKey('ingresos.id'))
+    pago_id = Column(Integer)#, ForeignKey('pagos_ingresos.id'))
     monto = Column(Numeric(10, 2))
-    ingreso = relationship("Ingresos", backref=backref("pagos_assoc"))
-    pago = relationship("Pagos_Ingresos", backref=backref("ingresos_assoc"))
+    # ingreso = relationship("Ingresos", backref=backref("pagos_assoc"))
+    # pago = relationship("Pagos_Ingresos", backref=backref("ingresos_assoc"))
     
 
 class Pagos_Ingresos(db.Model):
@@ -495,7 +501,8 @@ class Pagos_Ingresos(db.Model):
     cliente_id = Column(Integer, ForeignKey('clientes.id'))
     cliente = relationship("Clientes", back_populates="pagos_ingresos")
     
-    ingresos = relationship("Ingresos", secondary='ingresos_has_pagos', cascade="all, delete")
+    # ingresos = relationship("Ingresos", secondary='ingresos_has_pagos', cascade="all, delete")
+    ingreso_id = Column(Integer, ForeignKey('ingresos.id'))
 
     def __repr__(self):
         return '<Pago {}>'.format(self.id) 

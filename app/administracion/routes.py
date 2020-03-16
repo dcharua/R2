@@ -232,8 +232,6 @@ def agregar_categoria_cliente(cliente_id):
     return redirect('/administracion/perfil_de_cliente/'+str(cliente_id))
 ##########################
 
-
-
 @blueprint.route('/cuentas', methods=['GET', 'POST'])
 @login_required
 def cuentas():
