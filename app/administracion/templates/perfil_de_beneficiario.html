@@ -1,5 +1,28 @@
 {% extends "base_site.html" %}
 
+{% block stylesheets %}
+{{ super() }}
+<style>
+   .bootstrap-select{
+      z-index: 99 !important;
+    }
+    
+    .input-group .bootstrap-select.form-control .dropdown-toggle{
+        box-shadow: none !important;
+        border-radius: 0px !important;
+        border-left: 0px !important;
+        border-right: 0px !important;
+        border-top: 0px !important;
+        border-bottom: 1px solid #337ab7 !important;
+    }
+
+    .bootstrap-select:not(.input-group-btn), .bootstrap-select[class*=col-]{
+        border: none !important;
+    }
+</style>
+{% endblock stylesheets %}
+
+
 {% block content %}
 <div class="row">
   <div class="col-sm-12">
@@ -181,18 +204,69 @@
                 </div>
               </div>
               <div class="body">
+                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+                        <div class="panel-heading" role="tab" id="headingOne_1" style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+                            <h4 class="panel-title" style="background-color: transparent !important;">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" style="color: #337ab7 !important; padding: 0px 0px 10px !important;"  aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                    Filtros de busqueda
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+                            <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+                                <form class="form-horizontal form-label-left" method="POST" >
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12" style="z-index: 999;">
+                                            <label> Tipo de fecha</label>
+                                            <div class='input-group'>
+                                                <select class="form-control" name="type_date">
+                                                    <option value=""></option>
+                                                    <option value="programada" selected>Fecha programada</option>
+                                                    <option value="vencimiento">Fecha de vencimiento</option>
+                                                    <option value="documento">Fecha de documento</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
+                                        <div class="col-sm-12 col-md-6">
+                                            <label> Fecha de inicio</label>
+                                            <div class='input-group date mydatepicker' data-provide="datepicker">
+                                                <input value="{{inicio}}" type='text' class="form-control set-today" name="inicio" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                                <span class="input-group-addon">
+                                                  <i class="material-icons mydate">date_range</i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <label> Fecha de fin</label>
+                                            <div class='input-group date mydatepicker' data-provide="datepicker">
+                                                <input value="{{fin}}" type='text' class="form-control set-today" name="fin" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                                <span class="input-group-addon">
+                                                  <i class="material-icons mydate">date_range</i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12">
+                                            <button class="btn btn-primary pull-right">Filtrar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
-
                   <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
                     width="100%">
-
                     <thead>
                       <tr>
                         <th><input name="select_all" value="1" id="example-select-all" type="checkbox" class="table-check" /></th>
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
+                        <th>Fecha de documento</th>
                         <th>Monto</th>
                         <th># de documento</th>
                         <th>Status</th>
@@ -206,6 +280,7 @@
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
+                        <th>Fecha de documento</th>
                         <th>Monto</th>
                         <th># de documento</th>
                         <th>Status</th>
@@ -222,6 +297,7 @@
                         <td>{{egreso.id}}</td>
                         <td>{{egreso.fecha_programada_pago}}</td>
                         <td>{{egreso.fecha_vencimiento}}</td>
+                        <td>{{egreso.fecha_documento}}</td>
                         <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                         <td>{{egreso.numero_documento}}</td>
                         <td>
@@ -270,17 +346,68 @@
                   </h2>
                 </div>
                 <div class="body">
-  
+                  <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                      <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+                          <div class="panel-heading" role="tab" id="headingOne_1" style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+                              <h4 class="panel-title" style="background-color: transparent !important;">
+                                  <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" style="color: #337ab7 !important; padding: 0px 0px 10px !important;"  aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                      Filtros de busqueda
+                                  </a>
+                              </h4>
+                          </div>
+                          <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+                              <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+                                  <form class="form-horizontal form-label-left" method="POST" >
+                                      <div class="row">
+                                          <div class="col-sm-12 col-md-12" style="z-index: 999;">
+                                              <label> Tipo de fecha</label>
+                                              <div class='input-group'>
+                                                  <select class="form-control" name="type_date">
+                                                      <option value=""></option>
+                                                      <option value="programada" selected>Fecha programada</option>
+                                                      <option value="vencimiento">Fecha de vencimiento</option>
+                                                      <option value="documento">Fecha de documento</option>
+                                                  </select>
+                                              </div>
+                                          </div>
+
+                                          <div class="col-sm-12 col-md-6">
+                                              <label> Fecha de inicio</label>
+                                              <div class='input-group date mydatepicker' data-provide="datepicker">
+                                                  <input value="{{inicio}}" type='text' class="form-control set-today" name="inicio" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                                  <span class="input-group-addon">
+                                                    <i class="material-icons mydate">date_range</i>
+                                                  </span>
+                                              </div>
+                                          </div>
+
+                                          <div class="col-sm-12 col-md-6">
+                                              <label> Fecha de fin</label>
+                                              <div class='input-group date mydatepicker' data-provide="datepicker">
+                                                  <input value="{{fin}}" type='text' class="form-control set-today" name="fin" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                                  <span class="input-group-addon">
+                                                    <i class="material-icons mydate">date_range</i>
+                                                  </span>
+                                              </div>
+                                          </div>
+                                          <div class="col-sm-12 col-md-12">
+                                              <button class="btn btn-primary pull-right">Filtrar</button>
+                                          </div>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
                   <div class="table-responsive">
-  
                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
                       width="100%">
-  
                       <thead>
                         <tr>
                           <th>ID</th>
                           <th>Fecha programada</th>
                           <th>Fecha de vencimiento</th>
+                          <th>Fecha de documento</th>
                           <th>Monto</th>
                           <th># de documento</th>
                           <th>Status</th>
@@ -292,6 +419,7 @@
                           <th>ID</th>
                           <th>Fecha programada</th>
                           <th>Fecha de vencimiento</th>
+                          <th>Fecha de documento</th>
                           <th>Monto</th>
                           <th># de documento</th>
                           <th>Status</th>
@@ -305,6 +433,7 @@
                           <td>{{egreso.id}}</td>
                           <td>{{egreso.fecha_programada_pago}}</td>
                           <td>{{egreso.fecha_vencimiento}}</td>
+                          <td>{{egreso.fecha_documento}}</td>
                           <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                           <td>{{egreso.numero_documento}}</td>
                           <td>
@@ -337,17 +466,68 @@
                 </h2>
               </div>
               <div class="body">
+                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+                        <div class="panel-heading" role="tab" id="headingOne_1" style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+                            <h4 class="panel-title" style="background-color: transparent !important;">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" style="color: #337ab7 !important; padding: 0px 0px 10px !important;"  aria-expanded="true" aria-controls="collapseOne_1" class="">
+                                    Filtros de busqueda
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+                            <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+                                <form class="form-horizontal form-label-left" method="POST" >
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-12" style="z-index: 999;">
+                                            <label> Tipo de fecha</label>
+                                            <div class='input-group'>
+                                                <select class="form-control" name="type_date">
+                                                    <option value=""></option>
+                                                    <option value="programada" selected>Fecha programada</option>
+                                                    <option value="vencimiento">Fecha de vencimiento</option>
+                                                    <option value="documento">Fecha de documento</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
+                                        <div class="col-sm-12 col-md-6">
+                                            <label> Fecha de inicio</label>
+                                            <div class='input-group date mydatepicker' data-provide="datepicker">
+                                                <input value="{{inicio}}" type='text' class="form-control set-today" name="inicio" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                                <span class="input-group-addon">
+                                                  <i class="material-icons mydate">date_range</i>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <label> Fecha de fin</label>
+                                            <div class='input-group date mydatepicker' data-provide="datepicker">
+                                                <input value="{{fin}}" type='text' class="form-control set-today" name="fin" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                                <span class="input-group-addon">
+                                                  <i class="material-icons mydate">date_range</i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12">
+                                            <button class="btn btn-primary pull-right">Filtrar</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="table-responsive">
-
                   <table class="table table-bordered table-striped table-hover js-basic-example dataTable" cellspacing="0"
                     width="100%">
-
                     <thead>
                       <tr>
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
+                        <th>Fecha de documento</th>
                         <th>Monto</th>
                         <th># de documento</th>
                         <th>Status</th>
@@ -359,6 +539,7 @@
                         <th>ID</th>
                         <th>Fecha programada</th>
                         <th>Fecha de vencimiento</th>
+                        <th>Fecha de documento</th>
                         <th>Monto</th>
                         <th># de documento</th>
                         <th>Status</th>
@@ -372,6 +553,7 @@
                         <td>{{egreso.id}}</td>
                         <td>{{egreso.fecha_programada_pago}}</td>
                         <td>{{egreso.fecha_vencimiento}}</td>
+                        <td>{{egreso.fecha_documento}}</td>
                         <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
                         <td>{{egreso.numero_documento}}</td>
                         <td>
@@ -415,6 +597,70 @@
             </div>
           </div>
           <div class="body">
+            <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-primary" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;box-shadow:none!important;">
+                  <div class="panel-heading" role="tab" id="headingOne_1" style="background-color:transparent !important; padding:0px !important;     border-bottom: 1px solid #337ab7;">
+                      <h4 class="panel-title" style="background-color: transparent !important;">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#collapseOne_1" style="color: #337ab7 !important; padding: 0px 0px 10px !important;"  aria-expanded="true" aria-controls="collapseOne_1" class="">
+                              Filtros de busqueda
+                          </a>
+                      </h4>
+                  </div>
+                  <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
+                      <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
+                          <form class="form-horizontal form-label-left" method="POST" >
+                              <div class="row">
+                                  <div class="col-sm-12 col-md-6" style="z-index: 999;">
+                                      <label> Cuenta</label>
+                                      <div class='input-group'>
+                                          <select class="form-control" name="type_date">
+                                              {% for cuenta in cuentas %}
+                                                   <option value="{{cuenta.id}}"> {{ cuenta }} </option>
+                                              {% endfor %}
+                                          </select>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-6 col-md-6">
+                                    <label>Status</label>
+                                    <div class='input-group'>
+                                      <select class="form-control" name="status">
+                                        <option value=""></option>
+                                        <option value="solicitado" selected>Solicitado</option>
+                                        <option value="por_conciliar" selected>Por Conciliar</option>
+                                        <option value="conciliado">Conciliado</option>
+                                        <option value="cancelado"> Cancelado </option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-12 col-md-6">
+                                      <label> Fecha de inicio</label>
+                                      <div class='input-group date mydatepicker' data-provide="datepicker">
+                                          <input value="{{inicio}}" type='text' class="form-control set-today" name="inicio" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                          <span class="input-group-addon">
+                                            <i class="material-icons mydate">date_range</i>
+                                          </span>
+                                      </div>
+                                  </div>
+
+                                  <div class="col-sm-12 col-md-6">
+                                      <label> Fecha de fin</label>
+                                      <div class='input-group date mydatepicker' data-provide="datepicker">
+                                          <input value="{{fin}}" type='text' class="form-control set-today" name="fin" style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;" autocomplete="off" required />
+                                          <span class="input-group-addon">
+                                            <i class="material-icons mydate">date_range</i>
+                                          </span>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-12 col-md-12">
+                                      <button class="btn btn-primary pull-right">Filtrar</button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+            </div>
             <div class="table-responsive">
               <table class="table table-bordered table-striped table-hover js-basic-example2 dataTable">
                 <thead>
