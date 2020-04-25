@@ -194,7 +194,7 @@ def perfil_beneficiario_pagos_a_beneficiarios(beneficiario_id):
       end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
       status = data['status']
 
-      pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id,Pagos.fecha_pago.between(start, end),Pagos.status=status).all() 
+      pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).filter(Pagos.fecha_pago.between(start, end)).filter(Pagos.status=status).all() 
     else:
       pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
 
