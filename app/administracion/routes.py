@@ -17,15 +17,34 @@ def route_template(template):
 def beneficiarios():
     beneficiarios = Beneficiarios.query.all()
     categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
-    return render_template("beneficiarios.html", beneficiarios=beneficiarios, categorias=categorias)      
+    return render_template("beneficiarios.html", beneficiarios=beneficiarios, categorias=categorias)  
 
-@blueprint.route('/perfil_de_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
-def perfil_de_beneficiario(beneficiario_id):
+@blueprint.route('/perfil_beneficiario_por_pagar/<int:beneficiario_id>', methods=['GET', 'POST'])
+def perfil_beneficiario_por_pagar(beneficiario_id):
     documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_solicitados, documentos_parciales, saldo_pendiente, saldo_solicitado, saldo_transito, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0,0,0
     beneficiario = Beneficiarios.query.get(beneficiario_id)
     formas_pago = FormasPago.query.all()
     cuentas = Cuentas.query.all()
     categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
+
+    pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+    pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='solicitado')).all()
+    pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
+
+    if request.form:
+      data = request.form
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+      if data["type_date"] == "programada":
+        por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_programada_pago.between(start, end)).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all() 
+      elif data["type_date"] == "documento":
+        por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_documento.between(start, end)).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all() 
+      else:
+        por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_vencimiento.between(start, end)).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all()
+    else:
+      por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all()
+
     for egreso in beneficiario.egresos:
       documentos_recibidos += 1
       if egreso.status != 'cancelado':
@@ -46,7 +65,199 @@ def perfil_de_beneficiario(beneficiario_id):
         documentos_parciales += 1
       
 
-    return render_template("perfil_de_beneficiario.html", beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
+    return render_template("perfil_de_beneficiario.html", pagados= pagados, pagos_programados= pagos_programados, por_pagar= por_pagar, pagos= pagos,beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
+  documentos_recibidos = documentos_recibidos, documentos_liquidados = documentos_liquidados, documentos_cancelados = documentos_cancelados, documentos_pendientes = documentos_pendientes, 
+  documentos_solicitados = documentos_solicitados, documentos_parciales = documentos_parciales, saldo_total = saldo_total, 
+  saldo_pendiente = saldo_pendiente, saldo_solicitado = saldo_solicitado, saldo_transito = saldo_transito, saldo_pagado = saldo_pagado)       
+
+
+@blueprint.route('/perfil_beneficiario_pago_programado/<int:beneficiario_id>', methods=['GET', 'POST'])
+def perfil_beneficiario_pago_programado(beneficiario_id):
+    documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_solicitados, documentos_parciales, saldo_pendiente, saldo_solicitado, saldo_transito, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0,0,0
+    beneficiario = Beneficiarios.query.get(beneficiario_id)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
+
+    pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+    por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all()
+    pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
+
+    if request.form:
+      data = request.form
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+      if data["type_date"] == "programada":
+        pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_programada_pago.between(start, end)).filter(or_(Egresos.status=='solicitado')).all()
+      elif data["type_date"] == "documento":
+        pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_documento.between(start, end)).filter(or_(Egresos.status=='solicitado')).all()
+      else:
+        pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_vencimiento.between(start, end)).filter(or_(Egresos.status=='solicitado')).all()
+    else:
+      pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='solicitado')).all()
+      
+    for egreso in beneficiario.egresos:
+      documentos_recibidos += 1
+      if egreso.status != 'cancelado':
+        saldo_total += egreso.monto_total
+        saldo_pagado += egreso.monto_pagado
+        saldo_transito += egreso.monto_por_conciliar
+        saldo_solicitado += egreso.monto_solicitado
+        saldo_pendiente += egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado
+      if egreso.status == 'liquidado':
+        documentos_liquidados += 1
+      elif egreso.status == 'cancelado':
+        documentos_cancelados += 1
+      elif egreso.status == 'pendiente':
+        documentos_pendientes += 1
+      elif egreso.status == 'solicitado':
+        documentos_solicitados += 1
+      elif egreso.status == 'parcial':
+        documentos_parciales += 1
+      
+
+    return render_template("perfil_de_beneficiario.html", pagados= pagados, pagos_programados= pagos_programados, por_pagar= por_pagar, pagos= pagos,beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
+  documentos_recibidos = documentos_recibidos, documentos_liquidados = documentos_liquidados, documentos_cancelados = documentos_cancelados, documentos_pendientes = documentos_pendientes, 
+  documentos_solicitados = documentos_solicitados, documentos_parciales = documentos_parciales, saldo_total = saldo_total, 
+  saldo_pendiente = saldo_pendiente, saldo_solicitado = saldo_solicitado, saldo_transito = saldo_transito, saldo_pagado = saldo_pagado)       
+
+
+@blueprint.route('/perfil_beneficiario_pagados/<int:beneficiario_id>', methods=['GET', 'POST'])
+def perfil_beneficiario_pagados(beneficiario_id):
+    documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_solicitados, documentos_parciales, saldo_pendiente, saldo_solicitado, saldo_transito, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0,0,0
+    beneficiario = Beneficiarios.query.get(beneficiario_id)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
+
+    pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='solicitado')).all()
+    por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all()
+    pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
+
+    if request.form:
+      data = request.form
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+
+      if data["type_date"] == "programada":
+        pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_programada_pago.between(start, end)).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+      elif data["type_date"] == "documento":
+        pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_documento.between(start, end)).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+      else:
+        pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id, Egresos.fecha_vencimiento.between(start, end)).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+    else:
+      pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+    
+    for egreso in beneficiario.egresos:
+      documentos_recibidos += 1
+      if egreso.status != 'cancelado':
+        saldo_total += egreso.monto_total
+        saldo_pagado += egreso.monto_pagado
+        saldo_transito += egreso.monto_por_conciliar
+        saldo_solicitado += egreso.monto_solicitado
+        saldo_pendiente += egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado
+      if egreso.status == 'liquidado':
+        documentos_liquidados += 1
+      elif egreso.status == 'cancelado':
+        documentos_cancelados += 1
+      elif egreso.status == 'pendiente':
+        documentos_pendientes += 1
+      elif egreso.status == 'solicitado':
+        documentos_solicitados += 1
+      elif egreso.status == 'parcial':
+        documentos_parciales += 1
+      
+
+    return render_template("perfil_de_beneficiario.html", pagados= pagados, pagos_programados= pagos_programados, por_pagar= por_pagar, pagos= pagos,beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
+  documentos_recibidos = documentos_recibidos, documentos_liquidados = documentos_liquidados, documentos_cancelados = documentos_cancelados, documentos_pendientes = documentos_pendientes, 
+  documentos_solicitados = documentos_solicitados, documentos_parciales = documentos_parciales, saldo_total = saldo_total, 
+  saldo_pendiente = saldo_pendiente, saldo_solicitado = saldo_solicitado, saldo_transito = saldo_transito, saldo_pagado = saldo_pagado)       
+
+
+@blueprint.route('/perfil_beneficiario_pagos_a_beneficiarios/<int:beneficiario_id>', methods=['GET', 'POST'])
+def perfil_beneficiario_pagos_a_beneficiarios(beneficiario_id):
+    documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_solicitados, documentos_parciales, saldo_pendiente, saldo_solicitado, saldo_transito, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0,0,0
+    beneficiario = Beneficiarios.query.get(beneficiario_id)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
+
+    pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+    pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='solicitado')).all()
+    por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all()
+    pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
+    
+    if request.form:
+      data = request.form
+      start = datetime.strptime(data["inicio"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      end = datetime.strptime(data["fin"], '%Y/%m/%d').strftime("%Y/%m/%d")
+      status = data['status']
+
+      pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id,Pagos.fecha_pago.between(start, end),Pagos.status=status).all() 
+    else:
+      pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
+
+    for egreso in beneficiario.egresos:
+      documentos_recibidos += 1
+      if egreso.status != 'cancelado':
+        saldo_total += egreso.monto_total
+        saldo_pagado += egreso.monto_pagado
+        saldo_transito += egreso.monto_por_conciliar
+        saldo_solicitado += egreso.monto_solicitado
+        saldo_pendiente += egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado
+      if egreso.status == 'liquidado':
+        documentos_liquidados += 1
+      elif egreso.status == 'cancelado':
+        documentos_cancelados += 1
+      elif egreso.status == 'pendiente':
+        documentos_pendientes += 1
+      elif egreso.status == 'solicitado':
+        documentos_solicitados += 1
+      elif egreso.status == 'parcial':
+        documentos_parciales += 1
+      
+
+    return render_template("perfil_de_beneficiario.html", pagados= pagados, pagos_programados= pagos_programados, por_pagar= por_pagar, pagos= pagos,beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
+  documentos_recibidos = documentos_recibidos, documentos_liquidados = documentos_liquidados, documentos_cancelados = documentos_cancelados, documentos_pendientes = documentos_pendientes, 
+  documentos_solicitados = documentos_solicitados, documentos_parciales = documentos_parciales, saldo_total = saldo_total, 
+  saldo_pendiente = saldo_pendiente, saldo_solicitado = saldo_solicitado, saldo_transito = saldo_transito, saldo_pagado = saldo_pagado)       
+
+@blueprint.route('/perfil_de_beneficiario/<int:beneficiario_id>', methods=['GET', 'POST'])
+def perfil_de_beneficiario(beneficiario_id):
+    documentos_recibidos, documentos_liquidados, documentos_cancelados, documentos_pendientes, documentos_solicitados, documentos_parciales, saldo_pendiente, saldo_solicitado, saldo_transito, saldo_pagado, saldo_total = 0,0,0,0,0,0,0,0,0,0,0
+    beneficiario = Beneficiarios.query.get(beneficiario_id)
+    formas_pago = FormasPago.query.all()
+    cuentas = Cuentas.query.all()
+    categorias = Categorias.query.filter(Categorias.tipo == "egreso").all()
+
+    pagados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='liquidado', Egresos.status=="cancelado" , Egresos.status=="por_conciliar")).all()
+    pagos_programados = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='solicitado')).all()
+    por_pagar = Egresos.query.filter(Egresos.beneficiario_id==beneficiario_id).filter(or_(Egresos.status=='pendiente', Egresos.status=="parcial")).all()
+    pagos = Pagos.query.filter(Pagos.beneficiario_id==beneficiario_id).all()
+
+
+    for egreso in beneficiario.egresos:
+      documentos_recibidos += 1
+      if egreso.status != 'cancelado':
+        saldo_total += egreso.monto_total
+        saldo_pagado += egreso.monto_pagado
+        saldo_transito += egreso.monto_por_conciliar
+        saldo_solicitado += egreso.monto_solicitado
+        saldo_pendiente += egreso.monto_total - egreso.monto_pagado - egreso.monto_solicitado
+      if egreso.status == 'liquidado':
+        documentos_liquidados += 1
+      elif egreso.status == 'cancelado':
+        documentos_cancelados += 1
+      elif egreso.status == 'pendiente':
+        documentos_pendientes += 1
+      elif egreso.status == 'solicitado':
+        documentos_solicitados += 1
+      elif egreso.status == 'parcial':
+        documentos_parciales += 1
+      
+
+    return render_template("perfil_de_beneficiario.html", pagados= pagados, pagos_programados= pagos_programados, por_pagar= por_pagar, pagos= pagos,beneficiario = beneficiario, formas_pago=formas_pago, cuentas=cuentas, categorias=categorias,
   documentos_recibidos = documentos_recibidos, documentos_liquidados = documentos_liquidados, documentos_cancelados = documentos_cancelados, documentos_pendientes = documentos_pendientes, 
   documentos_solicitados = documentos_solicitados, documentos_parciales = documentos_parciales, saldo_total = saldo_total, 
   saldo_pendiente = saldo_pendiente, saldo_solicitado = saldo_solicitado, saldo_transito = saldo_transito, saldo_pagado = saldo_pagado)   

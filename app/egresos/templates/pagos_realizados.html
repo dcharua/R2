@@ -234,7 +234,7 @@
                     <div class="col-sm-12 col-md-6">
                         <label> Fecha de inicio</label>
                         <div class='input-group date mydatepicker' data-provide="datepicker">
-                            <input value="{{inicio}}" type='text' class="form-control set-today" 
+                            <input value="{{inicio_pagos}}" type='text' class="form-control set-today" 
                                     style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;"
                                     name="inicio_realizado" autocomplete="off" />
                                    <span class=" input-group-addon ">
@@ -246,7 +246,7 @@
                     <div class="col-sm-12 col-md-6 ">
                            <label> Fecha de fin</label>
                           <div class='input-group date mydatepicker'   data-provide="datepicker ">
-                             <input value="{{fin}}" type='text' class="form-control set-today " 
+                             <input value="{{fin_pagos}}" type='text' class="form-control set-today " 
                                     style="box-shadow: none;border-radius: 0px;border-left:0px;border-right:0px;border-top:0px;border-bottom: 1px solid #337ab7;"
                                     name="fin_realizado" autocomplete="off" />
                              <span class="input-group-addon">
@@ -260,10 +260,10 @@
                         <div class='input-group'>
                             <select class="form-control" name="status_realizado">
                                 <option value=""></option>
-                                <option {% if status == 'por_conciliar' %}  selected {% endif %} value="por_conciliar" selected>Por Conciliar</option>
-                                <option {% if status == 'conciliado' %}  selected {% endif %} value="conciliado">Conciliado</option>
-                                <option {% if status == 'cancelado' %}  selected {% endif %} value="cancelado"> Cancelado </option>
-                                <option {% if status == 'solicitado' %}  selected {% endif %} value="solicitado">Solicitado</option>
+                                <option {% if status_pagos == 'por_conciliar' %}  selected {% endif %} value="por_conciliar" selected>Por Conciliar</option>
+                                <option {% if status_pagos == 'conciliado' %}  selected {% endif %} value="conciliado">Conciliado</option>
+                                <option {% if status_pagos == 'cancelado' %}  selected {% endif %} value="cancelado"> Cancelado </option>
+                                <option {% if status_pagos == 'solicitado' %}  selected {% endif %} value="solicitado">Solicitado</option>
                             </select>
                         </div>
                     </div>

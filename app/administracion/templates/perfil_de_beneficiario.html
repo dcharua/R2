@@ -215,13 +215,14 @@
                         </div>
                         <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
                             <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
-                                <form class="form-horizontal form-label-left" method="POST" >
+                                <form action="{{ url_for('administracion_blueprint.perfil_beneficiario_por_pagar', beneficiario_id=beneficiario_id) }}" class="form-horizontal form-label-left" method="POST" >
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="z-index: 999;">
                                             <label> Tipo de fecha</label>
                                             <div class='input-group'>
                                                 <select class="form-control" name="type_date">
                                                     <option value=""></option>
+                                                    <option value="todos" selected>Ver todos</option>
                                                     <option value="programada" selected>Fecha programada</option>
                                                     <option value="vencimiento">Fecha de vencimiento</option>
                                                     <option value="documento">Fecha de documento</option>
@@ -288,44 +289,42 @@
                       </tr>
                     </tfoot>
                     <tbody>
-                      {% for egreso in beneficiario.egresos %}
-                      {% if egreso.status == 'pendiente' or egreso.status == 'parcial' %}
-                      <tr>
-                        <td>
-                          <input name="select_all" value="{{egreso.id}}" type="checkbox" class="table-check pendientes-table" />
-                        </td>
-                        <td>{{egreso.id}}</td>
-                        <td>{{egreso.fecha_programada_pago}}</td>
-                        <td>{{egreso.fecha_vencimiento}}</td>
-                        <td>{{egreso.fecha_documento}}</td>
-                        <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                        <td>{{egreso.numero_documento}}</td>
-                        <td>
-                          {% if egreso.status == 'pendiente'%}
-                          <span class="badge bg-pendiente">Pendiente</span>
-                          {% endif %}
-                          {% if egreso.status == 'parcial'%}
-                          <span class="badge bg-parcial">Parcial</span>
-                          {% endif %}
-                        </td>
-                        <td>
-                          <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
-                            data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                            <i class="material-icons">visibility</i>
-                          </a>
-                          {% if egreso.status == 'pendiente' or egreso.status == 'parcial' %}
-                          <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar" data-toggle="modal"
-                            data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=egreso.id) }}">
-                            <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
-                          </a>
-                          <a class="btn btn-xs btn-warning waves-effect open-reprogramar" data-toggle="modal"
-                            data-target="#modal_reprogramar_fecha" data-id="{{egreso.id}}">
-                            <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
-                          </a>
-                          {% endif %}
-                        </td>
-                      </tr>
-                      {% endif %}
+                      {% for porpagar in por_pagar %}
+                        <tr>
+                          <td>
+                            <input name="select_all" value="{{porpagar.id}}" type="checkbox" class="table-check pendientes-table" />
+                          </td>
+                          <td>{{porpagar.id}}</td>
+                          <td>{{porpagar.fecha_programada_pago}}</td>
+                          <td>{{porpagar.fecha_vencimiento}}</td>
+                          <td>{{porpagar.fecha_documento}}</td>
+                          <td>{{"${:,.2f}".format(porpagar.monto_total)}}</td>
+                          <td>{{porpagar.numero_documento}}</td>
+                          <td>
+                            {% if porpagar.status == 'pendiente'%}
+                            <span class="badge bg-pendiente">Pendiente</span>
+                            {% endif %}
+                            {% if porpagar.status == 'parcial'%}
+                            <span class="badge bg-parcial">Parcial</span>
+                            {% endif %}
+                          </td>
+                          <td>
+                            <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{porpagar.id}}"
+                              data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                              <i class="material-icons">visibility</i>
+                            </a>
+                            {% if porpagar.status == 'pendiente' or porpagar.status == 'parcial' %}
+                            <a class="btn js-modal-buttons btn-xs btn-success waves-effect open-pagar" data-toggle="modal"
+                              data-url="{{ url_for('egresos_blueprint.get_data_pagar', egreso_id=porpagar.id) }}">
+                              <i data-toggle="tooltip" data-placement="top" title="Solicitar pago" class="material-icons">payment</i>
+                            </a>
+                            <a class="btn btn-xs btn-warning waves-effect open-reprogramar" data-toggle="modal"
+                              data-target="#modal_reprogramar_fecha" data-id="{{porpagar.id}}">
+                              <i data-toggle="tooltip" data-placement="top" title="Reprogramar fecha de pago" class="material-icons">update</i>
+                            </a>
+                            {% endif %}
+                          </td>
+                        </tr>
                       {% endfor %}
                     </tbody>
                   </table>
@@ -357,13 +356,14 @@
                           </div>
                           <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
                               <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
-                                  <form class="form-horizontal form-label-left" method="POST" >
+                                  <form action="{{ url_for('administracion_blueprint.perfil_beneficiario_pago_programado', beneficiario_id=beneficiario_id) }}" class="form-horizontal form-label-left" method="POST" >
                                       <div class="row">
                                           <div class="col-sm-12 col-md-12" style="z-index: 999;">
                                               <label> Tipo de fecha</label>
                                               <div class='input-group'>
                                                   <select class="form-control" name="type_date">
                                                       <option value=""></option>
+                                                      <option value="todos" selected>Ver todos</option>
                                                       <option value="programada" selected>Fecha programada</option>
                                                       <option value="vencimiento">Fecha de vencimiento</option>
                                                       <option value="documento">Fecha de documento</option>
@@ -427,26 +427,24 @@
                         </tr>
                       </tfoot>
                       <tbody>
-                        {% for egreso in beneficiario.egresos %}
-                        {% if egreso.status == 'solicitado'  %}
-                        <tr>
-                          <td>{{egreso.id}}</td>
-                          <td>{{egreso.fecha_programada_pago}}</td>
-                          <td>{{egreso.fecha_vencimiento}}</td>
-                          <td>{{egreso.fecha_documento}}</td>
-                          <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                          <td>{{egreso.numero_documento}}</td>
-                          <td>
-                            <span class="badge bg-solicitado">Solicitado</span>
-                          </td>
-                          <td>
-                            <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
-                              data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                              <i class="material-icons">visibility</i>
-                            </a>
-                          </td>
-                        </tr>
-                        {% endif %}
+                        {% for programado in pagos_programados %}
+                          <tr>
+                            <td>{{programado.id}}</td>
+                            <td>{{programado.fecha_programada_pago}}</td>
+                            <td>{{programado.fecha_vencimiento}}</td>
+                            <td>{{programado.fecha_documento}}</td>
+                            <td>{{"${:,.2f}".format(programado.monto_total)}}</td>
+                            <td>{{programado.numero_documento}}</td>
+                            <td>
+                              <span class="badge bg-solicitado">Solicitado</span>
+                            </td>
+                            <td>
+                              <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{programado.id}}"
+                                data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                                <i class="material-icons">visibility</i>
+                              </a>
+                            </td>
+                          </tr>
                         {% endfor %}
                       </tbody>
                     </table>
@@ -477,7 +475,7 @@
                         </div>
                         <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
                             <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
-                                <form class="form-horizontal form-label-left" method="POST" >
+                                <form action="{{ url_for('administracion_blueprint.perfil_beneficiario_pagados', beneficiario_id=beneficiario_id) }}"  class="form-horizontal form-label-left" method="POST" >
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="z-index: 999;">
                                             <label> Tipo de fecha</label>
@@ -547,34 +545,32 @@
                       </tr>
                     </tfoot>
                     <tbody>
-                      {% for egreso in beneficiario.egresos %}
-                      {% if egreso.status == 'liquidado' or egreso.status == 'cancelado' or egreso.status == 'por_conciliar'%}
-                      <tr>
-                        <td>{{egreso.id}}</td>
-                        <td>{{egreso.fecha_programada_pago}}</td>
-                        <td>{{egreso.fecha_vencimiento}}</td>
-                        <td>{{egreso.fecha_documento}}</td>
-                        <td>{{"${:,.2f}".format(egreso.monto_total)}}</td>
-                        <td>{{egreso.numero_documento}}</td>
-                        <td>
-                          {% if egreso.status == 'liquidado'%}
-                          <span class="badge bg-liquidado ">Liquidado</span>
-                          {% endif %}
-                          {% if egreso.status == 'cancelado'%}
-                          <span class="badge bg-cancelado">Cancelado</span>
-                          {% endif %}
-                          {% if egreso.status == 'por_conciliar'%}
-                          <span class="badge bg-por-conciliar">Por conciliar</span>
-                          {% endif %}
-                        </td>
-                        <td>
-                          <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{egreso.id}}"
-                            data-toggle="tooltip" data-placement="top" title="Ver detalle">
-                            <i class="material-icons">visibility</i>
-                          </a>
-                        </td>
-                      </tr>
-                      {% endif %}
+                      {% for pagado in pagados %}
+                        <tr>
+                          <td>{{pagado.id}}</td>
+                          <td>{{pagado.fecha_programada_pago}}</td>
+                          <td>{{pagado.fecha_vencimiento}}</td>
+                          <td>{{pagado.fecha_documento}}</td>
+                          <td>{{"${:,.2f}".format(pagado.monto_total)}}</td>
+                          <td>{{pagado.numero_documento}}</td>
+                          <td>
+                            {% if pagado.status == 'liquidado'%}
+                            <span class="badge bg-liquidado ">Liquidado</span>
+                            {% endif %}
+                            {% if pagado.status == 'cancelado'%}
+                            <span class="badge bg-cancelado">Cancelado</span>
+                            {% endif %}
+                            {% if pagado.status == 'por_conciliar'%}
+                            <span class="badge bg-por-conciliar">Por conciliar</span>
+                            {% endif %}
+                          </td>
+                          <td>
+                            <a class="btn btn-xs btn-info waves-effect" href="/egresos/perfil_egreso/{{pagado.id}}"
+                              data-toggle="tooltip" data-placement="top" title="Ver detalle">
+                              <i class="material-icons">visibility</i>
+                            </a>
+                          </td>
+                        </tr>
                       {% endfor %}
                     </tbody>
                   </table>
@@ -608,7 +604,7 @@
                   </div>
                   <div id="collapseOne_1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne_1" aria-expanded="true" style="">
                       <div class="panel-body" style="border-left: 0px !important;border-right: 0px !important;border-top: 0px !important;border-bottom: 0px !important;padding: 20px 0px 0px !important;">
-                          <form class="form-horizontal form-label-left" method="POST" >
+                          <form action="{{ url_for('administracion_blueprint.perfil_beneficiario_pagos_a_beneficiarios', beneficiario_id=beneficiario_id) }}" class="form-horizontal form-label-left" method="POST" >
                               <div class="row">
                                   <div class="col-sm-12 col-md-6" style="z-index: 999;">
                                       <label> Cuenta</label>
@@ -625,6 +621,7 @@
                                     <div class='input-group'>
                                       <select class="form-control" name="status">
                                         <option value=""></option>
+                                        <option value="todos" selected>Ver todos</option>
                                         <option value="solicitado" selected>Solicitado</option>
                                         <option value="por_conciliar" selected>Por Conciliar</option>
                                         <option value="conciliado">Conciliado</option>
@@ -690,7 +687,7 @@
                   </tr>
                 </tfoot>
                 <tbody>
-                  {% for pago in beneficiario.pagos %}
+                  {% for pago in pagos %}
                   <tr>
                     <td>
                       {% if pago.status == 'por_conciliar' %}

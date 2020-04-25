@@ -204,7 +204,7 @@ def cuentas_por_cobrar_cobrar():
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
     
 
-    return render_template("cuentas_por_cobrar.html",inicio=start,fin=end , status=status, client = client ,clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
+    return render_template("cuentas_por_cobrar.html",inicio_cobradas='',fin_cobradas='' , status_cobradas='',inicio=start,fin=end , status=status, client = client ,clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
 
 @blueprint.route('/cuentas_por_cobrar_cobradas', methods=['GET', 'POST'])
 def cuentas_por_cobrar_cobradas():
@@ -234,7 +234,7 @@ def cuentas_por_cobrar_cobradas():
     ingresos_cancelados = Ingresos.query.filter(Ingresos.status == 'cancelado').filter(Ingresos.fecha_vencimiento.between(d2, d1)).limit(100)
     
 
-    return render_template("cuentas_por_cobrar.html",inicio=start,fin=end , status=status, client = client,  clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
+    return render_template("cuentas_por_cobrar.html",inicio='',fin='' , status='',inicio_cobradas=start,fin_cobradas=end , status_cobradas=status, client = client,  clientes=clientes ,ingresos_recibidos = ingresos_recibidos, ingresos_pendientes = ingresos_pendientes, formas_pago = formas_pago, cuentas=cuentas)
 
 #Ingresos perfil
 @blueprint.route('/perfil_ingreso/<int:ingreso_id>', methods=['GET', 'POST'])
