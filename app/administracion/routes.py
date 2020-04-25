@@ -4,6 +4,7 @@ from flask_login import login_required
 from bcrypt import checkpw
 from app import db, login_manager
 from app.db_models.models import *
+from sqlalchemy import or_
 
 
 @blueprint.route('/<template>')
